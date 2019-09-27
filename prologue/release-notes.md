@@ -1,3 +1,5 @@
+# Notas de versão
+
 ## Esquema de versão
 
 O esquema de versão do Laravel mantém a seguinte convenção: paradigma.maior.menor. Os principais lançamentos de estrutura são lançados a cada seis meses (fevereiro e agosto), enquanto os lançamentos menores podem ser lançados sempre que a cada semana. Versões menores nunca devem conter alterações de última hora.
@@ -57,3 +59,66 @@ protected $policies = [
     'App\User' => 'App\Policies\UserPolicy',
 ];
 ```
+O Laravel 5.8 introduz a descoberta automática de políticas de modelo, desde que o modelo e a política sigam as convenções de 
+nomenclatura padrão do Laravel. Especificamente, as políticas devem estar em um diretório de `Policies` abaixo do diretório 
+que contém os modelos. Portanto, por exemplo, os modelos podem ser colocados no diretório do aplicativo, enquanto as 
+políticas podem ser colocadas no diretório `app/Policies`. Além disso, o nome da política deve corresponder ao nome do modelo 
+e ter um sufixo de Política (Policies). Portanto, um modelo de `User` corresponderia a uma classe UserPolicy.
+
+Se você desejar fornecer sua própria lógica de descoberta de política, poderá registrar um retorno de chamada personalizado usando o método `Gate::guessPolicyNamesUsing`. Normalmente, esse método deve ser chamado no `AuthServiceProvider` do seu aplicativo:
+
+``` php
+use Illuminate\Support\Facades\Gate;
+
+Gate::guessPolicyNamesUsing(function ($modelClass) {
+    // retorna a classe da política...
+});
+```
+
+> Quaisquer políticas mapeadas explicitamente no seu `AuthServiceProvider` prevalecerão sobre possíveis políticas descobertas 
+> automaticamente.
+
+## Conformidade com o cache PSR-16
+
+Para permitir um tempo de expiração mais granular ao armazenar itens e fornecer conformidade com o padrão de cache PSR-16, o 
+tempo de vida útil do item em cache mudou de minutos para segundos. Os métodos `put`, `putMany`, `add`, `remember` e 
+`setDefaultCacheTime` da classe `Illuminate\Cache\Repository` e suas classes estendidas, bem como o método `put` de cada 
+armazenamento em cache foram atualizados com esse comportamento alterado. Consulte a [PR]
+(https://github.com/laravel/framework/pull/27276) relacionada para obter mais informações.
+
+Se você estiver passando um número inteiro para qualquer um desses métodos, atualize seu código para garantir que agora está 
+passando o número de segundos que deseja que o item permaneça no cache. Como alternativa, você pode passar uma instância 
+`DateTime` indicando quando o item deve expirar:
+
+``` php
+// Laravel 5.7 - Armazenar item por 30 minutos...
+Cache::put('foo', 'bar', 30);
+
+// Laravel 5.8 - Armazenar item for 30 seconds...
+Cache::put('foo', 'bar', 30);
+
+// Laravel 5.7 / 5.8 - Armazenar item for 30 seconds...
+Cache::put('foo', 'bar', now()->addSeconds(30));
+```
+
+## Multiplos protetores de Broadcast
+
+Nas versões anteriores do Laravel, os canais de transmissão privada e de presença autenticavam o usuário por meio da proteção de autenticação padrão do seu aplicativo. A partir do Laravel 5.8, agora você pode atribuir vários guardas que devem autenticar a solicitação recebida:
+
+``` php
+Broadcast::channel('channel', function() {
+    // ...
+}, ['guards' => ['web', 'admin']])
+```
+
+## Token Guard Token Hashing
+O token guard do Laravel, fornece uma autenticação básica de API, agora suporta o armazenamento de tokens de API como hashes 
+SHA-256. Isso fornece segurança aprimorada ao armazenar tokens de texto sem formatação. Para saber mais sobre tokens de 
+hash, consulte a documentação completa de [autenticação da API](https://laravel.com/docs/5.8/api-authentication).
+
+> Nota: Enquanto o Laravel é fornecido com uma proteção de autenticação simples, baseada em token, é altamente recomendável 
+> que você considere usar o [Laravel Passport](https://laravel.com/docs/5.8/passport) para aplicativos de produção robustos 
+> que oferecem autenticação API.
+
+## Validação aprimorada de email
+O Laravel 5.8 introduz melhorias na lógica subjacente de validação de email do validador, adotando o pacote egulias / email-validator utilizado pelo SwiftMailer. A lógica anterior de validação de email do Laravel considerava ocasionalmente emails válidos, como example@bär.se, como inválidos.
