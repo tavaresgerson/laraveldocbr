@@ -121,4 +121,143 @@ hash, consulte a documentação completa de [autenticação da API](https://lara
 > que oferecem autenticação API.
 
 ## Validação aprimorada de email
-O Laravel 5.8 introduz melhorias na lógica subjacente de validação de email do validador, adotando o pacote egulias / email-validator utilizado pelo SwiftMailer. A lógica anterior de validação de email do Laravel considerava ocasionalmente emails válidos, como example@bär.se, como inválidos.
+O Laravel 5.8 introduz melhorias na lógica subjacente de validação de email do validador, adotando o pacote `egulias/email-validator` 
+utilizado pelo SwiftMailer. A lógica anterior de validação de email do Laravel considerava ocasionalmente emails válidos, como 
+`example@bär.se`, como inválidos.
+
+## Fuso horário do agendador padrão
+O Laravel permite que você personalize o fuso horário de uma tarefa agendada usando o método de fuso horário:
+
+``` php
+$schedule->command('inspire')
+         ->hourly()
+         ->timezone('America/Chicago');
+```
+
+No entanto, isso pode se tornar complicado e repetitivo se você estiver especificando o mesmo fuso horário para todas as suas tarefas agendadas. Por esse motivo, agora você pode definir um método `scheduleTimezone` no arquivo `app/Console/Kernel.php`. Este método deve retornar o fuso horário padrão que deve ser atribuído a todas as tarefas agendadas:
+
+``` php
+/**
+ * Obtenha o fuso horário que deve ser usado por padrão para eventos agendados.
+ *
+ * @return \DateTimeZone|string|null
+ */
+protected function scheduleTimezone()
+{
+    return 'America/Chicago';
+}
+```
+
+## Eventos de Tabela Intermediária/Modelo Dinâmico
+Nas versões anteriores do Laravel, os [eventos do modelo Eloquent](https://laravel.com/docs/5.8/eloquent#events) não eram despachados ao 
+anexar, desanexar ou sincronizar modelos personalizados de tabela intermediária/"pivô" de um relacionamento muitos para muitos. Ao usar 
+modelos de [tabela intermediária personalizados](https://laravel.com/docs/5.8/eloquent-relationships#defining-custom-intermediate-table-
+models) no Laravel 5.8, os eventos de modelo aplicáveis serão despachados agora.
+
+## Melhorias na chamada do artisan
+O Laravel permite invocar o Artisan através do método Artisan::call. Nas versões anteriores do Laravel, as opções do comando são 
+passadas através de uma matriz como o segundo argumento para o método:
+
+``` php
+use Illuminate\Support\Facades\Artisan;
+
+Artisan::call('migrate:install', ['database' => 'foo']);
+```
+
+No entanto, o Laravel 5.8 permite passar o comando inteiro, incluindo opções, como o primeiro argumento de string para o método:
+
+``` php
+Artisan::call('migrate:install --database=foo');
+```
+
+## Métodos auxiliares de teste de Mock/Spy
+Para tornar os objetos de simulação mais convenientes, novos métodos de `mock` e `spy` foram adicionados à classe de caso de teste base 
+do Laravel. Esses métodos vinculam automaticamente a classe simulada no contêiner. Por exemplo:
+
+``` php
+// Laravel 5.7
+$this->instance(Service::class, Mockery::mock(Service::class, function ($mock) {
+    $mock->shouldReceive('process')->once();
+}));
+
+// Laravel 5.8
+$this->mock(Service::class, function ($mock) {
+    $mock->shouldReceive('process')->once();
+});
+```
+## Preservação de chave de recurso do Eloquent
+Ao retornar uma coleção de recursos Eloquent de uma rota, o Laravel redefine as chaves da coleção para que elas estejam em ordem 
+numérica simples:
+
+``` php
+use App\User;
+use App\Http\Resources\User as UserResource;
+
+Route::get('/user', function () {
+    return UserResource::collection(User::all());
+});
+```
+
+Ao usar o Laravel 5.8, agora você pode adicionar uma propriedade `preserveKeys` à sua classe de recurso, indicando se as chaves de 
+coleção devem ser preservadas. Por padrão, e para manter a consistência com as versões anteriores do Laravel, as chaves serão 
+redefinidas por padrão:
+
+``` php
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class User extends JsonResource
+{
+    /**
+     * Indicates if the resource's collection keys should be preserved.
+     *
+     * @var bool
+     */
+    public $preserveKeys = true;
+}
+```
+
+Quando a propriedade `preserveKeys` estiver configurada como `true`, as chaves de coleção serão preservadas:
+
+``` php
+use App\User;
+use App\Http\Resources\User as UserResource;
+
+Route::get('/user', function () {
+    return UserResource::collection(User::all()->keyBy->id);
+});
+```
+
+## Método de ordem `orWhere` do Eloquente
+Nas versões anteriores do Laravel, a combinação de vários escopos do modelo Eloquent por meio de um operador `or` exigia o uso de retornos de chamada Closure:
+
+``` php
+// Métodos scopePopular e scopeActive definidos no modelo de usuário...
+$users = App\User::popular()->orWhere(function (Builder $query) {
+    $query->active();
+})->get();
+```
+
+O Laravel 5.8 apresenta um método "de alta ordem" `orWhere` que permite encadear fluentemente esses escopos sem o uso de Closures:
+
+``` php
+$users = App\User::popular()->orWhere->active()->get();
+```
+
+## Melhorias no Artisan
+Nas versões anteriores do Laravel, o comando `serve` do Artisan atenderia seu aplicativo na porta `8000`. Se outro processo de comando `serve` já estivesse atendendo nessa porta, uma tentativa de atender um segundo aplicativo via `serve` falharia. A partir do Laravel 5.8, o `serve` agora procurará portas disponíveis até a porta `8009`, permitindo que você atenda a vários aplicativos ao mesmo tempo.
+
+## Mapeamento de arquivo blade
+Ao compilar modelos do Blade, o Laravel agora adiciona um comentário na parte superior do arquivo compilado que contém o caminho para o modelo original do Blade.
+
+## DynamoDB Cache/Session Drivers
+O Laravel 5.8 apresenta os drivers de cache e sessão do [DynamoDB](https://aws.amazon.com/dynamodb/). O DynamoDB é um banco de dados NoSQL sem servidor fornecido pelo Amazon Web Services. A configuração padrão para o driver de cache dynamodb pode ser encontrada no [arquivo de configuração de cache](https://github.com/laravel/laravel/blob/master/config/cache.php) do Laravel 5.8.
+
+## Suporte ao Carbon 2.0 
+O Laravel 5.8 fornece suporte para a versão `~2.0` da biblioteca de manipulação de datas do Carbon.
+
+## Suporte para Pheanstalk 4.0
+O Laravel 5.8 fornece suporte para a versão `~4.0` da biblioteca de filas Pheanstalk. Se você estiver usando a biblioteca Pheanstalk em seu aplicativo, atualize sua biblioteca para a versão `~4.0` via Composer.
