@@ -85,4 +85,93 @@ palavra Teste. Você pode executar seus testes usando os comandos `phpunit` ou `
 O diretório `vendor` contém suas dependências do Composer.
 
 ## O diretório App
-v
+A maioria do seu aplicativo está alojada no diretório do `app`. Por padrão, esse diretório está no namespace 
+`App` e é carregado automaticamente pelo Composer usando o padrão de [carregamento automático PSR-4](https://www.php-fig.org/psr/psr-4/).
+
+O diretório do aplicativo contém uma variedade de diretórios adicionais, como `Console`, `Http` e `Providers`. 
+Pense nos diretórios `Console` e `Http` como fornecendo uma API no núcleo do seu aplicativo. O protocolo HTTP 
+e a CLI são mecanismos para interagir com seu aplicativo, mas na verdade não contêm lógica de aplicativo. 
+Em outras palavras, são duas maneiras de emitir comandos para o seu aplicativo. O diretório `Console` contém 
+todos os seus comandos do `Artisan`, enquanto o diretório `Http` contém seus controladores, middleware e requests.
+
+Uma variedade de outros diretórios será gerada dentro do diretório do aplicativo conforme você usa os comandos 
+`make` do Artisan para gerar classes. Portanto, por exemplo, o diretório `app/Jobs` não existirá até você 
+executar o comando do Artisan `make:job` para gerar uma classe de job.
+
+> Muitas das classes no diretório do `app` podem ser geradas pelo Artisan por meio de comandos. 
+> Para revisar os comandos disponíveis, execute o comando `php artisan list make` no seu terminal.
+
+### O Diretório Broadcast
+O diretório `broadcasting` contém todas as classes de canal de transmissão para seu aplicativo. 
+Essas classes são geradas usando o comando `make:channel`. Esse diretório não existe por padrão, 
+mas será criado para você quando você criar seu primeiro canal. Para saber mais sobre os canais, 
+consulte a documentação sobre [transmissão de eventos](https://laravel.com/docs/5.8/broadcasting).
+
+### O diretório Console
+O diretório do console contém todos os comandos personalizados do Artisan para seu aplicativo. 
+Esses comandos podem ser gerados usando o comando `make:command`. Esse diretório também abriga 
+o `kernel` do console, onde são registrados os comandos personalizados do Artisan e definidas 
+as [tarefas agendadas](https://laravel.com/docs/5.8/scheduling).
+
+### O Diretório Events
+Esse diretório não existe por padrão, mas será criado para você pelo Artisan com os comandos 
+`event:generate` e `make:event`. O diretório Events abriga classes de eventos. Os eventos podem 
+ser usados para alertar outras partes do seu aplicativo que uma determinada ação ocorreu, 
+fornecendo uma grande flexibilidade e desacoplamento.
+
+### O diretório de exceções
+O diretório `Exceptions` contém o manipulador de exceções do aplicativo e também é um bom local 
+para colocar as exceções lançadas pelo aplicativo. Se você deseja personalizar como suas exceções 
+são registradas ou renderizadas, modifique a classe Handler neste diretório.
+
+### O Diretório Http
+O diretório `Http` contém seus controladores, middleware e requests de formulário. Quase 
+toda a lógica para lidar com solicitações que entram no seu aplicativo será colocada neste diretório.
+
+### O Diretório de Jobs
+Esse diretório não existe por padrão, mas será criado se você executar o comando do Artisan `make:job`.
+O diretório Jobs abriga os trabalhos na fila do seu aplicativo. Os trabalhos podem ser enfileirados pelo 
+seu aplicativo ou executados de forma síncrona no ciclo de vida da solicitação atual. Às vezes, as tarefas 
+executadas de forma síncrona durante a solicitação atual são chamadas de "comandos", pois são uma 
+implementação do padrão de comando.
+
+### O Diretório de `Listeners`
+Esse diretório não existe por padrão, mas será criado se você executar o `event:generate` 
+ou `make:listener` no Artisan. O diretório Listeners contém as classes que manipulam seus 
+[eventos](https://laravel.com/docs/5.8/events). Os ouvintes de eventos recebem uma instância 
+de evento e executam a lógica em resposta ao evento que está sendo disparado. Por exemplo, 
+um evento `UserRegistered` pode ser tratado por um ouvinte `SendWelcomeEmail`.
+
+### O Diretório de Email
+Esse diretório não existe por padrão, mas será criado para você se você executar o comando no 
+Artisan `make:mail`. O diretório Mail contém todas as suas classes que representam os emails 
+enviados pelo seu aplicativo. Os objetos Mail permitem que você encapsule toda a lógica da 
+criação de um email em uma classe única e simples que possa ser enviada usando o método Mail :: send.
+
+### O diretório de notificações
+Esse diretório não existe por padrão, mas será criado se você executar o comando 
+Artisan `make:notification`. O diretório de Notificações contém todas as notificações 
+"transacionais" enviadas pelo seu aplicativo, como notificações simples sobre eventos que 
+ocorrem no seu aplicativo. A notificação do Laravel apresenta resumos enviando notificações 
+através de uma variedade de drivers, como email, Slack, SMS ou armazenados em um banco de dados.
+
+### O Diretório de Políticas
+Esse diretório não existe por padrão, mas será criado para você se você executar o 
+comando Artisan `make:policy`. O diretório `Policies` contém as classes de política de 
+autorização para seu aplicativo. As políticas são usadas para determinar se um usuário 
+pode executar uma determinada ação contra um recurso. Para mais informações, consulte 
+a [documentação da autorização](https://laravel.com/docs/5.8/authorization).
+
+### O Diretório de Fornecedores
+O diretório `Providers` contém todos os provedores de serviços para seu aplicativo. Os provedores de 
+serviços inicializam seu aplicativo vinculando serviços no contêiner de serviço, registrando eventos 
+ou executando outras tarefas para preparar seu aplicativo para solicitações de entrada.
+
+Em um novo aplicativo Laravel, esse diretório já conterá vários provedores. Você pode adicionar 
+seus próprios provedores a esse diretório, conforme necessário.
+
+### O diretório de regras
+Esse diretório não existe por padrão, mas será criado executar o comando do Artisan 
+`make:rule`. O diretório `Rules` contém os objetos de regra de validação personalizados 
+para seu aplicativo. As regras são usadas para encapsular a lógica de validação complicada em 
+um objeto simples. Para mais informações, consulte a [documentação de validação](https://laravel.com/docs/5.8/validation).
