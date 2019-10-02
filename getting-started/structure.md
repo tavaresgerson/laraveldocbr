@@ -144,9 +144,9 @@ um evento `UserRegistered` pode ser tratado por um ouvinte `SendWelcomeEmail`.
 
 ### O Diretório de Email
 Esse diretório não existe por padrão, mas será criado para você se você executar o comando no 
-Artisan `make:mail`. O diretório Mail contém todas as suas classes que representam os emails 
-enviados pelo seu aplicativo. Os objetos Mail permitem que você encapsule toda a lógica da 
-criação de um email em uma classe única e simples que possa ser enviada usando o método Mail :: send.
+Artisan `make:mail`. O diretório `Mail` contém todas as suas classes que representam os emails 
+enviados pelo seu aplicativo. Os objetos `Mail` permitem que você encapsule toda a lógica da 
+criação de um email em uma classe única e simples que possa ser enviada usando o método `Mail::send`.
 
 ### O diretório de notificações
 Esse diretório não existe por padrão, mas será criado se você executar o comando 
