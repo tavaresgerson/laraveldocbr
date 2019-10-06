@@ -1,4 +1,6 @@
-# laravel-5x-ptbr
+<img src="https://laravel.com/img/logotype.min.svg">
+
+# Documentação em português brasileiro do Laravel 5.8
 
 ## Prológo
 + [Notas de versão](https://github.com/tavaresgerson/laravel-5x-ptbr/blob/master/prologue/release-notes.md)
@@ -14,7 +16,7 @@
 + Deploy
 
 ## Arquitetura
-+ Ciclo de requisição
++ [Ciclo de requisição](https://github.com/tavaresgerson/laravel-5-portugues/blob/master/architecture-concepts/lifecycle.md)
 + Service Container
 + Facades
 + Contratos
