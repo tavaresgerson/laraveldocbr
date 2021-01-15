@@ -1,23 +1,22 @@
 <img src="https://laravel.com/img/logotype.min.svg">
 
 ## Prológo
-+ [Notas de versão](https://github.com/tavaresgerson/laravel-5x-ptbr/blob/master/prologue/release-notes.md)
++ [Notas de versão](/prologue/releases.md)
 + Guia de atualização
-+ Guiade contribuição
++ Guia de contribuição
 
 ## Começando
-+ [Instalação](https://github.com/tavaresgerson/laravel-5x-ptbr/blob/master/getting-started/installation.md)
-+ [Configuração](https://github.com/tavaresgerson/laravel-5x-ptbr/blob/master/getting-started/configuration.md)
-+ [Estrutura de pastas](https://github.com/tavaresgerson/laravel-5x-ptbr/blob/master/getting-started/structure.md)
-+ Homestead
-+ Valet
-+ Deploy
++ Instalação
++ Configuração
++ Estrutura de pastas
++ Conjuntos iniciais
++ Publicação
 
-## Arquitetura
-+ [Ciclo de requisição](https://github.com/tavaresgerson/laravel-5-portugues/blob/master/architecture-concepts/lifecycle.md)
-+ [Service Container](https://github.com/tavaresgerson/laravel-5-portugues/blob/master/architecture-concepts/container.md)
+## Conceito de Arquitetura
++ Ciclo de requisição
++ Service Container
 + Facades
-+ Contratos
++ Provedores de serviços
 
 ## O básico
 + Roteamento
@@ -27,54 +26,52 @@
 + Requisições
 + Respostas
 + Views
++ Blades
 + Geração de URL
 + Sessão
 + Validação
 + Manipulando Erros
 + Logging
 
-## Front-end
-+ Blades
-+ Localização
-+ Scaffolding
+## Mais Fundo
++ Artisan Console
++ Broadcasting
++ Cache
++ Coleções
 + Compilando assets
++ Contratos
++ Eventos
++ Armazenamento
++ Ajudantes
++ Cliente HTTP
++ Localização
++ Email
++ Notificações
++ Pacotes
++ Filas
++ Agendamento de Tarefas
 
 ## Segurança
 + Autenticação
-+ Autenticação API
 + Autorização
 + Verificação de Email
 + Encriptação
 + Hashing
-+ Reset de senha
-
-## Indo Mais Fundo
-+ Console Artisan
-+ Broadcasting
-+ Cache
-+ Coleções
-+ Eventos
-+ Armazenamento de Arquivos
-+ Helpers
-+ Email
-+ Notificações
-+ Pacote de desenvolvimento
-+ Filas
-+ Tarefas agendadas
++ Redefinição de senha
 
 ## Base de dados
 + Começando
-+ Construtor de queries
++ Construtor de consultas
 + Paginação
 + Migrations
-+ Seeding
++ Semetes
 + Redis
 
 ## Eloquent ORM
 + Começando
 + Relacionamentos
 + Coleções
-+ Mutators
++ Mutadores/Conjuntos
 + Recursos de API
 + Serialização
 
@@ -87,13 +84,20 @@
 + Mocking
 
 ## Pacotes oficiais
-+ Cashier
++ Breeze
++ Cashier (Stripe)
++ Cashier (Paddle)
 + Dusk
 + Envoy
++ Fortify
++ Homestead
 + Horizon
++ Jetstream
 + Passport
++ Sail
++ Sanctum
 + Scout
 + Socialite
 + Telescope
-
++ Valet
 
