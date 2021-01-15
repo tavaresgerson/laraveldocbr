@@ -6,7 +6,7 @@
 + Guia de contribuição
 
 ## Começando
-+ Instalação
++ [Instalação](/getting-started/installation.md)
 + Configuração
 + Estrutura de pastas
 + Conjuntos iniciais
