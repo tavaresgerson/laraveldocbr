@@ -8,8 +8,8 @@
 ## Começando
 + [Instalação](/getting-started/installation.md)
 + [Configuração](/getting-started/configuration.md)
-+ Estrutura de pastas
-+ Conjuntos iniciais
++ [Estrutura de pastas](/getting-started/structure.md)
++ Kits iniciais
 + Publicação
 
 ## Conceito de Arquitetura
