@@ -57,7 +57,7 @@ APP_NAME="My Application"
 Todas as variáveis listadas neste arquivo serão carregadas na superglobal `$_ENV` do PHP quando seu aplicativo receber uma solicitação. 
 No entanto, você pode usar o auxiliar `env` para recuperar valores dessas variáveis em seus arquivos de configuração. Na verdade, se você 
 revisar os arquivos de configuração do Laravel, notará que muitas das opções já estão usando este auxiliar:
-```
+```php
 'debug' => env('APP_DEBUG', false),
 ```
 
@@ -193,7 +193,7 @@ php artisan up
 > Você pode personalizar o modelo de modo de manutenção padrão, definindo seu próprio modelo em `resources/views/errors/503.blade.php`.
 
 #### Modo de manutenção e filas
-Enquanto seu aplicativo está no modo de manutenção, nenhum trabalho na fila será tratado. Os trabalhos continuarão a ser tratados 
+Enquanto seu aplicativo está no modo de manutenção, nenhum [trabalho na fila](https://laravel.com/docs/8.x/queues) será tratado. Os trabalhos continuarão a ser tratados 
 normalmente quando o aplicativo sair do modo de manutenção.
 
 #### Alternativas ao modo de manutenção
