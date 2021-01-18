@@ -7,7 +7,7 @@
 
 ## Começando
 + [Instalação](/getting-started/installation.md)
-+ Configuração
++ [Configuração](/getting-started/configuration.md)
 + Estrutura de pastas
 + Conjuntos iniciais
 + Publicação
