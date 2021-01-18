@@ -2,156 +2,136 @@
 
 ## Introdução
 
-Todos os arquivos de configuração da estrutura do Laravel são armazenados no diretório config. Cada opção está documentada, 
-portanto, fique à vontade para procurar nos arquivos e se familiarizar com as opções disponíveis.
+Todos os arquivos de configuração do framework Laravel são armazenados no diretório `config`. Cada opção é documentada, portanto, 
+sinta-se à vontade para examinar os arquivos e se familiarizar com as opções disponíveis.
 
-## Configuração do ambiente
+Esses arquivos de configuração permitem que você configure coisas como as informações de conexão do banco de dados, as informações do 
+servidor de e-mail, bem como vários outros valores de configuração básicos, como o fuso horário do aplicativo e a chave de criptografia.
 
-Geralmente, é útil ter valores de configuração diferentes com base no ambiente em que o aplicativo está sendo executado. Por 
-exemplo, você pode querer usar um driver de cache diferente localmente em seu servidor de produção.
+## Configuração de Ambiente
+Geralmente é útil ter diferentes valores de configuração com base no ambiente em que o aplicativo está sendo executado. Por exemplo, 
+você pode desejar usar um driver de cache diferente localmente do que você usa em seu servidor de produção.
 
-Para tornar isso fácil, o Laravel utiliza a biblioteca PHP [DotEnv](https://github.com/vlucas/phpdotenv) de Vance Lucas. Em uma 
-nova instalação do Laravel, o diretório raiz do seu aplicativo conterá um arquivo `.env.example`. Se você instalar o Laravel 
-via Composer, esse arquivo será automaticamente renomeado para `.env`. Caso contrário, você deve renomear o arquivo 
-manualmente.
+Para tornar isso mais fácil, o Laravel utiliza a biblioteca [DotEnv](https://github.com/vlucas/phpdotenv) PHP. Em uma nova instalação do 
+Laravel, o diretório raiz de seu aplicativo conterá um arquivo `.env.example` que define muitas variáveis de ambiente comuns. Durante o 
+processo de instalação do Laravel, este arquivo será automaticamente copiado para `.env`.
 
-O arquivo .env não deve ser adicionado ao o controle de versão do aplicativo, pois cada desenvolvedor/servidor que usa o 
-aplicativo pode exigir uma configuração de ambiente diferente. Além disso, isso seria um risco de segurança no caso de um 
-invasor obter acesso ao seu repositório de controle de versão, uma vez que quaisquer credenciais confidenciais seriam expostas.
+O arquivo `.env` padrão do Laravel contém alguns valores de configuração comuns que podem diferir dependendo se sua aplicação está 
+rodando localmente ou em um servidor web de produção. Esses valores são então recuperados de vários arquivos de configuração do 
+Laravel dentro do diretório `config` usando a função `env` do Laravel.
 
-Se estiver desenvolvendo com uma equipe, convém continuar incluindo um arquivo `.env.example` com seu aplicativo. Ao colocar 
-valores de espaço reservado no arquivo de configuração de exemplo, outros desenvolvedores da sua equipe podem ver claramente 
-quais variáveis de ambiente são necessárias para executar seu aplicativo. Você também pode criar um arquivo `.env.testing`. 
-Este arquivo substituirá o arquivo `.env` ao executar testes do PHPUnit ou executar comandos do Artisan com a 
-opção `--env=testing`.
+Se você estiver desenvolvendo com uma equipe, talvez queira continuar incluindo um arquivo `.env.example` com seu aplicativo. Colocando 
+valores de espaço reservado no arquivo de configuração de exemplo, outros desenvolvedores de sua equipe podem ver claramente quais 
+variáveis de ambiente são necessárias para executar seu aplicativo.
 
-> Qualquer variável em seu arquivo `.env` pode ser substituída por variáveis de ambiente externas, como variáveis de ambiente 
-> no nível do servidor ou no nível do sistema.
+> Qualquer variável em seu arquivo `.env` pode ser substituída por variáveis de ambiente externas, como variáveis de ambiente no 
+> nível do servidor ou no nível do sistema.
 
-## Tipos de variáveis de ambiente
-Todas as variáveis em seus arquivos `.env` são analisadas como seqüências de caracteres, portanto, alguns valores reservados 
-foram criados para permitir que você retorne uma variedade maior de tipos da função `env()`:
+### Segurança de arquivos do ambiente
+Seu arquivo `.env` não deve ser comprometido com o controle de origem de seu aplicativo, uma vez que cada desenvolvedor/servidor 
+usando seu aplicativo pode exigir uma configuração de ambiente diferente. Além disso, isso seria um risco de segurança no caso de 
+um invasor obter acesso ao repositório de controle de origem, uma vez que quaisquer credenciais confidenciais seriam expostas.
 
-| .env Value  | env() Value |
-|-------------|-------------|
-| true        | (bool) true |
-| (true)      | (bool) true |
-| false       | (bool) false|
-| (false)     | (bool) false|
-| empty       | (string) '' |
-| (empty)     | (string) '' |
-| null        | (null) null |
-| (null)      | (null) null |
+### Tipos de variáveis de ambiente
+Todas as variáveis em seus arquivos `.env` são normalmente analisadas como strings, então alguns valores reservados foram criados 
+para permitir que você retorne uma gama mais ampla de tipos da função `env()`:
 
-Se você precisar definir uma variável de ambiente com um valor que contenha espaços, coloque-o entre aspas duplas.
+| .env Valor    | env() Valor   |
+|---------------|---------------|
+| true	        | (bool) true   |
+| (true)	    | (bool) true   |
+| false	        | (bool) false  |
+| (false)	    | (bool) false  |
+| empty	        | (string) ''   |
+| (empty)	    | (string) ''   |
+| null	        | (null) null   |
+| (null)	    | (null) null   |
+
+Se precisar definir uma variável de ambiente com um valor que contenha espaços, você pode fazer isso colocando o valor entre aspas duplas:
 
 ```
 APP_NAME="My Application"
 ```
 
 ## Recuperando a configuração do ambiente
-Todas as variáveis listadas neste arquivo serão carregadas na super global `$_ENV` do PHP quando seu aplicativo receber uma 
-solicitação. No entanto, você pode usar o helper `env` para recuperar valores dessas variáveis em seus arquivos de 
-configuração. De fato, se você revisar os arquivos de configuração do Laravel, notará várias das opções que já estão usando 
-este auxiliar:
-
-``` php
+Todas as variáveis listadas neste arquivo serão carregadas na superglobal `$_ENV` do PHP quando seu aplicativo receber uma solicitação. 
+No entanto, você pode usar o auxiliar `env` para recuperar valores dessas variáveis em seus arquivos de configuração. Na verdade, se você 
+revisar os arquivos de configuração do Laravel, notará que muitas das opções já estão usando este auxiliar:
+```
 'debug' => env('APP_DEBUG', false),
 ```
 
-O segundo valor passado para a função `env` é o "valor padrão". Este valor será usado se nenhuma variável de ambiente existir 
-para a chave especificada.
+O segundo valor passado para a função `env` é o "valor padrão". Este valor será retornado se nenhuma variável de ambiente existir 
+para a chave fornecida.
 
-# Determinando o ambiente atual
-O ambiente atual do aplicativo é determinado através da variável `APP_ENV` do seu arquivo `.env`. Você pode acessar esse 
-valor através do método de ambiente na [facade](https://laravel.com/docs/5.8/facades) do aplicativo:
+## Determinando o ambiente atual
+O ambiente do aplicativo atual é determinado pela variável `APP_ENV` do seu arquivo `.env`. Você pode acessar esse valor por meio do 
+método `environment` na facade `App`:
 
-``` php
+```php
+use Illuminate\Support\Facades\App;
+
 $environment = App::environment();
 ```
 
-Você também pode passar argumentos para o método do ambiente para verificar se o ambiente corresponde a um determinado valor. O método retornará true se o ambiente corresponder a qualquer um dos valores fornecidos:
+Você também pode passar argumentos para o método `environment` para determinar se o ambiente corresponde a um determinado valor. O método 
+retornará `true` se o ambiente corresponder a qualquer um dos valores fornecidos:
 
-``` php
+```php
 if (App::environment('local')) {
     // O ambiente é local
 }
 
 if (App::environment(['local', 'staging'])) {
-    // O ambiente é local ou de preparação...
+    // O ambiente é local OU simulado...
 }
 ```
-> A detecção do ambiente de aplicativo atual pode ser substituída por uma variável de ambiente `APP_ENV` no nível do
-> servidor. Isso pode ser útil quando você precisar compartilhar o mesmo aplicativo para diferentes 
-> configurações de ambiente, para poder configurar um determinado host para corresponder a um determinado 
-> ambiente nas configurações do servidor.
 
-## Ocultando variáveis de ambiente de páginas de depuração
-Quando uma exceção é detectada e a variável de ambiente `APP_DEBUG` for verdadeira, a página de depuração mostrará todas as 
-variáveis de ambiente e seu conteúdo. Em alguns casos, você pode ocultar certas variáveis. Você pode fazer isso atualizando a 
-opção `debug_blacklist` no seu arquivo de configuração `config/app.php`.
+> A detecção de ambiente do aplicativo atual pode ser substituída pela definição de uma variável de ambiente `APP_ENV` no nível do servidor.
 
-Algumas variáveis estão disponíveis nas variáveis de ambiente e nos dados do servidor/solicitação. Portanto, pode ser 
-necessário incluí-los na lista negra para `$_ENV` e `$ _SERVER`:
+## Acessando Valores de Configuração
+Você pode acessar facilmente seus valores de configuração usando a configfunção auxiliar global de qualquer lugar em seu aplicativo. Os valores 
+de configuração podem ser acessados através da sintaxe de "ponto", que inclui o nome do arquivo e a opção que você deseja acessar. Um valor padrão 
+também pode ser especificado e será retornado se a opção de configuração não existir:
 
-``` php
-return [
-
-    // ...
-
-    'debug_blacklist' => [
-        '_ENV' => [
-            'APP_KEY',
-            'DB_PASSWORD',
-        ],
-
-        '_SERVER' => [
-            'APP_KEY',
-            'DB_PASSWORD',
-        ],
-
-        '_POST' => [
-            'password',
-        ],
-    ],
-];
-```
-
-Acessando valores de configuração
-Você pode acessar facilmente seus valores de configuração usando a função auxiliar de configuração global de qualquer lugar 
-no seu aplicativo. Os valores de configuração podem ser acessados usando a sintaxe "ponto", que inclui o nome do arquivo e a 
-opção que você deseja acessar. Um valor padrão também pode ser especificado e será retornado se a opção de configuração não 
-existir:
-
-``` php
+```php
 $value = config('app.timezone');
+
+// Recupere um valor padrão se o valor de configuração não existir...
+$value = config('app.timezone', 'Asia/Seoul');
 ```
 
-Para definir valores de configuração em tempo de execução, passe uma matriz para o auxiliar de configuração:
-
-``` php
+Para definir os valores de configuração em tempo de execução, passe uma matriz para o auxiliar `config`:
+```php
 config(['app.timezone' => 'America/Chicago']);
 ```
 
 ## Cache de configuração
-Para dar ao seu aplicativo um aumento de velocidade, você deve armazenar em cache todos os seus arquivos de configuração em 
-um único arquivo usando o comando do Artisan `config:cache`. Isso combinará todas as opções de configuração para
-seu aplicativo em um único arquivo que será carregado rapidamente pela estrutura.
+Para aumentar a velocidade do seu aplicativo, você deve armazenar em cache todos os seus arquivos de configuração em um único arquivo 
+usando o comando Artisan `config:cache`. Isso combinará todas as opções de configuração de seu aplicativo em um único arquivo que pode 
+ser carregado rapidamente pela estrutura.
 
-Você normalmente deve executar o comando `php artisan config:cache` como parte de sua rotina de implantação de produção. O 
-comando não deve ser executado durante o desenvolvimento local, pois as opções de configuração frequentemente precisam ser 
-alteradas durante o desenvolvimento do aplicativo.
+Normalmente, você deve executar o comando `php artisan config:cache` como parte do processo de implantação de produção. O comando não deve 
+ser executado durante o desenvolvimento local, pois as opções de configuração freqüentemente precisarão ser alteradas durante o 
+desenvolvimento de seu aplicativo.
 
-> Se você executar o comando `config:cache`  durante o processo de implantação, verifique se está chamando apenas a função 
-> `env` de seus arquivos de configuração. Depois que a configuração tiver sido armazenada em cache, o arquivo `.env` 
-> não será carregado e todas as chamadas para a função `env` retornarão `null`.
+> Se você executar o comando `config:cache` durante o processo de implantação, deve ter certeza de que está apenas chamando a função `env` 
+> de dentro dos arquivos de configuração. Depois que a configuração for armazenada em cache, o arquivo `.env` não será carregado e todas as 
+> chamadas para a função `env` serão retornadas `null`.
+
+## Modo de depuração
+A opção `debug` em seu arquivo `config/app.php` de configuração determina quanta informação sobre um erro é realmente exibida para o 
+usuário. Por padrão, essa opção é definida para respeitar o valor da variável de ambiente `APP_DEBUG`, que é armazenado em seu arquivo `.env`.
+
+Para desenvolvimento local, você deve definir a variável de ambiente `APP_DEBUG` como true. Em seu ambiente de produção, esse valor deve ser 
+sempre `false`. Se a variável for definida como `true` em produção, você corre o risco de expor valores de configuração confidenciais aos 
+usuários finais de seu aplicativo.
 
 ## Modo de manutenção
-Quando seu aplicativo estiver no modo de manutenção, uma exibição personalizada será exibida para todas as solicitações 
-do seu aplicativo. Isso facilita a "desativação" do seu aplicativo enquanto ele está sendo atualizado ou quando você 
-está realizando manutenção. Uma verificação do modo de manutenção está incluída na pilha de middleware padrão 
-para seu aplicativo. Se o aplicativo estiver no modo de manutenção, uma `MaintenanceModeException` será lançada com um 
-código de status 503.
+Quando seu aplicativo está em modo de manutenção, uma visualização personalizada será exibida para todas as solicitações em seu aplicativo. 
+Isso torna mais fácil "desabilitar" seu aplicativo durante a atualização ou durante a manutenção. Uma verificação do modo de manutenção está 
+incluída na pilha de middleware padrão para seu aplicativo. Se o aplicativo estiver em modo de manutenção, uma `MaintenanceModeException`
+será lançado com um código de status de 503.
 
 Para ativar o modo de manutenção, execute o comando Artisan `down`:
 
@@ -159,33 +139,63 @@ Para ativar o modo de manutenção, execute o comando Artisan `down`:
 php artisan down
 ```
 
-Você também pode fornecer opções de mensagem e nova tentativa para o comando `down`. O valor da mensagem pode ser 
-usado para exibir ou registrar uma mensagem personalizada, enquanto o valor de nova tentativa será definido como 
-o valor do cabeçalho HTTP `Retry-After` após:
+Você também pode fornecer uma opção `retry` para o comando `down`, que será definido como o valor `Retry-After` no cabeçalho HTTP:
 
 ```
-php artisan down --message="Upgrading Database" --retry=60
+php artisan down --retry=60
 ```
 
-Mesmo no modo de manutenção, endereços IP ou redes específicos podem ter permissão para acessar o aplicativo usando a opção de permissão do comando:
+#### Ignorando o modo de manutenção
+Mesmo no modo de manutenção, você pode usar a opção `secret` e especificar um token de desvio do modo de manutenção:
+```
+php artisan down --secret="1630542a-246b-4b66-afa1-dd72a4c43515"
+```
+
+Após colocar o aplicativo em modo de manutenção, você pode navegar até a URL do aplicativo correspondente a este token e o 
+Laravel irá emitir um cookie de desvio do modo de manutenção para o seu navegador:
+```
+https://example.com/1630542a-246b-4b66-afa1-dd72a4c43515
+```
+
+Ao acessar esta rota oculta, você será redirecionado para a rota `/` do aplicativo. Assim que o cookie for emitido para o seu navegador, 
+você poderá navegar no aplicativo normalmente como se ele não estivesse em modo de manutenção.
+
+#### Pré-renderizando a visualização do modo de manutenção
+Se você utilizar o comando `php artisan down` durante a implantação, seus usuários ainda podem ocasionalmente encontrar erros se acessarem 
+o aplicativo enquanto as dependências do Composer ou outros componentes de infraestrutura estão sendo atualizados. Isso ocorre porque uma 
+parte significativa do framework Laravel deve inicializar para determinar se sua aplicação está em modo de manutenção e renderizar a visualização 
+do modo de manutenção usando o motor de templates.
+
+Por esta razão, o Laravel permite que você pré-renderize uma visualização do modo de manutenção que será retornada no início do ciclo de 
+solicitação. Esta visualização é renderizada antes que qualquer uma das dependências do seu aplicativo seja carregada. Você pode pré-renderizar 
+um modelo de sua escolha usando a opção `render` do comando `down`:
 
 ```
-php artisan down --allow=127.0.0.1 --allow=192.168.0.0/16
+php artisan down --render="errors::503"
 ```
 
+#### Redirecionando solicitações de modo de manutenção
+Enquanto estiver no modo de manutenção, o Laravel irá mostrar a visão do modo de manutenção para todos os URLs da aplicação que o usuário 
+tentar acessar. Se desejar, você pode instruir o Laravel a redirecionar todas as solicitações para uma URL específica. Isso pode ser feito 
+usando a redirectopção. Por exemplo, você pode redirecionar todas as solicitações para o URI `/`:
+
+```
+php artisan down --redirect=/
+```
+
+#### Desativando o modo de manutenção
 Para desativar o modo de manutenção, use o comando `up`:
 
 ```
 php artisan up
 ```
 
-> Você pode personalizar o modelo do modo de manutenção padrão, definindo seu próprio modelo em resources 
-> `/views/errors/503.blade.php`
+> Você pode personalizar o modelo de modo de manutenção padrão, definindo seu próprio modelo em `resources/views/errors/503.blade.php`.
 
-### Modo de manutenção e filas
-Enquanto seu aplicativo estiver no modo de manutenção, nenhum [trabalho na fila](https://laravel.com/docs/5.8/queues) 
-será tratado. Os trabalhos continuarão sendo tratados normalmente quando o aplicativo estiver fora do modo de manutenção.
+#### Modo de manutenção e filas
+Enquanto seu aplicativo está no modo de manutenção, nenhum trabalho na fila será tratado. Os trabalhos continuarão a ser tratados 
+normalmente quando o aplicativo sair do modo de manutenção.
 
-### Alternativas ao modo de manutenção
-Como o modo de manutenção exige que seu aplicativo tenha vários segundos de inatividade, considere alternativas 
-como o [Envoyer](https://envoyer.io/) para realizar a implantação de tempo de inatividade zero com o Laravel.
+#### Alternativas ao modo de manutenção
+Já que o modo de manutenção requer que seu aplicativo tenha vários segundos de tempo de inatividade, considere alternativas como o 
+[Laravel Vapor](https://vapor.laravel.com/) e [Envoyer](https://envoyer.io/) para realizar a implantação de tempo de inatividade zero com o Laravel.
