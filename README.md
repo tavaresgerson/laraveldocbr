@@ -9,7 +9,7 @@
 + [Instalação](/getting-started/installation.md)
 + [Configuração](/getting-started/configuration.md)
 + [Estrutura de pastas](/getting-started/structure.md)
-+ Kits iniciais
++ [Kits iniciais](/getting-started/starter-kits.md)
 + Publicação
 
 ## Conceito de Arquitetura
