@@ -19,7 +19,7 @@
 + Provedores de serviços
 
 ## O básico
-+ Roteamento
++ [Roteamento](/basics/routing.md)
 + Middleware
 + Proteção CSRF 
 + Controladores
