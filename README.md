@@ -22,7 +22,7 @@
 + [Roteamento](/basics/routing.md)
 + Middleware
 + Proteção CSRF 
-+ Controladores
++ [Controladores](/basics/controllers.md)
 + Requisições
 + Respostas
 + Views
