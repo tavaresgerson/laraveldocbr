@@ -10,7 +10,7 @@
 + [Configuração](/getting-started/configuration.md)
 + [Estrutura de pastas](/getting-started/structure.md)
 + [Kits iniciais](/getting-started/starter-kits.md)
-+ Publicação
++ [Publicação](/getting-started/deployment.md)
 
 ## Conceito de Arquitetura
 + Ciclo de requisição
