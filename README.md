@@ -14,7 +14,7 @@
 
 ## Conceito de Arquitetura
 + [Ciclo de requisição](architecture-concepts/lifecycle.md)
-+ Service Container
++ [Service Container](/architecture-concepts/container.md)
 + Facades
 + Provedores de serviços
 
