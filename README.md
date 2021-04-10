@@ -13,7 +13,7 @@
 + [Publicação](/getting-started/deployment.md)
 
 ## Conceito de Arquitetura
-+ Ciclo de requisição
++ [Ciclo de requisição](architecture-concepts/lifecycle.md)
 + Service Container
 + Facades
 + Provedores de serviços
