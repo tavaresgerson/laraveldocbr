@@ -1,23 +1,50 @@
 # Facades
 
 ## Introdução
-As facades fornecem uma interface "estática" para as classes disponíveis no contêiner de serviço do aplicativo. O Laravel é 
-fornecido com muitas facades que fornecem acesso a quase todos os recursos do Laravel. As facades do Laravel servem como 
-"proxies estáticos" para as classes subjacentes no contêiner de serviço, oferecendo o benefício de uma sintaxe concisa e 
-expressiva, mantendo mais testável e flexível do que os métodos estáticos tradicionais.
+Ao longo da documentação do Laravel, você verá exemplos de código que interage com os recursos do Laravel via "fachadas". As fachadas 
+fornecem uma interface "estática" para as classes disponíveis no contêiner de serviço do aplicativo. O Laravel vem com muitas fachadas 
+que fornecem acesso a quase todos os recursos do Laravel.
 
-Todas as facades do Laravel são definidas no namespace `Illuminate\Support\Facades`. Assim, podemos acessar facilmente uma 
-facade assim:
+As fachadas do Laravel servem como "proxies estáticos" para as classes subjacentes no contêiner de serviço, fornecendo o benefício de uma 
+sintaxe concisa e expressiva enquanto mantém mais testabilidade e flexibilidade do que os métodos estáticos tradicionais. É perfeitamente 
+normal se você não entende totalmente como as fachadas funcionam sob o capô - apenas siga o fluxo e continue aprendendo sobre o Laravel.
 
-``` php
+Todas as fachadas do Laravel são definidas no namespace `Illuminate\Support\Facades`. Assim, podemos acessar facilmente uma fachada como esta:
+
+```php
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/cache', function () {
     return Cache::get('key');
 });
 ```
 
-Em toda a documentação do Laravel, muitos dos exemplos usarão facades para demonstrar vários recursos da estrutura.
+Ao longo da documentação do Laravel, muitos dos exemplos usarão fachadas para demonstrar vários recursos do framework.
+
+### Funções auxiliares
+Para complementar as fachadas, o Laravel oferece uma variedade de "funções auxiliares" globais que tornam ainda mais fácil interagir com os recursos comuns do Laravel. 
+Algumas das funções auxiliares comuns que podemos interagir são `view`, `response`, `url`, `config`, e muito mais. Cada função auxiliar oferecida pelo Laravel é 
+documentada com seu recurso correspondente; no entanto, uma lista completa está disponível na documentação do auxiliar dedicado.
+
+Por exemplo, em vez de usar a fachada `Illuminate\Support\Facades\Response` para gerar uma resposta JSON, podemos simplesmente usar a função `response`. Como as 
+funções auxiliares estão disponíveis globalmente, você não precisa importar nenhuma classe para usá-las:
+
+```php
+use Illuminate\Support\Facades\Response;
+
+Route::get('/users', function () {
+    return Response::json([
+        // ...
+    ]);
+});
+
+Route::get('/users', function () {
+    return response()->json([
+        // ...
+    ]);
+});
+```
 
 ## Quando usar facades
 Facades têm muitos benefícios. Eles fornecem uma sintaxe concisa e memorável que permite usar os recursos do Laravel sem lembrar de
@@ -110,6 +137,7 @@ public function testBasicExample()
          ->see('value');
 }
 ```
+
 ## Como funcionam as facades
 Em um aplicativo Laravel, uma facade é uma classe que fornece acesso a um objeto a partir do contêiner. As máquinas 
 que fazem esse trabalho estão na classe Facade. As facades do Laravel e quaisquer facades personalizadas criadas 
@@ -144,7 +172,7 @@ class UserController extends Controller
 }
 ```
 
-Observe que perto da parte superior do arquivo estamos "importando" a facade do `Cache`. Essa facade serve como um proxy 
+Observe que perto da parte superior do arquivo estamos "importando" a fachada do `Cache`. Essa fachada serve como um proxy 
 para acessar a implementação subjacente da interface `Illuminate\Contracts\Cache\Factory`. Qualquer chamada que fizermos 
 usando a fachada será passada para a instância subjacente do serviço de cache do Laravel.
 
@@ -167,11 +195,11 @@ facade `Cache`, o Laravel resolve a ligação de cache do contêiner de serviço
 nesse objeto.
 
 ## Facades em tempo real
-Usando facades em tempo real, você pode tratar qualquer classe no seu aplicativo como se fosse uma facade. Para ilustrar 
+Usando facades em tempo real, você pode tratar qualquer classe no seu aplicativo como se fosse uma fachada. Para ilustrar 
 como isso pode ser usado, vamos examinar uma alternativa. Por exemplo, vamos supor que nosso model de `Podcast` tenha um método
 de `publisher`. No entanto, para publicar o podcast, precisamos injetar uma instância do `Publisher`:
 
-``` php
+```php
 <?php
 
 namespace App;
@@ -195,6 +223,7 @@ class Podcast extends Model
     }
 }
 ```
+
 A injeção de uma implementação do editor no método permite testar facilmente o método isoladamente, pois podemos simular 
 o editor injetado. No entanto, exige que sempre passemos uma instância de editor sempre que chamamos o método de publicação. 
 Usando facades em tempo real, podemos manter a mesma testabilidade, embora não seja necessário passar explicitamente uma 
@@ -223,6 +252,7 @@ class Podcast extends Model
     }
 }
 ```
+
 Quando a fachada em tempo real é usada, a implementação do editor será resolvida fora do contêiner de serviço usando a 
 parte da interface ou o nome da classe que aparece após o prefixo de Facades. Ao testar, podemos usar os auxiliares de teste 
 de fachada do Laravel para simular essa chamada de método:
@@ -257,7 +287,7 @@ class PodcastTest extends TestCase
 }
 ```
 
-## Referência da classe Facades
+## Referência da Classe Facades
 Abaixo, você encontrará todas as facades e sua classe subjacente. Essa é uma ferramenta útil para pesquisar rapidamente 
 na documentação da API de uma determinada raiz de fachada. A chave de ligação do contêiner de serviço também é incluída 
 quando aplicável.
@@ -277,12 +307,14 @@ quando aplicável.
 | Config	            | Illuminate\Config\Repository	                    | config                                |
 | Cookie	            | Illuminate\Cookie\CookieJar	                    | cookie                                |
 | Crypt	                | Illuminate\Encryption\Encrypter	                | encrypter                             |
+| Date                  | Illuminate\Support\DateFactory                    | date                                  |
 | DB	                | Illuminate\Database\DatabaseManager	            | db                                    |
 | DB (Instance)	        | Illuminate\Database\Connection	                | db.connection                         |
 | Event	                | Illuminate\Events\Dispatcher	                    | events                                |
 | File	                | Illuminate\Filesystem\Filesystem	                | files                                 |
 | Gate	                | Illuminate\Contracts\Auth\Access\Gate     	    |                                       |
 | Hash	                | Illuminate\Contracts\Hashing\Hasher	            | hash                                  |
+| HTTP                  | Illuminate\Http\Client\Factory                    |                                       |
 | Lang	                | Illuminate\Translation\Translator	                | translator                            |
 | Log	                | Illuminate\Log\LogManager	                        | log                                   |
 | Mail	                | Illuminate\Mail\Mailer	                        | mailer                                |
