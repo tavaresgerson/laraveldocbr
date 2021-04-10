@@ -187,7 +187,7 @@ de classes nos aplicativos Laravel são sempre resolvidos usando o contêiner:
 use App\Contracts\EventPusher;
 
 /**
- * Create a new class instance.
+ * Crie uma nova instância de classe.
  *
  * @param  \App\Contracts\EventPusher  $pusher
  * @return void
@@ -262,21 +262,21 @@ use App\Services\Logger;
 class Firewall
 {
     /**
-     * The logger instance.
+     * A instância do logger.
      *
      * @var \App\Services\Logger
      */
     protected $logger;
 
     /**
-     * The filter instances.
+     * As instâncias do filtro.
      *
      * @var array
      */
     protected $filters;
 
     /**
-     * Create a new class instance.
+     * Crie uma nova instância de classe.
      *
      * @param  \App\Services\Logger  $logger
      * @param  array  $filters
@@ -400,7 +400,7 @@ digitar a classe `Illuminate\Container\Container` no construtor de sua classe:
 use Illuminate\Container\Container;
 
 /**
- * Create a new class instance.
+ * Crie uma nova instância de classe.
  *
  * @param  \Illuminate\Container\Container  $container
  * @return void
@@ -428,14 +428,14 @@ use App\Repositories\UserRepository;
 class UserController extends Controller
 {
     /**
-     * The user repository instance.
+     * A instância do repositório do usuário.
      *
      * @var \App\Repositories\UserRepository
      */
     protected $users;
 
     /**
-     * Create a new controller instance.
+     * Crie uma nova instância do controlador.
      *
      * @param  \App\Repositories\UserRepository  $users
      * @return void
@@ -446,7 +446,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the user with the given ID.
+     * Mostre o usuário com o ID fornecido.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -465,11 +465,11 @@ O contêiner de serviço dispara um evento sempre que resolve um objeto. Você p
 use App\Services\Transistor;
 
 $this->app->resolving(Transistor::class, function ($transistor, $app) {
-    // Called when container resolves objects of type "Transistor"...
+    // Chamado quando o contêiner resolve objetos do tipo "Transistor" ...
 });
 
 $this->app->resolving(function ($object, $app) {
-    // Called when container resolves object of any type...
+    // Chamado quando o contêiner resolve um objeto de qualquer tipo ...
 });
 ```
 
