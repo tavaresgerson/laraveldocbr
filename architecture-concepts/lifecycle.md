@@ -36,31 +36,52 @@ A assinatura do método para o método `handle` do kernel HTTP é bastante simpl
 caixa preta que representa todo o seu aplicativo. Alimente-o com solicitações HTTP e ele retornará respostas HTTP.
 
 ### Provedores de Serviço
-Uma das ações de inicialização do kernel mais importantes é carregar os provedores de serviço para seu aplicativo. Todos os provedores de serviço do aplicativo são configurados na matriz config/app.phpdo arquivo de configuração providers.
+Uma das ações de inicialização do kernel mais importantes é carregar os provedores de serviço para seu aplicativo. Todos os provedores de serviço do aplicativo 
+são configurados na matriz `providers` do arquivo `config/app.php` de configuração.
 
-O Laravel irá iterar através desta lista de provedores e instanciar cada um deles. Depois de instanciar os provedores, o registermétodo será chamado em todos os provedores. Então, uma vez que todos os provedores tenham sido registrados, o bootmétodo será chamado em cada provedor.
+O Laravel irá iterar através desta lista de provedores e instanciar cada um deles. Depois de instanciar os provedores, o método `register` será chamado em todos 
+os provedores. Então, uma vez que todos os provedores tenham sido registrados, o método `boot` será chamado em cada provedor.
 
-Os provedores de serviços são responsáveis ​​por inicializar todos os vários componentes da estrutura, como banco de dados, fila, validação e componentes de roteamento. Essencialmente, todos os principais recursos oferecidos pelo Laravel são inicializados e configurados por um provedor de serviços. Uma vez que eles inicializam e configuram muitos recursos oferecidos pelo framework, os provedores de serviços são o aspecto mais importante de todo o processo de inicialização do Laravel.
+Os provedores de serviços são responsáveis por inicializar todos os vários componentes da estrutura, como banco de dados, fila, validação e componentes de 
+roteamento. Essencialmente, todos os principais recursos oferecidos pelo Laravel são inicializados e configurados por um provedor de serviços. Uma vez que 
+eles inicializam e configuram muitos recursos oferecidos pelo framework, os provedores de serviços são o aspecto mais importante de todo o processo de 
+inicialização do Laravel.
 
-Você pode estar se perguntando por que o registermétodo de cada provedor de serviços é chamado antes de chamar o bootmétodo em qualquer provedor de serviços. A resposta é simples. Ao chamar o registermétodo de cada provedor de serviço primeiro, os provedores de serviço podem depender de cada ligação de contêiner sendo registrada e disponível no momento em que o bootmétodo é executado.
+Você pode estar se perguntando por que o método `register` de cada provedor de serviços é chamado antes de chamar o método `boot` em qualquer provedor de serviços. 
+A resposta é simples. Ao chamar o método `register` de cada provedor de serviço primeiro, os provedores de serviço podem depender de cada ligação de contêiner sendo 
+registrada e disponível no momento em que o método `boot` é executado.
 
-Encaminhamento
-Um dos provedores de serviços mais importantes em seu aplicativo é o App\Providers\RouteServiceProvider. Este provedor de serviços carrega os arquivos de rota contidos no routesdiretório do seu aplicativo . Vá em frente, abra o RouteServiceProvidercódigo e veja como funciona!
+### Roteamento
+Um dos provedores de serviços mais importantes em seu aplicativo é o `App\Providers\RouteServiceProvider`. Este provedor de serviços carrega os arquivos de rota 
+contidos no diretório `routes` do seu aplicativo . Vá em frente, abra o arquivo `RouteServiceProvider` e veja como funciona!
 
-Assim que o aplicativo for inicializado e todos os provedores de serviço forem registrados, o Requestserá entregue ao roteador para envio. O roteador enviará a solicitação para uma rota ou controlador, bem como executará qualquer middleware específico de rota.
+Assim que o aplicativo for inicializado e todos os provedores de serviço forem registrados, o `Request` será entregue ao roteador para envio. O roteador enviará a 
+solicitação para uma rota ou controlador, bem como executará qualquer middleware específico de rota.
 
-O middleware fornece um mecanismo conveniente para filtrar ou examinar solicitações HTTP que entram em seu aplicativo. Por exemplo, o Laravel inclui um middleware que verifica se o usuário do seu aplicativo está autenticado. Se o usuário não estiver autenticado, o middleware redirecionará o usuário para a tela de login. No entanto, se o usuário for autenticado, o middleware permitirá que a solicitação prossiga no aplicativo. Alguns middleware são atribuídos a todas as rotas dentro do aplicativo, como aqueles definidos na $middlewarepropriedade do seu kernel HTTP, enquanto alguns são atribuídos apenas a rotas ou grupos de rotas específicos. Você pode aprender mais sobre middleware lendo a documentação completa do middleware .
+O middleware fornece um mecanismo conveniente para filtrar ou examinar solicitações HTTP que entram em seu aplicativo. Por exemplo, o Laravel inclui um middleware 
+que verifica se o usuário do seu aplicativo está autenticado. Se o usuário não estiver autenticado, o middleware redirecionará o usuário para a tela de login. No 
+entanto, se o usuário for autenticado, o middleware permitirá que a solicitação prossiga no aplicativo. Alguns middleware são atribuídos a todas as rotas dentro do 
+aplicativo, como aqueles definidos na propriedade `$middleware` do seu kernel HTTP, enquanto alguns são atribuídos apenas a rotas ou grupos de rotas específicos. 
+Você pode aprender mais sobre middleware lendo a documentação completa do [middleware](https://laravel.com/docs/8.x/middleware).
 
-Se a solicitação passar por todo o middleware atribuído à rota correspondida, a rota ou método do controlador será executado e a resposta retornada pela rota ou método do controlador será enviada de volta pela cadeia de middleware da rota.
+Se a solicitação passar por todo o middleware atribuído à rota correspondida, a rota ou método do controlador será executado e a resposta retornada pela rota ou 
+método do controlador será enviada de volta pela cadeia de middleware da rota.
 
-Terminando
-Uma vez que a rota ou o método do controlador retornam uma resposta, a resposta viajará de volta para fora através do middleware da rota, dando ao aplicativo a chance de modificar ou examinar a resposta de saída.
+### Finalizando
+Uma vez que a rota ou o método do controlador retornam uma resposta, a resposta viajará de volta para fora através do middleware da rota, dando ao aplicativo a 
+chance de modificar ou examinar a resposta de saída.
 
-Finalmente, uma vez que a resposta viaja de volta pelo middleware, o handlemétodo do kernel HTTP retorna o objeto de resposta e o index.phparquivo chama o sendmétodo na resposta retornada. O sendmétodo envia o conteúdo da resposta ao navegador da web do usuário. Terminamos nossa jornada por todo o ciclo de vida das solicitações do Laravel!
+Finalmente, uma vez que a resposta viaja de volta pelo middleware, o método `handle` do kernel HTTP retorna o objeto de resposta e o arquivo `index.php` chama o 
+método `send` na resposta retornada. O método `send` envia o conteúdo da resposta ao navegador da web do usuário. E assim terminamos nossa jornada por todo o ciclo de 
+vida das solicitações do Laravel!
 
-Foco em provedores de serviços
-Os provedores de serviços são realmente a chave para inicializar um aplicativo Laravel. A instância do aplicativo é criada, os provedores de serviço são registrados e a solicitação é entregue ao aplicativo inicializado. É realmente tão simples!
+## Foco em Provedores de Serviços
+Os provedores de serviços são realmente a chave para inicializar um aplicativo Laravel. A instância do aplicativo é criada, os provedores de serviço são registrados
+e a solicitação é entregue ao aplicativo inicializado. É realmente simples!
 
-Ter um bom conhecimento de como um aplicativo Laravel é construído e inicializado através de provedores de serviços é muito valioso. Os provedores de serviço padrão do seu aplicativo são armazenados no app/Providersdiretório.
+Ter um bom conhecimento de como um aplicativo Laravel é construído e inicializado através de provedores de serviços é muito valioso. Os provedores de serviço padrão 
+do seu aplicativo são armazenados no diretório `app/Providers`.
 
-Por padrão, o AppServiceProviderestá bastante vazio. Este provedor é um ótimo lugar para adicionar bootstrapping e ligações de contêiner de serviço do seu próprio aplicativo. Para aplicativos grandes, você pode desejar criar vários provedores de serviço, cada um com inicialização mais granular para serviços específicos usados ​​por seu aplicativo.
+Por padrão, o `AppServiceProviders` tem poucas coisas. Este provedor é um ótimo lugar para adicionar bootstrapping e ligações de contêineres de serviços do seu 
+próprio aplicativo. Para aplicativos grandes, você pode desejar criar vários provedores de serviço, cada um com inicialização mais granular para serviços 
+específicos usados por seu aplicativo.
