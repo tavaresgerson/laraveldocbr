@@ -16,7 +16,7 @@
 + [Ciclo de requisição](architecture-concepts/lifecycle.md)
 + [Service Container](/architecture-concepts/container.md)
 + Facades
-+ Provedores de serviços
++ [Provedores de serviços](/architecture-concepts/providers.md)
 
 ## O básico
 + [Roteamento](/basics/routing.md)
