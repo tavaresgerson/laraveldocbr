@@ -354,16 +354,22 @@ Se você precisar recuperar todos os argumentos como um array, chame o método `
 $arguments = $this->arguments();
 ```
 
-As opções podem ser recuperadas tão facilmente quanto os argumentos usando o optionmétodo. Para recuperar todas as opções como uma matriz, chame o optionsmétodo:
+As opções podem ser recuperadas tão facilmente quanto os argumentos usando o método `option`. Para recuperar todas as opções como uma 
+matriz, chame o método `options`:
 
+```php
 // Retrieve a specific option...
 $queueName = $this->option('queue');
 
 // Retrieve all options as an array...
 $options = $this->options();
-Solicitando entrada
-Além de exibir a saída, você também pode pedir ao usuário para fornecer uma entrada durante a execução do seu comando. O askmétodo solicitará ao usuário a pergunta fornecida, aceitará sua entrada e, em seguida, retornará a entrada do usuário ao seu comando:
+```
 
+### Solicitando Entrada
+Além de exibir a saída, você também pode pedir ao usuário para fornecer uma entrada durante a execução do seu comando. O método `ask` 
+solicitará ao usuário a pergunta fornecida, aceitará sua entrada e, em seguida, retornará a entrada do usuário ao seu comando:
+
+```php
 /**
  * Execute the console command.
  *
@@ -373,39 +379,68 @@ public function handle()
 {
     $name = $this->ask('What is your name?');
 }
-O secretmétodo é semelhante a ask, mas a entrada do usuário não será visível para ele enquanto digita no console. Este método é útil ao solicitar informações confidenciais, como senhas:
+```
 
+O método `secret` é semelhante a `ask`, mas a entrada do usuário não será visível para ele enquanto digita no console. Este método é útil 
+ao solicitar informações confidenciais, como senhas:
+
+```php
 $password = $this->secret('What is the password?');
-Pedindo Confirmação
-Se precisar pedir ao usuário uma simples confirmação "sim ou não", você pode usar o confirmmétodo. Por padrão, este método retornará false. No entanto, se o usuário inserir you yesem resposta ao prompt, o método retornará true.
+```
 
+### Pedindo Confirmação
+Se precisar pedir ao usuário uma simples confirmação "sim ou não", você pode usar o método `confirm`. Por padrão, este método retornará `false`. 
+No entanto, se o usuário inserir `y` ou `yes` em resposta ao prompt, o método retornará `true`.
+
+```php
 if ($this->confirm('Do you wish to continue?')) {
     //
 }
-Se necessário, você pode especificar que o prompt de confirmação deve retornar truepor padrão, passando truecomo o segundo argumento para o confirmmétodo:
+```
 
+Se necessário, você pode especificar que o prompt de confirmação deve retornar `true` por padrão, passando `true` como o segundo 
+argumento para o método `confirm`:
+
+```php
 if ($this->confirm('Do you wish to continue?', true)) {
     //
 }
-Preenchimento Automático
-O anticipatemétodo pode ser usado para fornecer autocompletar para possíveis escolhas. O usuário ainda pode fornecer qualquer resposta, independentemente das dicas de preenchimento automático:
+```
 
+#### Preenchimento Automático
+O método `anticipate` pode ser usado para autocompletar possíveis escolhas. O usuário ainda pode fornecer qualquer resposta, 
+independentemente das dicas de preenchimento automático:
+
+```php
 $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
-Como alternativa, você pode passar um encerramento como o segundo argumento do anticipatemétodo. O encerramento será chamado cada vez que o usuário digitar um caractere de entrada. O encerramento deve aceitar um parâmetro de string contendo a entrada do usuário até o momento e retornar um conjunto de opções para preenchimento automático:
+```
 
+Como alternativa, você pode passar um encerramento como o segundo argumento do método `anticipate`. O encerramento será chamado cada vez 
+que o usuário digitar um caractere de entrada. O encerramento deve aceitar um parâmetro de string contendo a entrada do usuário até o momento 
+e retornar um conjunto de opções para preenchimento automático:
+
+```php
 $name = $this->anticipate('What is your address?', function ($input) {
     // Return auto-completion options...
 });
-Questões de múltipla escolha
-Se precisar dar ao usuário um conjunto predefinido de opções ao fazer uma pergunta, você pode usar o choicemétodo. Você pode definir o índice da matriz do valor padrão a ser retornado se nenhuma opção for escolhida, passando o índice como o terceiro argumento para o método:
+```
 
+#### Questões de múltipla escolha
+Se precisar dar ao usuário um conjunto predefinido de opções ao fazer uma pergunta, você pode usar o método `choice`. Você pode definir o índice 
+da matriz do valor padrão a ser retornado se nenhuma opção for escolhida, passando o índice como o terceiro argumento para o método:
+
+```php
 $name = $this->choice(
     'What is your name?',
     ['Taylor', 'Dayle'],
     $defaultIndex
 );
-Além disso, o choicemétodo aceita o quarto e o quinto argumentos opcionais para determinar o número máximo de tentativas de selecionar uma resposta válida e se várias seleções são permitidas:
+```
 
+Além disso, o método `choice` aceita o quarto e o quinto argumentos opcionais para determinar o número máximo de tentativas de selecionar uma 
+resposta válida e se várias seleções são permitidas:
+
+```php
 $name = $this->choice(
     'What is your name?',
     ['Taylor', 'Dayle'],
@@ -413,9 +448,14 @@ $name = $this->choice(
     $maxAttempts = null,
     $allowMultipleSelections = false
 );
-Saída de escrita
-Para enviar a saída para o console, você pode usar os line, info, comment, question, warn, e errormétodos. Cada um desses métodos usará cores ANSI apropriadas para seus fins. Por exemplo, vamos mostrar algumas informações gerais ao usuário. Normalmente, o infométodo será exibido no console como texto de cor verde:
+```
 
+### Saída de escrita
+Para enviar a saída para o console, você pode usar os métodos `line`, `info`, `comment`, `question`, `warn`, e `error`. Cada um desses métodos 
+usará cores ANSI apropriadas para seus fins. Por exemplo, vamos mostrar algumas informações gerais ao usuário. Normalmente, o método `info` 
+será exibido no console como texto de cor verde:
+
+```php
 /**
  * Execute the console command.
  *
@@ -427,38 +467,60 @@ public function handle()
 
     $this->info('The command was successful!');
 }
-Para exibir uma mensagem de erro, use o errormétodo. O texto da mensagem de erro normalmente é exibido em vermelho:
+```
 
+Para exibir uma mensagem de erro, use o método `error`. O texto da mensagem de erro normalmente é exibido em vermelho:
+
+```
 $this->error('Something went wrong!');
-Você pode usar o linemétodo para exibir texto simples e sem cor:
+```
 
+Você pode usar o método `line` para exibir texto simples e sem cor:
+
+```php
 $this->line('Display this on the screen');
-Você pode usar o newLinemétodo para exibir uma linha em branco:
+```
 
+Você pode usar o método `newLine` para exibir uma linha em branco:
+
+```php
 // Write a single blank line...
 $this->newLine();
 
 // Write three blank lines...
 $this->newLine(3);
-Mesas
-O tablemétodo torna mais fácil formatar corretamente várias linhas / colunas de dados. Tudo que você precisa fazer é fornecer os nomes das colunas e os dados da tabela e o Laravel irá calcular automaticamente a largura e altura apropriadas da tabela para você:
+```
 
+#### Tabelas
+O método `table` torna mais fácil formatar corretamente várias linhas/colunas de dados. Tudo que você precisa fazer é fornecer os nomes 
+das colunas e os dados da tabela e o Laravel irá calcular automaticamente a largura e altura apropriadas da tabela para você:
+
+```php
 use App\Models\User;
 
 $this->table(
     ['Name', 'Email'],
     User::all(['name', 'email'])->toArray()
 );
-Barras de Progresso
-Para tarefas de longa execução, pode ser útil mostrar uma barra de progresso que informa aos usuários o quão concluída a tarefa está. Usando o withProgressBarmétodo, o Laravel exibirá uma barra de progresso e avançará seu progresso para cada iteração sobre um determinado valor iterável:
+```
 
+#### Barras de Progresso
+Para tarefas de longa execução, pode ser útil mostrar uma barra de progresso que informa aos usuários o 
+quão concluída a tarefa está. Usando o método `withProgressBar`, o Laravel exibirá uma barra de progresso 
+e avançará seu progresso para cada iteração sobre um determinado valor iterável:
+
+```php
 use App\Models\User;
 
 $users = $this->withProgressBar(User::all(), function ($user) {
     $this->performTask($user);
 });
-Às vezes, você pode precisar de mais controle manual sobre como uma barra de progresso é avançada. Primeiro, defina o número total de etapas pelas quais o processo irá iterar. Em seguida, avance a barra de progresso após processar cada item:
+```
 
+Às vezes, você pode precisar de mais controle manual sobre como uma barra de progresso é avançada. Primeiro, defina o número total 
+de etapas pelas quais o processo irá iterar. Em seguida, avance a barra de progresso após processar cada item:
+
+```php
 $users = App\Models\User::all();
 
 $bar = $this->output->createProgressBar(count($users));
@@ -472,13 +534,17 @@ foreach ($users as $user) {
 }
 
 $bar->finish();
+```
 
-Para opções mais avançadas, verifique a documentação do componente Symfony Progress Bar .
+> Para opções mais avançadas, verifique a documentação do componente [Symfony Progress Bar](https://symfony.com/doc/current/components/console/helpers/progressbar.html).
 
+## Registrando Comandos
+Todos os comandos do seu console são registrados na class `App\Console\Kernel` do seu aplicativo , que é o "kernel do console" do seu 
+aplicativo. Dentro do método `commands` desta classe, você verá uma chamada para o método `load` do kernel. O método `load` varrerá o
+diretório `app/Console/Commands` e registrará automaticamente cada comando que ele contém com o Artisan. Você está até livre para fazer 
+chamadas adicionais ao método `load` para verificar outros diretórios em busca de comandos Artisan:
 
-Registrando Comandos
-Todos os comandos do seu console são registrados na App\Console\Kernelclasse do seu aplicativo , que é o "kernel do console" do seu aplicativo. Dentro do commandsmétodo desta classe, você verá uma chamada para o loadmétodo do kernel . O loadmétodo varrerá o app/Console/Commandsdiretório e registrará automaticamente cada comando que ele contém com o Artisan. Você está até livre para fazer chamadas adicionais ao loadmétodo para verificar outros diretórios em busca de comandos Artisan:
-
+```php
 /**
  * Register the commands for the application.
  *
@@ -491,14 +557,25 @@ protected function commands()
 
     // ...
 }
-Se necessário, você pode registrar manualmente os comandos adicionando o nome da classe do comando à $commandspropriedade da sua App\Console\Kernelclasse. Quando o Artisan é inicializado, todos os comandos listados nesta propriedade serão resolvidos pelo contêiner de serviço e registrados no Artisan:
+```
 
+Se necessário, você pode registrar manualmente os comandos adicionando o nome da classe do comando à propriedad `$commands` da 
+sua classe `App\Console\Kernel`. Quando o Artisan é inicializado, todos os comandos listados nesta propriedade serão resolvidos pelo 
+contêiner de serviço e registrados no Artisan:
+
+```php
 protected $commands = [
     Commands\SendEmails::class
 ];
-Comandos de execução programática
-Às vezes, você pode desejar executar um comando Artisan fora da CLI. Por exemplo, você pode desejar executar um comando Artisan de uma rota ou controlador. Você pode usar o callmétodo na Artisanfachada para fazer isso. O callmétodo aceita o nome da assinatura do comando ou o nome da classe como seu primeiro argumento e uma matriz de parâmetros de comando como o segundo argumento. O código de saída será retornado:
+```
 
+## Comandos de Execução Programática
+Às vezes, você pode desejar executar um comando Artisan fora da CLI. Por exemplo, você pode desejar executar um comando Artisan de uma 
+rota ou controlador. Você pode usar o método `call` da `facade` Artisan para fazer isso. O método `call` aceita o nome da assinatura do 
+comando ou o nome da classe como seu primeiro argumento e uma matriz de parâmetros de comando como o segundo argumento. 
+O código de saída será retornado:
+
+```php
 use Illuminate\Support\Facades\Artisan;
 
 Route::post('/user/{user}/mail', function ($user) {
@@ -508,12 +585,18 @@ Route::post('/user/{user}/mail', function ($user) {
 
     //
 });
-Como alternativa, você pode passar todo o comando Artisan para o callmétodo como uma string:
+```
 
+Como alternativa, você pode passar todo o comando Artisan para o método `call` como uma string:
+
+```php
 Artisan::call('mail:send 1 --queue=default');
-Passando valores de matriz
+```
+
+#### Passando valores de matriz
 Se o seu comando define uma opção que aceita uma matriz, você pode passar uma matriz de valores para essa opção:
 
+```php
 use Illuminate\Support\Facades\Artisan;
 
 Route::post('/mail', function () {
@@ -521,15 +604,23 @@ Route::post('/mail', function () {
         '--id' => [5, 13]
     ]);
 });
-Passando Valores Booleanos
-Se você precisar especificar o valor de uma opção que não aceita valores de string, como o --forcesinalizador no migrate:refreshcomando, você deve passar trueou falsecomo o valor da opção:
+```
 
+#### Passando Valores Booleanos
+Se você precisar especificar o valor de uma opção que não aceita valores de string, como o sinalizador `--force` no comando `migrate:refresh` por exemplo, 
+você deve passar `true` ou `false` como o valor da opção:
+
+```php
 $exitCode = Artisan::call('migrate:refresh', [
     '--force' => true,
 ]);
-Enfileiramento de comandos do artesão
-Usando o queuemétodo na Artisanfachada, você pode até mesmo enfileirar comandos do Artisan para que sejam processados ​​em segundo plano por seus funcionários da fila . Antes de usar este método, verifique se você configurou sua fila e está executando um listener de fila:
+```
 
+### Enfileiramento de comandos do Artisan
+Usando o método `queue` na facade `Artisan`, você pode até mesmo enfileirar comandos do Artisan para que sejam processados em segundo plano 
+por seus workers de fila. Antes de usar este método, verifique se você configurou sua fila e está executando um listener de fila:
+
+```php
 use Illuminate\Support\Facades\Artisan;
 
 Route::post('/user/{user}/mail', function ($user) {
@@ -539,14 +630,21 @@ Route::post('/user/{user}/mail', function ($user) {
 
     //
 });
-Usando os métodos onConnectione onQueue, você pode especificar a conexão ou fila para onde o comando Artisan deve ser enviado:
+```
 
+Usando os métodos `onConnection` e `onQueue`, você pode especificar a conexão ou fila para onde o comando Artisan deve ser enviado:
+
+```php
 Artisan::queue('mail:send', [
     'user' => 1, '--queue' => 'default'
 ])->onConnection('redis')->onQueue('commands');
-Chamar comandos de outros comandos
-Às vezes, você pode desejar chamar outros comandos de um comando existente do Artisan. Você pode fazer isso usando o callmétodo. Este callmétodo aceita o nome do comando e uma matriz de argumentos / opções de comando:
+```
 
+### Chamar comandos de outros comandos
+Às vezes, você pode desejar chamar outros comandos de um comando existente do Artisan. Você pode fazer isso usando o método `call`. 
+Este método `call` aceita o nome do comando e uma matriz de argumentos/opções de comando:
+
+```php
 /**
  * Execute the console command.
  *
@@ -560,16 +658,25 @@ public function handle()
 
     //
 }
-Se você quiser chamar outro comando de console e suprimir todas as suas saídas, você pode usar o callSilentlymétodo. O callSilentlymétodo tem a mesma assinatura do callmétodo:
+```
 
+Se você quiser chamar outro comando de console e suprimir todas as suas saídas, você pode usar o método `callSilently`. O `callSilently` tem a 
+mesma assinatura do método `call`:
+
+```php
 $this->callSilently('mail:send', [
     'user' => 1, '--queue' => 'default'
 ]);
-Manuseio de Sinal
-O componente Symfony Console, que alimenta o console Artisan, permite que você indique quais sinais de processo (se houver) seu comando trata. Por exemplo, você pode indicar que seu comando lida com os sinais SIGINTe SIGTERM.
+```
 
-Para começar, você deve implementar a Symfony\Component\Console\Command\SignalableCommandInterfaceinterface em sua classe de comando Artisan. Esta interface requer que você defina dois métodos: getSubscribedSignalse handleSignal:
+## Manuseio de Sinal
+O componente `Symfony Console`, que alimenta o console do Artisan, permite que você indique quais sinais de processo (se houver) seu comando deve tratar. 
+Por exemplo, você pode indicar que seu comando lida com os sinais `SIGINT` e `SIGTERM`.
 
+Para começar, você deve implementar a interface `Symfony\Component\Console\Command\SignalableCommandInterface` em sua classe de comando Artisan. Esta interface
+requer que você defina dois métodos: `getSubscribedSignals` e `handleSignal`:
+
+```php
 <?php
 
 use Symfony\Component\Console\Command\SignalableCommandInterface;
@@ -603,13 +710,26 @@ class StartServer extends Command implements SignalableCommandInterface
         }
     }
 }
-Como você pode esperar, o getSubscribedSignalsmétodo deve retornar uma matriz dos sinais que seu comando pode manipular, enquanto o handleSignalmétodo recebe o sinal e pode responder de acordo.
+```
 
-Personalização de stub
-Os makecomandos do console Artisan são usados ​​para criar uma variedade de classes, como controladores, trabalhos, migrações e testes. Essas classes são geradas usando arquivos "stub" que são preenchidos com valores baseados em sua entrada. No entanto, você pode querer fazer pequenas alterações nos arquivos gerados pelo Artisan. Para fazer isso, você pode usar o stub:publishcomando para publicar os stubs mais comuns em seu aplicativo para que possa personalizá-los:
+Como você pode esperar, o método `getSubscribedSignals` deve retornar uma matriz dos sinais que seu comando pode manipular, enquanto o método 
+`handleSignal` recebe o sinal e pode responder de acordo.
 
+## Personalização de stub
+Os comandos `make` do console Artisan são usados para criar uma variedade de classes, como controladores, trabalhos, migrações e testes. Essas classes 
+são geradas usando arquivos "stub" que são preenchidos com valores baseados em sua entrada. No entanto, você pode querer fazer pequenas alterações nos 
+arquivos gerados pelo Artisan. Para fazer isso, você pode usar o comando `stub:publish` para publicar os stubs mais comuns em seu aplicativo para que 
+possa personalizá-los:
+
+```bash
 php artisan stub:publish
-Os stubs publicados estarão localizados em um stubsdiretório na raiz do seu aplicativo. Quaisquer alterações feitas nesses stubs serão refletidas quando você gerar suas classes correspondentes usando os makecomandos do Artisan .
+```
 
-Eventos
-Artisan despacha três eventos ao executar comandos: Illuminate\Console\Events\ArtisanStarting, Illuminate\Console\Events\CommandStarting, e Illuminate\Console\Events\CommandFinished. O ArtisanStartingevento é despachado imediatamente quando o Artisan começa a ser executado. Em seguida, o CommandStartingevento é despachado imediatamente antes da execução de um comando. Finalmente, o CommandFinishedevento é despachado assim que um comando termina de ser executado.
+Os stubs publicados estarão localizados em um diretório `stubs` na raiz do seu aplicativo. Quaisquer alterações feitas nesses stubs serão refletidas quando 
+você gerar suas classes correspondentes usando os comandos `make` do Artisan.
+
+## Eventos
+Artisan dispara três eventos ao executar comandos: `Illuminate\Console\Events\ArtisanStarting`, `Illuminate\Console\Events\CommandStarting`, e
+`Illuminate\Console\Events\CommandFinished`. O evento `ArtisanStarting` é disparado imediatamente quando o Artisan começa a ser executado. Em 
+seguida, o evento `CommandStarting` é disparado imediatamente antes da execução de um comando. Finalmente, o evento `CommandFinished` assim que 
+um comando termina de ser executado.
