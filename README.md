@@ -34,7 +34,7 @@
 + Logging
 
 ## Mais Fundo
-+ Artisan Console
++ [Artisan Console](/digging-deeper/artisan.md)
 + Broadcasting
 + Cache
 + Coleções
