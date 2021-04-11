@@ -217,8 +217,11 @@ Todos os argumentos e opções fornecidos pelo usuário são colocados entre cha
  * @var string
  */
 protected $signature = 'mail:send {user}';
+```
+
 Você também pode tornar os argumentos opcionais ou definir valores padrão para os argumentos:
 
+```php
 // Optional argument...
 mail:send {user?}
 
