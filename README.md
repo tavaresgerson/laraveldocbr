@@ -23,7 +23,7 @@
 + Middleware
 + Proteção CSRF 
 + [Controladores](/basics/controllers.md)
-+ Requisições
++ [Solicitações HTTP](/basics/request.md)
 + Respostas
 + Views
 + Blades
