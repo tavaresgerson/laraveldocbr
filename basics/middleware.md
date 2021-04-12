@@ -30,7 +30,7 @@ use Closure;
 class EnsureTokenIsValid
 {
     /**
-     * Handle an incoming request.
+     * Lidar com uma solicitação de entrada.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -72,7 +72,7 @@ class BeforeMiddleware
 {
     public function handle($request, Closure $next)
     {
-        // Perform action
+        // Executar a ação
 
         return $next($request);
     }
@@ -94,7 +94,7 @@ class AfterMiddleware
     {
         $response = $next($request);
 
-        // Perform action
+        // Executar a ação
 
         return $response;
     }
@@ -183,7 +183,7 @@ serviços do seu aplicativo para rotas dentro de seus arquivos correspondentes a
 
 ```php
 /**
- * The application's route middleware groups.
+ * Os grupos de middleware de rota do aplicativo.
  *
  * @var array
  */
@@ -273,7 +273,7 @@ class EnsureUserHasRole
     public function handle($request, Closure $next, $role)
     {
         if (! $request->user()->hasRole($role)) {
-            // Redirect...
+            // Redireciona...
         }
 
         return $next($request);
@@ -306,7 +306,7 @@ use Closure;
 class TerminatingMiddleware
 {
     /**
-     * Handle an incoming request.
+     * Lidar com uma solicitação de entrada.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -318,7 +318,7 @@ class TerminatingMiddleware
     }
 
     /**
-     * Handle tasks after the response has been sent to the browser.
+     * Lide com as tarefas depois que a resposta for enviada ao navegador.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Illuminate\Http\Response  $response
