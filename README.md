@@ -24,7 +24,7 @@
 + [Proteção CSRF](/basics/csrf.md)
 + [Controladores](/basics/controllers.md)
 + [Solicitações HTTP](/basics/request.md)
-+ Respostas
++ [Respostas](/basics/responses.md)
 + Views
 + Blades
 + Geração de URL
