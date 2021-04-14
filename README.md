@@ -20,7 +20,7 @@
 
 ## O básico
 + [Roteamento](/basics/routing.md)
-+ Middleware
++ [Middleware](/basics/middleware.md)
 + Proteção CSRF 
 + [Controladores](/basics/controllers.md)
 + [Solicitações HTTP](/basics/request.md)
