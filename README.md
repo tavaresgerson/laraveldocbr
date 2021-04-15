@@ -18,14 +18,14 @@
 + [Facades](/architecture-concepts/facades.md)
 + [Provedores de serviços](/architecture-concepts/providers.md)
 
-## O básico
+## O Básico
 + [Roteamento](/basics/routing.md)
 + [Middleware](/basics/middleware.md)
 + [Proteção CSRF](/basics/csrf.md)
 + [Controladores](/basics/controllers.md)
 + [Solicitações HTTP](/basics/request.md)
 + [Respostas](/basics/responses.md)
-+ Views
++ [Views](/basics/views.md)
 + Blades
 + Geração de URL
 + Sessão
