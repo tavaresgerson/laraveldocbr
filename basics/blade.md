@@ -15,44 +15,64 @@ Route::get('/', function () {
 });
 ```
 
-> Antes de se aprofundar no Blade, certifique-se de ler a documentação da visualização do Laravel.
+> Antes de se aprofundar no Blade, certifique-se de ler a documentação sobre [Views](/basics/views.md) do Laravel.
 
-Exibindo dados
-Você pode exibir dados que são passados ​​para suas visualizações Blade envolvendo a variável entre colchetes. Por exemplo, dada a seguinte rota:
+### Exibindo dados
+Você pode exibir dados que são passados para suas visualizações Blade envolvendo a variável entre colchetes. Por exemplo, dada a seguinte rota:
 
+```php
 Route::get('/', function () {
     return view('welcome', ['name' => 'Samantha']);
 });
-Você pode exibir o conteúdo da namevariável assim:
+```
 
+Você pode exibir o conteúdo da variável `name` assim:
+
+```
 Hello, {{ $name }}.
+```
 
-As {{ }}declarações de eco do Blade são enviadas automaticamente por meio da htmlspecialcharsfunção do PHP para prevenir ataques XSS.
+> As declarações `{{ }}` de eco do Blade são enviadas automaticamente por meio da função PHP `htmlspecialchars` para prevenir ataques XSS.
 
 
-Você não está limitado a exibir o conteúdo das variáveis ​​passadas para a visualização. Você também pode reproduzir os resultados de qualquer função PHP. Na verdade, você pode colocar qualquer código PHP que desejar dentro de uma instrução Blade echo:
+Você não está limitado a exibir o conteúdo das variáveis passadas para a visualização. Você também pode reproduzir os resultados de 
+qualquer função PHP. Na verdade, você pode colocar qualquer código PHP que desejar dentro de uma instrução Blade:
 
+```blade
 The current UNIX timestamp is {{ time() }}.
-Renderizando JSON
-Às vezes, você pode passar um array para sua visualização com a intenção de renderizá-lo como JSON para inicializar uma variável JavaScript. Por exemplo:
+```
 
+### Renderizando JSON
+Às vezes, você pode passar um array para sua visualização com a intenção de renderizá-lo como JSON para inicializar uma variável JavaScript. 
+Por exemplo:
+
+```html
 <script>
     var app = <?php echo json_encode($array); ?>;
 </script>
-No entanto, em vez de chamar manualmente json_encode, você pode usar a @jsondiretiva Blade. A @jsondiretiva aceita os mesmos argumentos da json_encodefunção do PHP . Por padrão, a @jsondirectiva chama a json_encodefunção com as JSON_HEX_TAG, JSON_HEX_APOS, JSON_HEX_AMP, e JSON_HEX_QUOTbandeiras:
+```
 
+No entanto, em vez de chamar manualmente `json_encode`, você pode usar a diretiva `@json`. `@json` aceita os mesmos argumentos da função
+`json_encode` do PHP. Por padrão, a diretiva `@json` chama a função `json_encode` com as flags `JSON_HEX_TAG`, `JSON_HEX_APOS`, `JSON_HEX_AMP`, 
+e `JSON_HEX_QUOT`:
+
+```html
 <script>
     var app = @json($array);
 
     var app = @json($array, JSON_PRETTY_PRINT);
 </script>
+```
 
-Você só deve usar a @jsondiretiva para renderizar variáveis ​​existentes como JSON. O modelo do Blade é baseado em expressões regulares e as tentativas de passar uma expressão complexa para a diretiva podem causar falhas inesperadas.
+> Você só deve usar a diretiva `@json` para renderizar variáveis existentes como JSON. O modelo do Blade é baseado em expressões regulares 
+> e as tentativas de passar uma expressão complexa para a diretiva podem causar falhas inesperadas.
 
 
-Codificação de Entidade HTML
-Por padrão, o Blade (e o eauxiliar do Laravel ) irá codificar duplamente as entidades HTML. Se você deseja desativar a codificação dupla, chame o Blade::withoutDoubleEncodingmétodo do bootmétodo de seu AppServiceProvider:
+### Codificação de Entidade HTML
+Por padrão, o Blade (e o `e` auxiliar do Laravel) irá codificar duplamente as entidades HTML. Se você deseja desativar a codificação dupla, 
+chame o método `Blade::withoutDoubleEncoding` no método `boot` de seu `AppServiceProvider`:
 
+```php
 <?php
 
 namespace App\Providers;
@@ -72,43 +92,65 @@ class AppServiceProvider extends ServiceProvider
         Blade::withoutDoubleEncoding();
     }
 }
-Exibindo dados sem escape
-Por padrão, as {{ }}instruções Blade são enviadas automaticamente por meio da htmlspecialcharsfunção do PHP para evitar ataques XSS. Se você não quiser que seus dados tenham escape, você pode usar a seguinte sintaxe:
+```
 
+### Exibindo dados sem escape
+Por padrão, as instruções `{{ }}` Blade são enviadas automaticamente por meio da função `htmlspecialchars` do PHP para evitar ataques XSS. 
+Se você não quiser que seus dados tenham escape, você pode usar a seguinte sintaxe:
+
+```
 Hello, {!! $name !!}.
+```
 
-Tenha muito cuidado ao reproduzir conteúdo fornecido por usuários de seu aplicativo. Normalmente, você deve usar a sintaxe de chave dupla com escape para evitar ataques XSS ao exibir dados fornecidos pelo usuário.
+> Tenha muito cuidado ao reproduzir conteúdo fornecido por usuários de seu aplicativo. Normalmente, você deve usar a sintaxe de chave dupla 
+> com escape para evitar ataques XSS ao exibir dados fornecidos pelo usuário.
 
 
-Blade e estruturas de JavaScript
-Como muitos frameworks JavaScript também usam colchetes "curvas" para indicar que uma determinada expressão deve ser exibida no navegador, você pode usar o @símbolo para informar ao mecanismo de renderização do Blade que uma expressão deve permanecer intacta. Por exemplo:
+## Blade e estruturas de JavaScript
+Como muitos frameworks JavaScript também usam colchetes para indicar que uma determinada expressão deve ser exibida no navegador, você pode 
+usar o símbolo `@` para informar ao mecanismo de renderização do Blade que uma expressão deve permanecer intacta. Por exemplo:
 
+```
 <h1>Laravel</h1>
 
 Hello, @{{ name }}.
-Neste exemplo, o @símbolo será removido pelo Blade; entretanto, a {{ name }}expressão permanecerá intocada pelo mecanismo Blade, permitindo que seja renderizada por sua estrutura JavaScript.
+```
 
-O @símbolo também pode ser usado para escapar das diretivas Blade:
+Neste exemplo, o símbolo `@` será removido pelo Blade; entretanto, a expressão `{{ name }}` permanecerá intocada pelo mecanismo Blade, permitindo 
+que seja renderizada por sua estrutura JavaScript.
 
+O símbolo `@` também pode ser usado para escapar das diretivas Blade:
+
+```
 {{-- Blade template --}}
 @@json()
 
 <!-- HTML output -->
 @json()
-A @verbatimdiretriz
-Se estiver exibindo variáveis ​​JavaScript em uma grande parte do seu modelo, você pode envolver o HTML na @verbatimdiretiva para que não precise prefixar cada instrução Blade echo com um @símbolo:
+```
 
+A diretriz `@verbatim`
+Se estiver exibindo variáveis JavaScript em uma grande parte do seu modelo, você pode envolver o HTML na diretiva `@verbatim` para que não precise 
+prefixar cada instrução Blade echo com um símbolo `@`:
+
+```html
 @verbatim
     <div class="container">
         Hello, {{ name }}.
     </div>
 @endverbatim
-Diretivas de lâmina
-Além de herança de template e exibição de dados, o Blade também fornece atalhos convenientes para estruturas de controle PHP comuns, como instruções condicionais e loops. Esses atalhos fornecem uma maneira muito limpa e concisa de trabalhar com estruturas de controle do PHP, ao mesmo tempo em que permanecem familiares às suas contrapartes do PHP.
+```
 
-Declarações If
-Você pode construir ifdeclarações usando os @if, @elseif, @else, e @endifdirectivas. Essas diretivas funcionam de forma idêntica às suas contrapartes PHP:
+## Diretivas Blade
+Além de herança de template e exibição de dados, o Blade também fornece atalhos convenientes para estruturas de controle PHP comuns, 
+como instruções condicionais e loops. Esses atalhos fornecem uma maneira muito limpa e concisa de trabalhar com estruturas de controle 
+do PHP, ao mesmo tempo em que permanecem familiares às suas contrapartes do PHP.
 
+### Declarações If
+Você pode construir declarações `if` usando as diretivas `@if`, `@elseif`, `@else`, e `@endif`. Essas diretivas funcionam de forma idêntica 
+às suas contrapartes PHP:
+
+```
 @if (count($records) === 1)
     I have one record!
 @elseif (count($records) > 1)
@@ -116,13 +158,20 @@ Você pode construir ifdeclarações usando os @if, @elseif, @else, e @endifdire
 @else
     I don't have any records!
 @endif
-Por conveniência, o Blade também fornece uma @unlessdiretiva:
+```
 
+Por conveniência, o Blade também fornece uma diretiva `@unless`:
+
+```
 @unless (Auth::check())
     You are not signed in.
 @endunless
-Além das diretivas condicionais já discutidas, as diretivas @issete @emptypodem ser usadas como atalhos convenientes para suas respectivas funções PHP:
+```
 
+Além das diretivas condicionais já discutidas, as diretivas `@isset` e `@empty` podem ser usadas como atalhos convenientes para 
+suas respectivas funções PHP:
+
+```
 @isset($records)
     // $records is defined and is not null...
 @endisset
@@ -130,9 +179,12 @@ Além das diretivas condicionais já discutidas, as diretivas @issete @emptypode
 @empty($records)
     // $records is "empty"...
 @endempty
-Diretivas de autenticação
-As diretivas @authe @guestpodem ser usadas para determinar rapidamente se o usuário atual é autenticado ou é um convidado:
+```
 
+#### Diretivas de autenticação
+As diretivas `@auth` e `@guest` podem ser usadas para determinar rapidamente se o usuário atual é autenticado ou é um convidado:
+
+```
 @auth
     // The user is authenticated...
 @endauth
@@ -140,8 +192,11 @@ As diretivas @authe @guestpodem ser usadas para determinar rapidamente se o usu�
 @guest
     // The user is not authenticated...
 @endguest
-Se necessário, você pode especificar a proteção de autenticação que deve ser verificada ao usar as diretivas @authe @guest:
+```
 
+Se necessário, você pode especificar a proteção de autenticação que deve ser verificada ao usar as diretivas `@auth` e `@guest`:
+
+```
 @auth('admin')
     // The user is authenticated...
 @endauth
@@ -149,14 +204,20 @@ Se necessário, você pode especificar a proteção de autenticação que deve s
 @guest('admin')
     // The user is not authenticated...
 @endguest
-Diretivas Ambientais
-Você pode verificar se o aplicativo está sendo executado no ambiente de produção usando a @productiondiretiva:
+```
 
+#### Diretivas de Ambiente
+Você pode verificar se o aplicativo está sendo executado no ambiente de produção usando a diretiva `@production`:
+
+```
 @production
     // Production specific content...
 @endproduction
-Ou você pode determinar se o aplicativo está sendo executado em um ambiente específico usando a @envdiretiva:
+```
 
+Ou você pode determinar se o aplicativo está sendo executado em um ambiente específico usando a diretiva `@env`:
+
+```
 @env('staging')
     // The application is running in "staging"...
 @endenv
@@ -164,9 +225,12 @@ Ou você pode determinar se o aplicativo está sendo executado em um ambiente es
 @env(['staging', 'production'])
     // The application is running in "staging" or "production"...
 @endenv
-Diretrizes de seção
-Você pode determinar se uma seção de herança de modelo tem conteúdo usando a @hasSectiondiretiva:
+```
 
+#### Diretrizes de seção
+Você pode determinar se uma seção de herança de modelo tem conteúdo usando a diretiva `@hasSection`:
+
+```
 @hasSection('navigation')
     <div class="pull-right">
         @yield('navigation')
@@ -174,16 +238,22 @@ Você pode determinar se uma seção de herança de modelo tem conteúdo usando 
 
     <div class="clearfix"></div>
 @endif
-Você pode usar a sectionMissingdiretiva para determinar se uma seção não tem conteúdo:
+```
 
+Você pode usar a diretiva `sectionMissing` para determinar se uma seção não tem conteúdo:
+
+```
 @sectionMissing('navigation')
     <div class="pull-right">
         @include('default-navigation')
     </div>
 @endif
-Mudar de declarações
-Instruções switch pode ser construído usando os @switch, @case, @break, @defaulte @endswitchdirectivas:
+```
 
+### Mudar de declarações
+Instruções switch pode ser construído usando os diretivas `@switch`, `@case`, `@break`, `@default` e `@endswitch`:
+
+```
 @switch($i)
     @case(1)
         First case...
@@ -196,9 +266,13 @@ Instruções switch pode ser construído usando os @switch, @case, @break, @defa
     @default
         Default case...
 @endswitch
-rotações
-Além das instruções condicionais, o Blade fornece diretivas simples para trabalhar com as estruturas de loop do PHP. Novamente, cada uma dessas diretivas funciona de forma idêntica às suas contrapartes PHP:
+```
 
+### Iterações
+Além das instruções condicionais, o Blade fornece diretivas simples para trabalhar com as estruturas de loop do PHP. Novamente, cada uma 
+dessas diretivas funciona de forma idêntica às suas contrapartes PHP:
+
+```
 @for ($i = 0; $i < 10; $i++)
     The current value is {{ $i }}
 @endfor
@@ -216,12 +290,14 @@ Além das instruções condicionais, o Blade fornece diretivas simples para trab
 @while (true)
     <p>I'm looping forever.</p>
 @endwhile
+```
 
-Durante o loop, você pode usar a variável de loop para obter informações valiosas sobre o loop, como se você está na primeira ou na última iteração do loop.
+> Durante o loop, você pode usar a variável de loop para obter informações valiosas sobre o loop, como se você 
+> está na primeira ou na última iteração do loop.
 
+Ao usar loops, você também pode encerrar o loop ou pular a iteração atual usando as diretivas `@continue` e `@break`:
 
-Ao usar loops, você também pode encerrar o loop ou pular a iteração atual usando as diretivas @continuee @break:
-
+```
 @foreach ($users as $user)
     @if ($user->type == 1)
         @continue
@@ -233,8 +309,11 @@ Ao usar loops, você também pode encerrar o loop ou pular a iteração atual us
         @break
     @endif
 @endforeach
+```
+
 Você também pode incluir a condição de continuação ou interrupção na declaração da diretiva:
 
+```
 @foreach ($users as $user)
     @continue($user->type == 1)
 
@@ -242,9 +321,13 @@ Você também pode incluir a condição de continuação ou interrupção na dec
 
     @break($user->number == 5)
 @endforeach
-A Variável de Loop
-Durante o loop, uma $loopvariável estará disponível dentro de seu loop. Esta variável fornece acesso a alguns bits de informação úteis, como o índice do loop atual e se esta é a primeira ou a última iteração através do loop:
+```
 
+### A Variável de Loop
+Durante o loop, uma variável `$loop` estará disponível dentro de seu loop. Esta variável fornece acesso a alguns bits de informação úteis, 
+como o índice do loop atual e se esta é a primeira ou a última iteração através do loop:
+
+```
 @foreach ($users as $user)
     @if ($loop->first)
         This is the first iteration.
@@ -256,8 +339,11 @@ Durante o loop, uma $loopvariável estará disponível dentro de seu loop. Esta 
 
     <p>This is user {{ $user->id }}</p>
 @endforeach
-Se você estiver em um loop aninhado, poderá acessar a $loopvariável do loop pai por meio da parentpropriedade:
+```
 
+Se você estiver em um loop aninhado, poderá acessar a variável `$loop` da iteração pai por meio da propriedade `parent`:
+
+```
 @foreach ($users as $user)
     @foreach ($user->posts as $post)
         @if ($loop->parent->first)
@@ -265,18 +351,21 @@ Se você estiver em um loop aninhado, poderá acessar a $loopvariável do loop p
         @endif
     @endforeach
 @endforeach
-A $loopvariável também contém uma variedade de outras propriedades úteis:
+```
 
-Propriedade	Descrição
-$loop->index	O índice da iteração do loop atual (começa em 0).
-$loop->iteration	A iteração do loop atual (começa em 1).
-$loop->remaining	As iterações restantes no loop.
-$loop->count	O número total de itens na matriz que está sendo iterada.
-$loop->first	Se esta é a primeira iteração no loop.
-$loop->last	Se esta é a última iteração no loop.
-$loop->even	Se esta é uma iteração uniforme através do loop.
-$loop->odd	Se esta é uma iteração estranha através do loop.
-$loop->depth	O nível de aninhamento do loop atual.
+A variável `$loop` também contém uma variedade de outras propriedades úteis:
+
+| Propriedade           | Descrição                                                         |
+|-----------------------|-------------------------------------------------------------------|
+| `$loop->index`        | O índice da iteração do loop atual (começa em 0).                 |
+| `$loop->iteration`	| A iteração do loop atual (começa em 1).                           |
+| `$loop->remaining`	| As iterações restantes no loop.                                   |
+| `$loop->count`    	| O número total de itens na matriz que está sendo iterada.         |
+| `$loop->first`	    | Se esta é a primeira iteração no loop.                            |
+| `$loop->last`	        | Se esta é a última iteração no loop.                              |
+| `$loop->even`	        | Se esta é uma iteração até através do loop.                       |
+| `$loop->odd`	        | Se esta é uma iteração ímpar através do loop.                     |
+| `$loop->depth`	    | O nível de aninhamento do loop atual.
 $loop->parent	Quando em um loop aninhado, a variável de loop do pai.
 Comentários
 O Blade também permite definir comentários em suas visualizações. No entanto, ao contrário dos comentários HTML, os comentários Blade não são incluídos no HTML retornado pelo seu aplicativo:
