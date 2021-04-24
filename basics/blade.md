@@ -545,23 +545,41 @@ Isso permitirá o uso de componentes de pacote pelo namespace de seu fornecedor 
 <x-nightshade::color-picker />
 ```
 
-O Blade detectará automaticamente a classe que está vinculada a este componente, casando em pascal o nome do componente. Subdiretórios também são suportados usando a notação de "ponto".
+O Blade detectará automaticamente a classe que está vinculada a este componente, casando em pascal o nome do componente. 
+Subdiretórios também são suportados usando a notação de "ponto".
 
-Componentes de renderização
-Para exibir um componente, você pode usar uma tag de componente Blade em um de seus modelos Blade. As tags do componente blade começam com a string x-seguida pelo nome do caso kebab da classe do componente:
+### Componentes de renderização
+Para exibir um componente, você pode usar uma tag de componente Blade em um de seus modelos Blade. As tags do componente blade começam com a 
+string `x-` seguida pelo nome no estilo kebab da classe do componente:
 
+```
 <x-alert/>
 
 <x-user-profile/>
-Se a classe do componente estiver aninhada mais profundamente no App\View\Componentsdiretório, você pode usar o .caractere para indicar o aninhamento do diretório. Por exemplo, se presumirmos que um componente está localizado em App\View\Components\Inputs\Button.php, podemos renderizá-lo assim:
+```
 
+Se a classe do componente estiver aninhada mais profundamente no diretório `App\View\Components`, você pode usar o caractere `.` para indicar o 
+aninhamento do diretório. Por exemplo, se presumirmos que um componente está localizado em `App\View\Components\Inputs\Button.php`, podemos renderizá-lo 
+assim:
+
+```
 <x-inputs.button/>
-Passando dados para componentes
-Você pode passar dados para componentes Blade usando atributos HTML. Valores primitivos embutidos em código podem ser passados ​​para o componente usando cadeias de caracteres de atributos HTML simples. Expressões e variáveis ​​PHP devem ser passadas ao componente por meio de atributos que usam o :caractere como prefixo:
+```
 
+### Passando dados para componentes
+Você pode passar dados para componentes Blade usando atributos HTML. Valores primitivos embutidos em código podem ser passados para o 
+componente usando cadeias de caracteres de atributos HTML simples. Expressões e variáveis PHP devem ser passadas ao componente por meio 
+de atributos que usam o caractere `:` como prefixo:
+
+```
 <x-alert type="error" :message="$message"/>
-Você deve definir os dados necessários do componente em seu construtor de classe. Todas as propriedades públicas em um componente serão disponibilizadas automaticamente para a visualização do componente. Não é necessário passar os dados para a visualização a partir do rendermétodo do componente :
+```
 
+Você deve definir os dados necessários do componente em seu construtor de classe. Todas as propriedades públicas em um componente serão 
+disponibilizadas automaticamente para a visualização do componente. Não é necessário passar os dados para a visualização a partir do
+método `render` do componente:
+
+```php
 <?php
 
 namespace App\View\Components;
@@ -607,14 +625,21 @@ class Alert extends Component
         return view('components.alert');
     }
 }
-Quando seu componente é renderizado, você pode exibir o conteúdo das variáveis ​​públicas do seu componente, ecoando as variáveis ​​por nome:
+```
 
+Quando seu componente é renderizado, você pode exibir o conteúdo das variáveis públicas do seu componente, ecoando as variáveis por nome:
+
+```html
 <div class="alert alert-{{ $type }}">
     {{ $message }}
 </div>
-Invólucro
-Os argumentos do construtor do componente devem ser especificados usando camelCase, enquanto kebab-casedeve ser usado ao fazer referência aos nomes dos argumentos em seus atributos HTML. Por exemplo, dado o seguinte construtor de componente:
+```
 
+### Invólucro
+Os argumentos do construtor do componente devem ser especificados usando `camelCase`, enquanto `kebab-case` deve ser usado ao fazer 
+referência aos nomes dos argumentos em seus atributos HTML. Por exemplo, dado o seguinte construtor de componente:
+
+```php
 /**
  * Create the component instance.
  *
@@ -625,23 +650,37 @@ public function __construct($alertType)
 {
     $this->alertType = $alertType;
 }
-O $alertTypeargumento pode ser fornecido ao componente da seguinte forma:
+```
 
+O argumento `$alertType` pode ser fornecido ao componente da seguinte forma:
+
+```
 <x-alert alert-type="danger" />
-Renderização de atributo de escape
-Como alguns frameworks JavaScript, como Alpine.js, também usam atributos prefixados com dois-pontos, você pode usar um ::prefixo com dois-pontos duplos ( ) para informar ao Blade que o atributo não é uma expressão PHP. Por exemplo, dado o seguinte componente:
+```
 
+#### Renderização de atributo de escape
+Como alguns frameworks JavaScript, como `Alpine.js`, também usam atributos prefixados com dois-pontos, você pode usar um prefixo com dois-pontos duplos (`::`)
+para informar ao Blade que o atributo não é uma expressão PHP. Por exemplo, neste seguinte componente:
+
+```
 <x-button ::class="{ danger: isDeleting }">
     Submit
 </x-button>
+```
+
 O seguinte HTML será renderizado pelo Blade:
 
+```
 <button :class="{ danger: isDeleting }">
     Submit
 </button>
-Métodos de Componente
-Além das variáveis ​​públicas disponíveis para o seu modelo de componente, qualquer método público no componente pode ser chamado. Por exemplo, imagine um componente que possui um isSelectedmétodo:
+```
 
+### Métodos de Componente
+Além das variáveis públicas disponíveis para o seu modelo de componente, qualquer método público no componente pode ser chamado. Por exemplo, 
+imagine um componente que possui um método `isSelected`:
+
+```php
 /**
  * Determine if the given option is the currently selected option.
  *
@@ -652,14 +691,22 @@ public function isSelected($option)
 {
     return $option === $this->selected;
 }
+```
+
 Você pode executar este método a partir do seu modelo de componente, invocando a variável que corresponde ao nome do método:
 
+```php
 <option {{ $isSelected($value) ? 'selected="selected"' : '' }} value="{{ $value }}">
     {{ $label }}
 </option>
-Acessando Atributos e Slots nas Classes de Componentes
-Os componentes do blade também permitem que você acesse o nome do componente, os atributos e o slot dentro do método de renderização da classe. No entanto, para acessar esses dados, você deve retornar um encerramento do rendermétodo do seu componente . O encerramento receberá uma $datamatriz como seu único argumento. Esta matriz conterá vários elementos que fornecem informações sobre o componente:
+```
 
+#### Acessando Atributos e Slots nas Classes de Componentes
+Os componentes do blade também permitem que você acesse o nome do componente, os atributos e o slot dentro do método de renderização da classe. 
+No entanto, para acessar esses dados, você deve retornar um encerramento do método `render` do seu componente. O encerramento receberá uma matriz `$data` 
+como seu único argumento. Esta matriz conterá vários elementos que fornecem informações sobre o componente:
+
+```php
 /**
  * Get the view / contents that represent the component.
  *
@@ -675,13 +722,20 @@ public function render()
         return '<div>Components content</div>';
     };
 }
-O componentNameé igual ao nome usado na tag HTML após o x-prefixo. Portanto, <x-alert />'s componentNameserá alert. O attributeselemento conterá todos os atributos que estavam presentes na tag HTML. O slotelemento é uma Illuminate\Support\HtmlStringinstância com o conteúdo do slot do componente.
+```
 
-O encerramento deve retornar uma string. Se a string retornada corresponder a uma visão existente, essa visão será renderizada; caso contrário, a string retornada será avaliada como uma visualização Blade embutida.
+O `componentName` é igual ao nome usado na tag HTML após o prefixo `x-`. Portanto, `componentName` será `<x-alert />`'s. O elemento `attributes` 
+conterá todos os atributos que estavam presentes na tag HTML. O elemento `slot` é uma instância de `Illuminate\Support\HtmlString` com o conteúdo 
+do slot do componente.
 
-Dependências Adicionais
-Se o seu componente requer dependências do container de serviço do Laravel , você pode listá-los antes de qualquer um dos atributos de dados do componente e eles serão automaticamente injetados pelo container:
+A closure deve retornar uma string. Se a string retornada corresponder a uma view existente, essa view será renderizada; caso contrário, a string retornada 
+será avaliada como uma visualização Blade embutida.
 
+#### Dependências Adicionais
+Se o seu componente requer dependências do container de serviço do Laravel, você pode listá-los antes de qualquer um dos atributos de dados do componente 
+e eles serão automaticamente injetados pelo container:
+
+```php
 use App\Services\AlertCreator
 
 /**
@@ -698,9 +752,13 @@ public function __construct(AlertCreator $creator, $type, $message)
     $this->type = $type;
     $this->message = $message;
 }
-Escondendo Atributos / Métodos
-Se desejar evitar que alguns métodos ou propriedades públicos sejam expostos como variáveis ​​ao seu modelo de componente, você pode adicioná-los a uma $exceptpropriedade de matriz em seu componente:
+```
 
+#### Escondendo Atributos/Métodos
+Se desejar evitar que alguns métodos ou propriedades públicos sejam expostos como variáveis ao seu modelo de componente, você pode adicioná-los a 
+uma propriedade `$except` de matriz em seu componente:
+
+```php
 <?php
 
 namespace App\View\Components;
@@ -723,111 +781,189 @@ class Alert extends Component
      */
     protected $except = ['type'];
 }
-Atributos de componente
-Já examinamos como passar atributos de dados para um componente; no entanto, às vezes você pode precisar especificar atributos HTML adicionais, como class, que não fazem parte dos dados necessários para o funcionamento de um componente. Normalmente, você deseja passar esses atributos adicionais para o elemento raiz do modelo de componente. Por exemplo, imagine que queremos renderizar um alertcomponente assim:
+```
 
+### Atributos de componente
+Já examinamos como passar atributos de dados para um componente; no entanto, às vezes você pode precisar especificar atributos HTML adicionais, 
+como class, que não fazem parte dos dados necessários para o funcionamento de um componente. Normalmente, você deseja passar esses atributos adicionais 
+para o elemento raiz do modelo de componente. Por exemplo, imagine que queremos renderizar um componente `alert` assim:
+
+```blade
 <x-alert type="error" :message="$message" class="mt-4"/>
-Todos os atributos que não fazem parte do construtor do componente serão adicionados automaticamente ao "pacote de atributos" do componente. Este pacote de atributos é automaticamente disponibilizado para o componente por meio da $attributesvariável. Todos os atributos podem ser renderizados dentro do componente ecoando esta variável:
+```
 
+Todos os atributos que não fazem parte do construtor do componente serão adicionados automaticamente ao "pacote de atributos" do componente. 
+Este pacote de atributos é automaticamente disponibilizado para o componente por meio da variável `$attributes`. Todos os atributos podem ser 
+renderizados dentro do componente ecoando esta variável:
+
+```
 <div {{ $attributes }}>
     <!-- Component content -->
 </div>
+```
 
-O uso de diretivas, como @envdentro de tags de componentes, não é suportado neste momento. Por exemplo, <x-alert :live="@env('production')"/>não será compilado.
+> O uso de diretivas, como `@env` dentro de tags de componentes, não é suportado neste momento. Por exemplo, `<x-alert :live="@env('production')"/>` 
+> não será compilado.
 
+#### Atributos padrão/mesclados
+Às vezes, você pode precisar especificar valores padrão para atributos ou mesclar valores adicionais em alguns dos atributos do componente. Para 
+fazer isso, você pode usar o método `merge` do saco de atributos. Este método é particularmente útil para definir um conjunto de classes CSS padrão 
+que sempre devem ser aplicadas a um componente:
 
-Atributos padrão / mesclados
-Às vezes, você pode precisar especificar valores padrão para atributos ou mesclar valores adicionais em alguns dos atributos do componente. Para fazer isso, você pode usar o mergemétodo do saco de atributos . Este método é particularmente útil para definir um conjunto de classes CSS padrão que sempre devem ser aplicadas a um componente:
-
+```
 <div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }}>
     {{ $message }}
 </div>
+```
+
 Se assumirmos que este componente é utilizado da seguinte forma:
 
+```
 <x-alert type="error" :message="$message" class="mb-4"/>
+```
+
 O HTML final renderizado do componente aparecerá como o seguinte:
 
+```
 <div class="alert alert-error mb-4">
     <!-- Contents of the $message variable -->
 </div>
-Mesclar classes condicionalmente
-Às vezes, você pode desejar mesclar classes se uma determinada condição for true. Você pode fazer isso por meio do classmétodo, que aceita uma matriz de classes em que a chave da matriz contém a classe ou classes que você deseja adicionar, enquanto o valor é uma expressão booleana. Se o elemento da matriz tiver uma chave numérica, ele sempre será incluído na lista de classes renderizadas:
+```
 
+#### Mesclar classes condicionalmente
+Às vezes, você pode desejar mesclar classes se uma determinada condição for `true`. Você pode fazer isso por meio do método `class`, que aceita uma 
+matriz de classes em que a chave da matriz contém a classe ou classes que você deseja adicionar, enquanto o valor é uma expressão booleana. Se o 
+elemento da matriz tiver uma chave numérica, ele sempre será incluído na lista de classes renderizadas:
+
+```
 <div {{ $attributes->class(['p-4', 'bg-red' => $hasError]) }}>
     {{ $message }}
 </div>
-Se precisar mesclar outros atributos em seu componente, você pode encadear o mergemétodo no classmétodo:
+```
 
+Se precisar mesclar outros atributos em seu componente, você pode encadear o método `merge` em `class`:
+
+```
 <button {{ $attributes->class(['p-4'])->merge(['type' => 'button']) }}>
     {{ $slot }}
 </button>
-Mesclagem de atributos não pertencentes à classe
-Ao mesclar atributos que não são classatributos, os valores fornecidos ao mergemétodo serão considerados os valores "padrão" do atributo. No entanto, ao contrário do classatributo, esses atributos não serão mesclados com os valores de atributo injetados. Em vez disso, eles serão substituídos. Por exemplo, buttona implementação de um componente pode ter a seguinte aparência:
+```
 
+#### Mesclagem de atributos não pertencentes à classe
+Ao mesclar atributos que não são atributos `class`, os valores fornecidos ao método `merge` serão considerados os valores "padrão" do atributo. 
+No entanto, ao contrário do atributo `class`, esses atributos não serão mesclados com os valores de atributo injetados. Em vez disso, eles serão 
+substituídos. Por exemplo, `butto` na implementação de um componente pode ter a seguinte aparência:
+
+```
 <button {{ $attributes->merge(['type' => 'button']) }}>
     {{ $slot }}
 </button>
-Para renderizar o componente do botão com um personalizado type, ele pode ser especificado ao consumir o componente. Se nenhum tipo for especificado, o buttontipo será usado:
+```
 
+Para renderizar o componente do botão com um `type` personalizado, ele pode ser especificado ao consumir o componente. Se nenhum tipo for especificado, 
+o tipo `button` será usado:
+
+```
 <x-button type="submit">
     Submit
 </x-button>
-O HTML renderizado do buttoncomponente neste exemplo seria:
+````
 
+O HTML renderizado do componente `button` neste exemplo seria:
+
+```
 <button type="submit">
     Submit
 </button>
-Se você quiser que um atributo diferente de classter seu valor padrão e os valores injetados juntos, você pode usar o prependsmétodo. Neste exemplo, o data-controlleratributo sempre começará com profile-controllere quaisquer data-controllervalores injetados adicionais serão colocados após este valor padrão:
+```
 
+Se você quiser que um atributo diferente de `class` ter seu valor padrão e os valores injetados juntos, você pode usar o método `prepends`. Neste exemplo, 
+o `data-controller` atributo sempre começará com `profile-controller` e quaisquer valores `data-controller` injetados adicionais serão colocados após 
+este valor padrão:
+
+```
 <div {{ $attributes->merge(['data-controller' => $attributes->prepends('profile-controller')]) }}>
     {{ $slot }}
 </div>
-Recuperando e filtrando atributos
-Você pode filtrar atributos usando o filtermétodo. Este método aceita um encerramento que deve retornar truese você deseja manter o atributo no pacote de atributos:
+```
 
+### Recuperando e filtrando atributos
+Você pode filtrar atributos usando o método `filter`. Este método aceita uma closure que deve retornar `true` se você deseja manter o atributo no 
+pacote de atributos:
+
+```
 {{ $attributes->filter(fn ($value, $key) => $key == 'foo') }}
-Por conveniência, você pode usar o whereStartsWithmétodo para recuperar todos os atributos cujas chaves começam com uma determinada string:
+```
 
+Por conveniência, você pode usar o método `whereStartsWith` para recuperar todos os atributos cujas chaves começam com uma determinada string:
+
+```
 {{ $attributes->whereStartsWith('wire:model') }}
+```
+
 Por outro lado, o whereDoesntStartWithmétodo pode ser usado para excluir todos os atributos cujas chaves começam com uma determinada string:
 
+```
 {{ $attributes->whereDoesntStartWith('wire:model') }}
-Usando o firstmétodo, você pode renderizar o primeiro atributo em um determinado pacote de atributos:
+```
 
+Usando o método `first`, você pode renderizar o primeiro atributo em um determinado pacote de atributos:
+
+```
 {{ $attributes->whereStartsWith('wire:model')->first() }}
-Se você gostaria de verificar se um atributo está presente no componente, você pode usar o hasmétodo. Este método aceita o nome do atributo como seu único argumento e retorna um booleano indicando se o atributo está presente ou não:
+```
 
+Se você gostaria de verificar se um atributo está presente no componente, você pode usar o método `has`. Este método aceita o nome do atributo como 
+seu único argumento e retorna um booleano indicando se o atributo está presente ou não:
+
+```
 @if ($attributes->has('class'))
     <div>Class attribute is present</div>
 @endif
-Você pode recuperar o valor de um atributo específico usando o getmétodo:
+```
 
+Você pode recuperar o valor de um atributo específico usando o método `get`:
+
+```
 {{ $attributes->get('class') }}
-Palavras-chave reservadas
-Por padrão, algumas palavras-chave são reservadas para uso interno do Blade para renderizar componentes. As seguintes palavras-chave não podem ser definidas como propriedades públicas ou nomes de métodos em seus componentes:
+```
 
-data
-render
-resolveView
-shouldRender
-view
-withAttributes
-withName
-Slots
-Freqüentemente, você precisará passar conteúdo adicional para o seu componente por meio de "slots". Os slots de componentes são renderizados ecoando a $slotvariável. Para explorar esse conceito, vamos imaginar que um alertcomponente tenha a seguinte marcação:
+### Palavras-chave reservadas
+Por padrão, algumas palavras-chave são reservadas para uso interno do Blade para renderizar componentes. As seguintes palavras-chave não 
+podem ser definidas como propriedades públicas ou nomes de métodos em seus componentes:
 
+* `data`
+* `render`
+* `resolveView`
+* `shouldRender`
+* `view`
+* `withAttributes`
+* `withName`
+* `Slots`
+ 
+Freqüentemente, você precisará passar conteúdo adicional para o seu componente por meio de "slots". Os slots de componentes são renderizados 
+ecoando a variável `$slot`. Para explorar esse conceito, vamos imaginar que um componente `alert` tenha a seguinte marcação:
+
+```html
 <!-- /resources/views/components/alert.blade.php -->
 
 <div class="alert alert-danger">
     {{ $slot }}
 </div>
-Podemos passar conteúdo para o slotinjetando conteúdo no componente:
+```
 
+Podemos passar conteúdo para o `slot` injetando conteúdo no componente:
+
+```
 <x-alert>
     <strong>Whoops!</strong> Something went wrong!
 </x-alert>
-Às vezes, um componente pode precisar renderizar vários slots diferentes em locais diferentes dentro do componente. Vamos modificar nosso componente de alerta para permitir a injeção de um slot de "título":
+```
 
+Às vezes, um componente pode precisar renderizar vários slots diferentes em locais diferentes dentro do componente. Vamos modificar nosso 
+componente de alerta para permitir a injeção de um slot de "title":
+
+```html
 <!-- /resources/views/components/alert.blade.php -->
 
 <span class="alert-title">{{ $title }}</span>
@@ -835,8 +971,12 @@ Podemos passar conteúdo para o slotinjetando conteúdo no componente:
 <div class="alert alert-danger">
     {{ $slot }}
 </div>
-Você pode definir o conteúdo do slot nomeado usando a x-slottag. Qualquer conteúdo que não esteja em uma x-slottag explícita será passado para o componente na $slotvariável:
+```
 
+Você pode definir o conteúdo do slot nomeado usando a tag `x-slot`. Qualquer conteúdo que não esteja em uma tag `x-slot` explícita será passado 
+para o componente na variável `$slot`:
+
+```
 <x-alert>
     <x-slot name="title">
         Server Error
@@ -844,9 +984,15 @@ Você pode definir o conteúdo do slot nomeado usando a x-slottag. Qualquer cont
 
     <strong>Whoops!</strong> Something went wrong!
 </x-alert>
-Slots com escopo
-Se você usou uma estrutura JavaScript como o Vue, pode estar familiarizado com os "slots com escopo", que permitem acessar dados ou métodos do componente em seu slot. Você pode obter um comportamento semelhante no Laravel definindo métodos públicos ou propriedades em seu componente e acessando o componente em seu slot através da $componentvariável. Neste exemplo, vamos supor que o x-alertcomponente tem um formatAlertmétodo público definido em sua classe de componente:
+```
 
+#### Slots com escopo
+Se você usou uma estrutura JavaScript como o Vue, pode estar familiarizado com os "slots com escopo", que permitem acessar dados ou métodos do 
+componente em seu slot. Você pode obter um comportamento semelhante no Laravel definindo métodos públicos ou propriedades em seu componente e 
+acessando o componente em seu slot através da variável `$component`. Neste exemplo, vamos supor que o componente `x-alert` tem um método `formatAlert` 
+público definido em sua classe de componente:
+
+```
 <x-alert>
     <x-slot name="title">
         {{ $component->formatAlert('Server Error') }}
@@ -854,9 +1000,13 @@ Se você usou uma estrutura JavaScript como o Vue, pode estar familiarizado com 
 
     <strong>Whoops!</strong> Something went wrong!
 </x-alert>
-Vistas de componentes embutidos
-Para componentes muito pequenos, pode parecer complicado gerenciar a classe do componente e o modelo de visualização do componente. Por esse motivo, você pode retornar a marcação do componente diretamente do rendermétodo:
+```
 
+### Views de componentes embutidos
+Para componentes muito pequenos, pode parecer complicado gerenciar a classe do componente e o modelo de visualização do componente. Por esse motivo, 
+você pode retornar a marcação do componente diretamente do método `render`:
+
+```php
 /**
  * Get the view / contents that represent the component.
  *
@@ -870,11 +1020,16 @@ public function render()
         </div>
     blade;
 }
-Gerando Componentes de Visualização Inline
-Para criar um componente que renderiza uma visualização embutida, você pode usar a inlineopção ao executar o make:componentcomando:
+```
 
+### Gerando Componentes de Visualização Inline
+Para criar um componente que renderiza uma visualização embutida, você pode usar a opção `inline` ao executar o comando `make:component`:
+
+```bash
 php artisan make:component Alert --inline
-Componentes Anônimos
+```
+
+### Componentes Anônimos
 Semelhante aos componentes embutidos, os componentes anônimos fornecem um mecanismo para gerenciar um componente por meio de um único arquivo. No entanto, os componentes anônimos utilizam um único arquivo de visualização e não têm nenhuma classe associada. Para definir um componente anônimo, você só precisa colocar um modelo Blade em seu resources/views/componentsdiretório. Por exemplo, supondo que você definiu um componente em resources/views/components/alert.blade.php, você pode simplesmente renderizá-lo assim:
 
 <x-alert/>
