@@ -363,21 +363,28 @@ A variável `$loop` também contém uma variedade de outras propriedades úteis:
 | `$loop->count`    	| O número total de itens na matriz que está sendo iterada.         |
 | `$loop->first`	    | Se esta é a primeira iteração no loop.                            |
 | `$loop->last`	        | Se esta é a última iteração no loop.                              |
-| `$loop->even`	        | Se esta é uma iteração até através do loop.                       |
-| `$loop->odd`	        | Se esta é uma iteração ímpar através do loop.                     |
-| `$loop->depth`	    | O nível de aninhamento do loop atual.
-$loop->parent	Quando em um loop aninhado, a variável de loop do pai.
-Comentários
-O Blade também permite definir comentários em suas visualizações. No entanto, ao contrário dos comentários HTML, os comentários Blade não são incluídos no HTML retornado pelo seu aplicativo:
+| `$loop->even`	        | Se esta é uma iteração com valor par do loop.                     |
+| `$loop->odd`	        | Se esta é uma iteração com valor ímpar através do loop.           |
+| `$loop->depth`	    | O nível de aninhamento do loop atual.                             |
+| `$loop->parent`       | Quando em um loop aninhado, a variável de loop do pai.            |
 
+### Comentários
+O Blade também permite definir comentários em suas visualizações. No entanto, ao contrário dos comentários HTML, os comentários Blade 
+não são incluídos no HTML retornado pelo seu aplicativo:
+
+```
 {{-- This comment will not be present in the rendered HTML --}}
-Incluindo subvisualizações
+```
 
-Embora você esteja livre para usar a @includediretiva, os componentes do Blade fornecem funcionalidade semelhante e oferecem vários benefícios em relação à @includediretiva, como vinculação de dados e atributo.
+### Incluindo subvisualizações
 
+> Embora você esteja livre para usar a diretiva `@include`, os componentes do Blade fornecem funcionalidade semelhante e oferecem vários benefícios em 
+> relação à diretiva `@include`, como vinculação de dados e atributo.
 
-A @includediretiva do Blade permite incluir uma visualização do Blade de dentro de outra visualização. Todas as variáveis ​​disponíveis para a visualização pai serão disponibilizadas para a visualização incluída:
+A diretiva `@include` do Blade permite incluir uma visualização do Blade de dentro de outra visualização. Todas as variáveis disponíveis para a 
+visualização pai serão disponibilizadas para a visualização incluída:
 
+```
 <div>
     @include('shared.errors')
 
@@ -385,40 +392,67 @@ A @includediretiva do Blade permite incluir uma visualização do Blade de dentr
         <!-- Form Contents -->
     </form>
 </div>
-Mesmo que a visualização incluída herde todos os dados disponíveis na visualização pai, você também pode passar uma matriz de dados adicionais que devem ser disponibilizados para a visualização incluída:
+```
 
+Mesmo que a visualização incluída herde todos os dados disponíveis na visualização pai, você também pode passar uma matriz de dados adicionais que devem 
+ser disponibilizados para a visualização incluída:
+
+```
 @include('view.name', ['status' => 'complete'])
-Se você tentar @includeuma visão que não existe, o Laravel irá gerar um erro. Se desejar incluir uma visão que pode ou não estar presente, você deve usar a @includeIfdiretiva:
+```
 
+Se você tentar uma `@include` de uma view que não existe, o Laravel irá gerar um erro. Se desejar incluir uma view que pode ou não estar presente, você 
+deve usar a diretiva `@includeIf`:
+
+```
 @includeIf('view.name', ['status' => 'complete'])
-Se você gostaria de @includever se uma determinada expressão booleana é avaliada como trueou false, você pode usar as diretivas @includeWhene @includeUnless:
+```
 
+Se você gostaria de ver uma `@include` como uma determinada expressão booleana, você pode usar as diretivas `@includeWhen` e `@includeUnless`:
+
+```
 @includeWhen($boolean, 'view.name', ['status' => 'complete'])
 
 @includeUnless($boolean, 'view.name', ['status' => 'complete'])
-Para incluir a primeira visualização que existe a partir de um determinado conjunto de visualizações, você pode usar a includeFirstdiretiva:
+```
 
+Para incluir a primeira visualização que existe a partir de um determinado conjunto de visualizações, você pode usar a diretiva `includeFirst`:
+
+```
 @includeFirst(['custom.admin', 'admin'], ['status' => 'complete'])
+```
 
-Você deve evitar usar as constantes __DIR__e __FILE__em suas visualizações Blade, pois elas se referem à localização da visualização em cache e compilada.
+> Você deve evitar usar as constantes `__DIR__` e `__FILE__` em suas visualizações Blade, pois elas se referem à localização da 
+> visualização em cache e compilada.
 
+#### Renderizando views para coleções
+Você pode combinar loops e includes em uma linha com a diretiva `@each` do Blade:
 
-Renderizando vistas para coleções
-Você pode combinar loops e includes em uma linha com a @eachdiretiva do Blade :
-
+```
 @each('view.name', $jobs, 'job')
-O @eachprimeiro argumento da diretiva é a visualização a ser renderizada para cada elemento na matriz ou coleção. O segundo argumento é a matriz ou coleção sobre a qual deseja iterar, enquanto o terceiro argumento é o nome da variável que será atribuído à iteração atual na visualização. Portanto, por exemplo, se você estiver iterando sobre um array de jobs, normalmente desejará acessar cada trabalho como uma jobvariável dentro da visualização. A chave da matriz para a iteração atual estará disponível como a keyvariável na visualização.
+```
 
-Você também pode passar um quarto argumento para a @eachdiretiva. Este argumento determina a visualização que será renderizada se a matriz fornecida estiver vazia.
+O primeiro argumento da diretiva `@each` é a visualização a ser renderizada para cada elemento na matriz ou coleção. O segundo argumento é a matriz
+ou coleção sobre a qual deseja iterar, enquanto o terceiro argumento é o nome da variável que será atribuído à iteração atual na visualização. Portanto, 
+por exemplo, se você estiver iterando sobre um array de jobs, normalmente desejará acessar cada trabalho como uma variável `job` dentro da visualização. 
+A chave da matriz para a iteração atual estará disponível como a váriavel `key` na view.
 
+Você também pode passar um quarto argumento para a diretiva `@each`. Este argumento determina a visualização que será renderizada se a matriz fornecida 
+estiver vazia.
+
+```
 @each('view.name', $jobs, 'job', 'view.empty')
+```
 
-As visualizações renderizadas por meio de @eachnão herdam as variáveis ​​da visualização pai. Se a visão filha requer essas variáveis, você deve usar as diretivas @foreache em seu @includelugar.
+> As visualizações renderizadas por meio de `@each` não herdam as variáveis da visualização pai. Se a visão filha requer essas variáveis, você deve 
+> usar as diretivas `@foreach` e em seu lugar `@include`.
 
+### A diretriz `@once`
+A diretiva `@once` permite que você defina uma parte do modelo que será avaliada apenas uma vez por ciclo de renderização. Isso pode ser útil para 
+inserir uma determinada parte do JavaScript no cabeçalho da página usando pilhas. Por exemplo, se você estiver renderizando um determinado componente 
+dentro de um loop, pode desejar apenas enviar o JavaScript para o cabeçalho na primeira vez que o componente for renderizado:
 
-A @oncediretriz
-A @oncediretiva permite que você defina uma parte do modelo que será avaliada apenas uma vez por ciclo de renderização. Isso pode ser útil para inserir uma determinada parte do JavaScript no cabeçalho da página usando pilhas . Por exemplo, se você estiver renderizando um determinado componente dentro de um loop, pode desejar apenas enviar o JavaScript para o cabeçalho na primeira vez que o componente for renderizado:
-
+```
 @once
     @push('scripts')
         <script>
@@ -426,30 +460,50 @@ A @oncediretiva permite que você defina uma parte do modelo que será avaliada 
         </script>
     @endpush
 @endonce
-PHP bruto
-Em algumas situações, é útil incorporar o código PHP em suas visualizações. Você pode usar a @phpdiretiva Blade para executar um bloco de PHP simples dentro do seu modelo:
+```
 
+### PHP bruto
+Em algumas situações, é útil incorporar o código PHP em suas visualizações. Você pode usar a diretiva `@php` para executar um bloco de PHP simples 
+dentro do seu modelo:
+
+```
 @php
     $counter = 1;
 @endphp
-Componentes
-Componentes e slots fornecem benefícios semelhantes para seções, layouts e inclui; no entanto, alguns podem achar o modelo mental de componentes e slots mais fácil de entender. Existem duas abordagens para escrever componentes: componentes baseados em classe e componentes anônimos.
+```
 
-Para criar um componente baseado em classe, você pode usar o make:componentcomando Artisan. Para ilustrar como usar componentes, criaremos um Alertcomponente simples . O make:componentcomando colocará o componente no App\View\Componentsdiretório:
+## Componentes
+Componentes e slots fornecem benefícios semelhantes para seções, layouts e includes; no entanto, alguns podem achar o modelo mental de componentes e 
+slots mais fácil de entender. Existem duas abordagens para escrever componentes: componentes baseados em classe e componentes anônimos.
 
+Para criar um componente baseado em classe, você pode usar o comando `make:component` do Artisan. Para ilustrar como usar componentes, criaremos 
+um componente `Alert` simples. O comando `make:component` colocará o componente no diretório `App\View\Components`:
+
+```bash
 php artisan make:component Alert
-O make:componentcomando também criará um modelo de vista para o componente. A visualização será colocada no resources/views/componentsdiretório. Ao escrever componentes para seu próprio aplicativo, os componentes são descobertos automaticamente no app/View/Componentsdiretório e no resources/views/componentsdiretório, portanto, nenhum registro de componente adicional é normalmente necessário.
+```
+
+O comando `make:component` também criará um modelo de view para o componente. A visualização será colocada no diretório `resources/views/components`. 
+Ao escrever componentes para seu próprio aplicativo, os componentes são descobertos automaticamente no diretório `app/View/Components` e no
+diretório `resources/views/components`, portanto, nenhum registro de componente adicional é normalmente necessário.
 
 Você também pode criar componentes dentro de subdiretórios:
 
+```bash
 php artisan make:component Forms/Input
-O comando acima criará um Inputcomponente no App\View\Components\Formsdiretório e a visualização será colocada no resources/views/components/formsdiretório.
+```
 
-Registro manual de componentes do pacote
-Ao escrever componentes para seu próprio aplicativo, os componentes são descobertos automaticamente no app/View/Componentsdiretório e no resources/views/componentsdiretório.
+O comando acima criará um componente `Input` no diretório `App\View\Components\Forms` e a view será colocada no diretório
+`resources/views/components/forms`.
 
-No entanto, se você estiver construindo um pacote que utiliza componentes Blade, precisará registrar manualmente sua classe de componente e seu alias de tag HTML. Normalmente, você deve registrar seus componentes no bootmétodo do provedor de serviços do seu pacote:
+### Registro manual de componentes do pacote
+Ao escrever componentes para seu próprio aplicativo, os componentes são descobertos automaticamente no diretório `app/View/Components` e no
+diretório `resources/views/components`.
 
+No entanto, se você estiver construindo um pacote que utiliza componentes Blade, precisará registrar manualmente sua classe de componente e seu 
+alias de tag HTML. Normalmente, você deve registrar seus componentes no método `boot` do provedor de serviços do seu pacote:
+
+```php
 use Illuminate\Support\Facades\Blade;
 
 /**
@@ -459,11 +513,18 @@ public function boot()
 {
     Blade::component('package-alert', Alert::class);
 }
-Depois que seu componente for registrado, ele pode ser processado usando seu alias de tag:
+```
 
+Depois que seu componente for registrado, ele pode ser processado usando seu apelido (alias) de tag:
+
+```
 <x-package-alert/>
-Alternativamente, você pode usar o componentNamespacemétodo para carregar automaticamente as classes de componentes por convenção. Por exemplo, um Nightshadepacote pode ter Calendare ColorPickercomponentes que residem dentro do Package\Views\Componentsnamespace:
+```
 
+Alternativamente, você pode usar o método `componentNamespace` para carregar automaticamente as classes de componentes por convenção. Por exemplo, 
+um pacote `Nightshade` pode ter os componentes `Calendar` e `ColorPicker` que residem dentro do namespace `Package\Views\Components`:
+
+```php
 use Illuminate\Support\Facades\Blade;
 
 /**
@@ -475,10 +536,15 @@ public function boot()
 {
     Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
 }
-Isso permitirá o uso de componentes de pacote pelo namespace de seu fornecedor usando a package-name::sintaxe:
+```
 
+Isso permitirá o uso de componentes de pacote pelo namespace de seu fornecedor usando a sintaxe `package-name::`:
+
+```
 <x-nightshade::calendar />
 <x-nightshade::color-picker />
+```
+
 O Blade detectará automaticamente a classe que está vinculada a este componente, casando em pascal o nome do componente. Subdiretórios também são suportados usando a notação de "ponto".
 
 Componentes de renderização
