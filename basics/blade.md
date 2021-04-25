@@ -1030,17 +1030,31 @@ php artisan make:component Alert --inline
 ```
 
 ### Componentes Anônimos
-Semelhante aos componentes embutidos, os componentes anônimos fornecem um mecanismo para gerenciar um componente por meio de um único arquivo. No entanto, os componentes anônimos utilizam um único arquivo de visualização e não têm nenhuma classe associada. Para definir um componente anônimo, você só precisa colocar um modelo Blade em seu resources/views/componentsdiretório. Por exemplo, supondo que você definiu um componente em resources/views/components/alert.blade.php, você pode simplesmente renderizá-lo assim:
+Semelhante aos componentes embutidos, os componentes anônimos fornecem um mecanismo para gerenciar um componente por meio de um único arquivo. 
+No entanto, os componentes anônimos utilizam um único arquivo de visualização e não têm nenhuma classe associada. Para definir um componente 
+anônimo, você só precisa colocar um modelo Blade em seu diretório `resources/views/components`. Por exemplo, supondo que você definiu um componente 
+em `resources/views/components/alert.blade.php`, você pode simplesmente renderizá-lo assim:
 
+```
 <x-alert/>
-Você pode usar o .caractere para indicar se um componente está aninhado mais profundamente no componentsdiretório. Por exemplo, supondo que o componente esteja definido em resources/views/components/inputs/button.blade.php, você pode renderizá-lo assim:
+```
 
+Você pode usar o caractere `.` para indicar se um componente está aninhado mais profundamente no diretório `components`. Por exemplo, supondo que 
+o componente esteja definido em `resources/views/components/inputs/button.blade.php`, você pode renderizá-lo assim:
+
+```
 <x-inputs.button/>
-Propriedades / atributos de dados
-Como os componentes anônimos não têm nenhuma classe associada, você pode se perguntar como pode diferenciar quais dados devem ser passados ​​para o componente como variáveis ​​e quais atributos devem ser colocados no pacote de atributos do componente .
+```
 
-Você pode especificar quais atributos devem ser considerados variáveis ​​de dados usando a @propsdiretiva na parte superior do modelo Blade do seu componente. Todos os outros atributos do componente estarão disponíveis por meio do pacote de atributos do componente. Se você deseja dar a uma variável de dados um valor padrão, você pode especificar o nome da variável como a chave da matriz e o valor padrão como o valor da matriz:
+### Propriedades/atributos de dados
+Como os componentes anônimos não têm nenhuma classe associada, você pode se perguntar como pode diferenciar quais dados devem ser passados para 
+o componente como variáveis e quais atributos devem ser colocados no pacote de atributos do componente.
 
+Você pode especificar quais atributos devem ser considerados variáveis de dados usando a diretiva `@props` na parte superior do modelo Blade do 
+seu componente. Todos os outros atributos do componente estarão disponíveis por meio do pacote de atributos do componente. Se você deseja dar a 
+uma variável de dados um valor padrão, você pode especificar o nome da variável como a chave da matriz e o valor padrão como o valor da matriz:
+
+```
 <!-- /resources/views/components/alert.blade.php -->
 
 @props(['type' => 'info', 'message'])
@@ -1048,22 +1062,37 @@ Você pode especificar quais atributos devem ser considerados variáveis ​​d
 <div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }}>
     {{ $message }}
 </div>
+```
+
 Dada a definição de componente acima, podemos renderizar o componente assim:
 
+```
 <x-alert type="error" :message="$message" class="mb-4"/>
-Componentes Dinâmicos
-Às vezes, você pode precisar renderizar um componente, mas não saber qual componente deve ser renderizado até o tempo de execução. Nesta situação, você pode usar o dynamic-componentcomponente embutido do Laravel para renderizar o componente baseado em um valor ou variável de tempo de execução:
+```
 
+### Componentes Dinâmicos
+Às vezes, você pode precisar renderizar um componente, mas não saber qual componente deve ser renderizado até o tempo de execução. 
+Nesta situação, você pode usar o componente `dynamic-component` embutido do Laravel para renderizar o componente baseado em um valor 
+ou variável de tempo de execução:
+
+```
 <x-dynamic-component :component="$componentName" class="mt-4" />
-Registrando componentes manualmente
+```
 
-A seguinte documentação sobre o registro manual de componentes é principalmente aplicável para aqueles que estão escrevendo pacotes Laravel que incluem componentes de visão. Se você não estiver escrevendo um pacote, esta parte da documentação do componente pode não ser relevante para você.
+### Registrando componentes manualmente
 
+> A seguinte documentação sobre o registro manual de componentes é principalmente aplicável para aqueles que estão escrevendo pacotes Laravel 
+> que incluem componentes de visualização. Se você não estiver escrevendo um pacote, esta parte da documentação do componente pode não ser 
+> relevante para você.
 
-Ao escrever componentes para seu próprio aplicativo, os componentes são descobertos automaticamente no app/View/Componentsdiretório e no resources/views/componentsdiretório.
+Ao escrever componentes para seu próprio aplicativo, os componentes são descobertos automaticamente no diretório `app/View/Components` e no
+diretório `resources/views/components`.
 
-Porém, se você estiver construindo um pacote que utiliza componentes Blade ou colocando componentes em diretórios não convencionais, você precisará registrar manualmente sua classe de componente e seu alias de tag HTML para que o Laravel saiba onde encontrar o componente. Normalmente, você deve registrar seus componentes no bootmétodo do provedor de serviços do seu pacote:
+Porém, se você estiver construindo um pacote que utiliza componentes Blade ou colocando componentes em diretórios não convencionais, você precisará 
+registrar manualmente sua classe de componente e seu alias de tag HTML para que o Laravel saiba onde encontrar o componente. Normalmente, você deve 
+registrar seus componentes no método `boot` do provedor de serviços do seu pacote:
 
+```php
 use Illuminate\Support\Facades\Blade;
 use VendorPackage\View\Components\AlertComponent;
 
@@ -1076,12 +1105,19 @@ public function boot()
 {
     Blade::component('package-alert', AlertComponent::class);
 }
+```
+
 Depois que seu componente for registrado, ele pode ser processado usando seu alias de tag:
 
+```
 <x-package-alert/>
-Carregamento automático de componentes do pacote
-Alternativamente, você pode usar o componentNamespacemétodo para carregar automaticamente as classes de componentes por convenção. Por exemplo, um Nightshadepacote pode ter Calendare ColorPickercomponentes que residem dentro do Package\Views\Componentsnamespace:
+```
 
+#### Carregamento automático de componentes do pacote
+Alternativamente, você pode usar o método `componentNamespace` para carregar automaticamente as classes de componentes por convenção. 
+Por exemplo, um pacote `Nightshade` pode ter os componentes `Calendar` e `ColorPicker` que residem dentro do namespace `Package\Views\Components`:
+
+```php
 use Illuminate\Support\Facades\Blade;
 
 /**
@@ -1093,19 +1129,29 @@ public function boot()
 {
     Blade::componentNamespace('Nightshade\\Views\\Components', 'nightshade');
 }
-Isso permitirá o uso de componentes de pacote pelo namespace de seu fornecedor usando a package-name::sintaxe:
+```
 
+Isso permitirá o uso de componentes de pacote pelo namespace de seu fornecedor usando a sintaxe `package-name::`:
+
+```
 <x-nightshade::calendar />
 <x-nightshade::color-picker />
-O Blade detectará automaticamente a classe que está vinculada a este componente, casando em pascal o nome do componente. Subdiretórios também são suportados usando a notação de "ponto".
+```
 
-Layouts de construção
-Layouts usando componentes
-A maioria dos aplicativos da web mantém o mesmo layout geral em várias páginas. Seria incrivelmente complicado e difícil manter nosso aplicativo se tivéssemos que repetir todo o layout HTML em cada visualização que criamos. Felizmente, é conveniente definir esse layout como um único componente Blade e, em seguida, usá-lo em todo o nosso aplicativo.
+O Blade detectará automaticamente a classe que está vinculada a este componente, casando em pascal o nome do componente. Subdiretórios também são 
+suportados usando a notação de "ponto".
 
-Definindo o Componente de Layout
-Por exemplo, imagine que estamos construindo um aplicativo de lista de "tarefas". Podemos definir um layoutcomponente parecido com o seguinte:
+## Layouts de construção
 
+### Layouts usando componentes
+A maioria dos aplicativos da web mantém o mesmo layout geral em várias páginas. Seria muito complicado e difícil manter nosso aplicativo se tivéssemos 
+que repetir todo o layout HTML em cada visualização que criamos. Felizmente, é conveniente definir esse layout como um único componente Blade e, 
+em seguida, usá-lo em todo o nosso aplicativo.
+
+#### Definindo o Componente de Layout
+Por exemplo, imagine que estamos construindo um aplicativo de lista de "tarefas". Podemos definir um componente `layout` parecido com o seguinte:
+
+```
 <!-- resources/views/components/layout.blade.php -->
 
 <html>
@@ -1118,9 +1164,13 @@ Por exemplo, imagine que estamos construindo um aplicativo de lista de "tarefas"
         {{ $slot }}
     </body>
 </html>
-Aplicando o Componente de Layout
-Uma vez que o layoutcomponente foi definido, podemos criar uma visualização Blade que utiliza o componente. Neste exemplo, definiremos uma visualização simples que exibe nossa lista de tarefas:
+```
 
+#### Aplicando o Componente de Layout
+Uma vez que o componente `layout` foi definido, podemos criar uma visualização Blade que utiliza este componente. Neste exemplo, definiremos uma 
+visualização simples que exibe nossa lista de tarefas:
+
+```
 <!-- resources/views/tasks.blade.php -->
 
 <x-layout>
@@ -1128,8 +1178,13 @@ Uma vez que o layoutcomponente foi definido, podemos criar uma visualização Bl
         {{ $task }}
     @endforeach
 </x-layout>
-Lembre-se de que o conteúdo injetado em um componente será fornecido à $slotvariável padrão em nosso layoutcomponente. Como você deve ter notado, layouttambém respeita um $titleslot, se houver; caso contrário, um título padrão é mostrado. Podemos injetar um título personalizado de nossa visualização de lista de tarefas usando a sintaxe de slot padrão discutida na documentação do componente :
+```
 
+Lembre-se de que o conteúdo injetado em um componente será fornecido à variável `$slot` padrão em nosso componente `layout`. Como você deve ter 
+notado, `layout` também detém um slot `$title`, se houver; caso contrário, um título padrão é mostrado. Podemos injetar um título personalizado 
+de nossa visualização de lista de tarefas usando a sintaxe de slot padrão discutida na documentação do componente:
+
+```
 <!-- resources/views/tasks.blade.php -->
 
 <x-layout>
@@ -1141,19 +1196,28 @@ Lembre-se de que o conteúdo injetado em um componente será fornecido à $slotv
         {{ $task }}
     @endforeach
 </x-layout>
-Agora que definimos nosso layout e visualizações de lista de tarefas, só precisamos retornar a taskvisualização de uma rota:
+```
 
+Agora que definimos nosso layout e visualizações de lista de tarefas, só precisamos retornar a view `task` de uma rota:
+
+```
 use App\Models\Task;
 
 Route::get('/tasks', function () {
     return view('tasks', ['tasks' => Task::all()]);
 });
-Layouts usando herança de modelo
-Definindo um Layout
-Os layouts também podem ser criados por meio de "herança de modelo". Essa era a principal forma de criar aplicativos antes da introdução dos componentes .
+```
 
-Para começar, vamos dar uma olhada em um exemplo simples. Primeiro, examinaremos um layout de página. Como a maioria dos aplicativos da web mantém o mesmo layout geral em várias páginas, é conveniente definir esse layout como uma única visualização Blade:
+### Layouts usando herança de modelo
 
+#### Definindo um Layout
+Os layouts também podem ser criados por meio de "herança de modelo". Essa era a principal forma de criar aplicativos antes da introdução 
+dos componentes.
+
+Para começar, vamos dar uma olhada em um exemplo simples. Primeiro, examinaremos um layout de página. Como a maioria dos aplicativos da web 
+mantém o mesmo layout geral em várias páginas, é conveniente definir esse layout como uma única visualização Blade:
+
+```
 <!-- resources/views/layouts/app.blade.php -->
 
 <html>
@@ -1170,13 +1234,19 @@ Para começar, vamos dar uma olhada em um exemplo simples. Primeiro, examinaremo
         </div>
     </body>
 </html>
-Como você pode ver, este arquivo contém marcação HTML típica. No entanto, observe as diretivas @sectione @yield. A @sectiondiretiva, como o nome indica, define uma seção de conteúdo, enquanto a @yielddiretiva é usada para exibir o conteúdo de uma determinada seção.
+```
+
+Como você pode ver, este arquivo contém marcação HTML típica. No entanto, observe as diretivas `@section` e `@yield`. A diretiva `@section`, como 
+o nome indica, define uma seção de conteúdo, enquanto a diretiva `@yield` é usada para exibir o conteúdo de uma determinada seção.
 
 Agora que definimos um layout para nosso aplicativo, vamos definir uma página filha que herda o layout.
 
-Estendendo um Layout
-Ao definir uma visualização filha, use a @extendsdiretiva Blade para especificar qual layout a visualização filha deve "herdar". As visualizações que estendem um layout Blade podem injetar conteúdo nas seções do layout usando @sectiondiretivas. Lembre-se, conforme visto no exemplo acima, o conteúdo dessas seções será exibido no layout usando @yield:
+### Estendendo um Layout
+Ao definir uma visualização filha, use a diretiva `@extends` do Blade para especificar qual layout a visualização filha deve "herdar". As 
+visualizações que estendem um layout Blade podem injetar conteúdo nas seções do layout usando diretivas `@section`. Lembre-se, conforme visto 
+no exemplo acima, o conteúdo dessas seções será exibido no layout usando `@yield`:
 
+```
 <!-- resources/views/child.blade.php -->
 
 @extends('layouts.app')
@@ -1192,35 +1262,52 @@ Ao definir uma visualização filha, use a @extendsdiretiva Blade para especific
 @section('content')
     <p>This is my body content.</p>
 @endsection
-Neste exemplo, a sidebarseção está utilizando a @parentdiretiva para anexar (em vez de sobrescrever) conteúdo à barra lateral do layout. A @parentdiretiva será substituída pelo conteúdo do layout quando a visualização for renderizada.
+```
+
+Neste exemplo, a seção `sidebar` está utilizando a diretiva `@parent` para anexar (em vez de sobrescrever) conteúdo à barra lateral do layout. 
+A diretiva `@parent` será substituída pelo conteúdo do layout quando a visualização for renderizada.
 
 
-Ao contrário do exemplo anterior, esta sidebarseção termina com em @endsectionvez de @show. A @endsectiondiretiva apenas definirá uma seção, enquanto @showdefinirá e produzirá imediatamente a seção.
+> Ao contrário do exemplo anterior, esta seção `sidebar` termina com `@endsection` em vez de `@show`. A diretiva `@endsection` apenas definirá 
+> uma seção, enquanto `@show` definirá e produzirá imediatamente a seção.
 
+A diretiva `@yield` também aceita um valor padrão como seu segundo parâmetro. Este valor será processado se a seção gerada for indefinida:
 
-A @yielddiretiva também aceita um valor padrão como seu segundo parâmetro. Este valor será processado se a seção gerada for indefinida:
-
+```
 @yield('content', 'Default content')
-Formulários
-Campo CSRF
-Sempre que definir um formulário HTML em seu aplicativo, você deve incluir um campo de token CSRF oculto no formulário para que o middleware de proteção CSRF possa validar a solicitação. Você pode usar a @csrfdiretiva Blade para gerar o campo de token:
+```
 
+## Formulários
+
+### Campo CSRF
+Sempre que definir um formulário HTML em seu aplicativo, você deve incluir um campo de token CSRF oculto no formulário para que o 
+middleware de proteção CSRF possa validar a solicitação. Você pode usar a diretiva `@csrf` Blade para gerar o campo de token:
+
+```
 <form method="POST" action="/profile">
     @csrf
 
     ...
 </form>
-Campo de Método
-Desde formulários HTML não pode fazer PUT, PATCHou DELETEsolicitações, você vai precisar adicionar uma escondida _methodcampo para falsificar estes HTTP verbos. A @methoddiretiva Blade pode criar este campo para você:
+```
 
+### Campo de Método
+Desde quando formulários HTML existem você não pode fazer solicitações `PUT`, `PATCH` ou `DELETE`, você vai precisar adicionar um campo 
+oculto `_method` para falsificar estes verbos HTTP. A diretiva `@method` Blade pode criar este campo para você:
+
+```
 <form action="/foo/bar" method="POST">
     @method('PUT')
 
     ...
 </form>
-Erros de Validação
-A @errordiretiva pode ser usada para verificar rapidamente se existem mensagens de erro de validação para um determinado atributo. Dentro de uma @errordiretiva, você pode ecoar a $messagevariável para exibir a mensagem de erro:
+```
 
+### Erros de Validação
+A diretiva `@error` pode ser usada para verificar rapidamente se existem mensagens de erro de validação para um determinado atributo. 
+Dentro de uma diretiva `@error`, você pode ecoar a variável `$message` para exibir a mensagem de erro:
+
+```
 <!-- /resources/views/post/create.blade.php -->
 
 <label for="title">Post Title</label>
@@ -1230,8 +1317,12 @@ A @errordiretiva pode ser usada para verificar rapidamente se existem mensagens 
 @error('title')
     <div class="alert alert-danger">{{ $message }}</div>
 @enderror
-Você pode passar o nome de um pacote de erros específico como o segundo parâmetro da @errordiretiva para recuperar mensagens de erro de validação em páginas que contêm vários formulários:
+```
 
+Você pode passar o nome de um pacote de erros específico como o segundo parâmetro da diretiva `@error` para recuperar mensagens de erro de 
+validação em páginas que contêm vários formulários:
+
+```
 <!-- /resources/views/auth.blade.php -->
 
 <label for="email">Email address</label>
@@ -1241,21 +1332,32 @@ Você pode passar o nome de um pacote de erros específico como o segundo parâm
 @error('email', 'login')
     <div class="alert alert-danger">{{ $message }}</div>
 @enderror
-Pilhas
-O Blade permite que você envie para pilhas nomeadas que podem ser renderizadas em outro lugar em outra visualização ou layout. Isso pode ser particularmente útil para especificar quaisquer bibliotecas JavaScript exigidas por suas visualizações filhas:
+```
 
+### Pilhas
+O Blade permite que você envie "pilhas" nomeadas que podem ser renderizadas em outra visualização ou layout. Isso pode ser particularmente útil 
+para especificar quaisquer bibliotecas JavaScript exigidas por suas visualizações filhas:
+
+```
 @push('scripts')
     <script src="/example.js"></script>
 @endpush
-Você pode empurrar para uma pilha quantas vezes forem necessárias. Para renderizar o conteúdo completo da pilha, passe o nome da pilha para a @stackdiretiva:
+```
 
+Você pode empurrar uma pilha quantas vezes forem necessárias. Para renderizar o conteúdo completo da pilha, passe o nome da pilha para a 
+diretiva `@stack`:
+
+```
 <head>
     <!-- Head Contents -->
 
     @stack('scripts')
 </head>
-Se você gostaria de preceder o conteúdo no início de uma pilha, você deve usar a @prependdiretiva:
+```
 
+Se você gostaria de preceder o conteúdo no início de uma pilha, você deve usar a diretiva `@prepend`:
+
+```
 @push('scripts')
     This will be second...
 @endpush
@@ -1265,19 +1367,27 @@ Se você gostaria de preceder o conteúdo no início de uma pilha, você deve us
 @prepend('scripts')
     This will be first...
 @endprepend
-Injeção de serviço
-A @injectdiretiva pode ser usada para recuperar um serviço do container de serviço do Laravel . O primeiro argumento transmitido @injecté o nome da variável em que o serviço será colocado, enquanto o segundo argumento é a classe ou nome da interface do serviço que você deseja resolver:
+```
 
+## Injeção de serviço
+A diretiva `@inject` pode ser usada para recuperar um serviço do container do Laravel. O primeiro argumento transmitido para `@inject` é o nome da variável 
+em que o serviço será colocado, enquanto o segundo argumento é a classe ou nome da interface do serviço que você deseja resolver:
+
+```
 @inject('metrics', 'App\Services\MetricsService')
 
 <div>
     Monthly Revenue: {{ $metrics->monthlyRevenue() }}.
 </div>
-Lâmina de extensão
-O Blade permite que você defina suas próprias diretivas personalizadas usando o directivemétodo. Quando o compilador Blade encontra a diretiva personalizada, ele chama o retorno de chamada fornecido com a expressão que a diretiva contém.
+```
 
-O exemplo a seguir cria uma @datetime($var)diretiva que formata um dado $var, que deve ser uma instância de DateTime:
+### Extendendo as Blades
+O Blade permite que você defina suas próprias diretivas personalizadas usando o método `directive`. Quando o compilador Blade encontra a 
+diretiva personalizada, ele chama o retorno de chamada fornecido com a expressão que a diretiva contém.
 
+O exemplo a seguir cria uma diretiva `@datetime($var)` que formata um dado `$var` e que deve ser uma instância de `DateTime`:
+
+```php
 <?php
 
 namespace App\Providers;
@@ -1309,16 +1419,25 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 }
-Como você pode ver, iremos encadear o formatmétodo em qualquer expressão que seja passada para a diretiva. Portanto, neste exemplo, o PHP final gerado por esta diretiva será:
+```
 
+Como você pode ver, iremos encadear o método `format` em qualquer expressão que seja passada para a diretiva. Portanto, neste exemplo, 
+o PHP final gerado por esta diretiva será:
+
+```
 <?php echo ($var)->format('m/d/Y H:i'); ?>
+```
 
-Após atualizar a lógica de uma diretiva do Blade, você precisará excluir todas as visualizações do Blade em cache. As visualizações Blade em cache podem ser removidas usando o view:clearcomando Artisan.
+> Após atualizar a lógica de uma diretiva do Blade, você precisará excluir todas as visualizações do Blade em cache. As visualizações Blade em 
+> cache podem ser removidas usando o comando `view:clear` no Artisan.
 
+#### Instruções If personalizadas
+Programar uma diretiva personalizada às vezes é mais complexo do que o necessário ao definir instruções condicionais simples e personalizadas. 
+Por esse motivo, o Blade fornece um método `Blade::if` que permite definir rapidamente diretivas condicionais personalizadas usando closures. 
+Por exemplo, vamos definir uma condicional personalizada que verifica o "disco" padrão configurado para o aplicativo. Podemos fazer isso no 
+método `boot` de nosso `AppServiceProvider`:
 
-Instruções If personalizadas
-Programar uma diretiva personalizada às vezes é mais complexo do que o necessário ao definir instruções condicionais simples e personalizadas. Por esse motivo, o Blade fornece um Blade::ifmétodo que permite definir rapidamente diretivas condicionais personalizadas usando fechamentos. Por exemplo, vamos definir uma condicional personalizada que verifica o "disco" padrão configurado para o aplicativo. Podemos fazer isso no bootmétodo de nosso AppServiceProvider:
-
+```php
 use Illuminate\Support\Facades\Blade;
 
 /**
@@ -1332,8 +1451,11 @@ public function boot()
         return config('filesystems.default') === $value;
     });
 }
+```
+
 Depois que a condicional personalizada for definida, você pode usá-la em seus modelos:
 
+```
 @disk('local')
     <!-- The application is using the local disk... -->
 @elsedisk('s3')
@@ -1345,3 +1467,4 @@ Depois que a condicional personalizada for definida, você pode usá-la em seus 
 @unlessdisk('local')
     <!-- The application is not using the local disk... -->
 @enddisk
+```
