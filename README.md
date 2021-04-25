@@ -26,7 +26,7 @@
 + [Solicitações HTTP](/basics/request.md)
 + [Respostas](/basics/responses.md)
 + [Views](/basics/views.md)
-+ Blades
++ [Blades](/basics/blade.md)
 + Geração de URL
 + Sessão
 + Validação
