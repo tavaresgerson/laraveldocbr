@@ -77,7 +77,7 @@
 
 ## Testando
 + Começando
-+ Teste no HTTP
++ [Teste no HTTP](/testing/http-tests.md)
 + Teste no Console
 + Teste no navegador
 + Base de dados
