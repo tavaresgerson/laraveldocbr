@@ -1,9 +1,9 @@
-# HTTP Redirects
+# Redirecionamentos de HTTP
 
 <a name="creating-redirects"></a>
-## Creating Redirects
+## Criar reencaminhamentos
 
-Redirect responses are instances of the `Illuminate\Http\RedirectResponse` class, and contain the proper headers needed to redirect the user to another URL. There are several ways to generate a `RedirectResponse` instance. The simplest method is to use the global `redirect` helper:
+ As respostas de redirecionamento são instâncias da classe `Illuminate\Http\RedirectResponse`, e contêm os cabeçalhos adequados necessários para redirecionar o usuário para outro URL. Há várias maneiras de gerar uma instância de `RedirectResponse`. O método mais simples é usar o auxiliar global `redirect`:
 
 ```php
     Route::get('/dashboard', function () {
@@ -11,7 +11,7 @@ Redirect responses are instances of the `Illuminate\Http\RedirectResponse` class
     });
 ```
 
-Sometimes you may wish to redirect the user to their previous location, such as when a submitted form is invalid. You may do so by using the global `back` helper function. Since this feature utilizes the [session](/docs/{{version}}/session), make sure the route calling the `back` function is using the `web` middleware group or has all of the session middleware applied:
+ Às vezes, pode ser necessário redirecionar o usuário para a sua localização anterior, como por exemplo quando um formulário submetido for inválido. Pode fazê-lo utilizando a função de ajuda global `back`. Uma vez que este recurso utiliza as [sessões](/docs/v1/pt-BR/session), certifique-se de que a rota que chama a função `back` utilize o grupo de middleware `web` ou tenha aplicado todo o middleware `session`:
 
 ```php
     Route::post('/user/profile', function () {
@@ -22,15 +22,15 @@ Sometimes you may wish to redirect the user to their previous location, such as 
 ```
 
 <a name="redirecting-named-routes"></a>
-## Redirecting To Named Routes
+## Redirecionamento para rotas com nomes
 
-When you call the `redirect` helper with no parameters, an instance of `Illuminate\Routing\Redirector` is returned, allowing you to call any method on the `Redirector` instance. For example, to generate a `RedirectResponse` to a named route, you may use the `route` method:
+ Quando você chama o helper `redirect` sem parâmetros, uma instância do objeto `Illuminate\Routing\Redirector` é devolvida, permitindo que você chame qualquer método da instância `Redirector`. Por exemplo, para gerar uma resposta `RedirectResponse` para uma rota nomeada, você pode usar o método `route`:
 
 ```php
     return redirect()->route('login');
 ```
 
-If your route has parameters, you may pass them as the second argument to the `route` method:
+ Se sua rota tiver parâmetros, você pode passá-los como o segundo argumento ao método `route`:
 
 ```php
     // For a route with the following URI: profile/{id}
@@ -38,16 +38,16 @@ If your route has parameters, you may pass them as the second argument to the `r
     return redirect()->route('profile', ['id' => 1]);
 ```
 
-For convenience, Laravel also offers the global `to_route` function:
+ Por conveniência, o Laravel também oferece a função global `to_route`:
 
 ```php
     return to_route('profile', ['id' => 1]);
 ```
 
 <a name="populating-parameters-via-eloquent-models"></a>
-#### Populating Parameters Via Eloquent Models
+#### População de parâmetros via modelos da Eloquent
 
-If you are redirecting to a route with an "ID" parameter that is being populated from an Eloquent model, you may pass the model itself. The ID will be extracted automatically:
+ Se você estiver redirecionando para uma rota com um parâmetro "ID", que está sendo preenchido a partir de um modelo Eloquent, você pode passar o próprio modelo. O ID será extraído automaticamente:
 
 ```php
     // For a route with the following URI: profile/{id}
@@ -55,7 +55,7 @@ If you are redirecting to a route with an "ID" parameter that is being populated
     return redirect()->route('profile', [$user]);
 ```
 
-If you would like to customize the value that is placed in the route parameter, you should override the `getRouteKey` method on your Eloquent model:
+ Se você gostaria de personalizar o valor que é colocado no parâmetro de rota, você deve substituir a metodologia `getRouteKey` do seu modelo Eloquent:
 
 ```php
     /**
@@ -68,9 +68,9 @@ If you would like to customize the value that is placed in the route parameter, 
 ```
 
 <a name="redirecting-controller-actions"></a>
-## Redirecting To Controller Actions
+## Redirecionando para ações de controladores
 
-You may also generate redirects to [controller actions](/docs/{{version}}/controllers). To do so, pass the controller and action name to the `action` method:
+ Você também pode criar redirecionamentos para ações do [controlador] (/). Para isso, informe o nome do controlador e da ação no método `action`:
 
 ```php
     use App\Http\Controllers\HomeController;
@@ -78,7 +78,7 @@ You may also generate redirects to [controller actions](/docs/{{version}}/contro
     return redirect()->action([HomeController::class, 'index']);
 ```
 
-If your controller route requires parameters, you may pass them as the second argument to the `action` method:
+ Se a rota do seu controlador exigir parâmetros, você pode passá-los como o segundo argumento para o método `action`:
 
 ```php
     return redirect()->action(
@@ -87,9 +87,9 @@ If your controller route requires parameters, you may pass them as the second ar
 ```
 
 <a name="redirecting-with-flashed-session-data"></a>
-## Redirecting With Flashed Session Data
+## Redirecionamento com dados de sessão exibidos
 
-Redirecting to a new URL and [flashing data to the session](/docs/{{version}}/session#flash-data) are usually done at the same time. Typically, this is done after successfully performing an action when you flash a success message to the session. For convenience, you may create a `RedirectResponse` instance and flash data to the session in a single, fluent method chain:
+ O redirecionamento para uma nova URL e o [flash de dados para a sessão](/docs/{{version}}/session#flash-data) são normalmente realizados ao mesmo tempo. Normalmente, isto é feito após ter executado com sucesso uma ação quando flasha uma mensagem de sucesso na sessão. Para maior conveniência, poderá criar uma instância `RedirectResponse` e flashar dados para a sessão num único método fluente:
 
 ```php
     Route::post('/user/profile', function () {
@@ -99,13 +99,13 @@ Redirecting to a new URL and [flashing data to the session](/docs/{{version}}/se
     });
 ```
 
-You may use the `withInput` method provided by the `RedirectResponse` instance to flash the current request's input data to the session before redirecting the user to a new location. Once the input has been flashed to the session, you may easily [retrieve it](/docs/{{version}}/requests#retrieving-old-input) during the next request:
+ Você pode usar o método `withInput` fornecido pela instância de `RedirectResponse` para enviar os dados de entrada da solicitação atual para a sessão antes de redirecionar o usuário para um novo local. Depois que os dados de entrada tiverem sido enviados para a sessão, você poderá recuperá-los facilmente durante a próxima solicitação:
 
 ```php
     return back()->withInput();
 ```
 
-After the user is redirected, you may display the flashed message from the [session](/docs/{{version}}/session). For example, using [Blade syntax](/docs/{{version}}/blade):
+ Após encaminhar o usuário para a página desejada, você poderá mostrar uma mensagem exibida no [sessão] (/) utilizando a sintaxe Blade (/docs/{{version}}/blade). Por exemplo:
 
 ```blade
     @if (session('status'))

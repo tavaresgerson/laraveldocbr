@@ -1,65 +1,65 @@
-# Request Lifecycle
+# Ciclo de Vida do Pedido
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-When using any tool in the "real world", you feel more confident if you understand how that tool works. Application development is no different. When you understand how your development tools function, you feel more comfortable and confident using them.
+ Ao usar uma ferramenta no "mundo real", você se sente mais confiante quando entende como aquele instrumento funciona. O desenvolvimento de aplicativos não é diferente. Quando você compreende o funcionamento das ferramentas de desenvolvimento, se sente mais confortável e seguro ao utilizá-las.
 
-The goal of this document is to give you a good, high-level overview of how the Laravel framework works. By getting to know the overall framework better, everything feels less "magical" and you will be more confident building your applications. If you don't understand all of the terms right away, don't lose heart! Just try to get a basic grasp of what is going on, and your knowledge will grow as you explore other sections of the documentation.
+ O objetivo deste documento é dar-lhe uma boa visão geral do funcionamento do framework Laravel. Conhecendo melhor o conjunto global de recursos, tudo parecerá menos "mágico" e você estará mais confiante ao criar suas aplicações. Se não entender alguns termos imediatamente, não se desespere! Tente ter uma noção básica do que está a acontecer e sua experiência crescerá à medida que explorar outros conteúdos da documentação.
 
 <a name="lifecycle-overview"></a>
-## Lifecycle Overview
+## Visão geral do ciclo de vida
 
 <a name="first-steps"></a>
-### First Steps
+### Primeiros passos
 
-The entry point for all requests to a Laravel application is the `public/index.php` file. All requests are directed to this file by your web server (Apache / Nginx) configuration. The `index.php` file doesn't contain much code. Rather, it is a starting point for loading the rest of the framework.
+ O ponto de entrada para todas as solicitações na aplicação Laravel é o arquivo public/index.php. Todas as solicitações são encaminhadas para este arquivo pela configuração do servidor web (Apache / Nginx). O arquivo index.php não contém muitos códigos, ele simplesmente serve como ponto de partida para carregar o restante do framework.
 
-The `index.php` file loads the Composer generated autoloader definition, and then retrieves an instance of the Laravel application from `bootstrap/app.php`. The first action taken by Laravel itself is to create an instance of the application / [service container](/docs/container).
+ O arquivo `index.php` carrega a definição do autoloader gerado pelo Composer e, em seguida, recupera uma instância da aplicação Laravel de `bootstrap/app.php`. A primeira ação realizada pela própria Laravel é criar uma instância da aplicação/conjunto de serviços (container).
 
 <a name="http-console-kernels"></a>
-### HTTP / Console Kernels
+### HTTP / Consolas de Kernel
 
-Next, the incoming request is sent to either the HTTP kernel or the console kernel, using the `handleRequest` or `handleCommand` methods of the application instance, depending on the type of request entering the application. These two kernels serve as the central location through which all requests flow. For now, let's just focus on the HTTP kernel, which is an instance of `Illuminate\Foundation\Http\Kernel`.
+ Em seguida, o pedido recebido é enviado ao kernel de HTTP ou ao kernel da consola, utilizando os métodos `handleRequest` ou `handleCommand` da instância da aplicação, dependendo do tipo de pedido que entra na aplicação. Estes dois kernels servem como localização central através da qual todos os pedidos fluem. Por enquanto, vamos nos concentrar apenas no kernel HTTP, uma instância do `Illuminate\Foundation\Http\Kernel`.
 
-The HTTP kernel defines an array of `bootstrappers` that will be run before the request is executed. These bootstrappers configure error handling, configure logging, [detect the application environment](/docs/configuration#environment-configuration), and perform other tasks that need to be done before the request is actually handled. Typically, these classes handle internal Laravel configuration that you do not need to worry about.
+ O kernel HTTP define um array de `bootstrappers` que serão executados antes da execução do pedido. Esses bootstrappers configuram o controle de erros, configuram a logon, [detectam o ambiente da aplicação](/docs/configuration#environment-configuration), e realizam outras tarefas que precisam ser feitas antes que o pedido seja realmente processado. Normalmente, essas classes controlam a configuração interna do Laravel com as quais você não tem necessariamente que se preocupar.
 
-The HTTP kernel is also responsible for passing the request through the application's middleware stack. These middleware handle reading and writing the [HTTP session](/docs/session), determining if the application is in maintenance mode, [verifying the CSRF token](/docs/csrf), and more. We'll talk more about these soon.
+ O kernel HTTP também é responsável por passar o pedido através da pilha de middleware do aplicativo. Esses middlewares lidam com a leitura e escrita na sessão [HTTP](/docs/session), determinando se o aplicativo está em modo de manutenção, [verificando o token CSRF](/docs/csrf) e muito mais. Falaremos melhor sobre isso brevemente.
 
-The method signature for the HTTP kernel's `handle` method is quite simple: it receives a `Request` and returns a `Response`. Think of the kernel as being a big black box that represents your entire application. Feed it HTTP requests and it will return HTTP responses.
+ A assinatura da método para o kernel do HTTP `handle` é bastante simples. Ela recebe um `Request` e retorna uma `Response`. Pense no kernel como sendo uma grande caixa preta que representa toda a sua aplicação. Forneça-lhe solicitações HTTP e ele irá retornar respostas HTTP.
 
 <a name="service-providers"></a>
-### Service Providers
+### Prestadores de serviços
 
-One of the most important kernel bootstrapping actions is loading the [service providers](/docs/providers) for your application. Service providers are responsible for bootstrapping all of the framework's various components, such as the database, queue, validation, and routing components.
+ Uma das ações de inicialização do kernel mais importantes é carregar os [provedores de serviço] (/docs/providers) para sua aplicação. Os provedores de serviços são responsáveis por inicializar todos os vários componentes do framework, tais como o componente de banco de dados, fila, validação e roteamento.
 
-Laravel will iterate through this list of providers and instantiate each of them. After instantiating the providers, the `register` method will be called on all of the providers. Then, once all of the providers have been registered, the `boot` method will be called on each provider. This is so service providers may depend on every container binding being registered and available by the time their `boot` method is executed.
+ O Laravel irá iterar esta lista de provedores e instanciar cada um deles. Após a instânciação dos provedores, o método `register` será chamado em todos eles. Em seguida, depois que todos os provedores tiverem sido registrados, o método `boot` será chamado em cada provedor. Isso é necessário para que os provedores de serviços possam depender da vinculação a todo contêiner estar registrada e disponível no momento em que seu método `boot` for executado.
 
-Essentially every major feature offered by Laravel is bootstrapped and configured by a service provider. Since they bootstrap and configure so many features offered by the framework, service providers are the most important aspect of the entire Laravel bootstrap process.
+ Em essência, todos os recursos principais oferecidos pela Laravel são iniciados e configurados por um Service Provider. Como eles inicializam e configuram muitos dos recursos oferecidos pelo framework, os serviços provedores são o aspecto mais importante de todo o processo de inicialização do Laravel.
 
-While the framework internally uses dozens of service providers, you also have the option to create your own. You can find a list of the user-defined or third-party service providers that your application is using in the `bootstrap/providers.php` file.
+ Apesar de o framework usar internamente dezenas de prestadores de serviços, você também tem a opção de criar os seus próprios. É possível encontrar uma lista dos provedores de serviços definidos pelo usuário ou de terceiros que sua aplicação está usando no arquivo `bootstrap/providers.php`.
 
 <a name="routing"></a>
-### Routing
+### Encaminhamento
 
-Once the application has been bootstrapped and all service providers have been registered, the `Request` will be handed off to the router for dispatching. The router will dispatch the request to a route or controller, as well as run any route specific middleware.
+ Uma vez que o aplicativo tenha sido inicializado e todos os provedores de serviço tiverem sido registrados, o `Request` será encaminhado para o router para distribuição. O roteador distribuirá o pedido para uma rotina ou um controlador, bem como executará qualquer módulo de middleware específico da rotina.
 
-Middleware provide a convenient mechanism for filtering or examining HTTP requests entering your application. For example, Laravel includes a middleware that verifies if the user of your application is authenticated. If the user is not authenticated, the middleware will redirect the user to the login screen. However, if the user is authenticated, the middleware will allow the request to proceed further into the application. Some middleware are assigned to all routes within the application, like `PreventRequestsDuringMaintenance`, while some are only assigned to specific routes or route groups. You can learn more about middleware by reading the complete [middleware documentation](/docs/middleware).
+ Os middlewares fornecem um mecanismo conveniente para filtrar ou examinar os pedidos HTTP que entram na sua aplicação. Por exemplo, o Laravel inclui um middleware que verifica se o usuário da sua aplicação está autenticado. Se o usuário não estiver autenticado, o middleware redirecionará o usuário para a tela de login. No entanto, se o usuário estiver autenticado, o middleware permitirá que a solicitação avance mais na aplicação. Alguns middlewares são atribuídos a todos os itinerários da aplicação, como `PreventRequestsDuringMaintenance`, enquanto outros apenas são atribuídos a itinerários específicos ou grupos de itinerários. Pode saber mais sobre o middleware lendo a documentação completa [de middlewares](/docs/middleware).
 
-If the request passes through all of the matched route's assigned middleware, the route or controller method will be executed and the response returned by the route or controller method will be sent back through the route's chain of middleware.
+ Se o pedido passar por todos os middlewares atribuídos da rota combinada, a rota ou o método do controlador serão executados e a resposta retornada pelo método da rota ou do controlador será enviada de volta pela cadeia de middlewares da rota.
 
 <a name="finishing-up"></a>
-### Finishing Up
+### Finalizando
 
-Once the route or controller method returns a response, the response will travel back outward through the route's middleware, giving the application a chance to modify or examine the outgoing response.
+ Depois que o método do controlador ou da rota retornar uma resposta, esta será enviada para a frente, passando pelo middleware do caminho, dando à aplicação a chance de modificar ou analisar a resposta enviada.
 
-Finally, once the response travels back through the middleware, the HTTP kernel's `handle` method returns the response object to the `handleRequest` of the application instance, and this method calls the `send` method on the returned response. The `send` method sends the response content to the user's web browser. We've now completed our journey through the entire Laravel request lifecycle!
+ Por fim, uma vez que a resposta retorne ao middleware, o método `handle` do núcleo HTTP devolve o objeto de resposta para o `handleRequest` da instância da aplicação, e este método chama o método `send` no objeto de resposta retornado. O método `send` envia o conteúdo da resposta ao navegador do usuário. Agora completámos a nossa jornada através do ciclo de vida de solicitação completo da Laravel!
 
 <a name="focus-on-service-providers"></a>
-## Focus on Service Providers
+## Concentre-se nos fornecedores de serviços
 
-Service providers are truly the key to bootstrapping a Laravel application. The application instance is created, the service providers are registered, and the request is handed to the bootstrapped application. It's really that simple!
+ Os prestadores de serviços são verdadeiramente a chave para iniciar uma aplicação Laravel. A instância da aplicação é criada, os provedores de serviços estão registrados e o pedido é entregue à aplicação inicializada. É tão simples assim!
 
-Having a firm grasp of how a Laravel application is built and bootstrapped via service providers is very valuable. Your application's user-defined service providers are stored in the `app/Providers` directory.
+ Dominar a construção e inicialização de uma aplicação Laravel através de fornecedores de serviços é muito útil. Os fornecedores de serviço personalizados da sua aplicação são armazenados no diretório `app/Providers`.
 
-By default, the `AppServiceProvider` is fairly empty. This provider is a great place to add your application's own bootstrapping and service container bindings. For large applications, you may wish to create several service providers, each with more granular bootstrapping for specific services used by your application.
+ Por padrão, o `AppServiceProvider` é bastante vazio. Este provedor é um ótimo lugar para adicionar os próprios recursos de inicialização da aplicação e vinculamentos do contêiner de serviço. Para aplicações grandes, você pode querer criar vários provedores de serviços, cada um com inicialização mais granular para serviços específicos utilizados por sua aplicação.

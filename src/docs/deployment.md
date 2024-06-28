@@ -1,43 +1,43 @@
-# Deployment
+# Implementação
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-When you're ready to deploy your Laravel application to production, there are some important things you can do to make sure your application is running as efficiently as possible. In this document, we'll cover some great starting points for making sure your Laravel application is deployed properly.
+ Quando estiver pronto para distribuir o seu aplicativo Laravel à produção, existem algumas coisas importantes a ter em atenção para garantir que o aplicativo funciona da forma mais eficiente possível. Neste documento, discutimos alguns pontos de partida que podem ajudar a distribuir com sucesso o seu aplicativo Laravel.
 
 <a name="server-requirements"></a>
-## Server Requirements
+## Requisitos do servidor
 
-The Laravel framework has a few system requirements. You should ensure that your web server has the following minimum PHP version and extensions:
+ O framework Laravel exige alguns requisitos mínimos do seu sistema. Verifique se o servidor Web tem as seguintes versões e extensões mínimas de PHP:
 
 <div class="content-list" markdown="1">
 
-- PHP >= 8.2
-- Ctype PHP Extension
-- cURL PHP Extension
-- DOM PHP Extension
-- Fileinfo PHP Extension
-- Filter PHP Extension
-- Hash PHP Extension
-- Mbstring PHP Extension
-- OpenSSL PHP Extension
-- PCRE PHP Extension
-- PDO PHP Extension
-- Session PHP Extension
-- Tokenizer PHP Extension
-- XML PHP Extension
+ - PHP >= 8.2
+ - Ctype PHP Extension
+ - a extensão cURL para PHP
+ - Extensão para o DOM e PHP
+ - Expansão de arquivos do Fileinfo em PHP
+ - Filtro de extensão PHP
+ - Extensão de Hash PHP
+ - extensão Mbstring PHP
+ - extensão OpenSSL para o PHP
+ - PCRE, extensão PHP
+ - extensão de PHP com código Pdo
+ - extensão PHP para sessões
+ - Expansão de tokenizador no PHP
+ - Extensão XML PHP
 
 </div>
 
 <a name="server-configuration"></a>
-## Server Configuration
+## Configuração do servidor
 
 <a name="nginx"></a>
-### Nginx
+### NGINX
 
-If you are deploying your application to a server that is running Nginx, you may use the following configuration file as a starting point for configuring your web server. Most likely, this file will need to be customized depending on your server's configuration. **If you would like assistance in managing your server, consider using a first-party Laravel server management and deployment service such as [Laravel Forge](https://forge.laravel.com).**
+ Se estiver a implementar a sua aplicação num servidor que execute o Nginx, poderá utilizar o seguinte ficheiro de configuração como ponto de partida para configurar o seu servidor web. Provavelmente, este ficheiro terá de ser personalizado com base na configuração do seu servidor. **Se pretender assistência na gestão do seu servidor, poderá recorrer a um serviço de gestão e implementação de servidores Laravel da primeira parte como o [Laravel Forge](https://forge.laravel.com).**
 
-Please ensure, like the configuration below, your web server directs all requests to your application's `public/index.php` file. You should never attempt to move the `index.php` file to your project's root, as serving the application from the project root will expose many sensitive configuration files to the public Internet:
+ Verifique se o servidor web direciona todas as solicitações para o arquivo `public/index.php` do aplicativo, conforme a configuração abaixo. Nunca tente mover o arquivo `index.php` para a raiz do projeto, pois isso exporia vários arquivos de configuração sensíveis à Internet pública:
 
 ```nginx
 server {
@@ -78,95 +78,95 @@ server {
 <a name="frankenphp"></a>
 ### FrankenPHP
 
-[FrankenPHP](https://frankenphp.dev/) may also be used to serve your Laravel applications. FrankenPHP is a modern PHP application server written in Go. To serve a Laravel PHP application using FrankenPHP, you may simply invoke its `php-server` command:
+ O [FrankenPHP](https://frankenphp.dev/) também pode ser usado para hospedar seu aplicativo Laravel. O FrankenPHP é um servidor de aplicativos PHP moderno escrito em Go. Para servir um aplicativo PHP do Laravel utilizando o FrankenPHP, você pode invocar seu comando `php-server` da seguinte maneira:
 
 ```shell
 frankenphp php-server -r public/
 ```
 
-To take advantage of more powerful features supported by FrankenPHP, such as its [Laravel Octane](/docs/{{version}}/octane) integration, HTTP/3, modern compression, or the ability to package Laravel applications as standalone binaries, please consult FrankenPHP's [Laravel documentation](https://frankenphp.dev/docs/laravel/).
+ Para aproveitar recursos mais poderosos suportados pelo FrankenPHP, como a integração com o Laravel Octane, HTTP/3, compressão moderna ou a capacidade de empacotar aplicações do Laravel como binários autônomos, consulte a documentação do FrankenPHP para o Laravel no site [FrankenPHP's Laravel documentation](https://frankenphp.dev/docs/laravel/).
 
 <a name="directory-permissions"></a>
-### Directory Permissions
+### Permissões do diretório
 
-Laravel will need to write to the `bootstrap/cache` and `storage` directories, so you should ensure the web server process owner has permission to write to these directories.
+ O Laravel precisará escrever nas diretórias `bootstrap/cache` e `storage`, portanto, você deve garantir que o proprietário do processo do servidor web tenha permissão para escrever nessas pastas.
 
 <a name="optimization"></a>
-## Optimization
+## Otimização
 
-When deploying your application to production, there are a variety of files that should be cached, including your configuration, events, routes, and views. Laravel provides a single, convenient `optimize` Artisan command that will cache all of these files. This command should typically be invoked as part of your application's deployment process:
+ Ao implementar sua aplicação na produção, uma série de arquivos deve ser armazenado em cache, incluindo a configuração, eventos, rotas e visualizações. O Laravel fornece um único comando do Artisan `optimize` que permite o armazenamento destes arquivos em cache. Este comando normalmente é acionado como parte do processo de implementação da sua aplicação:
 
 ```shell
 php artisan optimize
 ```
 
-The `optimize:clear` method may be used to remove all of the cache files generated by the `optimize` command:
+ O método `optimize:clear` pode ser usado para remover todos os arquivos do cache gerados pelo comando `optimize`:
 
 ```shell
 php artisan optimize:clear
 ```
 
-In the following documentation, we will discuss each of the granular optimization commands that are executed by the `optimize` command.
+ Na documentação a seguir, discutiremos cada um dos comandos de otimização detalhada que são executados pelo comando `otimizar`.
 
 <a name="optimizing-configuration-loading"></a>
-### Caching Configuration
+### Configuração de Armazenamento em Cache
 
-When deploying your application to production, you should make sure that you run the `config:cache` Artisan command during your deployment process:
+ Ao implantar seu aplicativo na produção, você deve certificar-se de executar o comando do Artisan `config:cache` durante seu processo de implementação:
 
 ```shell
 php artisan config:cache
 ```
 
-This command will combine all of Laravel's configuration files into a single, cached file, which greatly reduces the number of trips the framework must make to the filesystem when loading your configuration values.
+ Este comando combina todos os arquivos de configuração do Laravel em um único arquivo, que é armazenado em cache, reduzindo consideravelmente a quantidade de vezes que o framework precisa se conectar ao sistema de arquivos para carregar seus valores de configuração.
 
-> [!WARNING]  
-> If you execute the `config:cache` command during your deployment process, you should be sure that you are only calling the `env` function from within your configuration files. Once the configuration has been cached, the `.env` file will not be loaded and all calls to the `env` function for `.env` variables will return `null`.
+ > [AVISO]
+ > Se você executar o comando `config:cache` durante seu processo de implantação, certifique-se que está chamando a função `env` somente a partir dentro dos seus arquivos de configuração. Uma vez que a configuração foi armazenada em cache, o arquivo `.env` não será mais carregado e todas as chamadas à função `env` para variáveis `.env` retornarão `null`.
 
 <a name="caching-events"></a>
-### Caching Events
+### Armazenamento em cache de eventos
 
-You should cache your application's auto-discovered event to listener mappings during your deployment process. This can be accomplished by invoking the `event:cache` Artisan command during deployment:
+ Deve armazenar em cache os mapeamentos de evento a um ouvinte identificados automaticamente no seu aplicativo durante o processo de implantação. Isso pode ser realizado ao invocar a ordem `event:cache` do Artisan durante a implantação:
 
 ```shell
 php artisan event:cache
 ```
 
 <a name="optimizing-route-loading"></a>
-### Caching Routes
+### Armazenar rotas
 
-If you are building a large application with many routes, you should make sure that you are running the `route:cache` Artisan command during your deployment process:
+ Se estiver a construir um aplicativo grande com vários caminhos, deve certificar-se de executar o comando `route:cache` da Artisan durante o processo de implementação:
 
 ```shell
 php artisan route:cache
 ```
 
-This command reduces all of your route registrations into a single method call within a cached file, improving the performance of route registration when registering hundreds of routes.
+ Este comando reduz todas as suas inscrições de rota em uma única chamada de método dentro de um arquivo de cache, melhorando o desempenho da inscrição de rota quando se inscrevem centenas de rotas.
 
 <a name="optimizing-view-loading"></a>
-### Caching Views
+### Memorização das visualizações
 
-When deploying your application to production, you should make sure that you run the `view:cache` Artisan command during your deployment process:
+ Ao implementar sua aplicação em produção, certifique-se de executar o comando Artisan `view:cache` durante seu processo de implementação:
 
 ```shell
 php artisan view:cache
 ```
 
-This command precompiles all your Blade views so they are not compiled on demand, improving the performance of each request that returns a view.
+ Esse comando pré-compila todas as suas vistas do Blade para que elas não sejam compiladas conforme necessário, o que melhora o desempenho de cada solicitação que retorna uma vista.
 
 <a name="debug-mode"></a>
-## Debug Mode
+## Modo de Depuração
 
-The debug option in your `config/app.php` configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your application's `.env` file.
+ A opção `debug` em seu arquivo de configuração `config/app.php` determina quais informações sobre um erro serão realmente exibidas ao usuário. Por padrão, esta opção respeita o valor da variável de ambiente `APP_DEBUG`, que está armazenada no arquivo `.env` do aplicativo.
 
-> [!WARNING]  
-> **In your production environment, this value should always be `false`. If the `APP_DEBUG` variable is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
+ > [AVERIGUE TODAS AS CONSEQUÊNCIAS E RISCOS!
+ > **No ambiente de produção, este valor deve ser sempre `false`. Se a variável `APP_DEBUG` estiver definida como `true` na produção, corre-se o risco de expor valores sensíveis da aplicação aos finais utilizadores.**
 
 <a name="the-health-route"></a>
-## The Health Route
+## O Caminho da Saúde
 
-Laravel includes a built-in health check route that can be used to monitor the status of your application. In production, this route may be used to report the status of your application to an uptime monitor, load balancer, or orchestration system such as Kubernetes.
+ O Laravel inclui uma rota de verificação de integridade que pode ser usada para monitorar o estado da aplicação. Na produção, essa rota pode ser usada para informar o estado da sua aplicação a um sistema de monitoramento do tempo de atividade, balanceador de carga ou sistema de orquestração, como o Kubernetes.
 
-By default, the health check route is served at `/up` and will return a 200 HTTP response if the application has booted without exceptions. Otherwise, a 500 HTTP response will be returned. You may configure the URI for this route in your application's `bootstrap/app` file:
+ Por padrão, a rota de verificação da integridade é servida em `/up` e retorna um resposta HTTP 200 se o aplicativo iniciou-se sem exceções. Caso contrário, será enviado um resposta HTTP 500. Pode configurar o URI desta rota no ficheiro `bootstrap/app`, da aplicação:
 
 ```php
     ->withRouting(
@@ -177,22 +177,22 @@ By default, the health check route is served at `/up` and will return a 200 HTTP
     )
 ```
 
-When HTTP requests are made to this route, Laravel will also dispatch a `Illuminate\Foundation\Events\DiagnosingHealth` event, allowing you to perform additional health checks relevant to your application. Within a [listener](/docs/{{version}}/events) for this event, you may check your application's database or cache status. If you detect a problem with your application, you may simply throw an exception from the listener.
+ Quando uma requisição HTTP é feita para este roteamento, o Laravel envia também um evento `Illuminate\Foundation\Events\DiagnosingHealth`, permitindo que você faça verificações de saúde adicionais relevantes à aplicação. Em um [ouvinte](/docs/{{version}}/events) para este evento, é possível verificar o status do banco de dados ou cache da sua aplicação. Se você detectar algum problema com a aplicação, pode simplesmente lançar uma exceção a partir do ouvinte.
 
 <a name="deploying-with-forge-or-vapor"></a>
-## Easy Deployment With Forge / Vapor
+## Implementação fácil com o Forge/Vapor
 
 <a name="laravel-forge"></a>
 #### Laravel Forge
 
-If you aren't quite ready to manage your own server configuration or aren't comfortable configuring all of the various services needed to run a robust Laravel application, [Laravel Forge](https://forge.laravel.com) is a wonderful alternative.
+ Se você não estiver pronto para gerenciar sua própria configuração de servidor ou não se sentir à vontade para configurar todos os vários serviços necessários para executar uma aplicação Laravel robusta, o [Laravel Forge](https://forge.laravel.com) é uma excelente alternativa.
 
-Laravel Forge can create servers on various infrastructure providers such as DigitalOcean, Linode, AWS, and more. In addition, Forge installs and manages all of the tools needed to build robust Laravel applications, such as Nginx, MySQL, Redis, Memcached, Beanstalk, and more.
+ O Laravel Forge pode criar servidores em vários fornecedores de infraestrutura, como DigitalOcean, Linode e AWS, entre outros. Além disso, o Forge instala e gere todas as ferramentas necessárias para construir aplicações robustas com Laravel, tais como Nginx, MySQL, Redis, Memcached e Beanstalk, entre outras.
 
-> [!NOTE]  
-> Want a full guide to deploying with Laravel Forge? Check out the [Laravel Bootcamp](https://bootcamp.laravel.com/deploying) and the Forge [video series available on Laracasts](https://laracasts.com/series/learn-laravel-forge-2022-edition).
+ > [!ATENÇÃO]
+ [Curso introdutório ao Laravel](https://bootcamp.laravel.com/deploying) e o Forge
 
 <a name="laravel-vapor"></a>
 #### Laravel Vapor
 
-If you would like a totally serverless, auto-scaling deployment platform tuned for Laravel, check out [Laravel Vapor](https://vapor.laravel.com). Laravel Vapor is a serverless deployment platform for Laravel, powered by AWS. Launch your Laravel infrastructure on Vapor and fall in love with the scalable simplicity of serverless. Laravel Vapor is fine-tuned by Laravel's creators to work seamlessly with the framework so you can keep writing your Laravel applications exactly like you're used to.
+ Se você gostaria de uma plataforma de implantação totalmente sem servidor, com escala automática ajustada para o Laravel, confira o [Laravel Vapor](https://vapor.laravel.com). O Laravel Vapor é uma plataforma de implantação sem servidor para o Laravel, executado pela AWS. Inicie sua infraestrutura do Laravel na Vapor e se apaixone pela simplicidade escalável de um sistema sem servidor. O Laravel Vapor foi ajustado pelos criadores do Laravel para funcionar perfeitamente com o framework, permitindo que você siga escrevendo seus aplicativos do Laravel exatamente como está acostumado.

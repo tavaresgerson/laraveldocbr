@@ -1,9 +1,9 @@
-# Routing
+# Encaminhamento
 
 <a name="basic-routing"></a>
-## Basic Routing
+## Roteamento básico
 
-The most basic Laravel routes accept a URI and a closure, providing a very simple and expressive method of defining routes and behavior without complicated routing configuration files:
+ Os rotas mais básicos do Laravel aceitam um URI e um closure, proporcionando uma maneira muito simples e expressiva de definir rotas e comportamentos sem arquivos complicados para configuração.
 
 ```php
     use Illuminate\Support\Facades\Route;
@@ -14,11 +14,11 @@ The most basic Laravel routes accept a URI and a closure, providing a very simpl
 ```
 
 <a name="the-default-route-files"></a>
-### The Default Route Files
+### Arquivos de rotas padrão
 
-All Laravel routes are defined in your route files, which are located in the `routes` directory. These files are automatically loaded by Laravel using the configuration specified in your application's `bootstrap/app.php` file. The `routes/web.php` file defines routes that are for your web interface. These routes are assigned the `web` [middleware group](/docs/middleware#laravels-default-middleware-groups), which provides features like session state and CSRF protection.
+ Todas as rotas Laravel são definidas em seus arquivos de rota, que estão localizados na pasta `routes`. Esses arquivos são carregados automaticamente pelo Laravel usando a configuração especificada no arquivo `bootstrap/app.php` do seu aplicativo. O arquivo `routes/web.php` define rotas para sua interface web, e elas têm o grupo de [middleware] (/) atribuído, que fornece recursos como estado da sessão e proteção CSRF.
 
-For most applications, you will begin by defining routes in your `routes/web.php` file. The routes defined in `routes/web.php` may be accessed by entering the defined route's URL in your browser. For example, you may access the following route by navigating to `http://example.com/user` in your browser:
+ Para a maioria das aplicações, será preciso definir rotas na ficheiro `routes/web.php`. As rotas definidas no `routes/web.php` podem ser acedidas entrando na URL da rota definida no seu navegador. Por exemplo, poderá aceder à seguinte rota navegando para `http://example.com/user` no seu navegador:
 
 ```php
     use App\Http\Controllers\UserController;
@@ -27,15 +27,15 @@ For most applications, you will begin by defining routes in your `routes/web.php
 ```
 
 <a name="api-routes"></a>
-#### API Routes
+#### Rotas da API
 
-If your application will also offer a stateless API, you may enable API routing using the `install:api` Artisan command:
+ Se o seu aplicativo for oferecer também uma API sem estado, poderá habilitar o roteamento de API utilizando o comando do Artisan `install:api`:
 
 ```shell
 php artisan install:api
 ```
 
-The `install:api` command installs [Laravel Sanctum](/docs/sanctum), which provides a robust, yet simple API token authentication guard which can be used to authenticate third-party API consumers, SPAs, or mobile applications. In addition, the `install:api` command creates the `routes/api.php` file:
+ O comando `install:api` instala [Laravel Sanctum] (/docs/sanctum), que fornece um robusto e simples bloqueio de autenticação por token API, que pode ser utilizado para autenticar clientes de terceiros, SPAs ou aplicações móveis. Além disso, o comando `install:api` cria o ficheiro `routes/api.php`:
 
 ```php
     Route::get('/user', function (Request $request) {
@@ -43,7 +43,7 @@ The `install:api` command installs [Laravel Sanctum](/docs/sanctum), which provi
     })->middleware('auth:sanctum');
 ```
 
-The routes in `routes/api.php` are stateless and are assigned to the `api` [middleware group](/docs/middleware#laravels-default-middleware-groups). Additionally, the `/api` URI prefix is automatically applied to these routes, so you do not need to manually apply it to every route in the file. You may change the prefix by modifying your application's `bootstrap/app.php` file:
+ Os itinerários em `routes/api.php` não possuem estado e são atribuídos ao grupo de middleware [`api`](/docs/middleware#laravels-default-middleware-groups). Além disso, o prefixo URI `/api` é automaticamente aplicado a estes itinerários, portanto você não precisa aplicá-lo manualmente em todos os itinerários do arquivo. Você pode alterar o prefixo modificando o arquivo `bootstrap/app.php` de sua aplicação:
 
 ```php
     ->withRouting(
@@ -54,9 +54,9 @@ The routes in `routes/api.php` are stateless and are assigned to the `api` [midd
 ```
 
 <a name="available-router-methods"></a>
-#### Available Router Methods
+#### Métodos disponíveis para roteadores
 
-The router allows you to register routes that respond to any HTTP verb:
+ O roteador permite-lhe registar rotas que respondem a qualquer verbo HTTP:
 
 ```php
     Route::get($uri, $callback);
@@ -67,7 +67,7 @@ The router allows you to register routes that respond to any HTTP verb:
     Route::options($uri, $callback);
 ```
 
-Sometimes you may need to register a route that responds to multiple HTTP verbs. You may do so using the `match` method. Or, you may even register a route that responds to all HTTP verbs using the `any` method:
+ Às vezes, você pode precisar registrar uma rota que atenda a múltiplos verbos de HTTP. Isso pode ser feito usando o método `match`. Ou ainda, você pode registrar uma rota que atenda a todos os verbos de HTTP usando o método `any`:
 
 ```php
     Route::match(['get', 'post'], '/', function () {
@@ -79,13 +79,13 @@ Sometimes you may need to register a route that responds to multiple HTTP verbs.
     });
 ```
 
-> [!NOTE]  
-> When defining multiple routes that share the same URI, routes using the `get`, `post`, `put`, `patch`, `delete`, and `options` methods should be defined before routes using the `any`, `match`, and `redirect` methods. This ensures the incoming request is matched with the correct route.
+ > [!ATENÇÃO]
+ > Ao definir várias rotas que compartilham o mesmo URI, as rotas que utilizam os métodos `get`, `post`, `put`, `patch`, `delete` e `options` devem ser definidas antes das rotas que utilizam os métodos `any`, `match` e `redirect`. Isso garante que a solicitação de entrada é combinada com a rota correta.
 
 <a name="dependency-injection"></a>
-#### Dependency Injection
+#### Injeção de dependência
 
-You may type-hint any dependencies required by your route in your route's callback signature. The declared dependencies will automatically be resolved and injected into the callback by the Laravel [service container](/docs/container). For example, you may type-hint the `Illuminate\Http\Request` class to have the current HTTP request automatically injected into your route callback:
+ Você pode fornecer uma sugestão de tipo para quaisquer dependências necessárias em sua assinatura de retorno do roteamento. As dependências declaradas serão automaticamente resolvidas e injetadas no retorno pelo [conjunto de serviços Laravel](/docs/container). Por exemplo, você pode fornecer uma sugestão de tipo para a classe `Illuminate\Http\Request` para que o pedido atual seja injetado automaticamente em seu retorno do roteamento:
 
 ```php
     use Illuminate\Http\Request;
@@ -96,9 +96,9 @@ You may type-hint any dependencies required by your route in your route's callba
 ```
 
 <a name="csrf-protection"></a>
-#### CSRF Protection
+#### Proteção contra CSRF
 
-Remember, any HTML forms pointing to `POST`, `PUT`, `PATCH`, or `DELETE` routes that are defined in the `web` routes file should include a CSRF token field. Otherwise, the request will be rejected. You can read more about CSRF protection in the [CSRF documentation](/docs/csrf):
+ Lembre-se de que todos os formulários HTML que apontam para rota `POST`, `PUT`, `PATCH` ou `DELETE` definidas no arquivo de roteamento `web` devem incluir um campo de token CSRF. Caso contrário, o pedido será rejeitado. Você pode ler mais sobre proteção contra CSRF na [documentação sobre CSRF] (/docs/csrf):
 
 ```blade
     <form method="POST" action="/profile">
@@ -108,33 +108,33 @@ Remember, any HTML forms pointing to `POST`, `PUT`, `PATCH`, or `DELETE` routes 
 ```
 
 <a name="redirect-routes"></a>
-### Redirect Routes
+### Rotas redirecionadas
 
-If you are defining a route that redirects to another URI, you may use the `Route::redirect` method. This method provides a convenient shortcut so that you do not have to define a full route or controller for performing a simple redirect:
+ Se estiver a definir uma rota que reenvia para outro URI, pode utilizar o método `Route::redirect`. Este método proporciona um atalho prático para redirecionamentos simples sem precisar de definir uma rota completa ou controlador:
 
 ```php
     Route::redirect('/here', '/there');
 ```
 
-By default, `Route::redirect` returns a `302` status code. You may customize the status code using the optional third parameter:
+ Por padrão, o método `Route::redirect` retorna um código de estado HTTP `302`. Você pode personalizar o código de estado usando o terceiro parâmetro como opcional:
 
 ```php
     Route::redirect('/here', '/there', 301);
 ```
 
-Or, you may use the `Route::permanentRedirect` method to return a `301` status code:
+ Ou você pode usar o método `Route::permanentRedirect` para retornar um código de status `301`:
 
 ```php
     Route::permanentRedirect('/here', '/there');
 ```
 
-> [!WARNING]  
-> When using route parameters in redirect routes, the following parameters are reserved by Laravel and cannot be used: `destination` and `status`.
+ > [Atenção]
+ > Ao usar parâmetros de rota em rotas de redirecionamento, os seguintes parâmetros são reservados pelo Laravel e não podem ser utilizados: `destino` e `estado`.
 
 <a name="view-routes"></a>
-### View Routes
+### Ver rotas
 
-If your route only needs to return a [view](/docs/views), you may use the `Route::view` method. Like the `redirect` method, this method provides a simple shortcut so that you do not have to define a full route or controller. The `view` method accepts a URI as its first argument and a view name as its second argument. In addition, you may provide an array of data to pass to the view as an optional third argument:
+ Se a sua rota só precisa retornar uma [visualização](/docs/views), você pode usar o método `Route::view`. Assim como no caso do método `redirect`, esse método fornece um atalho simples para que não seja necessário definir uma rota ou controlador completos. O método `view` aceita um URI como primeiro argumento e um nome de visualização como segundo argumento. Além disso, é possível passar um array de dados à visualização, como um terceiro argumento opcional:
 
 ```php
     Route::view('/welcome', 'welcome');
@@ -142,19 +142,19 @@ If your route only needs to return a [view](/docs/views), you may use the `Route
     Route::view('/welcome', 'welcome', ['name' => 'Taylor']);
 ```
 
-> [!WARNING]  
-> When using route parameters in view routes, the following parameters are reserved by Laravel and cannot be used: `view`, `data`, `status`, and `headers`.
+ > [AVISO]
+ > Quando os parâmetros de rota são utilizados em rotas de visualização, os seguintes parâmetros são reservados pela Laravel e não podem ser usados: `view`, `data`, `status`e `headers`.
 
 <a name="listing-your-routes"></a>
-### Listing Your Routes
+### Publicando as suas rotas
 
-The `route:list` Artisan command can easily provide an overview of all of the routes that are defined by your application:
+ O comando do artesão `route:list` pode facilmente fornecer uma visão geral de todas as rotas definidas pelo seu aplicativo:
 
 ```shell
 php artisan route:list
 ```
 
-By default, the route middleware that are assigned to each route will not be displayed in the `route:list` output; however, you can instruct Laravel to display the route middleware and middleware group names by adding the `-v` option to the command:
+ Por padrão, os middlewares de rota atribuídos a cada rota não serão exibidos na saída `route:list`. No entanto, você pode orientar o Laravel para exibir os nomes dos grupos e middlewares da rota adicionando a opção `-v` ao comando:
 
 ```shell
 php artisan route:list -v
@@ -163,28 +163,28 @@ php artisan route:list -v
 php artisan route:list -vv
 ```
 
-You may also instruct Laravel to only show routes that begin with a given URI:
+ Você também pode instruir o Laravel a mostrar apenas as rotas que começam com um URI especificado:
 
 ```shell
 php artisan route:list --path=api
 ```
 
-In addition, you may instruct Laravel to hide any routes that are defined by third-party packages by providing the `--except-vendor` option when executing the `route:list` command:
+ Além disso, você pode instruir o Laravel para ocultar todas as rotas definidas por pacotes de terceiros ao fornecer a opção `--except-vendor` quando executando o comando `route:list`:
 
 ```shell
 php artisan route:list --except-vendor
 ```
 
-Likewise, you may also instruct Laravel to only show routes that are defined by third-party packages by providing the `--only-vendor` option when executing the `route:list` command:
+ Da mesma forma, você pode instruir o Laravel a exibir apenas as rotas definidas por pacotes de terceiros fornecendo a opção `--only-vendor` quando executar o comando `route:list`:
 
 ```shell
 php artisan route:list --only-vendor
 ```
 
 <a name="routing-customization"></a>
-### Routing Customization
+### Personalização de encaminhamento
 
-By default, your application's routes are configured and loaded by the `bootstrap/app.php` file:
+ Por padrão, as rotas da sua aplicação são configuradas e carregadas pelo arquivo `bootstrap/app.php`:
 
 ```php
 <?php
@@ -199,7 +199,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )->create();
 ```
 
-However, sometimes you may want to define an entirely new file to contain a subset of your application's routes. To accomplish this, you may provide a `then` closure to the `withRouting` method. Within this closure, you may register any additional routes that are necessary for your application:
+ No entanto, às vezes poderá ser necessário definir um ficheiro novo para conter um subconjunto dos percursos da aplicação. Para conseguir isto, pode fornecer um fecho `then` ao método `withRouting`. Nesse fecho, pode registar quaisquer outros percursos que sejam necessários à aplicação:
 
 ```php
 use Illuminate\Support\Facades\Route;
@@ -217,7 +217,7 @@ use Illuminate\Support\Facades\Route;
 )
 ```
 
-Or, you may even take complete control over route registration by providing a `using` closure to the `withRouting` method. When this argument is passed, no HTTP routes will be registered by the framework and you are responsible for manually registering all routes:
+ Ou você poderá até mesmo assumir o controle completo sobre o registro de rotas fornecendo uma `using` em fechamento ao método `withRouting`. Quando este argumento é passado, nenhuma rota HTTP será registrada pelo framework e você estará responsável por registrar manualmente todas as rotas:
 
 ```php
 use Illuminate\Support\Facades\Route;
@@ -236,12 +236,12 @@ use Illuminate\Support\Facades\Route;
 ```
 
 <a name="route-parameters"></a>
-## Route Parameters
+## Parâmetros de rota
 
 <a name="required-parameters"></a>
-### Required Parameters
+### Parâmetros Obrigatórios
 
-Sometimes you will need to capture segments of the URI within your route. For example, you may need to capture a user's ID from the URL. You may do so by defining route parameters:
+ Às vezes será necessário capturar segmentos da URI no seu percurso. Por exemplo, poderá prever a captura de um identificador do utilizador na URL. Deixe definir parâmetros de rota para o fazer:
 
 ```php
     Route::get('/user/{id}', function (string $id) {
@@ -249,7 +249,7 @@ Sometimes you will need to capture segments of the URI within your route. For ex
     });
 ```
 
-You may define as many route parameters as required by your route:
+ Você pode definir tantos parâmetros de rota quantas necessário em sua rota:
 
 ```php
     Route::get('/posts/{post}/comments/{comment}', function (string $postId, string $commentId) {
@@ -257,12 +257,12 @@ You may define as many route parameters as required by your route:
     });
 ```
 
-Route parameters are always encased within `{}` braces and should consist of alphabetic characters. Underscores (`_`) are also acceptable within route parameter names. Route parameters are injected into route callbacks / controllers based on their order - the names of the route callback / controller arguments do not matter.
+ Os parâmetros da rota são sempre encerrados entre aspas e devem ser constituídos por letras alfabéticas. Também são aceites sublinhados (_) nos nomes dos parâmetros da rota. Os parâmetros de uma rota são injetados nos callbacks/controles baseado em sua ordem, ou seja, os nomes do argumento do callback / controle da rota não são relevantes.
 
 <a name="parameters-and-dependency-injection"></a>
-#### Parameters and Dependency Injection
+#### Parâmetros e injeção de dependência
 
-If your route has dependencies that you would like the Laravel service container to automatically inject into your route's callback, you should list your route parameters after your dependencies:
+ Se o seu caminho tiver dependências que deseja que o contêiner de serviços do Laravel injetar automaticamente no seu callback de rota, você deve listar os parâmetros da sua rota após suas dependências:
 
 ```php
     use Illuminate\Http\Request;
@@ -273,9 +273,9 @@ If your route has dependencies that you would like the Laravel service container
 ```
 
 <a name="parameters-optional-parameters"></a>
-### Optional Parameters
+### Parâmetros opcionais
 
-Occasionally you may need to specify a route parameter that may not always be present in the URI. You may do so by placing a `?` mark after the parameter name. Make sure to give the route's corresponding variable a default value:
+ Ocasionalmente, você pode precisar especificar um parâmetro de rota que possa não estar sempre presente na URI. Isso pode ser feito colocando uma marca `?` após o nome do parâmetro. Certifique-se de dar ao parâmetro da rota um valor padrão:
 
 ```php
     Route::get('/user/{name?}', function (?string $name = null) {
@@ -288,9 +288,9 @@ Occasionally you may need to specify a route parameter that may not always be pr
 ```
 
 <a name="parameters-regular-expression-constraints"></a>
-### Regular Expression Constraints
+### Restrições de expressão regular
 
-You may constrain the format of your route parameters using the `where` method on a route instance. The `where` method accepts the name of the parameter and a regular expression defining how the parameter should be constrained:
+ É possível restringir o formato dos parâmetros de rota usando o método `where` em uma instância de rota. O método `where` aceita o nome do parâmetro e um expressão regular que define como o parâmetro deve ser restrito:
 
 ```php
     Route::get('/user/{name}', function (string $name) {
@@ -306,7 +306,7 @@ You may constrain the format of your route parameters using the `where` method o
     })->where(['id' => '[0-9]+', 'name' => '[a-z]+']);
 ```
 
-For convenience, some commonly used regular expression patterns have helper methods that allow you to quickly add pattern constraints to your routes:
+ Para maior comodidade, alguns padrões de expressão regular comumente usados têm métodos auxiliares que permitem que você adicione rapidamente restrições aos seus padrões.
 
 ```php
     Route::get('/user/{id}/{name}', function (string $id, string $name) {
@@ -334,12 +334,12 @@ For convenience, some commonly used regular expression patterns have helper meth
     })->whereIn('category', CategoryEnum::cases());
 ```
 
-If the incoming request does not match the route pattern constraints, a 404 HTTP response will be returned.
+ Se o pedido recebido não concordar com as restrições do padrão de rota, um retorno do resposta de HTTP 404 será feito.
 
 <a name="parameters-global-constraints"></a>
-#### Global Constraints
+#### Restrições globais
 
-If you would like a route parameter to always be constrained by a given regular expression, you may use the `pattern` method. You should define these patterns in the `boot` method of your application's `App\Providers\AppServiceProvider` class:
+ Se desejar que um parâmetro de rota seja sempre limitado por um determinado padrão regular, você pode usar o método `pattern`. Você deve definir esses padrões no método `boot` da classe `App\Providers\AppServiceProvider` do seu aplicativo:
 
 ```php
     use Illuminate\Support\Facades\Route;
@@ -353,7 +353,7 @@ If you would like a route parameter to always be constrained by a given regular 
     }
 ```
 
-Once the pattern has been defined, it is automatically applied to all routes using that parameter name:
+ Depois que o padrão tiver sido definido, ele será aplicado automaticamente a todas as rotas que usam esse nome de parâmetro:
 
 ```php
     Route::get('/user/{id}', function (string $id) {
@@ -362,9 +362,9 @@ Once the pattern has been defined, it is automatically applied to all routes usi
 ```
 
 <a name="parameters-encoded-forward-slashes"></a>
-#### Encoded Forward Slashes
+#### Barras Incrementais Codificadas
 
-The Laravel routing component allows all characters except `/` to be present within route parameter values. You must explicitly allow `/` to be part of your placeholder using a `where` condition regular expression:
+ O componente de roteamento do Laravel permite que qualquer caractere, exceto o "/", seja apresente nos valores dos parâmetros do roteamento. Você deve permitir explicitamente que a "/" faça parte da sua referência usando uma condição `where` regex:
 
 ```php
     Route::get('/search/{search}', function (string $search) {
@@ -372,13 +372,13 @@ The Laravel routing component allows all characters except `/` to be present wit
     })->where('search', '.*');
 ```
 
-> [!WARNING]  
-> Encoded forward slashes are only supported within the last route segment.
+ > [AVERTISSEMENT]
+ > Os aspas codificados são suportados apenas no último segmento de rota.
 
 <a name="named-routes"></a>
-## Named Routes
+## Rotas com nomes
 
-Named routes allow the convenient generation of URLs or redirects for specific routes. You may specify a name for a route by chaining the `name` method onto the route definition:
+ As rotas nomeadas permitem gerar URL's ou redirecionamentos para rotas específicas de forma prática. Você pode especificar um nome para uma rota usando a metodologia `name` em cadeia na definição da rota:
 
 ```php
     Route::get('/user/profile', function () {
@@ -386,7 +386,7 @@ Named routes allow the convenient generation of URLs or redirects for specific r
     })->name('profile');
 ```
 
-You may also specify route names for controller actions:
+ Pode também especificar nomes de rotas para ações do controlador:
 
 ```php
     Route::get(
@@ -395,13 +395,13 @@ You may also specify route names for controller actions:
     )->name('profile');
 ```
 
-> [!WARNING]  
-> Route names should always be unique.
+ > [AVERIGUAR]
+ > Os nomes de rota devem ser sempre exclusivos.
 
 <a name="generating-urls-to-named-routes"></a>
-#### Generating URLs to Named Routes
+#### Criando URLs para rotas nomeadas
 
-Once you have assigned a name to a given route, you may use the route's name when generating URLs or redirects via Laravel's `route` and `redirect` helper functions:
+ Depois de atribuído um nome a uma rota, pode utilizar o nome da rota ao gerar URL ou redirecionamentos por meio das funções auxiliares `route` e `redirect` de Laravel:
 
 ```php
     // Generating URLs...
@@ -413,7 +413,7 @@ Once you have assigned a name to a given route, you may use the route's name whe
     return to_route('profile');
 ```
 
-If the named route defines parameters, you may pass the parameters as the second argument to the `route` function. The given parameters will automatically be inserted into the generated URL in their correct positions:
+ Se a rota nomeada definir parâmetros, você poderá passar esses parâmetros como o segundo argumento da função `route`. Os parâmetros fornecidos serão automaticamente inseridos na URL gerada em suas posições corretas:
 
 ```php
     Route::get('/user/{id}/profile', function (string $id) {
@@ -423,7 +423,7 @@ If the named route defines parameters, you may pass the parameters as the second
     $url = route('profile', ['id' => 1]);
 ```
 
-If you pass additional parameters in the array, those key / value pairs will automatically be added to the generated URL's query string:
+ Se você incluir parâmetros adicionais na matriz, esses pares de chave/valor serão automaticamente adicionados aos parâmetros da string de consulta do URL gerado:
 
 ```php
     Route::get('/user/{id}/profile', function (string $id) {
@@ -435,13 +435,13 @@ If you pass additional parameters in the array, those key / value pairs will aut
     // /user/1/profile?photos=yes
 ```
 
-> [!NOTE]  
-> Sometimes, you may wish to specify request-wide default values for URL parameters, such as the current locale. To accomplish this, you may use the [`URL::defaults` method](/docs/urls#default-values).
+ > [!ATENÇÃO]
+ [Método `URL::defaults`](/docs/urls#default-values).
 
 <a name="inspecting-the-current-route"></a>
-#### Inspecting the Current Route
+#### Inspeção da rota atual
 
-If you would like to determine if the current request was routed to a given named route, you may use the `named` method on a Route instance. For example, you may check the current route name from a route middleware:
+ Se você gostaria de determinar se o pedido atual foi encaminhado para uma rota especificada, pode usar o método `named` em uma instância da Route. Por exemplo, você pode verificar o nome da rota atual a partir de um middleware de rota:
 
 ```php
     use Closure;
@@ -464,16 +464,16 @@ If you would like to determine if the current request was routed to a given name
 ```
 
 <a name="route-groups"></a>
-## Route Groups
+## Grupos de rotas
 
-Route groups allow you to share route attributes, such as middleware, across a large number of routes without needing to define those attributes on each individual route.
+ Os grupos de rotas permitem partilhar atributos de rota, como o middleware, entre um grande número de rotas sem ter que definir esses atributos em cada uma delas.
 
-Nested groups attempt to intelligently "merge" attributes with their parent group. Middleware and `where` conditions are merged while names and prefixes are appended. Namespace delimiters and slashes in URI prefixes are automatically added where appropriate.
+ Grupos aninhados tentam "fusionar" atributos com seu grupo principal de maneira inteligente. Middleware e condições `where` são fusionadas enquanto nomes e prefixos são adicionados ao final. Delimitadores de namespace e slches em prefixos URI são automaticamente adicionados onde apropriado.
 
 <a name="route-group-middleware"></a>
 ### Middleware
 
-To assign [middleware](/docs/middleware) to all routes within a group, you may use the `middleware` method before defining the group. Middleware are executed in the order they are listed in the array:
+ Para atribuir um [middleware] (/docs/middleware) a todos os caminhos dentro de um grupo, você pode utilizar o método `middleware` antes da definição do grupo. Os middlewares são executados na ordem em que estão listados na matriz:
 
 ```php
     Route::middleware(['first', 'second'])->group(function () {
@@ -488,9 +488,9 @@ To assign [middleware](/docs/middleware) to all routes within a group, you may u
 ```
 
 <a name="route-group-controllers"></a>
-### Controllers
+### Controladores
 
-If a group of routes all utilize the same [controller](/docs/controllers), you may use the `controller` method to define the common controller for all of the routes within the group. Then, when defining the routes, you only need to provide the controller method that they invoke:
+ Se um grupo de rotas utilizarem o mesmo [controlador](/docs/controllers), você poderá usar o método `controller` para definir o controlador comum para todas as rotas dentro do grupo. Então, ao definir as rotas, você só precisa fornecer o método de controlador que elas invocarão:
 
 ```php
     use App\Http\Controllers\OrderController;
@@ -502,9 +502,9 @@ If a group of routes all utilize the same [controller](/docs/controllers), you m
 ```
 
 <a name="route-group-subdomain-routing"></a>
-### Subdomain Routing
+### Roteamento de subdomínios
 
-Route groups may also be used to handle subdomain routing. Subdomains may be assigned route parameters just like route URIs, allowing you to capture a portion of the subdomain for usage in your route or controller. The subdomain may be specified by calling the `domain` method before defining the group:
+ Os grupos de rotas também podem ser usados para configurar roteamento de subdomínio. Os subdomínios podem receber parâmetros de rota, assim como as URI das rotas, permitindo que você capture uma parte do subdomínio para uso em sua rota ou controlador. O subdomínio pode ser especificado chamando o método `domain` antes da definição do grupo:
 
 ```php
     Route::domain('{account}.example.com')->group(function () {
@@ -514,13 +514,13 @@ Route groups may also be used to handle subdomain routing. Subdomains may be ass
     });
 ```
 
-> [!WARNING]  
-> In order to ensure your subdomain routes are reachable, you should register subdomain routes before registering root domain routes. This will prevent root domain routes from overwriting subdomain routes which have the same URI path.
+ > [!AVISO]
+ > Para garantir que seus roteamentos de subdomínio sejam acessados, você deve registrar os roteamentos do seu subdomínio antes de registrar os roteamentos de domínios raiz. Isso evitará o sobreescrita dos roteamentos do domínio raiz por meio de roteamentos de subdomínio que tenham um caminho URI igual.
 
 <a name="route-group-prefixes"></a>
-### Route Prefixes
+### prefixos de rota
 
-The `prefix` method may be used to prefix each route in the group with a given URI. For example, you may want to prefix all route URIs within the group with `admin`:
+ O método `prefix` pode ser usado para preencher cada rota do grupo com um determinado URI. Por exemplo, pode ser que você deseja preencher todos os URIs das rotas dentro do grupo com "admin":
 
 ```php
     Route::prefix('admin')->group(function () {
@@ -531,9 +531,9 @@ The `prefix` method may be used to prefix each route in the group with a given U
 ```
 
 <a name="route-group-name-prefixes"></a>
-### Route Name Prefixes
+### Pretos de nomes de rota
 
-The `name` method may be used to prefix each route name in the group with a given string. For example, you may want to prefix the names of all of the routes in the group with `admin`. The given string is prefixed to the route name exactly as it is specified, so we will be sure to provide the trailing `.` character in the prefix:
+ O método `name` permite adicionar um determinado texto como prefixo a cada nome de rota do grupo. Por exemplo, pode ser desejável adicionar o prefixo "admin" a todos os nomes de todas as rotas do grupo. O texto fornecido é prefixado ao nome da rota tal como especificado, por isso terá certeza de incluir o ponto final:
 
 ```php
     Route::name('admin.')->group(function () {
@@ -544,14 +544,14 @@ The `name` method may be used to prefix each route name in the group with a give
 ```
 
 <a name="route-model-binding"></a>
-## Route Model Binding
+## Ligações de modelo de rota
 
-When injecting a model ID to a route or controller action, you will often query the database to retrieve the model that corresponds to that ID. Laravel route model binding provides a convenient way to automatically inject the model instances directly into your routes. For example, instead of injecting a user's ID, you can inject the entire `User` model instance that matches the given ID.
+ Quando você injetar um ID do modelo em uma ação da rotas ou do controlador, normalmente, você consultará o banco de dados para recuperar o modelo que corresponde ao ID. O mapeamento de modelo de rota Laravel oferece uma maneira conveniente de injetar automaticamente as instâncias de modelo diretamente nas suas rotas. Por exemplo, em vez de injetar um ID do usuário, você poderá injetar a própria instância do modelo `User` que corresponda ao ID fornecido.
 
 <a name="implicit-binding"></a>
-### Implicit Binding
+### Vinculação implícita
 
-Laravel automatically resolves Eloquent models defined in routes or controller actions whose type-hinted variable names match a route segment name. For example:
+ O Laravel resolve automaticamente os modelos Eloquent definidos em rotas ou ações de controlador cujos nomes de variáveis indicação do tipo coincidem com o nome de um segmento de rota. Por exemplo:
 
 ```php
     use App\Models\User;
@@ -561,9 +561,9 @@ Laravel automatically resolves Eloquent models defined in routes or controller a
     });
 ```
 
-Since the `$user` variable is type-hinted as the `App\Models\User` Eloquent model and the variable name matches the `{user}` URI segment, Laravel will automatically inject the model instance that has an ID matching the corresponding value from the request URI. If a matching model instance is not found in the database, a 404 HTTP response will automatically be generated.
+ Como a variável `$user` é indicada pelo tipo como um modelo Eloquent `App\Models\User`, e o nome da variável coincide com o segmento de URI `{user}`, o Laravel injectará automaticamente a instância do modelo que tenha um ID correspondente ao valor do segmento URI. Se não for encontrada nenhuma instância do modelo correspondente no banco de dados, será gerado automáticamente uma resposta HTTP 404.
 
-Of course, implicit binding is also possible when using controller methods. Again, note the `{user}` URI segment matches the `$user` variable in the controller which contains an `App\Models\User` type-hint:
+ É claro que é possível realizar ligações implícitas usando métodos do controlador. Novamente, note que o segmento de URI `{user}` corresponde à variável `$user` no controlador que contém uma dica de tipo `App\Models\User`:
 
 ```php
     use App\Http\Controllers\UserController;
@@ -580,9 +580,9 @@ Of course, implicit binding is also possible when using controller methods. Agai
 ```
 
 <a name="implicit-soft-deleted-models"></a>
-#### Soft Deleted Models
+#### Modelos apagados temporariamente
 
-Typically, implicit model binding will not retrieve models that have been [soft deleted](/docs/eloquent#soft-deleting). However, you may instruct the implicit binding to retrieve these models by chaining the `withTrashed` method onto your route's definition:
+ Normalmente, o mapeamento de modelo implícito não recuperará modelos que foram excluídos [de maneira suave](/docs/eloquent#soft-deleting). No entanto, você pode instruir a conexão implícita para recuperar esses modelos usando o método `withTrashed` na definição de sua rota:
 
 ```php
     use App\Models\User;
@@ -594,9 +594,9 @@ Typically, implicit model binding will not retrieve models that have been [soft 
 
 <a name="customizing-the-key"></a>
 <a name="customizing-the-default-key-name"></a>
-#### Customizing the Key
+#### Personalizar a chave
 
-Sometimes you may wish to resolve Eloquent models using a column other than `id`. To do so, you may specify the column in the route parameter definition:
+ Às vezes você pode desejar resolver modelos Eloquent usando uma coluna diferente de `id`. Para fazer isso, você pode especificar a coluna na definição do parâmetro do roteado:
 
 ```php
     use App\Models\Post;
@@ -606,7 +606,7 @@ Sometimes you may wish to resolve Eloquent models using a column other than `id`
     });
 ```
 
-If you would like model binding to always use a database column other than `id` when retrieving a given model class, you may override the `getRouteKeyName` method on the Eloquent model:
+ Se desejar que o vínculo do modelo sempre utilize outra coluna de banco de dados do que "id" ao recuperar uma determinada classe de modelo, você poderá sobrepor a `getRouteKeyName` método no modelo Eloquent:
 
 ```php
     /**
@@ -619,9 +619,9 @@ If you would like model binding to always use a database column other than `id` 
 ```
 
 <a name="implicit-model-binding-scoping"></a>
-#### Custom Keys and Scoping
+#### Chaves personalizadas e visualização
 
-When implicitly binding multiple Eloquent models in a single route definition, you may wish to scope the second Eloquent model such that it must be a child of the previous Eloquent model. For example, consider this route definition that retrieves a blog post by slug for a specific user:
+ Quando você vincula implicitamente vários modelos Eloquent em uma única definição de rota, talvez você queira definir um escopo para o segundo modelo Eloquent de modo que ele seja um filho do modelo anterior. Por exemplo: considere essa definição de rota, que recupera um post de blog por slug para um usuário específico.
 
 ```php
     use App\Models\Post;
@@ -632,9 +632,9 @@ When implicitly binding multiple Eloquent models in a single route definition, y
     });
 ```
 
-When using a custom keyed implicit binding as a nested route parameter, Laravel will automatically scope the query to retrieve the nested model by its parent using conventions to guess the relationship name on the parent. In this case, it will be assumed that the `User` model has a relationship named `posts` (the plural form of the route parameter name) which can be used to retrieve the `Post` model.
+ Ao usar um mapeamento implícito personalizado como parâmetro de rota aninhado, o Laravel irá automaticamente limitar a consulta para recuperar o modelo aninhado com base em seu pai usando convenções para adivinhar o nome da relação no pai. Neste caso, presume-se que o modelo `User` tem uma relação chamada `posts` (a forma plural do nome do parâmetro de rota), que pode ser utilizada para recuperar o modelo `Post`.
 
-If you wish, you may instruct Laravel to scope "child" bindings even when a custom key is not provided. To do so, you may invoke the `scopeBindings` method when defining your route:
+ Se desejar, você pode instruir o Laravel para que vinculações de "filho" sejam atribuídas mesmo quando a chave personalizada não for fornecida. Para fazer isso, é necessário invocar o método `scopeBindings` ao definir sua rota:
 
 ```php
     use App\Models\Post;
@@ -645,7 +645,7 @@ If you wish, you may instruct Laravel to scope "child" bindings even when a cust
     })->scopeBindings();
 ```
 
-Or, you may instruct an entire group of route definitions to use scoped bindings:
+ Ou você pode instruir um grupo inteiro de definições de rota a usar ligações com escopo:
 
 ```php
     Route::scopeBindings()->group(function () {
@@ -655,7 +655,7 @@ Or, you may instruct an entire group of route definitions to use scoped bindings
     });
 ```
 
-Similarly, you may explicitly instruct Laravel to not scope bindings by invoking the `withoutScopedBindings` method:
+ Da mesma forma, você pode instruir explicitamente o Laravel para não vincular escopo ao invocar o método `withoutScopedBindings`:
 
 ```php
     Route::get('/users/{user}/posts/{post:slug}', function (User $user, Post $post) {
@@ -664,9 +664,9 @@ Similarly, you may explicitly instruct Laravel to not scope bindings by invoking
 ```
 
 <a name="customizing-missing-model-behavior"></a>
-#### Customizing Missing Model Behavior
+#### Personalizar o comportamento de modelos ausentes
 
-Typically, a 404 HTTP response will be generated if an implicitly bound model is not found. However, you may customize this behavior by calling the `missing` method when defining your route. The `missing` method accepts a closure that will be invoked if an implicitly bound model can not be found:
+ Normalmente, um HTTP response de 404 é gerado se um modelo vinculado implicitamente não for encontrado. No entanto, você pode personalizar esse comportamento chamando o método `missing` ao definir sua rota. O método `missing` aceita uma chave que será invocada se um modelo vinculado implicitamente não puder ser encontrado:
 
 ```php
     use App\Http\Controllers\LocationsController;
@@ -681,9 +681,9 @@ Typically, a 404 HTTP response will be generated if an implicitly bound model is
 ```
 
 <a name="implicit-enum-binding"></a>
-### Implicit Enum Binding
+### Vinculação implícita de enumeração
 
-PHP 8.1 introduced support for [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). To complement this feature, Laravel allows you to type-hint a [backed Enum](https://www.php.net/manual/en/language.enumerations.backed.php) on your route definition and Laravel will only invoke the route if that route segment corresponds to a valid Enum value. Otherwise, a 404 HTTP response will be returned automatically. For example, given the following Enum:
+ O PHP 8.1 introduziu suporte para [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). Para complementar esse recurso, o Laravel permite que você especifique um tipo de dado com um [Enum backed](https://www.php.net/manual/en/language.enumerations.backed.php) na definição da rota e o Laravel só invocará a rota se esse segmento correspondente à uma valida Enum. Caso contrário, será retornada automaticamente uma resposta HTTP 404. Por exemplo, considerando o seguinte Enum:
 
 ```php
 <?php
@@ -697,7 +697,7 @@ enum Category: string
 }
 ```
 
-You may define a route that will only be invoked if the `{category}` route segment is `fruits` or `people`. Otherwise, Laravel will return a 404 HTTP response:
+ Você pode definir uma rota que somente será invocada se o segmento da rota "{category}" for "frutas" ou "pessoas". Caso contrário, o Laravel retornará uma resposta do tipo HTTP 404:
 
 ```php
 use App\Enums\Category;
@@ -709,9 +709,9 @@ Route::get('/categories/{category}', function (Category $category) {
 ```
 
 <a name="explicit-binding"></a>
-### Explicit Binding
+### Vinculo explícito
 
-You are not required to use Laravel's implicit, convention based model resolution in order to use model binding. You can also explicitly define how route parameters correspond to models. To register an explicit binding, use the router's `model` method to specify the class for a given parameter. You should define your explicit model bindings at the beginning of the `boot` method of your `AppServiceProvider` class:
+ Você não precisa usar a resolução de modelo baseada em convenções implícitas do Laravel para usar o vinculamento de modelo. Também é possível definir explicitamente como os parâmetros da rota se correlacionam com modelos. Para registrar um vínculo explícito, use o método `model` do roteador para especificar a classe para um determinado parâmetro. Defina seus vinculamentos de modelo explícitos no início do método `boot` da sua classe `AppServiceProvider`:
 
 ```php
     use App\Models\User;
@@ -726,7 +726,7 @@ You are not required to use Laravel's implicit, convention based model resolutio
     }
 ```
 
-Next, define a route that contains a `{user}` parameter:
+ Em seguida, defina uma rota que contenha um parâmetro `{usuário}`:
 
 ```php
     use App\Models\User;
@@ -736,14 +736,14 @@ Next, define a route that contains a `{user}` parameter:
     });
 ```
 
-Since we have bound all `{user}` parameters to the `App\Models\User` model, an instance of that class will be injected into the route. So, for example, a request to `users/1` will inject the `User` instance from the database which has an ID of `1`.
+ Uma vez que estamos associando todos os parâmetros `{user}` ao modelo `App\Models\User`, será injetada uma instância dessa classe na rota. Dessa forma, por exemplo, o pedido `users/1` injetará a instância de `User` no banco de dados com um ID de 1.
 
-If a matching model instance is not found in the database, a 404 HTTP response will be automatically generated.
+ Se não for encontrada nenhuma instância de modelo correspondente no banco de dados, será gerado automaticamente um resposta de erro HTTP 404.
 
 <a name="customizing-the-resolution-logic"></a>
-#### Customizing the Resolution Logic
+#### Personalizar a lógica de resolução
 
-If you wish to define your own model binding resolution logic, you may use the `Route::bind` method. The closure you pass to the `bind` method will receive the value of the URI segment and should return the instance of the class that should be injected into the route. Again, this customization should take place in the `boot` method of your application's `AppServiceProvider`:
+ Se pretender definir a sua própria lógica de resolução para o mapeamento do modelo, pode utilizar a metodologia `Route::bind`. O fecho que transmite para a metodologia `bind` irá receber o valor do segmento URI e deve retornar uma instância da classe que deve ser injetada na rota. Novamente, esta personalização deve ter lugar no método de inicialização do seu serviço `AppServiceProvider`:
 
 ```php
     use App\Models\User;
@@ -760,7 +760,7 @@ If you wish to define your own model binding resolution logic, you may use the `
     }
 ```
 
-Alternatively, you may override the `resolveRouteBinding` method on your Eloquent model. This method will receive the value of the URI segment and should return the instance of the class that should be injected into the route:
+ Como alternativa, você pode reverter a ordem das rotas no método `resolveRouteBinding`. Esse método recebe o valor do segmento de URI e deve retornar a instância da classe que deve ser injetada na rota:
 
 ```php
     /**
@@ -776,7 +776,7 @@ Alternatively, you may override the `resolveRouteBinding` method on your Eloquen
     }
 ```
 
-If a route is utilizing [implicit binding scoping](#implicit-model-binding-scoping), the `resolveChildRouteBinding` method will be used to resolve the child binding of the parent model:
+ Se uma rota estiver utilizando um escopo de vinculo implícito, a método `resolveChildRouteBinding` será usado para resolver o vinculo de nível filial do modelo principal:
 
 ```php
     /**
@@ -794,9 +794,9 @@ If a route is utilizing [implicit binding scoping](#implicit-model-binding-scopi
 ```
 
 <a name="fallback-routes"></a>
-## Fallback Routes
+## Rotas de recurso
 
-Using the `Route::fallback` method, you may define a route that will be executed when no other route matches the incoming request. Typically, unhandled requests will automatically render a "404" page via your application's exception handler. However, since you would typically define the `fallback` route within your `routes/web.php` file, all middleware in the `web` middleware group will apply to the route. You are free to add additional middleware to this route as needed:
+ Usando o método `Route::fallback`, você pode definir uma rota que será executada quando nenhuma outra rota corresponder à solicitação recebida. Normalmente, os pedidos não tratados renderão automaticamente uma página "404" através do controlador de exceções da sua aplicação. No entanto, como normalmente você define a rota `fallback` na arquivo `routes/web.php`, todos os middlewares do grupo `web` serão aplicados à rota. Você está livre para adicionar middlewares adicionais a esta rota conforme necessário:
 
 ```php
     Route::fallback(function () {
@@ -804,18 +804,18 @@ Using the `Route::fallback` method, you may define a route that will be executed
     });
 ```
 
-> [!WARNING]  
-> The fallback route should always be the last route registered by your application.
+ > [!ATENÇÃO]
+ > A rota de alternativa deve ser sempre a última rota registrada pelo seu aplicativo.
 
 <a name="rate-limiting"></a>
-## Rate Limiting
+## Limitação de taxas
 
 <a name="defining-rate-limiters"></a>
-### Defining Rate Limiters
+### Definindo limiteadores de velocidade
 
-Laravel includes powerful and customizable rate limiting services that you may utilize to restrict the amount of traffic for a given route or group of routes. To get started, you should define rate limiter configurations that meet your application's needs.
+ O Laravel inclui serviços poderosos e personalizáveis de restrição de taxas que você pode utilizar para restringir a quantidade de tráfego para um determinado rote ou grupo de rotas. Para começar, defina as configurações do limitador de taxas de acordo com as necessidades da sua aplicação.
 
-Rate limiters may be defined within the `boot` method of your application's `App\Providers\AppServiceProvider` class:
+ Os limites de taxa podem ser definidos no método `boot` da classe `App\Providers\AppServiceProvider` da aplicação:
 
 ```php
 use Illuminate\Cache\RateLimiting\Limit;
@@ -833,7 +833,7 @@ protected function boot(): void
 }
 ```
 
-Rate limiters are defined using the `RateLimiter` facade's `for` method. The `for` method accepts a rate limiter name and a closure that returns the limit configuration that should apply to routes that are assigned to the rate limiter. Limit configuration are instances of the `Illuminate\Cache\RateLimiting\Limit` class. This class contains helpful "builder" methods so that you can quickly define your limit. The rate limiter name may be any string you wish:
+ Os limitadores de velocidade são definidos usando o método `for` da faca `RateLimiter`. O método `for` aceita um nome do limitador de velocidade e um closure que retorna a configuração do limite que deve ser aplicada às rotas atribuídas ao limitador. As configurações dos limites são instâncias da classe `Illuminate\Cache\RateLimiting\Limit`. Esta classe contém métodos úteis de "construtor" para que você possa definir rapidamente seu limite. O nome do limitador pode ser qualquer string desejado:
 
 ```php
     use Illuminate\Cache\RateLimiting\Limit;
@@ -851,7 +851,7 @@ Rate limiters are defined using the `RateLimiter` facade's `for` method. The `fo
     }
 ```
 
-If the incoming request exceeds the specified rate limit, a response with a 429 HTTP status code will automatically be returned by Laravel. If you would like to define your own response that should be returned by a rate limit, you may use the `response` method:
+ Se o pedido recebido exceder o limite especificado de taxa, uma resposta com um código HTTP 429 será retornada automaticamente pelo Laravel. Se você quiser definir a sua própria resposta que deve ser retornada por um limite de taxas, poderá usar o método `response`:
 
 ```php
     RateLimiter::for('global', function (Request $request) {
@@ -861,7 +861,7 @@ If the incoming request exceeds the specified rate limit, a response with a 429 
     });
 ```
 
-Since rate limiter callbacks receive the incoming HTTP request instance, you may build the appropriate rate limit dynamically based on the incoming request or authenticated user:
+ Como os chamados de retorno do limitador de taxa recebem a instância da solicitação HTTP entrantes, você poderá criar uma limitação dinamicamente baseada na solicitação ou no usuário autenticado:
 
 ```php
     RateLimiter::for('uploads', function (Request $request) {
@@ -872,9 +872,9 @@ Since rate limiter callbacks receive the incoming HTTP request instance, you may
 ```
 
 <a name="segmenting-rate-limits"></a>
-#### Segmenting Rate Limits
+#### Limites de velocidade por segmento
 
-Sometimes you may wish to segment rate limits by some arbitrary value. For example, you may wish to allow users to access a given route 100 times per minute per IP address. To accomplish this, you may use the `by` method when building your rate limit:
+ Por vezes poderá querer segmentar limites de taxa com base em um valor aleatório. Por exemplo, poderá permitir que os utilizadores acedam a uma determinada rota 100 vezes por minuto por endereço IP. Para tal pode utilizar o método `by` quando estiver a construir o seu limite de taxa:
 
 ```php
     RateLimiter::for('uploads', function (Request $request) {
@@ -884,7 +884,7 @@ Sometimes you may wish to segment rate limits by some arbitrary value. For examp
     });
 ```
 
-To illustrate this feature using another example, we can limit access to the route to 100 times per minute per authenticated user ID or 10 times per minute per IP address for guests:
+ Para ilustrar esse recurso com outro exemplo, podemos limitar o acesso à rota até 100 vezes por minuto para cada identificador de usuário autenticado ou 10 vezes por minuto para cada endereço IP para hóspedes:
 
 ```php
     RateLimiter::for('uploads', function (Request $request) {
@@ -895,9 +895,9 @@ To illustrate this feature using another example, we can limit access to the rou
 ```
 
 <a name="multiple-rate-limits"></a>
-#### Multiple Rate Limits
+#### Vários limites de taxa
 
-If needed, you may return an array of rate limits for a given rate limiter configuration. Each rate limit will be evaluated for the route based on the order they are placed within the array:
+ Se necessário, você pode retornar um array de limites de taxa para uma determinada configuração de limitador de taxas. Cada limite de taxa será avaliado para a rota com base na ordem em que eles são colocados dentro do array:
 
 ```php
     RateLimiter::for('login', function (Request $request) {
@@ -909,9 +909,9 @@ If needed, you may return an array of rate limits for a given rate limiter confi
 ```
 
 <a name="attaching-rate-limiters-to-routes"></a>
-### Attaching Rate Limiters to Routes
+### Atribuição de limite de velocidade a rotas
 
-Rate limiters may be attached to routes or route groups using the `throttle` [middleware](/docs/middleware). The throttle middleware accepts the name of the rate limiter you wish to assign to the route:
+ Os limitadores de taxa podem ser adicionados a rotas ou grupos de rota usando o `throttle` [middleware](/docs/middleware). O middleware "limite" aceita o nome do limitador de taxa que você deseja atribuir à rota:
 
 ```php
     Route::middleware(['throttle:uploads'])->group(function () {
@@ -926,9 +926,9 @@ Rate limiters may be attached to routes or route groups using the `throttle` [mi
 ```
 
 <a name="throttling-with-redis"></a>
-#### Throttling With Redis
+#### Limitação com o Redis
 
-By default, the `throttle` middleware is mapped to the `Illuminate\Routing\Middleware\ThrottleRequests` class. However, if you are using Redis as your application's cache driver, you may wish to instruct Laravel to use Redis to manage rate limiting. To do so, you should use the `throttleWithRedis` method in your application's `bootstrap/app.php` file. This method maps the `throttle` middleware to the `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` middleware class:
+ Por padrão, o middleware `throttle` está mapeado para a classe `Illuminate\Routing\Middleware\ThrottleRequests`. No entanto, se estiver a usar Redis como driver de cache da sua aplicação, poderá querer orientar o Laravel a utilizar Redis para gerir a limitação por tempo de solicitações. Para tal, deverá usar o método `throttleWithRedis` no ficheiro bootstrap/app.php da aplicação. Este método mapeia o middleware `throttle` para a classe `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis`:
 
 ```php
     ->withMiddleware(function (Middleware $middleware) {
@@ -938,9 +938,9 @@ By default, the `throttle` middleware is mapped to the `Illuminate\Routing\Middl
 ```
 
 <a name="form-method-spoofing"></a>
-## Form Method Spoofing
+## Método de formação de falsos positivos
 
-HTML forms do not support `PUT`, `PATCH`, or `DELETE` actions. So, when defining `PUT`, `PATCH`, or `DELETE` routes that are called from an HTML form, you will need to add a hidden `_method` field to the form. The value sent with the `_method` field will be used as the HTTP request method:
+ As ações `PUT`, `PATCH` e `DELETE` não são suportadas nos formulários HTML. Por conseguinte, quando se definirem rotas `PUT`, `PATCH` ou `DELETE` que forem chamadas a partir de um formulário HTML, será necessário adicionar um campo escondido `_method`. O valor enviado no campo `_method` será utilizado como o método da solicitação HTTP:
 
 ```php
     <form action="/example" method="POST">
@@ -949,7 +949,7 @@ HTML forms do not support `PUT`, `PATCH`, or `DELETE` actions. So, when defining
     </form>
 ```
 
-For convenience, you may use the `@method` [Blade directive](/docs/blade) to generate the `_method` input field:
+ Para conveniência, você pode usar a `@metod` [diretiva Blade](/docs/blade) para gerar o campo de entrada `_método`:
 
 ```php
     <form action="/example" method="POST">
@@ -959,9 +959,9 @@ For convenience, you may use the `@method` [Blade directive](/docs/blade) to gen
 ```
 
 <a name="accessing-the-current-route"></a>
-## Accessing the Current Route
+## Acesso à rota atual
 
-You may use the `current`, `currentRouteName`, and `currentRouteAction` methods on the `Route` facade to access information about the route handling the incoming request:
+ É possível usar as funções `current`, `currentRouteName`, e `currentRouteAction`, disponibilizadas no modelo de faca, para acessar informações sobre o caminho que está atendendo ao pedido:
 
 ```php
     use Illuminate\Support\Facades\Route;
@@ -971,36 +971,36 @@ You may use the `current`, `currentRouteName`, and `currentRouteAction` methods 
     $action = Route::currentRouteAction(); // string
 ```
 
-You may refer to the API documentation for both the [underlying class of the Route facade](https://laravel.com/api/Illuminate/Routing/Router.html) and [Route instance](https://laravel.com/api/Illuminate/Routing/Route.html) to review all of the methods that are available on the router and route classes.
+ Você pode consultar a documentação da API para o [classe subjacente da facade Route](https://laravel.com/api/Illuminate/Routing/Router.html) e [instância de rotas](https://laravel.com/api/Illuminate/Routing/Route.html), para revisar todos os métodos disponíveis nas classes roteador e de rota.
 
 <a name="cors"></a>
-## Cross-Origin Resource Sharing (CORS)
+## Partilha de recursos entre origens
 
-Laravel can automatically respond to CORS `OPTIONS` HTTP requests with values that you configure. The `OPTIONS` requests will automatically be handled by the `HandleCors` [middleware](/docs/middleware) that is automatically included in your application's global middleware stack.
+ O Laravel pode responder automaticamente a solicitações HTTP CORS com valores que você configure. As solicitações OPTIONS serão tratadas automaticamente pelo [middleware `HandleCors`](/docs/middleware) incluído automaticamente na pilha de middlewares globais da sua aplicação.
 
-Sometimes, you may need to customize the CORS configuration values for your application. You may do so by publishing the `cors` configuration file using the `config:publish` Artisan command:
+ Às vezes, você pode precisar de personalizar os valores da configuração CORS para a sua aplicação. Você pode fazer isso publicando o arquivo de configuração `cors` usando o comando Artisan `config:publish`:
 
 ```shell
 php artisan config:publish cors
 ```
 
-This command will place a `cors.php` configuration file within your application's `config` directory.
+ Este comando colocará um arquivo de configuração `cors.php` dentro do diretório `config` da sua aplicação.
 
-> [!NOTE]  
-> For more information on CORS and CORS headers, please consult the [MDN web documentation on CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#The_HTTP_response_headers).
+ > [!ATENÇÃO]
+ [Documentação da Web do MDN sobre o CORS.](https://developer.mozilla.org/pt-BR/docs/Web/HTTP/CORS#O_encaminhamento_de_cabeçalhos)
 
 <a name="route-caching"></a>
-## Route Caching
+## Roteamento com Memória de Acesso aleatório
 
-When deploying your application to production, you should take advantage of Laravel's route cache. Using the route cache will drastically decrease the amount of time it takes to register all of your application's routes. To generate a route cache, execute the `route:cache` Artisan command:
+ Ao implantar seu aplicativo na produção, você deve usar o cache de rotas do Laravel. Usando o cache de rotas reduz drasticamente o tempo gasto para registrar todas as rotas do aplicativo. Para gerar um cache de rota, execute o comando `route:cache` da Artianha:
 
 ```shell
 php artisan route:cache
 ```
 
-After running this command, your cached routes file will be loaded on every request. Remember, if you add any new routes you will need to generate a fresh route cache. Because of this, you should only run the `route:cache` command during your project's deployment.
+ Após executar este comando, o arquivo de rotas em cache será carregado em todas as solicitações. Lembre-se que é preciso gerar um novo cache de rota caso sejam adicionadas novas rotas. Por este motivo, você só deve executar o comando `route:cache` durante a implantação do seu projeto.
 
-You may use the `route:clear` command to clear the route cache:
+ Você pode usar o comando `route:clear` para limpar a cache de rotas:
 
 ```shell
 php artisan route:clear

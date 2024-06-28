@@ -1,18 +1,18 @@
 # Laravel Mix
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-[Laravel Mix](https://github.com/laravel-mix/laravel-mix), a package developed by [Laracasts](https://laracasts.com) creator Jeffrey Way, provides a fluent API for defining [webpack](https://webpack.js.org) build steps for your Laravel application using several common CSS and JavaScript pre-processors.
+ [Laravel Mix](https://github.com/laravel-mix/laravel-mix), um pacote desenvolvido pelo criador do Laracasts ([Laracasts](https://laracasts.com) Jeffrey Way), fornece uma API fluente para a definição de etapas de construção [do webpack](https://webpack.js.org) para sua aplicação Laravel usando vários processadores comuns de CSS e JavaScript.
 
-In other words, Mix makes it a cinch to compile and minify your application's CSS and JavaScript files. Through simple method chaining, you can fluently define your asset pipeline. For example:
+ Em outras palavras, o Mix facilita a compilação e minificação de arquivos CSS e JavaScript da aplicação. Através de um método simples, você pode definir seu pipeline de ativos com fluidez, por exemplo:
 
 ```js
 mix.js('resources/js/app.js', 'public/js')
     .postCss('resources/css/app.css', 'public/css');
 ```
 
-If you've ever been confused and overwhelmed about getting started with webpack and asset compilation, you will love Laravel Mix. However, you are not required to use it while developing your application; you are free to use any asset pipeline tool you wish, or even none at all.
+ Se você já ficou confuso e incomodado com o uso do webpack para compilação de recursos (assets), vai adorar o Laravel Mix. No entanto, não é obrigatório utilizá-lo ao desenvolver a aplicação; você pode usar qualquer outro mecanismo ou até mesmo nenhum para esse fim.
 
-> [!NOTE]  
-> Vite has replaced Laravel Mix in new Laravel installations. For Mix documentation, please visit the [official Laravel Mix](https://laravel-mix.com/) website. If you would like to switch to Vite, please see our [Vite migration guide](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-laravel-mix-to-vite).
+ > [!ATENÇÃO]
+ [Guia Oficial do Laravel Mix](https://laravel-mix.com/). Se você deseja mudar para o Vite, por favor consulte nossa

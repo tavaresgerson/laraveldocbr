@@ -1,16 +1,16 @@
-# Events
+# Eventos
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-Laravel's events provide a simple observer pattern implementation, allowing you to subscribe and listen for various events that occur within your application. Event classes are typically stored in the `app/Events` directory, while their listeners are stored in `app/Listeners`. Don't worry if you don't see these directories in your application as they will be created for you as you generate events and listeners using Artisan console commands.
+ Os eventos do Laravel proporcionam uma simples implementação de padrões observers, permitindo que você assine e ouça vários eventos ocorridos em sua aplicação. Normalmente, as classes de evento são armazenadas na pasta `app/Events`, enquanto os seus escutadores são armazenados na `app/Listeners`. Não se preocupe caso você não veja essas pastas em sua aplicação, pois eles serão criados para você ao gerar eventos e escutadores usando comandos do consol.
 
-Events serve as a great way to decouple various aspects of your application, since a single event can have multiple listeners that do not depend on each other. For example, you may wish to send a Slack notification to your user each time an order has shipped. Instead of coupling your order processing code to your Slack notification code, you can raise an `App\Events\OrderShipped` event which a listener can receive and use to dispatch a Slack notification.
+ Os eventos servem como uma excelente maneira de decouple os vários aspectos da sua aplicação, pois um único evento pode ter múltiplos ouvintes que não dependem uns dos outros. Por exemplo, você pode querer enviar uma notificação do Slack para seu usuário a cada vez que uma encomenda for expedida. Em vez de acoplar o código de processamento de ordem ao código de notificação no Slack, você pode criar um `App\Events\OrderShipped` evento que possa ser recebido por um ouvintes e utilizado para enviar uma notificação do Slack.
 
 <a name="generating-events-and-listeners"></a>
-## Generating Events and Listeners
+## Gerando eventos e ouvinte
 
-To quickly generate events and listeners, you may use the `make:event` and `make:listener` Artisan commands:
+ Para gerar eventos e ouvinte de maneira rápida é possível utilizar os comandos do make:event e make:listener da Artisan:
 
 ```shell
 php artisan make:event PodcastProcessed
@@ -18,7 +18,7 @@ php artisan make:event PodcastProcessed
 php artisan make:listener SendPodcastNotification --event=PodcastProcessed
 ```
 
-For convenience, you may also invoke the `make:event` and `make:listener` Artisan commands without additional arguments. When you do so, Laravel will automatically prompt you for the class name and, when creating a listener, the event it should listen to:
+ Por conveniência, você também pode invocar os comandos Artisan `make:event` e `make:listener` sem argumentos adicionais. Quando você fizer isso, o Laravel solicitará automaticamente o nome da classe e, ao criar um listener, qual evento ele deve ouvir:
 
 ```shell
 php artisan make:event
@@ -27,12 +27,12 @@ php artisan make:listener
 ```
 
 <a name="registering-events-and-listeners"></a>
-## Registering Events and Listeners
+## Registo de eventos e leitores
 
 <a name="event-discovery"></a>
-### Event Discovery
+### Descoberta de eventos
 
-By default, Laravel will automatically find and register your event listeners by scanning your application's `Listeners` directory. When Laravel finds any listener class method that begins with `handle` or `__invoke`, Laravel will register those methods as event listeners for the event that is type-hinted in the method's signature:
+ Por padrão, o Laravel irá encontrar e registar os seus eventos ouscutadores automaticamente analisando a sua aplicação na pasta "Listeners". Quando o Laravel encontra uma qualquer método de escuta que comece com "handle" ou "__invoke", o Laravel irá registar esses métodos como escutas para o evento especificado no tipo do sinalizador do método:
 
 ```php
     use App\Events\PodcastProcessed;
@@ -49,7 +49,7 @@ By default, Laravel will automatically find and register your event listeners by
     }
 ```
 
-If you plan to store your listeners in a different directory or within multiple directories, you may instruct Laravel to scan those directories using the `withEvents` method in your application's `bootstrap/app.php` file:
+ Se você planeja armazenar seus ouvinte em um diretório diferente ou em vários diretórios, poderá instruir o Laravel a procurar esses diretórios usando o método `withEvents` no arquivo `bootstrap/app.php` do seu aplicativo:
 
 ```php
     ->withEvents(discover: [
@@ -57,21 +57,21 @@ If you plan to store your listeners in a different directory or within multiple 
     ])
 ```
 
-The `event:list` command may be used to list all of the listeners registered within your application:
+ O comando `event:list` pode ser usado para mostrar todos os eventos registrados na aplicação:
 
 ```shell
 php artisan event:list
 ```
 
 <a name="event-discovery-in-production"></a>
-#### Event Discovery in Production
+#### Descoberta de eventos em produção
 
-To give your application a speed boost, you should cache a manifest of all of your application's listeners using the `optimize` or `event:cache` Artisan commands. Typically, this command should be run as part of your application's [deployment process](/docs/deployment#optimization). This manifest will be used by the framework to speed up the event registration process. The `event:clear` command may be used to destroy the event cache.
+ Para acelerar seu aplicativo, você deve armazenar em cache um manifesto de todos os controladores do aplicativo usando os comandos `optimize` ou `event:cache`. Tipicamente, esse comando deve ser executado como parte do processo [de implantação da sua aplicação](/docs/deployment#optimization). Esse manifesto será usado pelo framework para acelerar o processo de registro de eventos. O comando `event:clear` pode ser utilizado para destruir o cache de eventos.
 
 <a name="manually-registering-events"></a>
-### Manually Registering Events
+### Registo manual de eventos
 
-Using the `Event` facade, you may manually register events and their corresponding listeners within the `boot` method of your application's `AppServiceProvider`:
+ Usando a facade Event, você pode registrar eventos e seus respectivos ouvinte manualmente no método boot de seu aplicativo AppServiceProvider:
 
 ```php
     use App\Domain\Orders\Events\PodcastProcessed;
@@ -90,16 +90,16 @@ Using the `Event` facade, you may manually register events and their correspondi
     }
 ```
 
-The `event:list` command may be used to list all of the listeners registered within your application:
+ O comando `event:list` pode ser usado para listar todos os atalhos registrados em seu aplicativo:
 
 ```shell
 php artisan event:list
 ```
 
 <a name="closure-listeners"></a>
-### Closure Listeners
+### Ouvidores de fechamento
 
-Typically, listeners are defined as classes; however, you may also manually register closure-based event listeners in the `boot` method of your application's `AppServiceProvider`:
+ Normalmente, os eventos são definidos como classes; contudo, você pode também registrar manualmente eventos baseados em closures no método `boot` do `AppServiceProvider` do aplicativo:
 
 ```php
     use App\Events\PodcastProcessed;
@@ -117,9 +117,9 @@ Typically, listeners are defined as classes; however, you may also manually regi
 ```
 
 <a name="queuable-anonymous-event-listeners"></a>
-#### Queueable Anonymous Event Listeners
+#### Escutadores de eventos anónimos com fila
 
-When registering closure based event listeners, you may wrap the listener closure within the `Illuminate\Events\queueable` function to instruct Laravel to execute the listener using the [queue](/docs/queues):
+ Ao registrar um ouvinte de eventos baseados em fechamento, você pode envolver o encerramento do ouvinte dentro da função `Illuminate\Events\queueable` para instruir o Laravel a executar o ouvinte usando [filas](/docs/queues):
 
 ```php
     use App\Events\PodcastProcessed;
@@ -137,7 +137,7 @@ When registering closure based event listeners, you may wrap the listener closur
     }
 ```
 
-Like queued jobs, you may use the `onConnection`, `onQueue`, and `delay` methods to customize the execution of the queued listener:
+ Tal como acontece com os trabalhos em fila, você pode usar os métodos `onConnection`, `onQueue` e `delay` para personalizar a execução do ouvinte em fila.
 
 ```php
     Event::listen(queueable(function (PodcastProcessed $event) {
@@ -145,7 +145,7 @@ Like queued jobs, you may use the `onConnection`, `onQueue`, and `delay` methods
     })->onConnection('redis')->onQueue('podcasts')->delay(now()->addSeconds(10)));
 ```
 
-If you would like to handle anonymous queued listener failures, you may provide a closure to the `catch` method while defining the `queueable` listener. This closure will receive the event instance and the `Throwable` instance that caused the listener's failure:
+ Se pretender gerir falhas de um escutador agendado anónimo, pode fornecer uma função anonima para a méthode `catch`, ao definir o escutador `queueable`. Esta função receberá a instância do evento e a instância `Throwable` que causou a falha do escutador:
 
 ```php
     use App\Events\PodcastProcessed;
@@ -161,9 +161,9 @@ If you would like to handle anonymous queued listener failures, you may provide 
 ```
 
 <a name="wildcard-event-listeners"></a>
-#### Wildcard Event Listeners
+#### Escutadores de eventos com caractere wildcard
 
-You may also register listeners using the `*` character as a wildcard parameter, allowing you to catch multiple events on the same listener. Wildcard listeners receive the event name as their first argument and the entire event data array as their second argument:
+ É também possível registar ouvinte usando o caractere `*` como parâmetro de substituição, permitindo que recebam vários eventos no mesmo ouvinte. Os ouvintes de substituição recebem o nome do evento como primeiro argumento e todo o array de dados do evento como segundo argumento:
 
 ```php
     Event::listen('event.*', function (string $eventName, array $data) {
@@ -172,9 +172,9 @@ You may also register listeners using the `*` character as a wildcard parameter,
 ```
 
 <a name="defining-events"></a>
-## Defining Events
+## Eventos que definem
 
-An event class is essentially a data container which holds the information related to the event. For example, let's assume an `App\Events\OrderShipped` event receives an [Eloquent ORM](/docs/eloquent) object:
+ Uma classe de evento é essencialmente um recipiente de dados que guarda as informações relacionadas ao evento. Suponhamos que um evento `App\Events\OrderShipped` receba um objeto do [Eloquent ORM] (ORM/Entidade Inteligente):
 
 ```php
     <?php
@@ -199,12 +199,12 @@ An event class is essentially a data container which holds the information relat
     }
 ```
 
-As you can see, this event class contains no logic. It is a container for the `App\Models\Order` instance that was purchased. The `SerializesModels` trait used by the event will gracefully serialize any Eloquent models if the event object is serialized using PHP's `serialize` function, such as when utilizing [queued listeners](#queued-event-listeners).
+ Como você pode ver, essa classe de evento não contém nenhuma lógica. Ela é um recipiente para a instância `App\Models\Order` que foi comprada. O traço `SerializesModels`, usado pelo evento, graciosamente serializa qualquer modelo Eloquent se o objeto do evento for serializado usando a função `serialize` do PHP, como no caso da utilização de [escutadores agendados](#escutadores-agendados).
 
 <a name="defining-listeners"></a>
-## Defining Listeners
+## Definindo Audiência
 
-Next, let's take a look at the listener for our example event. Event listeners receive event instances in their `handle` method. The `make:listener` Artisan command, when invoked with the `--event` option, will automatically import the proper event class and type-hint the event in the `handle` method. Within the `handle` method, you may perform any actions necessary to respond to the event:
+ Em seguida, vamos dar uma olhada no escutador do nosso exemplo de evento. Os escutadores recebem instâncias de eventos em sua `handle` método. O comando da Artisan `make:listener`, quando invocado com a opção `--event`, importará automaticamente as classes de eventos adequadas e indicarão o tipo do evento no método `handle`. Dentro do método `handle`, você poderá executar quaisquer ações necessárias para responder ao evento:
 
 ```php
     <?php
@@ -233,20 +233,20 @@ Next, let's take a look at the listener for our example event. Event listeners r
     }
 ```
 
-> [!NOTE]
-> Your event listeners may also type-hint any dependencies they need on their constructors. All event listeners are resolved via the Laravel [service container](/docs/container), so dependencies will be injected automatically.
+ > [!NOTA]
+ [contêiner de serviço](/docs/container), para as dependências serem injetadas automaticamente.
 
 <a name="stopping-the-propagation-of-an-event"></a>
-#### Stopping The Propagation Of An Event
+#### Interromper a propagação de um evento
 
-Sometimes, you may wish to stop the propagation of an event to other listeners. You may do so by returning `false` from your listener's `handle` method.
+ Por vezes, poderá desejar interromper a propagação de um evento para outros leitores. Pode fazê-lo retornando `false` da função `handle` do seu leitor.
 
 <a name="queued-event-listeners"></a>
-## Queued Event Listeners
+## Escutadores de eventos em fila
 
-Queueing listeners can be beneficial if your listener is going to perform a slow task such as sending an email or making an HTTP request. Before using queued listeners, make sure to [configure your queue](/docs/queues) and start a queue worker on your server or local development environment.
+ Ouvir em fila é benéfico se o usuário precisar executar uma tarefa lenta, como enviar um e-mail ou fazer um pedido HTTP. Antes de usar os ouvintes em fila, configure a fila e inicie um assistente de fila no servidor ou no ambiente de desenvolvimento local.
 
-To specify that a listener should be queued, add the `ShouldQueue` interface to the listener class. Listeners generated by the `make:listener` Artisan commands already have this interface imported into the current namespace so you can use it immediately:
+ Para especificar que um listen devem ser priorizados em fila de espera, adicione a interface `ShouldQueue` à classe do listener. Os listeners gerados pelos comandos Artisan `make:listener` já importam essa interface no namespace atual para que você possa usá-la imediatamente:
 
 ```php
     <?php
@@ -262,12 +262,12 @@ To specify that a listener should be queued, add the `ShouldQueue` interface to 
     }
 ```
 
-That's it! Now, when an event handled by this listener is dispatched, the listener will automatically be queued by the event dispatcher using Laravel's [queue system](/docs/queues). If no exceptions are thrown when the listener is executed by the queue, the queued job will automatically be deleted after it has finished processing.
+ É isso! Agora, quando um evento gerenciado por este ouvinte for enviado, o ouvinte será automaticamente agendado pelo gerente de eventos usando o [sistema de fila](https://laravel.com/docs/queues). Se nenhuma exceção for lançada quando o ouvinte for executado na fila, o trabalho pendente será automaticamente excluído depois que tiver sido concluído o processamento.
 
 <a name="customizing-the-queue-connection-queue-name"></a>
-#### Customizing The Queue Connection, Name, & Delay
+#### Personalizar a Conexão da Fila, Nome e Demora
 
-If you would like to customize the queue connection, queue name, or queue delay time of an event listener, you may define the `$connection`, `$queue`, or `$delay` properties on your listener class:
+ Se quiser personalizar a ligação à fila, o nome da fila ou o tempo de atraso na execução de um evento com uma classe de escuta de eventos, você pode definir as propriedades `$connection`, `$queue` ou `$delay`.
 
 ```php
     <?php
@@ -302,7 +302,7 @@ If you would like to customize the queue connection, queue name, or queue delay 
     }
 ```
 
-If you would like to define the listener's queue connection, queue name, or delay at runtime, you may define `viaConnection`, `viaQueue`, or `withDelay` methods on the listener:
+ Se você preferir definir a conexão da fila do ouvinte, o nome da fila ou o tempo de atraso na execução, poderá definir os métodos `viaConnection`, `viaQueue` ou `withDelay` no ouvinte:
 
 ```php
     /**
@@ -331,9 +331,9 @@ If you would like to define the listener's queue connection, queue name, or dela
 ```
 
 <a name="conditionally-queueing-listeners"></a>
-#### Conditionally Queueing Listeners
+#### Participantes em fila condicional
 
-Sometimes, you may need to determine whether a listener should be queued based on some data that are only available at runtime. To accomplish this, a `shouldQueue` method may be added to a listener to determine whether the listener should be queued. If the `shouldQueue` method returns `false`, the listener will not be queued:
+ Às vezes, você pode precisar determinar se um listener deve ser agendado com base em alguns dados disponíveis apenas na execução. Para isso, uma método `shouldQueue` pode ser adicionado para determinar se o listener deve ser agendado. Se o método `shouldQueue` retornar `false`, o listener não será agendado:
 
 ```php
     <?php
@@ -364,9 +364,9 @@ Sometimes, you may need to determine whether a listener should be queued based o
 ```
 
 <a name="manually-interacting-with-the-queue"></a>
-### Manually Interacting With the Queue
+### Interação manual com a fila
 
-If you need to manually access the listener's underlying queue job's `delete` and `release` methods, you may do so using the `Illuminate\Queue\InteractsWithQueue` trait. This trait is imported by default on generated listeners and provides access to these methods:
+ Se você precisar acessar manualmente os métodos `delete` e `release` da fila subjacente do listener, poderá fazer isso usando o traço `Illuminate\Queue\InteractsWithQueue`. Esse traço é importado por padrão em listeners gerados e fornece acesso a esses métodos:
 
 ```php
     <?php
@@ -394,11 +394,11 @@ If you need to manually access the listener's underlying queue job's `delete` an
 ```
 
 <a name="queued-event-listeners-and-database-transactions"></a>
-### Queued Event Listeners and Database Transactions
+### Escutadores de eventos em fila e transações de banco de dados
 
-When queued listeners are dispatched within database transactions, they may be processed by the queue before the database transaction has committed. When this happens, any updates you have made to models or database records during the database transaction may not yet be reflected in the database. In addition, any models or database records created within the transaction may not exist in the database. If your listener depends on these models, unexpected errors can occur when the job that dispatches the queued listener is processed.
+ Quando os eventos agendados são enviados para a execução dentro de transações do banco de dados, estes podem ser processados pela fila antes da transação do banco de dados ter sido confirmada. Neste caso, quaisquer alterações efetuadas nos modelos ou registos no banco de dados durante a transação do banco de dados podem ainda não ser refletidas na base de dados. Além disso, os modelos ou registos criados dentro da transação do banco de dados poderão não existir na base de dados. Se o seu evento agendado depender destes modelos, poderão ocorrer erros inesperados quando o trabalho que envia o evento agendado a ser executado é processado.
 
-If your queue connection's `after_commit` configuration option is set to `false`, you may still indicate that a particular queued listener should be dispatched after all open database transactions have been committed by implementing the `ShouldHandleEventsAfterCommit` interface on the listener class:
+ Se a opção de configuração do comando de conclusão da conexão da fila estiver definida como `false`, ainda é possível indicar que um determinado listening de fila deve ser distribuído após todas as transações de banco de dados em aberto terem sido concluídas implementando a interface `ShouldHandleEventsAfterCommit` na classe do listening:
 
 ```php
     <?php
@@ -415,13 +415,13 @@ If your queue connection's `after_commit` configuration option is set to `false`
     }
 ```
 
-> [!NOTE]
-> To learn more about working around these issues, please review the documentation regarding [queued jobs and database transactions](/docs/queues#jobs-and-database-transactions).
+ > [!ATENÇÃO]
+ [Tarefas agendadas e transações de banco de dados](/docs/queues#jobs-and-database-transactions).
 
 <a name="handling-failed-jobs"></a>
-### Handling Failed Jobs
+### Gerenciando trabalhos com falha
 
-Sometimes your queued event listeners may fail. If the queued listener exceeds the maximum number of attempts as defined by your queue worker, the `failed` method will be called on your listener. The `failed` method receives the event instance and the `Throwable` that caused the failure:
+ Às vezes, os eventos em fila de espera podem falhar. Se o número máximo de tentativas definido para a sua tarefa exceder a capacidade da fila, o método `failed` será chamado no seu ouvinte. O método `failed` recebe uma instância do evento e um `Throwable` que causou a falha:
 
 ```php
     <?php
@@ -456,11 +456,11 @@ Sometimes your queued event listeners may fail. If the queued listener exceeds t
 ```
 
 <a name="specifying-queued-listener-maximum-attempts"></a>
-#### Specifying Queued Listener Maximum Attempts
+#### Especificando o número máximo de tentativas do escuta em fila
 
-If one of your queued listeners is encountering an error, you likely do not want it to keep retrying indefinitely. Therefore, Laravel provides various ways to specify how many times or for how long a listener may be attempted.
+ Se um de seus ouvintes na fila estiver encontrando algum erro, é provável que você não queira que ele tente novamente indefinidamente. Portanto, o Laravel oferece várias maneiras de especificar quantas vezes ou por quanto tempo pode ser tentado um ouvinte.
 
-You may define a `$tries` property on your listener class to specify how many times the listener may be attempted before it is considered to have failed:
+ Você pode definir uma propriedade `$tries` em sua classe de escuta para especificar quantas vezes o escutador pode ser tentado antes que ele seja considerado falhado:
 
 ```php
     <?php
@@ -484,7 +484,7 @@ You may define a `$tries` property on your listener class to specify how many ti
     }
 ```
 
-As an alternative to defining how many times a listener may be attempted before it fails, you may define a time at which the listener should no longer be attempted. This allows a listener to be attempted any number of times within a given time frame. To define the time at which a listener should no longer be attempted, add a `retryUntil` method to your listener class. This method should return a `DateTime` instance:
+ Como alternativa para definir o número de vezes que um listener é tentado antes de falhar, você pode definir a hora em que o listener não será mais tentado. Isso permite que os testes sejam realizados quantas vezes forem necessários dentro do prazo. Para definir a hora até a qual o listener não deve mais ser tentado, crie uma método `retryUntil` em sua classe de listener. Esse método deverá retornar uma instância `DateTime`:
 
 ```php
     use DateTime;
@@ -499,9 +499,9 @@ As an alternative to defining how many times a listener may be attempted before 
 ```
 
 <a name="dispatching-events"></a>
-## Dispatching Events
+## Despachando eventos
 
-To dispatch an event, you may call the static `dispatch` method on the event. This method is made available on the event by the `Illuminate\Foundation\Events\Dispatchable` trait. Any arguments passed to the `dispatch` method will be passed to the event's constructor:
+ Para enviar um evento, você pode chamar o método estático `dispatch`, no evento. Este método é disponibilizado ao evento pela trajetória `Illuminate\Foundation\Events\Dispatchable`. Quaisquer argumentos passados para o método `dispatch` serão passados para o construtor do evento:
 
 ```php
     <?php
@@ -532,7 +532,7 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
     }
 ```
 
- If you would like to conditionally dispatch an event, you may use the `dispatchIf` and `dispatchUnless` methods:
+ Se você quiser enviar condicionalmente um evento, poderá utilizar os métodos `dispatchIf` e `dispatchUnless`:
 
 ```php
     OrderShipped::dispatchIf($condition, $order);
@@ -540,15 +540,15 @@ To dispatch an event, you may call the static `dispatch` method on the event. Th
     OrderShipped::dispatchUnless($condition, $order);
 ```
 
-> [!NOTE]
-> When testing, it can be helpful to assert that certain events were dispatched without actually triggering their listeners. Laravel's [built-in testing helpers](#testing) make it a cinch.
+ > [!AVISO]
+ [Ajuda incorporada para testes](#testing) facilita muito o processo.
 
 <a name="dispatching-events-after-database-transactions"></a>
-### Dispatching Events After Database Transactions
+### Enviando eventos após transações de banco de dados
 
-Sometimes, you may want to instruct Laravel to only dispatch an event after the active database transaction has committed. To do so, you may implement the `ShouldDispatchAfterCommit` interface on the event class.
+ Às vezes, você pode querer instruir o Laravel para despachar um evento somente após a transação ativa no banco de dados ser confirmada. Para fazer isso, você pode implementar a interface `ShouldDispatchAfterCommit` na classe do evento.
 
-This interface instructs Laravel to not dispatch the event until the current database transaction is committed. If the transaction fails, the event will be discarded. If no database transaction is in progress when the event is dispatched, the event will be dispatched immediately:
+ Essa interface indica ao Laravel que não envia o evento até que a transação atual do banco de dados seja concluída. Se a transação falhar, o evento será descartado. Se nenhuma transação estiver em andamento quando o evento for enviado, ele é enviado imediatamente:
 
 ```php
     <?php
@@ -575,12 +575,12 @@ This interface instructs Laravel to not dispatch the event until the current dat
 ```
 
 <a name="event-subscribers"></a>
-## Event Subscribers
+## Assinantes de eventos
 
 <a name="writing-event-subscribers"></a>
-### Writing Event Subscribers
+### Inscrições de eventos Escritores
 
-Event subscribers are classes that may subscribe to multiple events from within the subscriber class itself, allowing you to define several event handlers within a single class. Subscribers should define a `subscribe` method, which will be passed an event dispatcher instance. You may call the `listen` method on the given dispatcher to register event listeners:
+ Os assinantes de evento são classes que podem se inscrever em múltiplos eventos dentro da própria classe assinante, permitindo definir vários manipuladores de evento dentro de uma única classe. O método `subscribe` do assinante deve ser chamado com uma instância do evento dispatcher. Você pode chamar o método `listen` no dispatcher passado para registrar os ouvintes de eventos:
 
 ```php
     <?php
@@ -621,7 +621,7 @@ Event subscribers are classes that may subscribe to multiple events from within 
     }
 ```
 
-If your event listener methods are defined within the subscriber itself, you may find it more convenient to return an array of events and method names from the subscriber's `subscribe` method. Laravel will automatically determine the subscriber's class name when registering the event listeners:
+ Se os métodos do event listener estiverem definidos no próprio assinante, poderá ser mais conveniente retornar um array de eventos e nomes dos métodos na sua `subscribe` metodo. O Laravel irá automaticamente determinar o nome da classe do assinante ao registrar os event listeners:
 
 ```php
     <?php
@@ -660,9 +660,9 @@ If your event listener methods are defined within the subscriber itself, you may
 ```
 
 <a name="registering-event-subscribers"></a>
-### Registering Event Subscribers
+### Inscrição de assinantes do evento
 
-After writing the subscriber, you are ready to register it with the event dispatcher. You may register subscribers using the `subscribe` method of the `Event` facade. Typically, this should be done within the `boot` method of your application's `AppServiceProvider`:
+ Depois de escrever o assinante, você está pronto para registrá-lo com o dispatcher do evento. Você pode registrar os assinantes usando o método `subscribe` da faca `Event`. Tipicamente, isso deve ser feito dentro do método `boot` do seu `AppServiceProvider`:
 
 ```php
     <?php
@@ -686,11 +686,11 @@ After writing the subscriber, you are ready to register it with the event dispat
 ```
 
 <a name="testing"></a>
-## Testing
+## Teste
 
-When testing code that dispatches events, you may wish to instruct Laravel to not actually execute the event's listeners, since the listener's code can be tested directly and separately of the code that dispatches the corresponding event. Of course, to test the listener itself, you may instantiate a listener instance and invoke the `handle` method directly in your test.
+ Ao testar um código que dispache eventos, você pode querer instruir o Laravel para não executar os controladores do evento, já que o código dos mesmos pode ser testado diretamente e separadamente do código que dispacha o evento correspondente. Claro está que, para testar o próprio controlador, é possível instanciá-lo e chamar a metódia `handle` diretamente no seu teste.
 
-Using the `Event` facade's `fake` method, you may prevent listeners from executing, execute the code under test, and then assert which events were dispatched by your application using the `assertDispatched`, `assertNotDispatched`, and `assertNothingDispatched` methods:
+ Usando o método `fake` da facade `Event`, você pode impedir que os ouvinte executem suas ações, e então, testar quais eventos foram enviados pela sua aplicação usando as métricas `assertDispatched`, `assertNotDispatched` e `assertNothingDispatched`:
 
 ```php tab=Pest
 <?php
@@ -754,7 +754,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-You may pass a closure to the `assertDispatched` or `assertNotDispatched` methods in order to assert that an event was dispatched that passes a given "truth test". If at least one event was dispatched that passes the given truth test then the assertion will be successful:
+ Pode ser passada uma referência às funções `assertDispatched` ou `assertNotDispatched` para garantir que foi despachado um evento que passa um determinado "teste de veracidade". Se tiver sido despachado pelo menos um evento que passe no teste dado, a declaração é bem-sucedida:
 
 ```php
     Event::assertDispatched(function (OrderShipped $event) use ($order) {
@@ -762,7 +762,7 @@ You may pass a closure to the `assertDispatched` or `assertNotDispatched` method
     });
 ```
 
-If you would simply like to assert that an event listener is listening to a given event, you may use the `assertListening` method:
+ Se você gostaria simplesmente de afirmar que um evento está ouvindo em um determinado evento, pode usar o método `assertListening`:
 
 ```php
     Event::assertListening(
@@ -771,13 +771,13 @@ If you would simply like to assert that an event listener is listening to a give
     );
 ```
 
-> [!WARNING]  
-> After calling `Event::fake()`, no event listeners will be executed. So, if your tests use model factories that rely on events, such as creating a UUID during a model's `creating` event, you should call `Event::fake()` **after** using your factories.
+ > [Aviso]
+ > Depois de chamar o método `Event::fake()`, nenhum dispositivo será executado. Assim, se os testes utilizarem fatorias de modelo que dependem de eventos, tais como a criação de um UUID durante o evento "criando" do modelo, você deve chamar `Event::fake()` **depois** de usar suas fábricas.
 
 <a name="faking-a-subset-of-events"></a>
-### Faking a Subset of Events
+### Fazendo uma subconjuntos de eventos
 
-If you only want to fake event listeners for a specific set of events, you may pass them to the `fake` or `fakeFor` method:
+ Se você quer falsificar apenas um conjunto de eventos específico, poderá passá-los para o método `fake` ou `fakeFor`:
 
 ```php tab=Pest
 test('orders can be processed', function () {
@@ -813,7 +813,7 @@ public function test_orders_can_be_processed(): void
 }
 ```
 
-You may fake all events except for a set of specified events using the `except` method:
+ É possível falsificar todos os eventos, exceto um conjunto de eventos especificados usando o método `except`:
 
 ```php
     Event::fake()->except([
@@ -822,9 +822,9 @@ You may fake all events except for a set of specified events using the `except` 
 ```
 
 <a name="scoped-event-fakes"></a>
-### Scoped Event Fakes
+### Eventos com escopo falsificados
 
-If you only want to fake event listeners for a portion of your test, you may use the `fakeFor` method:
+ Se você quer apenas fingir os eventos de um trecho do teste, pode usar o método `fakeFor`:
 
 ```php tab=Pest
 <?php

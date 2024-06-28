@@ -1,14 +1,14 @@
-# Context
+# Contexto
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-Laravel's "context" capabilities enable you to capture, retrieve, and share information throughout requests, jobs, and commands executing within your application. This captured information is also included in logs written by your application, giving you deeper insight into the surrounding code execution history that occurred before a log entry was written and allowing you to trace execution flows throughout a distributed system.
+ As capacidades de "contexto" do Laravel permitem capturar, recuperar e compartilhar informações através das solicitações, tarefas e comandos executados na sua aplicação. Esta informação capturada é também incluída nos registros escritos pela sua aplicação, o que lhe proporciona uma visão mais aprofundada da história de execução do código em torno da entrada no registo e permite-lhe identificar os fluxos de execução num sistema distribuído.
 
 <a name="how-it-works"></a>
-### How it Works
+### Como funciona
 
-The best way to understand Laravel's context capabilities is to see it in action using  the built-in logging features. To get started, you may [add information to the context](#capturing-context) using the `Context` facade. In this example, we will use a [middleware](/docs/{{version}}/middleware) to add the request URL and a unique trace ID to the context on every incoming request:
+ A melhor maneira de entender as capacidades do contexto do Laravel é vê-lo em ação usando os recursos integrados de log. Para começar, você pode [adicionar informações ao contexto](#capturing-context) usando o facade `Context`. Neste exemplo, usaremos um [middleware](/docs/{{version}}/middleware) para adicionar a URL da solicitação e um identificador de rastreamento exclusivo ao contexto em cada solicitação recebida:
 
 ```php
 <?php
@@ -36,19 +36,19 @@ class AddContext
 }
 ```
 
-Information added to the context is automatically appended as metadata to any [log entries](/docs/{{version}}/logging) that are written throughout the request. Appending context as metadata allows information passed to individual log entries to be differentiated from the information shared via `Context`. For example, imagine we write the following log entry:
+ As informações adicionadas ao contexto são automaticamente anexadas como metadados a todos os [registros de logs](/docs/{{version}}/logging) que são escritos durante toda a requisição. Anexar o contexto como um metadado permite diferenciar as informações passadas para cada registro de log das informações compartilhadas via `Context`. Por exemplo, imagine escrevermos o seguinte registo:
 
 ```php
 Log::info('User authenticated.', ['auth_id' => Auth::id()]);
 ```
 
-The written log will contain the `auth_id` passed to the log entry, but it will also contain the context's `url` and `trace_id` as metadata:
+ O registo escrito contém o `auth_id` passado ao registo mas também inclui como metadados a URL e o `trace_id` do contexto.
 
 ```
 User authenticated. {"auth_id":27} {"url":"https://example.com/login","trace_id":"e04e1a11-e75c-4db3-b5b5-cfef4ef56697"}
 ```
 
-Information added to the context is also made available to jobs dispatched to the queue. For example, imagine we dispatch a `ProcessPodcast` job to the queue after adding some information to the context:
+ As informações adicionadas ao contexto são também disponibilizadas aos trabalhos enviados para a fila. Por exemplo, se enviaremos um trabalho ProcessPodcast à fila após o envio de algumas informações ao contexto:
 
 ```php
 // In our middleware...
@@ -59,7 +59,7 @@ Context::add('trace_id', Str::uuid()->toString());
 ProcessPodcast::dispatch($podcast);
 ```
 
-When the job is dispatched, any information currently stored in the context is captured and shared with the job. The captured information is then hydrated back into the current context while the job is executing. So, if our job's handle method was to write to the log:
+ Quando o trabalho é enviado, qualquer informação atualmente armazenada no contexto é capturada e compartilhada com o trabalho. A informação capturada é então reutilizada como um novo contexto enquanto a execução do trabalho está em andamento. Por exemplo:
 
 ```php
 class ProcessPodcast implements ShouldQueue
@@ -82,18 +82,18 @@ class ProcessPodcast implements ShouldQueue
 }
 ```
 
-The resulting log entry would contain the information that was added to the context during the request that originally dispatched the job:
+ O registo de log resultante contém a informação que foi adicionada ao contexto durante o pedido original que remeteu para o trabalho:
 
 ```
 Processing podcast. {"podcast_id":95} {"url":"https://example.com/login","trace_id":"e04e1a11-e75c-4db3-b5b5-cfef4ef56697"}
 ```
 
-Although we have focused on the built-in logging related features of Laravel's context, the following documentation will illustrate how context allows you to share information across the HTTP request / queued job boundary and even how to add [hidden context data](#hidden-context) that is not written with log entries.
+ Embora tenhamos focado nas funcionalidades relacionadas com o registo integrado de Laravel, a documentação seguinte irá ilustrar como o context permite partilhar informações no limite entre um pedido HTTP e um trabalho agendado e até como adicionar [dados de contexto ocultos (hidden context)](#hidden-context) que não são registados nas entradas de log.
 
 <a name="capturing-context"></a>
-## Capturing Context
+## Capturando o contexto
 
-You may store information in the current context using the `Context` facade's `add` method:
+ Você pode armazenar informações no contexto atual usando o método `add` da interface de frente `Context`:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -101,7 +101,7 @@ use Illuminate\Support\Facades\Context;
 Context::add('key', 'value');
 ```
 
-To add multiple items at once, you may pass an associative array to the `add` method:
+ Para adicionar vários itens de uma só vez, poderá transmitir um array associativo à função `add`:
 
 ```php
 Context::add([
@@ -110,7 +110,7 @@ Context::add([
 ]);
 ```
 
-The `add` method will override any existing value that shares the same key. If you only wish to add information to the context if the key does not already exist, you may use the `addIf` method:
+ O método `add` sobrescreve o valor de um dado que possui a mesma chave. Se pretender somente adicionar informações ao contexto se a chave não existir, deve utilizar o método `addIf`:
 
 ```php
 Context::add('key', 'first');
@@ -125,9 +125,9 @@ Context::get('key');
 ```
 
 <a name="conditional-context"></a>
-#### Conditional Context
+#### A contexto condicional
 
-The `when` method may be used to add data to the context based on a given condition. The first closure provided to the `when` method will be invoked if the given condition evaluates to `true`, while the second closure will be invoked if the condition evaluates to `false`:
+ O método `when` pode ser usado para adicionar dados ao contexto com base em uma condição. Se a condição for verdadeira, o primeiro fechamento passado ao método `when` será chamado; se a condição for falsa, o segundo fechamento será chamado:
 
 ```php
 use Illuminate\Support\Facades\Auth;
@@ -141,9 +141,9 @@ Context::when(
 ```
 
 <a name="stacks"></a>
-### Stacks
+### Pilhas
 
-Context offers the ability to create "stacks", which are lists of data stored in the order that they were added. You can add information to a stack by invoking the `push` method:
+ O Context fornece a capacidade de criar pilhas, que são listas de dados armazenadas na ordem em que foram adicionadas. Você pode adicionar informações a uma pilha invocando o método `push`:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -160,7 +160,7 @@ Context::get('breadcrumbs');
 // ]
 ```
 
-Stacks can be useful to capture historical information about a request, such as events that are happening throughout your application. For example, you could create an event listener to push to a stack every time a query is executed, capturing the query SQL and duration as a tuple:
+ Os Stacks podem ser úteis para armazenar informações históricas sobre um pedido, como os eventos que ocorrem ao longo da sua aplicação. Por exemplo, poderia criar um ouvinte de eventos que insere uma informação num stack a cada vez que uma consulta é executada, armazenando a SQL e duração da consulta como uma tupl:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -172,9 +172,9 @@ DB::listen(function ($event) {
 ```
 
 <a name="retrieving-context"></a>
-## Retrieving Context
+## Recuperando o contexto
 
-You may retrieve information from the context using the `Context` facade's `get` method:
+ Você pode recuperar informações do contexto usando o método `get` da faca de contexto:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -182,28 +182,28 @@ use Illuminate\Support\Facades\Context;
 $value = Context::get('key');
 ```
 
-The `only` method may be used to retrieve a subset of the information in the context:
+ O método `only` pode ser utilizado para recuperar um subconjunto de informações do contexto:
 
 ```php
 $data = Context::only(['first_key', 'second_key']);
 ```
 
-The `pull` method may be used to retrieve information from the context and immediately remove it from the context:
+ O método `pull` pode ser usado para recuperar informações do contexto e removê-las imediatamente a partir dele:
 
 ```php
 $value = Context::pull('key');
 ```
 
-If you would like to retrieve all of the information stored in the context, you may invoke the `all` method:
+ Se você quiser recuperar todas as informações armazenadas no contexto, poderá invocar o método "all":
 
 ```php
 $data = Context::all();
 ```
 
 <a name="determining-item-existence"></a>
-### Determining Item Existence
+### Determinar a existência do item
 
-You may use the `has` method to determine if the context has any value stored for the given key:
+ Você pode usar o método `has` para determinar se o contexto tem algum valor armazenado para a chave especificada:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -213,7 +213,7 @@ if (Context::has('key')) {
 }
 ```
 
-The `has` method will return `true` regardless of the value stored. So, for example, a key with a `null` value will be considered present:
+ O método `has` retornará `true`, independentemente do valor armazenado. Portanto, por exemplo, uma chave com um valor nulo será considerada como presente:
 
 ```php
 Context::add('key', null);
@@ -223,9 +223,9 @@ Context::has('key');
 ```
 
 <a name="removing-context"></a>
-## Removing Context
+## Retirando o contexto
 
-The `forget` method may be used to remove a key and its value from the current context:
+ O método `forget` pode ser usado para remover uma chave e seu respectivo valor do contexto atual:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -239,16 +239,16 @@ Context::all();
 // ['second_key' => 2]
 ```
 
-You may forget several keys at once by providing an array to the `forget` method:
+ Você pode esquecer várias chaves de uma só vez, ao fornecer um vetor para o método `forget`:
 
 ```php
 Context::forget(['first_key', 'second_key']);
 ```
 
 <a name="hidden-context"></a>
-## Hidden Context
+## Conteúdo oculto
 
-Context offers the ability to store "hidden" data. This hidden information is not appended to logs, and is not accessible via the data retrieval methods documented above. Context provides a different set of methods to interact with hidden context information:
+ O Context permite armazenar dados “ ocultos”. Essas informações ocultas não são anexadas aos logs e não são acessíveis através dos métodos de recuperação de dados documentados acima. O Context oferece um conjunto diferente de métodos para interagir com as informações ocultas do contexto:
 
 ```php
 use Illuminate\Support\Facades\Context;
@@ -262,7 +262,7 @@ Context::get('key');
 // null
 ```
 
-The "hidden" methods mirror the functionality of the non-hidden methods documented above:
+ Os métodos “escondidos” espelham a funcionalidade dos métodos não ocultos documentados acima:
 
 ```php
 Context::addHidden(/* ... */);
@@ -277,18 +277,18 @@ Context::forgetHidden(/* ... */);
 ```
 
 <a name="events"></a>
-## Events
+## Eventos
 
-Context dispatches two events that allow you to hook into the hydration and dehydration process of the context.
+ O contexto envia dois eventos que permitem o engate no processo de hidratação e desidratação do contexto.
 
-To illustrate how these events may be used, imagine that in a middleware of your application you set the `app.locale` configuration value based on the incoming HTTP request's `Accept-Language` header. Context's events allow you to capture this value during the request and restore it on the queue, ensuring notifications sent on the queue have the correct `app.locale` value. We can use context's events and [hidden](#hidden-context) data to achieve this, which the following documentation will illustrate.
+ Para ilustrar como esses eventos podem ser usados, imagine que em um middleware de seu aplicativo você definir o valor da configuração `app.locale` com base no cabeçalho `Accept-Language` do pedido HTTP. Os eventos do Context permitem capturar esse valor durante o pedido e restaurá-lo na fila, garantindo que as notificações enviadas na fila tenham o valor correto de `app.locale`. Podemos usar os eventos do contexto e dados [escondidos (#escondidos contexto)] para conseguir isso, como ilustrado na documentação a seguir.
 
 <a name="dehydrating"></a>
-### Dehydrating
+### Desidratação
 
-Whenever a job is dispatched to the queue the data in the context is "dehydrated" and captured alongside the job's payload. The `Context::dehydrating` method allows you to register a closure that will be invoked during the dehydration process. Within this closure, you may make changes to the data that will be shared with the queued job.
+ Sempre que um trabalho é enviado para a fila, os dados no contexto são "desidratados" e capturados ao lado da carga útil do trabalho. O método `Context::dehydrating` permite-lhe registar um fecho (closure) que será invocado durante o processo de desidratação. Neste fecho, pode fazer alterações aos dados que serão partilhadas com o trabalho na fila.
 
-Typically, you should register `dehydrating` callbacks within the `boot` method of your application's `AppServiceProvider` class:
+ Normalmente você deve registrar os retornos de chamada `dehydrating` no método `boot` da classe do `AppServiceProvider` da sua aplicação:
 
 ```php
 use Illuminate\Log\Context\Repository;
@@ -306,15 +306,15 @@ public function boot(): void
 }
 ```
 
-> [!NOTE]
-> You should not use the `Context` facade within the `dehydrating` callback, as that will change the context of the current process. Ensure you only make changes to the repository passed to the callback.
+ > [!ATENÇÃO]
+ > Você não deve usar a interface `Context` dentro do callback `dehydrating`, uma vez que isso pode alterar o contexto do processo atual. Certifique-se de fazer alterações apenas no repositório passado ao callback.
 
 <a name="hydrated"></a>
-### Hydrated
+### Hidratados
 
-Whenever a queued job begins executing on the queue, any context that was shared with the job will be "hydrated" back into the current context. The `Context::hydrated` method allows you to register a closure that will be invoked during the hydration process.
+ Sempre que um trabalho agendado começar a ser executado na fila, qualquer contexto partilhado com esse trabalho é "hidratado" no contexto atual. O método `Context::hydrated` permite registar uma sub-rotina que é invocada durante o processo de hidratação.
 
-Typically, you should register `hydrated` callbacks within the `boot` method of your application's `AppServiceProvider` class:
+ Normalmente, você deve registrar os retornos do callback `hydrated` dentro do método `boot` da classe `AppServiceProvider` do seu aplicativo:
 
 ```php
 use Illuminate\Log\Context\Repository;
@@ -334,5 +334,5 @@ public function boot(): void
 }
 ```
 
-> [!NOTE]
-> You should not use the `Context` facade within the `hydrated` callback and instead ensure you only make changes to the repository passed to the callback.
+ > [!NOTA]
+ > Não é recomendável usar a fachada `Context` no callback `hydrated`. Em vez disso, deve garantir que apenas realiza alterações ao repositório passado para o callback.

@@ -1,47 +1,47 @@
-# Laravel Horizon
+# Laravel Horizonte
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-> [!NOTE]  
-> Before digging into Laravel Horizon, you should familiarize yourself with Laravel's base [queue services](/docs/queues). Horizon augments Laravel's queue with additional features that may be confusing if you are not already familiar with the basic queue features offered by Laravel.
+ > [!AVISO]
+ [Serviços de filas](/docs/queues) O Horizon expande o sistema de fila do Laravel com recursos adicionais que podem ser confusos se você ainda não estiver familiarizado com os recursos básicos oferecidos pelo Laravel.
 
-[Laravel Horizon](https://github.com/laravel/horizon) provides a beautiful dashboard and code-driven configuration for your Laravel powered [Redis queues](/docs/queues). Horizon allows you to easily monitor key metrics of your queue system such as job throughput, runtime, and job failures.
+ O Horizontes do Laravel (https://github.com/laravel/horizon) disponibiliza uma bela dashboard e configuração com base em código para seus [filas Redis](/docs/queues). Com o Horizontes, você pode monitorar facilmente métricas chave de seu sistema de filas, tais como tráfego, tempo de execução e falhas do trabalho.
 
-When using Horizon, all of your queue worker configuration is stored in a single, simple configuration file. By defining your application's worker configuration in a version controlled file, you may easily scale or modify your application's queue workers when deploying your application.
+ Ao usar o Horizon, toda a configuração do trabalhador de fila é armazenada em um único arquivo de configuração simples. Ao definir a configuração de trabalhadores da aplicação em um arquivo controlado por versão, você pode facilmente dimensionar ou modificar os trabalhadores de filas quando for implantar sua aplicação.
 
 <img src="https://laravel.com/img/docs/horizon-example.png">
 
 <a name="installation"></a>
-## Installation
+## Instalação
 
-> [!WARNING]  
-> Laravel Horizon requires that you use [Redis](https://redis.io) to power your queue. Therefore, you should ensure that your queue connection is set to `redis` in your application's `config/queue.php` configuration file.
+ > [!AVISO]
+ [Redis] (https://redis.io) para alimentar sua fila. Portanto, você deve garantir que a conexão da sua fila está definida como "redis" no arquivo de configuração `config/queue.php` do aplicativo.
 
-You may install Horizon into your project using the Composer package manager:
+ Você pode instalar o Horizon no seu projeto usando o gerenciador de pacotes Composer da seguinte maneira:
 
 ```shell
 composer require laravel/horizon
 ```
 
-After installing Horizon, publish its assets using the `horizon:install` Artisan command:
+ Depois de instalar o Horizon, publique seus ativos usando a ordem do artesão `horizon:install`:
 
 ```shell
 php artisan horizon:install
 ```
 
 <a name="configuration"></a>
-### Configuration
+### Configuração
 
-After publishing Horizon's assets, its primary configuration file will be located at `config/horizon.php`. This configuration file allows you to configure the queue worker options for your application. Each configuration option includes a description of its purpose, so be sure to thoroughly explore this file.
+ Após publicar os recursos do Horizon, seu arquivo de configuração primário estará localizado em `config/horizon.php`. Esse arquivo de configuração permite configurar as opções de funcionamento da fila para o aplicativo. Cada opção de configuração inclui uma descrição sobre a finalidade, por isso certifique-se de explorá-lo detalhadamente.
 
-> [!WARNING]  
-> Horizon uses a Redis connection named `horizon` internally. This Redis connection name is reserved and should not be assigned to another Redis connection in the `database.php` configuration file or as the value of the `use` option in the `horizon.php` configuration file.
+ > [!ATENÇÃO]
+ > O Horizon usa, internamente, uma conexão Redis chamada "horizon". Esse nome de conexão está reservado e não deve ser atribuído a outra conexão Redis no arquivo de configuração `database.php` ou como o valor da opção `use` no arquivo de configuração `horizon.php`.
 
 <a name="environments"></a>
-#### Environments
+#### Ambientes
 
-After installation, the primary Horizon configuration option that you should familiarize yourself with is the `environments` configuration option. This configuration option is an array of environments that your application runs on and defines the worker process options for each environment. By default, this entry contains a `production` and `local` environment. However, you are free to add more environments as needed:
+ Após a instalação, é importante conhecer o opção de configuração principal do Horizon que você deve familiarizar-se com. Esse recurso é a opção de configuração `environments`. Essa opção de configuração é um conjunto de ambientes nos quais sua aplicação funciona e define as opções de processo de trabalhador para cada ambiente. Por padrão, essa entrada contém os ambientes de "produção" e "local". No entanto, você pode adicionar mais ambientes conforme necessário:
 
 ```php
     'environments' => [
@@ -61,7 +61,7 @@ After installation, the primary Horizon configuration option that you should fam
     ],
 ```
 
-You may also define a wildcard environment (`*`) which will be used when no other matching environment is found:
+ Você também pode definir um ambiente de "sinalizador" (asterisco `*`), que será usado quando nenhum outro ambiente correspondente for encontrado:
 
 ```php
     'environments' => [
@@ -75,22 +75,22 @@ You may also define a wildcard environment (`*`) which will be used when no othe
     ],
 ```
 
-When you start Horizon, it will use the worker process configuration options for the environment that your application is running on. Typically, the environment is determined by the value of the `APP_ENV` [environment variable](/docs/configuration#determining-the-current-environment). For example, the default `local` Horizon environment is configured to start three worker processes and automatically balance the number of worker processes assigned to each queue. The default `production` environment is configured to start a maximum of 10 worker processes and automatically balance the number of worker processes assigned to each queue.
+ Quando você iniciar o Horizon, ele usará as opções de configuração do processo trabalhador para o ambiente que seu aplicativo está executando. Normalmente, o ambiente é determinado pelo valor da variável ambiental `APP_ENV`. Por exemplo, o ambiente Horizon padrão "local" está configurado para iniciar três processos de trabalho e equilibrar automaticamente o número de processos de trabalho atribuídos a cada fila. O ambiente Horizon padrão "produção" está configurado para iniciar, no máximo, dez processos de trabalho e equilibrar automaticamente o número de processos de trabalho atribuídos a cada fila.
 
-> [!WARNING]  
-> You should ensure that the `environments` portion of your `horizon` configuration file contains an entry for each [environment](/docs/configuration#environment-configuration) on which you plan to run Horizon.
+ > [AVERTISSEMENT]
+ O ambiente [Meio ambiente](/docs/configuration#environment-configuration) no qual você pretende executar o Horizon.
 
 <a name="supervisors"></a>
-#### Supervisors
+#### Supervisores
 
-As you can see in Horizon's default configuration file, each environment can contain one or more "supervisors". By default, the configuration file defines this supervisor as `supervisor-1`; however, you are free to name your supervisors whatever you want. Each supervisor is essentially responsible for "supervising" a group of worker processes and takes care of balancing worker processes across queues.
+ Como pode ver no ficheiro de configuração padrão do Horizon, cada ambiente pode conter um ou vários "supervisores". Por defeito, o ficheiro de configuração define este supervisor como `supervisor-1`. No entanto, é possível designar os seus próprios nomes aos supervisores. Cada supervisor é essencialmente responsável por "supervisionar" um grupo de processos de trabalhadores e zela pelo equilíbrio dos processos de trabalhador através das filas.
 
-You may add additional supervisors to a given environment if you would like to define a new group of worker processes that should run in that environment. You may choose to do this if you would like to define a different balancing strategy or worker process count for a given queue used by your application.
+ Pode adicionar supervisores adicionais a um determinado ambiente, se pretender definir um novo grupo de processos de trabalho que devem ser executados nesse ambiente. Tal pode ser útil para definir uma estratégia de equilíbrio diferente ou o número de processos de trabalho para determinada fila utilizada na aplicação.
 
 <a name="maintenance-mode"></a>
-#### Maintenance Mode
+#### Modo de Manutenção
 
-While your application is in [maintenance mode](/docs/configuration#maintenance-mode), queued jobs will not be processed by Horizon unless the supervisor's `force` option is defined as `true` within the Horizon configuration file:
+ Enquanto o seu aplicativo estiver em [modo de manutenção](/docs/configuration#maintenance-mode), os trabalhos pendentes não serão processados pelo Horizon, a menos que a opção `force` do supervisor seja definida como `true` no ficheiro de configuração do Horizon:
 
 ```php
     'environments' => [
@@ -104,22 +104,22 @@ While your application is in [maintenance mode](/docs/configuration#maintenance-
 ```
 
 <a name="default-values"></a>
-#### Default Values
+#### Valores por padrão
 
-Within Horizon's default configuration file, you will notice a `defaults` configuration option. This configuration option specifies the default values for your application's [supervisors](#supervisors). The supervisor's default configuration values will be merged into the supervisor's configuration for each environment, allowing you to avoid unnecessary repetition when defining your supervisors.
+ No arquivo de configuração padrão do Horizon, você verá uma opção de configuração chamada `defaults`. Essa opção especifica os valores padrão para [supervisores] da aplicação. Os valores de configuração padrão do supervisor serão mesclados com a configuração do supervisor para cada ambiente, evitando repetições desnecessárias na definição dos supervisores.
 
 <a name="balancing-strategies"></a>
-### Balancing Strategies
+### Estratégias de equilíbrio
 
-Unlike Laravel's default queue system, Horizon allows you to choose from three worker balancing strategies: `simple`, `auto`, and `false`. The `simple` strategy splits incoming jobs evenly between worker processes:
+ Diferente do sistema de fila padrão do Laravel, o Horizon permite escolher entre três estratégias de balanceamento de trabalhadores: `simple`, `auto` e `false`. A estratégia `simple` divide os trabalhos recebidos igualmente pelos processos trabalhadores:
 
 ```php
     'balance' => 'simple',
 ```
 
-The `auto` strategy, which is the configuration file's default, adjusts the number of worker processes per queue based on the current workload of the queue. For example, if your `notifications` queue has 1,000 pending jobs while your `render` queue is empty, Horizon will allocate more workers to your `notifications` queue until the queue is empty.
+ A estratégia "auto", que é a predefinida do arquivo de configuração, ajusta o número de processos de trabalho por fila com base na carga de trabalho atual da fila. Por exemplo, se sua fila "notificações" tiver 1000 pedidos pendentes e sua fila "render" estiver vazia, o Horizon alocará mais processos de trabalho para a fila "notificações", até que esta esteja vazia.
 
-When using the `auto` strategy, you may define the `minProcesses` and `maxProcesses` configuration options to control the minimum and the maximum number of worker processes Horizon should scale up and down to:
+ Ao utilizar a estratégia "auto", pode definir as opções de configuração "minProcesses" e "maxProcesses" para controlar o número mínimo e máximo de processos de trabalhadores com os quais Horizon irá escalonar up and down:
 
 ```php
     'environments' => [
@@ -139,16 +139,16 @@ When using the `auto` strategy, you may define the `minProcesses` and `maxProces
     ],
 ```
 
-The `autoScalingStrategy` configuration value determines if Horizon will assign more worker processes to queues based on the total amount of time it will take to clear the queue (`time` strategy) or by the total number of jobs on the queue (`size` strategy).
+ O valor da configuração `autoScalingStrategy` determina se o Horizon atribuirá mais processos de trabalho aos ficheiros de saída com base na quantidade total de tempo necessário para limpar os ficheiros de saída (`time` estratégia) ou no número total de tarefas nos ficheiros de saída (`size` estratégia).
 
-The `balanceMaxShift` and `balanceCooldown` configuration values determine how quickly Horizon will scale to meet worker demand. In the example above, a maximum of one new process will be created or destroyed every three seconds. You are free to tweak these values as necessary based on your application's needs.
+ Os valores `balanceMaxShift` e `balanceCooldown` determinam a rapidez com que o Horizon se adapta à procura dos trabalhadores. No exemplo acima, um novo processo será criado ou destruído no máximo uma vez a cada três segundos. Pode modificar estes valores de acordo com as necessidades da sua aplicação.
 
-When the `balance` option is set to `false`, the default Laravel behavior will be used, wherein queues are processed in the order they are listed in your configuration.
+ Quando a opção `balance` é definida como `false`, será utilizado o comportamento padrão do Laravel, onde as filas são processadas na ordem em que estão listadas na sua configuração.
 
 <a name="dashboard-authorization"></a>
-### Dashboard Authorization
+### Autorização no Painel de Controle
 
-The Horizon dashboard may be accessed via the `/horizon` route. By default, you will only be able to access this dashboard in the `local` environment. However, within your `app/Providers/HorizonServiceProvider.php` file, there is an [authorization gate](/docs/authorization#gates) definition. This authorization gate controls access to Horizon in **non-local** environments. You are free to modify this gate as needed to restrict access to your Horizon installation:
+ O painel do Horizon pode ser acessado por meio da rota `/horizon`. Por padrão, você somente poderá acessar esse painel no ambiente `local`. No entanto, em seu arquivo `app/Providers/HorizonServiceProvider.php`, há uma definição de [porta de autorização](/docs/authorization#gates). Essa porta de autorização controla o acesso ao Horizon em ambientes **não-locais**. Você pode modificar essa porta conforme necessário para restringir o acesso à sua instalação do Horizon:
 
 ```php
     /**
@@ -167,14 +167,14 @@ The Horizon dashboard may be accessed via the `/horizon` route. By default, you 
 ```
 
 <a name="alternative-authentication-strategies"></a>
-#### Alternative Authentication Strategies
+#### Estratégias alternativas de autenticação
 
-Remember that Laravel automatically injects the authenticated user into the gate closure. If your application is providing Horizon security via another method, such as IP restrictions, then your Horizon users may not need to "login". Therefore, you will need to change `function (User $user)` closure signature above to `function (User $user = null)` in order to force Laravel to not require authentication.
+ Lembre-se de que o Laravel injeta automaticamente o usuário autenticado no fechamento do gate. Se a aplicação estiver fornecendo segurança para Horizon por meio de outro método, como restrições de IP, pode não ser necessária uma "entrada" dos seus usuários. Sendo assim, você precisará alterar a assinatura do fechamento acima de `function (User $user)` para `function (User $user = null)`, para forçar o Laravel a não solicitar autenticação.
 
 <a name="silenced-jobs"></a>
-### Silenced Jobs
+### Empregos silenciados
 
-Sometimes, you may not be interested in viewing certain jobs dispatched by your application or third-party packages. Instead of these jobs taking up space in your "Completed Jobs" list, you can silence them. To get started, add the job's class name to the `silenced` configuration option in your application's `horizon` configuration file:
+ Às vezes, você pode não ter interesse em visualizar certos trabalhos distribuídos por seu aplicativo ou pacotes de terceiros. Em vez disso, eles ocuparem espaço na lista "Trabalhos concluídos", você poderá silenciar essas tarefas. Para começar, adicione o nome da classe do trabalho à opção de configuração `silenced` do arquivo de configuração do seu aplicativo:
 
 ```php
     'silenced' => [
@@ -182,7 +182,7 @@ Sometimes, you may not be interested in viewing certain jobs dispatched by your 
     ],
 ```
 
-Alternatively, the job you wish to silence can implement the `Laravel\Horizon\Contracts\Silenced` interface. If a job implements this interface, it will automatically be silenced, even if it is not present in the `silenced` configuration array:
+ Em alternativa, o trabalho que você deseja silenciar pode implementar a interface `Laravel\Horizon\Contracts\Silenced`. Se um trabalho implementa essa interface, ele será automaticamente silenciado, mesmo se não estiver presente no array de configuração `silenced`:
 
 ```php
     use Laravel\Horizon\Contracts\Silenced;
@@ -196,20 +196,20 @@ Alternatively, the job you wish to silence can implement the `Laravel\Horizon\Co
 ```
 
 <a name="upgrading-horizon"></a>
-## Upgrading Horizon
+## Atingindo um horizonte superior
 
-When upgrading to a new major version of Horizon, it's important that you carefully review [the upgrade guide](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
+ Ao fazer o upgrade para uma nova versão principal do Horizon, é importante que você analise [este guia de upgrade](https://github.com/laravel/horizon/blob/master/UPGRADE.md) cuidadosamente.
 
 <a name="running-horizon"></a>
-## Running Horizon
+## Cenário correndo
 
-Once you have configured your supervisors and workers in your application's `config/horizon.php` configuration file, you may start Horizon using the `horizon` Artisan command. This single command will start all of the configured worker processes for the current environment:
+ Depois de configurar os supervisores e trabalhadores no arquivo de configuração do aplicativo `config/horizon.php`, você pode iniciar o Horizon usando o comando de Arquiteto `horizon`. Este único comando iniciará todos os processos de trabalho da área atual configurados:
 
 ```shell
 php artisan horizon
 ```
 
-You may pause the Horizon process and instruct it to continue processing jobs using the `horizon:pause` and `horizon:continue` Artisan commands:
+ Você pode pausar o processo do Horizon e instrui-lo a continuar processando os trabalhos usando as ordens do Artesão `horizon:pause` e `horizon:continue`:
 
 ```shell
 php artisan horizon:pause
@@ -217,7 +217,7 @@ php artisan horizon:pause
 php artisan horizon:continue
 ```
 
-You may also pause and continue specific Horizon [supervisors](#supervisors) using the `horizon:pause-supervisor` and `horizon:continue-supervisor` Artisan commands:
+ Você também pode interromper e continuar supervisores específicos do Horizon, usando os comandos de Arquitetura "horizon:pause-supervisor" e "horizon:continue-supervisor":
 
 ```shell
 php artisan horizon:pause-supervisor supervisor-1
@@ -225,45 +225,45 @@ php artisan horizon:pause-supervisor supervisor-1
 php artisan horizon:continue-supervisor supervisor-1
 ```
 
-You may check the current status of the Horizon process using the `horizon:status` Artisan command:
+ Pode verificar o estado atual do processo de Horizon utilizando a ordem mágica `horizon:status`:
 
 ```shell
 php artisan horizon:status
 ```
 
-You may gracefully terminate the Horizon process using the `horizon:terminate` Artisan command. Any jobs that are currently being processed by will be completed and then Horizon will stop executing:
+ Você pode encerrar o processo do Horizon com graça usando o comando `horizon:terminate`. Todas as tarefas que estiverem sendo executadas serão concluídas, e então o Horizon deixará de ser executado:
 
 ```shell
 php artisan horizon:terminate
 ```
 
 <a name="deploying-horizon"></a>
-### Deploying Horizon
+### Implementar o Horizon
 
-When you're ready to deploy Horizon to your application's actual server, you should configure a process monitor to monitor the `php artisan horizon` command and restart it if it exits unexpectedly. Don't worry, we'll discuss how to install a process monitor below.
+ Quando estiver pronto para implantar o Horizon no servidor da aplicação, deve configurar um processo de monitorização para controlar o comando `php artisan horizon` e reiniciá-lo se ele sair inesperadamente. Não se preocupe, vamos discutir como instalar um processo de monitorização abaixo.
 
-During your application's deployment process, you should instruct the Horizon process to terminate so that it will be restarted by your process monitor and receive your code changes:
+ Durante o processo de implantação do seu aplicativo, você deve instruir o processo do Horizon a terminar para que ele seja reiniciado por seu supervisor de processos e receba suas alterações de código:
 
 ```shell
 php artisan horizon:terminate
 ```
 
 <a name="installing-supervisor"></a>
-#### Installing Supervisor
+#### Instalando o Supervisor
 
-Supervisor is a process monitor for the Linux operating system and will automatically restart your `horizon` process if it stops executing. To install Supervisor on Ubuntu, you may use the following command. If you are not using Ubuntu, you can likely install Supervisor using your operating system's package manager:
+ O Supervisor é um monitor de processos para o sistema operacional Linux e reinicia automaticamente seu processo `horizon` se ele parar de executar. Para instalar o Supervisor no Ubuntu, você pode usar o comando a seguir. Se você não estiver usando o Ubuntu, provavelmente poderá instalar o Supervisor usando o gerenciador de pacotes do seu sistema operacional:
 
 ```shell
 sudo apt-get install supervisor
 ```
 
-> [!NOTE]  
-> If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Forge](https://forge.laravel.com), which will automatically install and configure Supervisor for your Laravel projects.
+ > [!ATENÇÃO]
+ O [Laravel Forge](https://forge.laravel.com), que irá instalar e configurar automaticamente o Supervisor para os seus projetos Laravel.
 
 <a name="supervisor-configuration"></a>
-#### Supervisor Configuration
+#### Configuração do supervisor
 
-Supervisor configuration files are typically stored within your server's `/etc/supervisor/conf.d` directory. Within this directory, you may create any number of configuration files that instruct supervisor how your processes should be monitored. For example, let's create a `horizon.conf` file that starts and monitors a `horizon` process:
+ Os arquivos de configuração do Supervisor são normalmente armazenados na pasta `/etc/supervisor/conf.d` do seu servidor. Nessa pasta, você pode criar diversos arquivos de configuração que indicam ao Supervisor como os processos devem ser monitorados. Por exemplo, vamos criar um arquivo `horizon.conf` para iniciar e monitorar o processo `horizon`:
 
 ```ini
 [program:horizon]
@@ -277,15 +277,15 @@ stdout_logfile=/home/forge/example.com/horizon.log
 stopwaitsecs=3600
 ```
 
-When defining your Supervisor configuration, you should ensure that the value of `stopwaitsecs` is greater than the number of seconds consumed by your longest running job. Otherwise, Supervisor may kill the job before it is finished processing.
+ Ao definir a sua configuração do supervisor, certifique-se de que o valor do `stopwaitsecs` é superior ao número de segundos consumidos pelo seu trabalho em execução mais longo. Caso contrário, poderá ocorrer o fecho do processo antes de terminar o processamento.
 
-> [!WARNING]  
-> While the examples above are valid for Ubuntu based servers, the location and file extension expected of Supervisor configuration files may vary between other server operating systems. Please consult your server's documentation for more information.
+ > [!AVISO]
+ > Embora os exemplos acima sejam válidos para servidores baseados no Ubuntu, o local e a extensão de arquivo esperados dos arquivos de configuração do Supervisor podem variar em outros sistemas operacionais de servidor. Consulte a documentação do seu servidor para mais informações.
 
 <a name="starting-supervisor"></a>
-#### Starting Supervisor
+#### Gerente de início
 
-Once the configuration file has been created, you may update the Supervisor configuration and start the monitored processes using the following commands:
+ Uma vez criado o arquivo de configuração, você pode atualizar a configuração do Supervisor e iniciar os processos monitorados usando os seguintes comandos:
 
 ```shell
 sudo supervisorctl reread
@@ -295,13 +295,13 @@ sudo supervisorctl update
 sudo supervisorctl start horizon
 ```
 
-> [!NOTE]  
-> For more information on running Supervisor, consult the [Supervisor documentation](http://supervisord.org/index.html).
+ > [!NOTA]
+ [Documentação do Supervisor.](http://supervisord.org/index.html)
 
 <a name="tags"></a>
 ## Tags
 
-Horizon allows you to assign “tags” to jobs, including mailables, broadcast events, notifications, and queued event listeners. In fact, Horizon will intelligently and automatically tag most jobs depending on the Eloquent models that are attached to the job. For example, take a look at the following job:
+ O Horizon permite que você atribua "etiquetas" aos trabalhos, incluindo material enviável por e-mail, eventos de transmissão, notificações e escutas de evento em fila. Na verdade, o Horizon irá etiquetar inteligentemente e automaticamente a maioria dos trabalhos de acordo com os modelos Eloquent que estiverem vinculados ao trabalho. Por exemplo, confira o seguinte trabalho:
 
 ```php
     <?php
@@ -336,7 +336,7 @@ Horizon allows you to assign “tags” to jobs, including mailables, broadcast 
     }
 ```
 
-If this job is queued with an `App\Models\Video` instance that has an `id` attribute of `1`, it will automatically receive the tag `App\Models\Video:1`. This is because Horizon will search the job's properties for any Eloquent models. If Eloquent models are found, Horizon will intelligently tag the job using the model's class name and primary key:
+ Se este trabalho estiver pendentemente com uma instância de `App\Models\Video` que tenha um atributo `id` de `1`, receberá automaticamente a etiqueta `App\Models\Video:1`. Isso ocorre porque Horizon procurará as propriedades do trabalho em busca de qualquer modelo Eloquent. Se forem encontrados modelos Eloquent, Horizon irá inteligentemente etiquetar o trabalho usando o nome da classe e a chave primária do modelo:
 
 ```php
     use App\Jobs\RenderVideo;
@@ -348,9 +348,9 @@ If this job is queued with an `App\Models\Video` instance that has an `id` attri
 ```
 
 <a name="manually-tagging-jobs"></a>
-#### Manually Tagging Jobs
+#### Marcação manual de trabalhos
 
-If you would like to manually define the tags for one of your queueable objects, you may define a `tags` method on the class:
+ Se desejar definir manualmente as tags para um de seus objetos com capacidade de fila, você poderá definir um método `tags` na classe:
 
 ```php
     class RenderVideo implements ShouldQueue
@@ -368,9 +368,9 @@ If you would like to manually define the tags for one of your queueable objects,
 ```
 
 <a name="manually-tagging-event-listeners"></a>
-#### Manually Tagging Event Listeners
+#### Marcação manual de eventos para escuta
 
-When retrieving the tags for a queued event listener, Horizon will automatically pass the event instance to the `tags` method, allowing you to add event data to the tags:
+ Ao recuperar as tags para um evento agendado de um listener, o Horizon passará automaticamente a instância do evento ao método `tags`, permitindo que você adicione dados de eventos às tags:
 
 ```php
     class SendRenderNotifications implements ShouldQueue
@@ -388,12 +388,12 @@ When retrieving the tags for a queued event listener, Horizon will automatically
 ```
 
 <a name="notifications"></a>
-## Notifications
+## Notificações
 
-> [!WARNING]  
-> When configuring Horizon to send Slack or SMS notifications, you should review the [prerequisites for the relevant notification channel](/docs/notifications).
+ > [ADVERTÊNCIA]
+ [Pré-requisitos para a notificação relevante do canal](/docs/notifications).
 
-If you would like to be notified when one of your queues has a long wait time, you may use the `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo`, and `Horizon::routeSmsNotificationsTo` methods. You may call these methods from the `boot` method of your application's `App\Providers\HorizonServiceProvider`:
+ Se deseja ser notificado quando uma das suas filas apresentar tempo de espera elevado, pode utilizar as funções `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo` e `Horizon::routeSmsNotificationsTo`. Pode chamar estas funções no método `boot` do seu aplicativo `App\Providers\HorizonServiceProvider`:
 
 ```php
     /**
@@ -410,9 +410,9 @@ If you would like to be notified when one of your queues has a long wait time, y
 ```
 
 <a name="configuring-notification-wait-time-thresholds"></a>
-#### Configuring Notification Wait Time Thresholds
+#### Configurar limiares de tempo de espera para notificação
 
-You may configure how many seconds are considered a "long wait" within your application's `config/horizon.php` configuration file. The `waits` configuration option within this file allows you to control the long wait threshold for each connection / queue combination. Any undefined connection / queue combinations will default to a long wait threshold of 60 seconds:
+ Pode configurar o número de segundos considerados como "espera demorada" no ficheiro de configuração `config/horizon.php` da aplicação. A opção de configuração `waits`, neste ficheiro, permite controlar o limiar para espera demorada de cada combinação ligação/fila. As combinações de ligação/fila não definidas terão um limiar para espera demorada padrão de 60 segundos:
 
 ```php
     'waits' => [
@@ -423,9 +423,9 @@ You may configure how many seconds are considered a "long wait" within your appl
 ```
 
 <a name="metrics"></a>
-## Metrics
+## Metas
 
-Horizon includes a metrics dashboard which provides information regarding your job and queue wait times and throughput. In order to populate this dashboard, you should configure Horizon's `snapshot` Artisan command to run every five minutes in your application's `routes/console.php` file:
+ O Horizon inclui um painel de métricas que fornece informações sobre o tempo de espera do trabalho e da fila, bem como o rendimento. Para preencher esse painel, você deve configurar o comando snaphot Artisan do Horizon para ser executado a cada cinco minutos no arquivo `routes/console.php` do aplicativo:
 
 ```php
     use Illuminate\Support\Facades\Schedule;
@@ -433,24 +433,24 @@ Horizon includes a metrics dashboard which provides information regarding your j
     Schedule::command('horizon:snapshot')->everyFiveMinutes();
 ```
 <a name="deleting-failed-jobs"></a>
-## Deleting Failed Jobs
+## Excluir tarefas com falha
 
-If you would like to delete a failed job, you may use the `horizon:forget` command. The `horizon:forget` command accepts the ID or UUID of the failed job as its only argument:
+ Se desejar eliminar um trabalho falhado, pode usar o comando `horizon:forget`. O comando `horizon:forget` aceita o ID ou o UUID do trabalho falhado como único argumento:
 
 ```shell
 php artisan horizon:forget 5
 ```
 
 <a name="clearing-jobs-from-queues"></a>
-## Clearing Jobs From Queues
+## Limpar tarefas das filas
 
-If you would like to delete all jobs from your application's default queue, you may do so using the `horizon:clear` Artisan command:
+ Se você desejar excluir todos os trabalhos da fila padrão de seu aplicativo, poderá fazer isso usando o comando `horizon:clear` do módulo Artisan:
 
 ```shell
 php artisan horizon:clear
 ```
 
-You may provide the `queue` option to delete jobs from a specific queue:
+ Você pode fornecer a opção `queue` para apagar tarefas de uma fila específica:
 
 ```shell
 php artisan horizon:clear --queue=emails

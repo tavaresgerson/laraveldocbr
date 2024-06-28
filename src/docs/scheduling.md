@@ -1,16 +1,16 @@
-# Task Scheduling
+# Programação de Tarefas
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-In the past, you may have written a cron configuration entry for each task you needed to schedule on your server. However, this can quickly become a pain because your task schedule is no longer in source control and you must SSH into your server to view your existing cron entries or add additional entries.
+ No passado, você pode ter escrito uma entrada de configuração crontab para cada tarefa que necessitava ser agendada em seu servidor. Porém, isso rapidamente se torna um incômodo porque a programação da sua tarefa não está mais sob controle de origem e você deve fazer login com SSH em seu servidor para visualizar suas entradas crontab existentes ou adicionar entradas adicionais.
 
-Laravel's command scheduler offers a fresh approach to managing scheduled tasks on your server. The scheduler allows you to fluently and expressively define your command schedule within your Laravel application itself. When using the scheduler, only a single cron entry is needed on your server. Your task schedule is typically defined in your application's `routes/console.php` file.
+ O agendador de comandos do Laravel oferece uma nova abordagem para gerenciar tarefas agendadas em seu servidor. O agendador permite que você defina sua programação de comando de forma fluente e expressiva dentro da própria aplicação Laravel. Ao usar o agendador, é necessário apenas uma única entrada cronno no seu servidor. Sua tarefa de programação normalmente é definida no arquivo `routes/console.php` da sua aplicação.
 
 <a name="defining-schedules"></a>
-## Defining Schedules
+## Definição de padrões
 
-You may define all of your scheduled tasks in your application's `routes/console.php` file. To get started, let's take a look at an example. In this example, we will schedule a closure to be called every day at midnight. Within the closure we will execute a database query to clear a table:
+ Pode definir todas as suas tarefas agendadas no ficheiro `routes/console.php` da aplicação. Para começar, vamos ver um exemplo. Neste exemplo, programamos uma execução de código todos os dias à meia-noite. No interior do código fechado executaremos uma consulta ao banco de dados para apagar uma tabela:
 
 ```php
     <?php
@@ -23,13 +23,13 @@ You may define all of your scheduled tasks in your application's `routes/console
     })->daily();
 ```
 
-In addition to scheduling using closures, you may also schedule [invokable objects](https://secure.php.net/manual/en/language.oop5.magic.php#object.invoke). Invokable objects are simple PHP classes that contain an `__invoke` method:
+ Além de agendamento usando closures, você pode também agendar [objetos invocáveis](https://secure.php.net/manual/en/language.oop5.magic.php#object.invoke). Os objetos invocáveis são classes PHP simples que contêm um método `__invoke`:
 
 ```php
     Schedule::call(new DeleteRecentUsers)->daily();
 ```
 
-If you prefer to reserve your `routes/console.php` file for command definitions only, you may use the `withSchedule` method in your application's `bootstrap/app.php` file to define your scheduled tasks. This method accepts a closure that receives an instance of the scheduler:
+ Se você preferir reservar o arquivo `routes/console.php` para definições de comandos somente, poderá usar o método `withSchedule` no arquivo `bootstrap/app.php` da sua aplicação para definir as tarefas agendadas. Esse método aceita um fechamento que recebe uma instância do programador:
 
 ```php
     use Illuminate\Console\Scheduling\Schedule;
@@ -39,18 +39,18 @@ If you prefer to reserve your `routes/console.php` file for command definitions 
     })
 ```
 
-If you would like to view an overview of your scheduled tasks and the next time they are scheduled to run, you may use the `schedule:list` Artisan command:
+ Se pretender visualizar uma visão geral das tarefas planeadas e a hora prevista da sua execução, pode utilizar o comando do Artisan `schedule:list`:
 
 ```bash
 php artisan schedule:list
 ```
 
 <a name="scheduling-artisan-commands"></a>
-### Scheduling Artisan Commands
+### Planeamento de comandos de artesão
 
-In addition to scheduling closures, you may also schedule [Artisan commands](/docs/artisan) and system commands. For example, you may use the `command` method to schedule an Artisan command using either the command's name or class.
+ Além da agendamento de fechamentos, você também poderá agendar comandos [Artisan](/docs/artisan) e comandos do sistema. Por exemplo, você pode usar o método `command` para agendar um comando Artisan usando o nome ou a classe do comando.
 
-When scheduling Artisan commands using the command's class name, you may pass an array of additional command-line arguments that should be provided to the command when it is invoked:
+ Quando forem agendados comandos de Artesão utilizando o nome da classe do comando, poderá ser enviado um conjunto de argumentos adicionais que devem ser fornecidos ao comando na sequência da sua execução:
 
 ```php
     use App\Console\Commands\SendEmailsCommand;
@@ -62,9 +62,9 @@ When scheduling Artisan commands using the command's class name, you may pass an
 ```
 
 <a name="scheduling-artisan-closure-commands"></a>
-#### Scheduling Artisan Closure Commands
+#### Programar comandos de fechamento do artesão
 
-If you want to schedule an Artisan command defined by a closure, you may chain the scheduling related methods after the command's definition:
+ Se você quiser agendar um comando do tipo "Artisan" definido por meio de uma chave, poderá utilizar os métodos relacionados à programação após a definição do comando:
 
 ```php
     Artisan::command('delete:recent-users', function () {
@@ -72,7 +72,7 @@ If you want to schedule an Artisan command defined by a closure, you may chain t
     })->purpose('Delete recent users')->daily();
 ```
 
-If you need to pass arguments to the closure command, you may provide them to the `schedule` method:
+ Se você precisar passar argumentos ao comando de fechamento, poderá fornec-los para o método `schedule`:
 
 ```php
     Artisan::command('emails:send {user} {--force}', function ($user) {
@@ -81,9 +81,9 @@ If you need to pass arguments to the closure command, you may provide them to th
 ```
 
 <a name="scheduling-queued-jobs"></a>
-### Scheduling Queued Jobs
+### Agendamento de tarefas pendentes
 
-The `job` method may be used to schedule a [queued job](/docs/queues). This method provides a convenient way to schedule queued jobs without using the `call` method to define closures to queue the job:
+ O método `job` pode ser usado para agendar um trabalho de [fila de espera](/docs/queues). Este método proporciona uma forma conveniente de agendar trabalhos em fila de espera sem ter que usar o método `call` para definir os fechos a serem agendados:
 
 ```php
     use App\Jobs\Heartbeat;
@@ -92,7 +92,7 @@ The `job` method may be used to schedule a [queued job](/docs/queues). This meth
     Schedule::job(new Heartbeat)->everyFiveMinutes();
 ```
 
-Optional second and third arguments may be provided to the `job` method which specifies the queue name and queue connection that should be used to queue the job:
+ Um segundo e um terceiro argumentos opcionais podem ser passados à função `job` que especificam o nome da fila e a ligação de fila que devem ser utilizadas para encaminhar a tarefa:
 
 ```php
     use App\Jobs\Heartbeat;
@@ -103,9 +103,9 @@ Optional second and third arguments may be provided to the `job` method which sp
 ```
 
 <a name="scheduling-shell-commands"></a>
-### Scheduling Shell Commands
+### Agendando comandos de shell
 
-The `exec` method may be used to issue a command to the operating system:
+ O método `exec` pode ser utilizado para emitir um comando ao sistema operativo.
 
 ```php
     use Illuminate\Support\Facades\Schedule;
@@ -114,56 +114,56 @@ The `exec` method may be used to issue a command to the operating system:
 ```
 
 <a name="schedule-frequency-options"></a>
-### Schedule Frequency Options
+### Opções de Frecuência do Horário
 
-We've already seen a few examples of how you may configure a task to run at specified intervals. However, there are many more task schedule frequencies that you may assign to a task:
+ Vimos alguns exemplos de como você pode configurar uma tarefa para ser executada em intervalos especificados. No entanto, existem muitas outras frequências de programação de tarefas que você pode atribuir a uma tarefa:
 
 <div class="overflow-auto">
 
-| Method                                        | Description |
+|  Método |  Descrição |
 |-----------------------------------------------|-------------|
-| `->cron('* * * * *');`  |  Run the task on a custom cron schedule |
-| `->everySecond();`  |  Run the task every second |
-| `->everyTwoSeconds();`  |  Run the task every two seconds |
-| `->everyFiveSeconds();`  |  Run the task every five seconds |
-| `->everyTenSeconds();`  |  Run the task every ten seconds |
-| `->everyFifteenSeconds();`  |  Run the task every fifteen seconds |
-| `->everyTwentySeconds();`  |  Run the task every twenty seconds |
-| `->everyThirtySeconds();`  |  Run the task every thirty seconds |
-| `->everyMinute();`  |  Run the task every minute |
-| `->everyTwoMinutes();`  |  Run the task every two minutes |
-| `->everyThreeMinutes();`  |  Run the task every three minutes |
-| `->everyFourMinutes();`  |  Run the task every four minutes |
-| `->everyFiveMinutes();`  |  Run the task every five minutes |
-| `->everyTenMinutes();`  |  Run the task every ten minutes |
-| `->everyFifteenMinutes();`  |  Run the task every fifteen minutes |
-| `->everyThirtyMinutes();`  |  Run the task every thirty minutes |
-| `->hourly();`  |  Run the task every hour |
-| `->hourlyAt(17);`  |  Run the task every hour at 17 minutes past the hour |
-| `->everyOddHour($minutes = 0);`  |  Run the task every odd hour |
-| `->everyTwoHours($minutes = 0);`  |  Run the task every two hours |
-| `->everyThreeHours($minutes = 0);`  |  Run the task every three hours |
-| `->everyFourHours($minutes = 0);`  |  Run the task every four hours |
-| `->everySixHours($minutes = 0);`  |  Run the task every six hours |
-| `->daily();`  |  Run the task every day at midnight |
-| `->dailyAt('13:00');`  |  Run the task every day at 13:00 |
-| `->twiceDaily(1, 13);`  |  Run the task daily at 1:00 & 13:00 |
-| `->twiceDailyAt(1, 13, 15);`  |  Run the task daily at 1:15 & 13:15 |
-| `->weekly();`  |  Run the task every Sunday at 00:00 |
-| `->weeklyOn(1, '8:00');`  |  Run the task every week on Monday at 8:00 |
-| `->monthly();`  |  Run the task on the first day of every month at 00:00 |
-| `->monthlyOn(4, '15:00');`  |  Run the task every month on the 4th at 15:00 |
-| `->twiceMonthly(1, 16, '13:00');`  |  Run the task monthly on the 1st and 16th at 13:00 |
-| `->lastDayOfMonth('15:00');` | Run the task on the last day of the month at 15:00 |
-| `->quarterly();` |  Run the task on the first day of every quarter at 00:00 |
-| `->quarterlyOn(4, '14:00');` |  Run the task every quarter on the 4th at 14:00 |
-| `->yearly();`  |  Run the task on the first day of every year at 00:00 |
-| `->yearlyOn(6, 1, '17:00');`  |  Run the task every year on June 1st at 17:00 |
-| `->timezone('America/New_York');` | Set the timezone for the task |
+|  ->`cron('* * * * *');` |  Executar a tarefa em um cron personalizado |
+|  ->everySecond(); |  Execute a tarefa a cada segundo |
+|  ->everyTwoSeconds(); |  Executar a tarefa a cada dois segundos |
+|  ->everyFiveSeconds(); |  Executar a tarefa a cada cinco segundos |
+|  ->everyTenSeconds(); |  Executar a tarefa a cada dez segundos |
+|  `->everyFifteenSeconds(); |  Execute a tarefa a cada quinze segundos |
+|  ->everyTwentySeconds(); |  Execute a tarefa a cada vinte segundos |
+|  ->everyThirtySeconds(); |  Execute a tarefa a cada trinta segundos |
+|  `->everyMinute(); |  Executar a tarefa a cada minuto |
+|  ->everyTwoMinutes(); |  Executar a tarefa a cada dois minutos |
+|  `-> everyThreeMinutes(); |  Executar a tarefa a cada três minutos |
+|  ->everyFourMinutes(); |  Execute a tarefa a cada quatro minutos |
+|  ->everyFiveMinutes(); |  Execute a tarefa a cada cinco minutos |
+|  ->`everyTenMinutes()`; |  Executar a tarefa a cada dez minutos |
+|  ->everyFifteenMinutes(); |  Executar a tarefa a cada de quinze minutos |
+|  ->everyThirtyMinutes(); |  Executar a tarefa a cada trinta minutos |
+|  `->hora ();` |  Execute a tarefa a cada hora |
+|  ->horaDiariamente(17); |  Execute a tarefa a cada hora em 17 minutos passados da hora |
+|  `->everyOddHour($minutos = 0);` |  Execute a tarefa a cada uma hora que termine num número ímpar |
+|  `->everyTwoHours($minutes = 0); |  Execute a tarefa a cada duas horas |
+|  `->everyThreeHours($minutes = 0);` |  Execute a tarefa a cada três horas |
+|  ->everyFourHours($minutos = 0); |  Execute a tarefa a cada quatro horas |
+|  ->everySixHours($minutos = 0); |  Executar a tarefa a cada seis horas |
+|  ->daily(); |  Execute a tarefa todos os dias à meia-noite |
+|  `->dailyAt('13:00');` |  Executar a tarefa todos os dias às 13h. |
+|  `->twiceDaily(1, 13); |  Execute a tarefa diariamente às 1:00 e às 13:00 |
+|  ->twiceDailyAt(1, 13, 15); |  Execute a tarefa diariamente às 01:15 e 13:15. |
+|  -> semanal(); |  Execute a tarefa todas as segundas-feiras às 00h00 |
+|  `->weeklyOn(1, '8:00');` |  Executar a tarefa todas as segundas-feiras às 8:00. |
+|  `->monthly();` |  Executar a tarefa no primeiro dia de cada mês às 00:00 |
+|  `->monthlyOn(4, "15:00");` |  Executar a tarefa todo mês às 15h do dia 4 |
+|  `->twiceMonthly(1, 16, '13:00');` |  Execute a tarefa mensalmente no dia 1º e dia 16 às 13:00. |
+|  `->lastDayOfMonth(‘15:00’);` |  Execute a tarefa no último dia do mês às 15:00. |
+|  `->trimestral();` |  Executar a tarefa no primeiro dia de cada trimestre às 00:00 |
+|  `->quartalAnualmente(4,'14:00');` |  Execute a tarefa trimestralmente no dia 4, às 14:00. |
+|  ->yearly(); |  Execute a tarefa no primeiro dia de cada ano, às 00h00. |
+|  ->anual(6, 1, '17:00'); |  Executar a tarefa todos os anos no dia 1º de junho às 17h. |
+|  `->timezone("America/New_York");` |  Define a zona horária para a tarefa |
 
 </div>
 
-These methods may be combined with additional constraints to create even more finely tuned schedules that only run on certain days of the week. For example, you may schedule a command to run weekly on Monday:
+ Estes métodos podem ser combinados com restrições adicionais para criar cronogramas ainda mais otimizados que apenas rodam em certos dias da semana. Por exemplo, você pode agendar um comando para ser executado semanalmente às segundas-feiras:
 
 ```php
     use Illuminate\Support\Facades\Schedule;
@@ -181,33 +181,33 @@ These methods may be combined with additional constraints to create even more fi
               ->between('8:00', '17:00');
 ```
 
-A list of additional schedule constraints may be found below:
+ Uma lista de restrições adicionais no calendário pode ser encontrada abaixo:
 
 <div class="overflow-auto">
 
-| Method  | Description |
+|  Método |  Descrição |
 |-------------|-------------|
-| `->weekdays();`  |  Limit the task to weekdays |
-| `->weekends();`  |  Limit the task to weekends |
-| `->sundays();`  |  Limit the task to Sunday |
-| `->mondays();`  |  Limit the task to Monday |
-| `->tuesdays();`  |  Limit the task to Tuesday |
-| `->wednesdays();`  |  Limit the task to Wednesday |
-| `->thursdays();`  |  Limit the task to Thursday |
-| `->fridays();`  |  Limit the task to Friday |
-| `->saturdays();`  |  Limit the task to Saturday |
-| `->days(array\|mixed);`  |  Limit the task to specific days |
-| `->between($startTime, $endTime);`  |  Limit the task to run between start and end times |
-| `->unlessBetween($startTime, $endTime);`  |  Limit the task to not run between start and end times |
-| `->when(Closure);`  |  Limit the task based on a truth test |
-| `->environments($env);`  |  Limit the task to specific environments |
+|  ->weekdays(); |  Limite a tarefa aos dias úteis |
+|  ->fins de semana(); |  Limitar a tarefa aos finais de semana |
+|  ->domingos(); |  Limite a tarefa para domingo |
+|  ->``mondays;` |  Limite a tarefa para o dia da semana, segunda-feira |
+|  ->`terças-feiras(); |  Limite a tarefa para terça-feira |
+|  `->quartas-feiras();` |  Limite a tarefa para quarta-feira |
+|  `-> quintas-feiras();` |  Limite a tarefa para quinta-feira |
+|  ->fridays(); |  Limite a tarefa para sexta-feira |
+|  `-> sábados(); |  Limite a tarefa ao sábado |
+|  ->dias (matriz |  misturado;)` |  Limite a tarefa para dias específicos |
+|  ->entre($startTime, $endTime); |  Limite a execução da tarefa entre os horários de início e fim |
+|  `->unlessBetween($startTime, $endTime);` |  Limitar a tarefa para que não seja executada entre os horários de início e término |
+|  `->quando(Fechamento;)` |  Limite a tarefa com base em um teste de veracidade |
+|  `->environments($env); |  Limite a tarefa para ambientes específicos |
 
 </div>
 
 <a name="day-constraints"></a>
-#### Day Constraints
+#### Restrições do dia
 
-The `days` method may be used to limit the execution of a task to specific days of the week. For example, you may schedule a command to run hourly on Sundays and Wednesdays:
+ O método `days` pode ser utilizado para limitar a execução de uma tarefa a determinados dias da semana. Por exemplo, você pode agendar um comando para executar sempre às segundas e sextas-feiras:
 
 ```php
     use Illuminate\Support\Facades\Schedule;
@@ -217,7 +217,7 @@ The `days` method may be used to limit the execution of a task to specific days 
                     ->days([0, 3]);
 ```
 
-Alternatively, you may use the constants available on the `Illuminate\Console\Scheduling\Schedule` class when defining the days on which a task should run:
+ Como alternativa, você pode usar as constantes disponíveis na classe `Illuminate\Console\Scheduling\Schedule` ao definir os dias em que uma tarefa deve ser executada.
 
 ```php
     use Illuminate\Support\Facades;
@@ -229,9 +229,9 @@ Alternatively, you may use the constants available on the `Illuminate\Console\Sc
 ```
 
 <a name="between-time-constraints"></a>
-#### Between Time Constraints
+#### Entre Limitações de Tempo
 
-The `between` method may be used to limit the execution of a task based on the time of day:
+ O método `entre` permite limitar a execução de uma tarefa em função da hora do dia:
 
 ```php
     Schedule::command('emails:send')
@@ -239,7 +239,7 @@ The `between` method may be used to limit the execution of a task based on the t
                         ->between('7:00', '22:00');
 ```
 
-Similarly, the `unlessBetween` method can be used to exclude the execution of a task for a period of time:
+ Do mesmo modo, o método `unlessBetween` pode ser utilizado para excluir a execução de uma tarefa durante um período de tempo:
 
 ```php
     Schedule::command('emails:send')
@@ -248,9 +248,9 @@ Similarly, the `unlessBetween` method can be used to exclude the execution of a 
 ```
 
 <a name="truth-test-constraints"></a>
-#### Truth Test Constraints
+#### Restrições do teste de veracidade
 
-The `when` method may be used to limit the execution of a task based on the result of a given truth test. In other words, if the given closure returns `true`, the task will execute as long as no other constraining conditions prevent the task from running:
+ O método `when` pode ser usado para limitar a execução de uma tarefa com base no resultado de um determinado teste lógico. Em outras palavras, se o fechamento for retornar `true`, a tarefa será executada apenas se nenhuma outra condição limitante impedir que ela seja executada:
 
 ```php
     Schedule::command('emails:send')->daily()->when(function () {
@@ -258,7 +258,7 @@ The `when` method may be used to limit the execution of a task based on the resu
     });
 ```
 
-The `skip` method may be seen as the inverse of `when`. If the `skip` method returns `true`, the scheduled task will not be executed:
+ O método `skip` pode ser visto como o inverso do `when`. Se este retornar `true`, a tarefa agendada não será executada.
 
 ```php
     Schedule::command('emails:send')->daily()->skip(function () {
@@ -266,12 +266,12 @@ The `skip` method may be seen as the inverse of `when`. If the `skip` method ret
     });
 ```
 
-When using chained `when` methods, the scheduled command will only execute if all `when` conditions return `true`.
+ Ao usar métodos com `when` em cadeia, o comando agendado somente será executado se todas as condições do `when` retornarem `true`.
 
 <a name="environment-constraints"></a>
-#### Environment Constraints
+#### Restrições Ambientais
 
-The `environments` method may be used to execute tasks only on the given environments (as defined by the `APP_ENV` [environment variable](/docs/configuration#environment-configuration)):
+ O método `environments` permite executar tarefas apenas nos ambientes especificados (conforme definido pela variável de ambiente `APP_ENV`):
 
 ```php
     Schedule::command('emails:send')
@@ -280,9 +280,9 @@ The `environments` method may be used to execute tasks only on the given environ
 ```
 
 <a name="timezones"></a>
-### Timezones
+### Fuso horário
 
-Using the `timezone` method, you may specify that a scheduled task's time should be interpreted within a given timezone:
+ Com o método `timezone`, você pode especificar que a hora da tarefa agendada deve ser interpretada no fuso horário desejado.
 
 ```php
     use Illuminate\Support\Facades\Schedule;
@@ -292,7 +292,7 @@ Using the `timezone` method, you may specify that a scheduled task's time should
              ->at('2:00')
 ```
 
-If you are repeatedly assigning the same timezone to all of your scheduled tasks, you can specify which timezone should be assigned to all schedules by defining a `schedule_timezone` option within your application's `app` configuration file:
+ Se você estiver atribuindo repetidamente o mesmo fuso horário para todas as suas tarefas agendadas, pode especificar qual fuso horário deve ser atribuído a todas as agendas definindo uma opção `schedule_timezone` no arquivo de configuração do aplicativo, chamado `app`:
 
 ```php
     'timezone' => env('APP_TIMEZONE', 'UTC'),
@@ -300,13 +300,13 @@ If you are repeatedly assigning the same timezone to all of your scheduled tasks
     'schedule_timezone' => 'America/Chicago',
 ```
 
-> [!WARNING]  
-> Remember that some timezones utilize daylight savings time. When daylight saving time changes occur, your scheduled task may run twice or even not run at all. For this reason, we recommend avoiding timezone scheduling when possible.
+ > [AVISO]
+ > Lembre-se de que alguns fusos horários utilizam o horário de verão. Quando ocorrem mudanças no horário de verão, a tarefa agendada pode ser executada duas vezes ou até não ser executada. Por esse motivo, recomendamos evitar a programação por fusos horários sempre que possível.
 
 <a name="preventing-task-overlaps"></a>
-### Preventing Task Overlaps
+### Evitar sobreposições de tarefas
 
-By default, scheduled tasks will be run even if the previous instance of the task is still running. To prevent this, you may use the `withoutOverlapping` method:
+ Por padrão, as tarefas agendadas serão executadas mesmo se a instância anterior da tarefa estiver ainda em execução. Para impedir isto, você pode usar o método `withoutOverlapping`:
 
 ```php
     use Illuminate\Support\Facades\Schedule;
@@ -314,25 +314,25 @@ By default, scheduled tasks will be run even if the previous instance of the tas
     Schedule::command('emails:send')->withoutOverlapping();
 ```
 
-In this example, the `emails:send` [Artisan command](/docs/artisan) will be run every minute if it is not already running. The `withoutOverlapping` method is especially useful if you have tasks that vary drastically in their execution time, preventing you from predicting exactly how long a given task will take.
+ Neste exemplo, o comando [Artisan command] (/docs/artisan) `emails:send` será executado a cada minuto, caso esteja parado. O método `withoutOverlapping` é especialmente útil para tarefas que variam drasticamente no tempo de execução, evitando a previsão exata do tempo necessário para a execução da tarefa em questão.
 
-If needed, you may specify how many minutes must pass before the "without overlapping" lock expires. By default, the lock will expire after 24 hours:
+ Caso necessário, você pode especificar o número de minutos que devem ser transcorridos antes do vencimento da restrição "sem sobreposição". Por padrão, a restrição expira após 24 horas.
 
 ```php
     Schedule::command('emails:send')->withoutOverlapping(10);
 ```
 
-Behind the scenes, the `withoutOverlapping` method utilizes your application's [cache](/docs/cache) to obtain locks. If necessary, you can clear these cache locks using the `schedule:clear-cache` Artisan command. This is typically only necessary if a task becomes stuck due to an unexpected server problem.
+ Ao utilizar o método `withoutOverlapping`, atrás das cortinas, é utilizada a cache da sua aplicação para obter os bloqueios. Se necessário, pode ser feito o limpeza destes bloqueios usando o comando Artisan `schedule:clear-cache`. Normalmente, só se torna necessário fazer este procedimento caso uma tarefa fique retida devido a um problema de servidor inesperado.
 
 <a name="running-tasks-on-one-server"></a>
-### Running Tasks on One Server
+### Tarefas em execução num servidor
 
-> [!WARNING]  
-> To utilize this feature, your application must be using the `database`, `memcached`, `dynamodb`, or `redis` cache driver as your application's default cache driver. In addition, all servers must be communicating with the same central cache server.
+ > [AVISO]
+ > Para utilizar esse recurso, seu aplicativo deve usar o driver de cache `database`, `memcached`, `dynamodb` ou `redis` como driver de cache por padrão. Além disso, todos os servidores devem estar se comunicando com o mesmo servidor de cache central.
 
-If your application's scheduler is running on multiple servers, you may limit a scheduled job to only execute on a single server. For instance, assume you have a scheduled task that generates a new report every Friday night. If the task scheduler is running on three worker servers, the scheduled task will run on all three servers and generate the report three times. Not good!
+ Se o agendador da sua aplicação estiver em execução em vários servidores, poderá limitar uma tarefa agendada à execução num único servidor. Por exemplo, suponha que tenha uma tarefa programada para criar um novo relatório todas as sextas-feiras à noite. Se o agendador de tarefas estiver em execução em três servidores operacionais, a tarefa programada será executada nesses três servidores e gerará o relatório três vezes. Isto não é bom!
 
-To indicate that the task should run on only one server, use the `onOneServer` method when defining the scheduled task. The first server to obtain the task will secure an atomic lock on the job to prevent other servers from running the same task at the same time:
+ Para indicar que a tarefa deverá ser executada em apenas um servidor, utilize o método `onOneServer` ao definir a tarefa agendada. O primeiro servidor a receber a tarefa bloqueia o trabalho por meio de um bloqueio atômico para impedir que outros servidores executem a mesma tarefa ao mesmo tempo:
 
 ```php
     use Illuminate\Support\Facades\Schedule;
@@ -344,9 +344,9 @@ To indicate that the task should run on only one server, use the `onOneServer` m
 ```
 
 <a name="naming-unique-jobs"></a>
-#### Naming Single Server Jobs
+#### Nomes de tarefas em servidor único
 
-Sometimes you may need to schedule the same job to be dispatched with different parameters, while still instructing Laravel to run each permutation of the job on a single server. To accomplish this, you may assign each schedule definition a unique name via the `name` method:
+ Às vezes você pode precisar agendar o mesmo trabalho para ser despachado com diferentes parâmetros, e, ainda assim, instruir Laravel a rodar cada variação do trabalho em um único servidor. Para fazer isso, você pode atribuir a cada definição de agendamento um nome exclusivo pelo método `name`:
 
 ```php
 Schedule::job(new CheckUptime('https://laravel.com'))
@@ -360,7 +360,7 @@ Schedule::job(new CheckUptime('https://vapor.laravel.com'))
             ->onOneServer();
 ```
 
-Similarly, scheduled closures must be assigned a name if they are intended to be run on one server:
+ Da mesma forma, as interrupções programadas devem ser nomeadas se for pretendido executá-las em um servidor específico:
 
 ```php
 Schedule::call(fn () => User::resetApiRequestCount())
@@ -370,9 +370,9 @@ Schedule::call(fn () => User::resetApiRequestCount())
 ```
 
 <a name="background-tasks"></a>
-### Background Tasks
+### Tarefas de fundo
 
-By default, multiple tasks scheduled at the same time will execute sequentially based on the order they are defined in your `schedule` method. If you have long-running tasks, this may cause subsequent tasks to start much later than anticipated. If you would like to run tasks in the background so that they may all run simultaneously, you may use the `runInBackground` method:
+ Por padrão, várias tarefas programadas para serem executadas ao mesmo tempo são executadas sequencialmente de acordo com a ordem em que foram definidas no método `schedule`. Se as tarefas demoram muito tempo, é possível que as subsequentes sejam iniciadas bem mais tarde do que o esperado. Se você preferir que elas sejam executadas em segundo plano para que todas possam ser executadas simultaneamente, pode usar o método `runInBackground`:
 
 ```php
     use Illuminate\Support\Facades\Schedule;
@@ -382,33 +382,33 @@ By default, multiple tasks scheduled at the same time will execute sequentially 
              ->runInBackground();
 ```
 
-> [!WARNING]  
-> The `runInBackground` method may only be used when scheduling tasks via the `command` and `exec` methods.
+ > [ATENÇÃO]
+ > O método `runInBackground` só pode ser utilizado para planificar tarefas através dos métodos `command` e `exec`.
 
 <a name="maintenance-mode"></a>
-### Maintenance Mode
+### Modo de Manutenção
 
-Your application's scheduled tasks will not run when the application is in [maintenance mode](/docs/configuration#maintenance-mode), since we don't want your tasks to interfere with any unfinished maintenance you may be performing on your server. However, if you would like to force a task to run even in maintenance mode, you may call the `evenInMaintenanceMode` method when defining the task:
+ As tarefas agendadas do seu aplicativo não serão executadas quando o aplicativo estiver em [modo de manutenção](/docs/configuration#maintenance-mode), pois não queremos que suas tarefas interfiram com a manutenção incompleta que você pode estar realizando no servidor. No entanto, se você desejar forçar uma tarefa para ser executada mesmo em modo de manutenção, poderá chamar o método `evenInMaintenanceMode` ao definir a tarefa:
 
 ```php
     Schedule::command('emails:send')->evenInMaintenanceMode();
 ```
 
 <a name="running-the-scheduler"></a>
-## Running the Scheduler
+## Executando o Programador
 
-Now that we have learned how to define scheduled tasks, let's discuss how to actually run them on our server. The `schedule:run` Artisan command will evaluate all of your scheduled tasks and determine if they need to run based on the server's current time.
+ Agora que você aprendeu como definir tarefas agendadas, discutiremos sobre como executá-las em nosso servidor. O comando `schedule:run` do Artisan avaliará todas as suas tarefas agendadas e determinará se elas precisam ser executadas de acordo com o horário atual do servidor.
 
-So, when using Laravel's scheduler, we only need to add a single cron configuration entry to our server that runs the `schedule:run` command every minute. If you do not know how to add cron entries to your server, consider using a service such as [Laravel Forge](https://forge.laravel.com) which can manage the cron entries for you:
+ Portanto, ao usar o agendador do Laravel, basta adicionar uma única entrada de configuração de cron para nosso servidor que execute o comando `schedule:run` a cada minuto. Se você não souber como adicionar entradas de crons em seu servidor, considere usar um serviço como [Laravel Forge](https://forge.laravel.com), que poderá gerenciar as entradas de cron para você:
 
 ```shell
 * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
 ```
 
 <a name="sub-minute-scheduled-tasks"></a>
-### Sub-Minute Scheduled Tasks
+### Tarefas programadas com menos de um minuto
 
-On most operating systems, cron jobs are limited to running a maximum of once per minute. However, Laravel's scheduler allows you to schedule tasks to run at more frequent intervals, even as often as once per second:
+ Na maioria dos sistemas operacionais, os trabalhos de cron são limitados a serem executados no máximo uma vez por minuto. No entanto, o agendador do Laravel permite que você agende tarefas para serem executadas em intervalos mais frequentes, até mesmo uma única vez por segundo:
 
 ```php
     use Illuminate\Support\Facades\Schedule;
@@ -418,9 +418,9 @@ On most operating systems, cron jobs are limited to running a maximum of once pe
     })->everySecond();
 ```
 
-When sub-minute tasks are defined within your application, the `schedule:run` command will continue running until the end of the current minute instead of exiting immediately. This allows the command to invoke all required sub-minute tasks throughout the minute.
+ Se tarefas com duração inferior a um minuto forem definidas no seu aplicativo, o comando `schedule:run` continuará em execução até ao final do minuto corrente, em vez de ser interrompido imediatamente. Isto permite que o comando invoque todas as tarefas necessárias durante todo o minuto.
 
-Since sub-minute tasks that take longer than expected to run could delay the execution of later sub-minute tasks, it is recommended that all sub-minute tasks dispatch queued jobs or background commands to handle the actual task processing:
+ Como as tarefas de menos de um minuto que demorem mais do que o esperado para serem executadas poderão atrasar a execução de tarefas subseqüentes de menos de um minuto, recomenda-se que todas as tarefas subseqüentes agendem processamentos em segundo plano ou gerenciamento de tarefas reais:
 
 ```php
     use App\Jobs\DeleteRecentUsers;
@@ -431,29 +431,29 @@ Since sub-minute tasks that take longer than expected to run could delay the exe
 ```
 
 <a name="interrupting-sub-minute-tasks"></a>
-#### Interrupting Sub-Minute Tasks
+#### Interromper tarefas de menos de um minuto
 
-As the `schedule:run` command runs for the entire minute of invocation when sub-minute tasks are defined, you may sometimes need to interrupt the command when deploying your application. Otherwise, an instance of the `schedule:run` command that is already running would continue using your application's previously deployed code until the current minute ends.
+ Como o comando "schedule:run" é executado durante toda a minuto de invocação quando as tarefas são definidas para subminutos, você talvez precise interromper o comando ao implantar seu aplicativo. Caso contrário, uma instância do comando "schedule:run", que já esteja sendo executada, continuará a usar o código anteriormente implementado em sua aplicação até o final do minuto atual.
 
-To interrupt in-progress `schedule:run` invocations, you may add the `schedule:interrupt` command to your application's deployment script. This command should be invoked after your application is finished deploying:
+ Para interromper chamadas em andamento do comando `schedule:run`, você pode adicionar o comando `schedule:interrupt` ao script de implantação da sua aplicação. Esse comando deve ser invocado depois que a sua aplicação estiver terminada:
 
 ```shell
 php artisan schedule:interrupt
 ```
 
 <a name="running-the-scheduler-locally"></a>
-### Running the Scheduler Locally
+### Executando o Agendador Localmente
 
-Typically, you would not add a scheduler cron entry to your local development machine. Instead, you may use the `schedule:work` Artisan command. This command will run in the foreground and invoke the scheduler every minute until you terminate the command:
+ Normalmente, você não adiciona uma entrada cron de agendador à sua máquina de desenvolvimento local. Em vez disso, você pode usar o comando `schedule:work` do Artisan. Este comando será executado em primeiro plano e invocará o agendador a cada minuto até que você termine o comando:
 
 ```shell
 php artisan schedule:work
 ```
 
 <a name="task-output"></a>
-## Task Output
+## Saída da tarefa
 
-The Laravel scheduler provides several convenient methods for working with the output generated by scheduled tasks. First, using the `sendOutputTo` method, you may send the output to a file for later inspection:
+ O agendador do Laravel disponibiliza vários métodos convenientes para trabalhar com o resultado gerado por tarefas programadas. Primeiro, pode enviar-se o resultado para um ficheiro através do método `sendOutputTo` para posterior análise:
 
 ```php
     use Illuminate\Support\Facades\Schedule;
@@ -463,7 +463,7 @@ The Laravel scheduler provides several convenient methods for working with the o
              ->sendOutputTo($filePath);
 ```
 
-If you would like to append the output to a given file, you may use the `appendOutputTo` method:
+ Se você quiser anexar o resultado da saída para um arquivo específico, poderá usar o método `appendOutputTo`:
 
 ```php
     Schedule::command('emails:send')
@@ -471,7 +471,7 @@ If you would like to append the output to a given file, you may use the `appendO
              ->appendOutputTo($filePath);
 ```
 
-Using the `emailOutputTo` method, you may email the output to an email address of your choice. Before emailing the output of a task, you should configure Laravel's [email services](/docs/mail):
+ Usando o método `emailOutputTo`, é possível enviar por e-mail os resultados de uma tarefa para um endereço de e-mail escolhido. Antes de enviar o resultado de uma tarefa, você deve configurar os serviços de e-mail do Laravel:
 
 ```php
     Schedule::command('report:generate')
@@ -480,7 +480,7 @@ Using the `emailOutputTo` method, you may email the output to an email address o
              ->emailOutputTo('taylor@example.com');
 ```
 
-If you only want to email the output if the scheduled Artisan or system command terminates with a non-zero exit code, use the `emailOutputOnFailure` method:
+ Se você quiser enviar um e-mail com o resultado apenas se o comando do sistema ou da Artisan programado terminar com um código de saída diferente de zero, use o método `emailOutputOnFailure`:
 
 ```php
     Schedule::command('report:generate')
@@ -488,13 +488,13 @@ If you only want to email the output if the scheduled Artisan or system command 
              ->emailOutputOnFailure('taylor@example.com');
 ```
 
-> [!WARNING]  
-> The `emailOutputTo`, `emailOutputOnFailure`, `sendOutputTo`, and `appendOutputTo` methods are exclusive to the `command` and `exec` methods.
+ > [AVERTISSEMENT]
+ > Os métodos `emailOutputTo`, `emailOutputOnFailure`, `sendOutputTo`, e `appendOutputTo` são exclusivos dos métodos `command` e `exec`.
 
 <a name="task-hooks"></a>
-## Task Hooks
+## Ganchos de tarefas
 
-Using the `before` and `after` methods, you may specify code to be executed before and after the scheduled task is executed:
+ Usando os métodos `before` e `after`, você pode especificar códigos a serem executados antes e depois da tarefa agendada ser executada.
 
 ```php
     use Illuminate\Support\Facades\Schedule;
@@ -509,7 +509,7 @@ Using the `before` and `after` methods, you may specify code to be executed befo
              });
 ```
 
-The `onSuccess` and `onFailure` methods allow you to specify code to be executed if the scheduled task succeeds or fails. A failure indicates that the scheduled Artisan or system command terminated with a non-zero exit code:
+ Os métodos `onSuccess` e `onFailure` permitem especificar um código que será executado se o trabalho agendado for bem sucedido ou falhar. Um erro indica que o comando de sistema ou Artisan terminou com um código de saída diferente de zero:
 
 ```php
     Schedule::command('emails:send')
@@ -522,7 +522,7 @@ The `onSuccess` and `onFailure` methods allow you to specify code to be executed
              });
 ```
 
-If output is available from your command, you may access it in your `after`, `onSuccess` or `onFailure` hooks by type-hinting an `Illuminate\Support\Stringable` instance as the `$output` argument of your hook's closure definition:
+ Se houver saída disponível a partir de seu comando, você poderá acessá-la em seus loops `after`, `onSuccess` ou `onFailure` tipando uma instância `Illuminate\Support\Stringable` como o argumento `$output` da definição do fechamento do seu loop:
 
 ```php
     use Illuminate\Support\Stringable;
@@ -538,9 +538,9 @@ If output is available from your command, you may access it in your `after`, `on
 ```
 
 <a name="pinging-urls"></a>
-#### Pinging URLs
+#### Pingue URL
 
-Using the `pingBefore` and `thenPing` methods, the scheduler can automatically ping a given URL before or after a task is executed. This method is useful for notifying an external service, such as [Envoyer](https://envoyer.io), that your scheduled task is beginning or has finished execution:
+ Usando os métodos `pingBefore` e `thenPing`, o agendador pode fazer um ping a uma URL indicada antes ou depois de executar uma tarefa. Este método é útil para notificar um serviço externo, como [Envoyer](https://envoyer.io), que sua tarefa agendada está começando ou terminou:
 
 ```php
     Schedule::command('emails:send')
@@ -549,7 +549,7 @@ Using the `pingBefore` and `thenPing` methods, the scheduler can automatically p
              ->thenPing($url);
 ```
 
-The `pingBeforeIf` and `thenPingIf` methods may be used to ping a given URL only if a given condition is `true`:
+ Os métodos `pingBeforeIf` e `thenPingIf` podem ser utilizados para enviar uma requisição HTTP GET a um endereço URL só se o estado atual for verdadeiro:
 
 ```php
     Schedule::command('emails:send')
@@ -558,7 +558,7 @@ The `pingBeforeIf` and `thenPingIf` methods may be used to ping a given URL only
              ->thenPingIf($condition, $url);
 ```
 
-The `pingOnSuccess` and `pingOnFailure` methods may be used to ping a given URL only if the task succeeds or fails. A failure indicates that the scheduled Artisan or system command terminated with a non-zero exit code:
+ Os métodos `pingOnSuccess` e `pingOnFailure` podem ser usados para enviar um ping para um URL especificado somente se a tarefa for bem-sucedida ou falhar. Um fracasso indica que o comando de sistema ou do Artisan agendado terminou com código de saída diferente de zero:
 
 ```php
     Schedule::command('emails:send')
@@ -568,14 +568,14 @@ The `pingOnSuccess` and `pingOnFailure` methods may be used to ping a given URL 
 ```
 
 <a name="events"></a>
-## Events
+## Eventos
 
-Laravel dispatches a variety of [events](/docs/events) during the scheduling process. You may [define listeners](/docs/events) for any of the following events:
+ O Laravel dispensa uma variedade de [eventos](/docs/events) durante o processo de agendamento. Você pode [definir ouvinte](/docs/events) para qualquer um dos seguintes eventos:
 
-| Event Name |
+|  Nome do evento |
 |-------------|
-| `Illuminate\Console\Events\ScheduledTaskStarting` |
-| `Illuminate\Console\Events\ScheduledTaskFinished` |
-| `Illuminate\Console\Events\ScheduledBackgroundTaskFinished` |
-| `Illuminate\Console\Events\ScheduledTaskSkipped` |
-| `Illuminate\Console\Events\ScheduledTaskFailed` |
+|  "Illuminate\\Conso\\Eventos\\ScheduledTaskStarting" |
+|  `Illuminate\\Console\\Events\\ScheduledTaskFinished` |
+|  Illuminate\Console\Eventos\TarefaDeFundoProgramadaTerminada |
+|  Illuminate\Console\Eventos\TarefaProgramadaIgnorada |
+|  Evento de tarefa agendada falhada do Illuminate\Console |

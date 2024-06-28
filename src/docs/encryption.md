@@ -1,38 +1,38 @@
-# Encryption
+# Criptografia
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-Laravel's encryption services provide a simple, convenient interface for encrypting and decrypting text via OpenSSL using AES-256 and AES-128 encryption. All of Laravel's encrypted values are signed using a message authentication code (MAC) so that their underlying value can not be modified or tampered with once encrypted.
+ Os serviços de criptografia do Laravel fornecem uma interface simples e conveniente para criptografar e descriptografar texto por meio do OpenSSL, usando as criptografias AES-256 e AES-128. Todos os valores encriptados pelo Laravel são assinados utilizando um código de autenticação de mensagens (MAC), para que o seu valor subjacente não possa ser modificado ou adulterado, uma vez encriptados.
 
 <a name="configuration"></a>
-## Configuration
+## Configuração
 
-Before using Laravel's encrypter, you must set the `key` configuration option in your `config/app.php` configuration file. This configuration value is driven by the `APP_KEY` environment variable. You should use the `php artisan key:generate` command to generate this variable's value since the `key:generate` command will use PHP's secure random bytes generator to build a cryptographically secure key for your application. Typically, the value of the `APP_KEY` environment variable will be generated for you during [Laravel's installation](/docs/installation).
+ Antes de usar o encriptador do Laravel, você deve definir a opção de configuração `key` no arquivo de configuração `config/app.php`. Esse valor é gerado pela variável ambiente `APP_KEY`. Você deve usar o comando `php artisan key:generate` para gerar este valor, pois o comando `key:generate` usará o gerador seguro de bytes do PHP para criar uma chave segura para sua aplicação. Normalmente, a variável ambiente `APP_KEY` é gerada automaticamente durante a instalação do Laravel.
 
 <a name="gracefully-rotating-encryption-keys"></a>
-### Gracefully Rotating Encryption Keys
+### Geração de chaves de criptografia com giro elegante
 
-If you change your application's encryption key, all authenticated user sessions will be logged out of your application. This is because every cookie, including session cookies, are encrypted by Laravel. In addition, it will no longer be possible to decrypt any data that was encrypted with your previous encryption key.
+ Se você alterar a chave de criptografia do seu aplicativo, todas as sessões autenticadas do usuário serão desconectadas do seu aplicativo porque todos os cookies, inclusive os cookies de sessão, são encriptados por Laravel. Além disso, não será mais possível descriptografar quaisquer dados que tenham sido encriptados com sua chave de criptografia anterior.
 
-To mitigate this issue, Laravel allows you to list your previous encryption keys in your application's `APP_PREVIOUS_KEYS` environment variable. This variable may contain a comma-delimited list of all of your previous encryption keys:
+ Para minimizar este problema, o Laravel permite-lhe indicar as suas chaves de encriptação anteriores na variável de ambiente `APP_PREVIOUS_KEYS` da aplicação. Esta variável pode conter uma lista com vírgula entre as várias chaves de encriptação anteriores:
 
 ```ini
 APP_KEY="base64:J63qRTDLub5NuZvP+kb8YIorGS6qFYHKVo6u7179stY="
 APP_PREVIOUS_KEYS="base64:2nLsGFGzyoae2ax3EF2Lyq/hH6QghBGLIq5uL+Gp8/w="
 ```
 
-When you set this environment variable, Laravel will always use the "current" encryption key when encrypting values. However, when decrypting values, Laravel will first try the current key, and if decryption fails using the current key, Laravel will try all previous keys until one of the keys is able to decrypt the value.
+ Quando você define esta variável de ambiente, o Laravel usará sempre a chave de cifragem "atual" para cifrar valores, mas, ao descifrar valores, o Laravel tentará primeiro a chave atual e se o processo de descifragem falhar com essa chave, o Laravel testará todas as chaves anteriores até que uma das chaves consiga descifrar o valor.
 
-This approach to graceful decryption allows users to keep using your application uninterrupted even if your encryption key is rotated.
+ Essa abordagem de descriptografia elegante permite que os usuários continuem utilizando seu aplicativo sem interrupções, mesmo se sua chave de criptografia tiver sido alterada.
 
 <a name="using-the-encrypter"></a>
-## Using the Encrypter
+## Usando o Gerenciador de senhas
 
 <a name="encrypting-a-value"></a>
-#### Encrypting a Value
+#### Encriptação de um valor
 
-You may encrypt a value using the `encryptString` method provided by the `Crypt` facade. All encrypted values are encrypted using OpenSSL and the AES-256-CBC cipher. Furthermore, all encrypted values are signed with a message authentication code (MAC). The integrated message authentication code will prevent the decryption of any values that have been tampered with by malicious users:
+ Pode criptografar um valor utilizando o método `encryptString`, fornecido pela fachada `Crypt`. Todos os valores são encriptados usando a cifra AES-256-CBC, e assinado com um código de autenticação de mensagens (MAC). O código de autenticação integrado impedirá a decodificação dos valores alterados por utilizadores maliciosos.
 
 ```php
     <?php
@@ -60,9 +60,9 @@ You may encrypt a value using the `encryptString` method provided by the `Crypt`
 ```
 
 <a name="decrypting-a-value"></a>
-#### Decrypting a Value
+#### Decodificar um valor
 
-You may decrypt values using the `decryptString` method provided by the `Crypt` facade. If the value can not be properly decrypted, such as when the message authentication code is invalid, an `Illuminate\Contracts\Encryption\DecryptException` will be thrown:
+ Você pode descriptografar valores usando o método `decryptString`, fornecido pela faca do `Crypt`. Se um valor não puder ser descritografado adequadamente, tal como quando a chave de autenticação do mensagem estiver inválida, uma `Illuminate\Contracts\Encryption\DecryptException` (Exceção de Descriptografia) será lançada:
 
 ```php
     use Illuminate\Contracts\Encryption\DecryptException;

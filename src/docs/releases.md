@@ -1,31 +1,31 @@
-# Release Notes
+# Notas da versão
 
 <a name="versioning-scheme"></a>
-## Versioning Scheme
+## Esquema de versionamento
 
-Laravel and its other first-party packages follow [Semantic Versioning](https://semver.org). Major framework releases are released every year (~Q1), while minor and patch releases may be released as often as every week. Minor and patch releases should **never** contain breaking changes.
+ O Laravel e outros pacotes de primeira parte seguem o [Semantic Versioning](https://semver.org). Os principais lançamentos do framework são liberados anualmente (~Q1), enquanto que os menores e as correções podem ser liberados com tanta frequência quanto uma vez por semana. As correções e atualizações devem **nunca** incluir alterações disruptivas.
 
-When referencing the Laravel framework or its components from your application or package, you should always use a version constraint such as `^11.0`, since major releases of Laravel do include breaking changes. However, we strive to always ensure you may update to a new major release in one day or less.
+ Ao referenciar o framework Laravel ou seus componentes em sua aplicação ou pacote, você deve sempre usar um limite de versão como `^11.0`, uma vez que as principais versões do Laravel incluem alterações drásticas. No entanto, nos esforçamos para garantir que a atualização para uma nova versão principal seja feita em um dia ou menos.
 
 <a name="named-arguments"></a>
-#### Named Arguments
+#### Argumentos de nome
 
-[Named arguments](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments) are not covered by Laravel's backwards compatibility guidelines. We may choose to rename function arguments when necessary in order to improve the Laravel codebase. Therefore, using named arguments when calling Laravel methods should be done cautiously and with the understanding that the parameter names may change in the future.
+ [Argumentos com nome](https://www.php.net/manual/en/functions.arguments.php#functions.named-arguments) não estão abrangidos pelas diretrizes de compatibilidade reversa do Laravel. Podemos optar por renomear argumentos da função quando necessário, a fim de melhorar o código base do Laravel. Portanto, usar argumentos com nome ao chamar métodos do Laravel deve ser feito com cautela e com entendimento de que os nomes dos parâmetros podem mudar no futuro.
 
 <a name="support-policy"></a>
-## Support Policy
+## Política de Suporte
 
-For all Laravel releases, bug fixes are provided for 18 months and security fixes are provided for 2 years. For all additional libraries, including Lumen, only the latest major release receives bug fixes. In addition, please review the database versions [supported by Laravel](/docs/database#introduction).
+ Todas as versões do Laravel têm 18 meses de correções de erros e 2 anos para correções de falhas de segurança. Para todas as bibliotecas adicionais, incluindo a Lumen, somente o lançamento mais recente recebe correções de erros. Além disso, verifique as versões do banco de dados [suportadas pelo Laravel] (https://docs. Larave.dev/database/).
 
 
 <div class="overflow-auto">
 
-| Version | PHP (*) | Release | Bug Fixes Until | Security Fixes Until |
-| --- | --- | --- | --- | --- |
-| 9 | 8.0 - 8.2 | February 8th, 2022 | August 8th, 2023 | February 6th, 2024 |
-| 10 | 8.1 - 8.3 | February 14th, 2023 | August 6th, 2024 | February 4th, 2025 |
-| 11 | 8.2 - 8.3 | March 12th, 2024 | September 3rd, 2025 | March 12th, 2026 |
-| 12 | 8.2 - 8.3 | Q1 2025 | Q3, 2026 | Q1, 2027 |
+|  Versão |  PHP (*) |  Lançamento |  Correção de bugs até |  Corrige Falhas de Segurança Até |
+|---|---|---|---|---|
+|  Não existem resultados para esta busca. |  8,0-8,2 |  8 de fevereiro de 2022 |  8 de agosto de 2023 |  6 de fevereiro de 2024 |
+|  10 |  8.1 - 8.3 |  14 de fevereiro de 2023 |  Dia 6 de agosto de 2024 |  Quarta-feira, dia 4 de fevereiro de 2025 |
+|  11 |  8.2 e 8.3 |  12 de março de 2024 |  3 de setembro de 2025 |  12 de março de 2026 |
+|  12 |  8.2 – 8.3 |  Primeiro trimestre de 2025 |  Q3, 2026 |  Primeiro trimestre de 2027 |
 
 </div>
 
@@ -40,28 +40,28 @@ For all Laravel releases, bug fixes are provided for 18 months and security fixe
     </div>
 </div>
 
-(*) Supported PHP versions
+ (“*”) Versões do PHP suportadas
 
 <a name="laravel-11"></a>
 ## Laravel 11
 
-Laravel 11 continues the improvements made in Laravel 10.x by introducing a streamlined application structure, per-second rate limiting, health routing, graceful encryption key rotation, queue testing improvements, [Resend](https://resend.com) mail transport, Prompt validator integration, new Artisan commands, and more. In addition, Laravel Reverb, a first-party, scalable WebSocket server has been introduced to provide robust real-time capabilities to your applications.
+ O Laravel 11 continua os melhoramentos feitos no Laravel 10.x ao introduzir uma estrutura de aplicação simplificada, limitação por segundo, roteamento para saúde, rotatividade de chave de criptografia atenciosa, testes de filas melhorados, transporte de e-mail [Resend](https://resend.com), integração do validador Prompt, novos comandos do Ariscan e muito mais. Além disso, o Laravel Reverb, um servidor WebSocket escalável de primeira parte foi introduzido para oferecer capacidades robustas em tempo real para suas aplicações.
 
 <a name="php-8"></a>
-### PHP 8.2
+### O que há de novo no PHP 8.2
 
-Laravel 11.x requires a minimum PHP version of 8.2.
+ O Laravel 11.x requer uma versão mínima de PHP 8.2.
 
 <a name="structure"></a>
-### Streamlined Application Structure
+### Estrutura simplificada do aplicativo
 
-_Laravel's streamlined application structure was developed by [Taylor Otwell](https://github.com/taylorotwell) and [Nuno Maduro](https://github.com/nunomaduro)_.
+ A estrutura de aplicação simplificada do _Laravel_ foi desenvolvida por Taylor Otwell e Nuno Maduro.
 
-Laravel 11 introduces a streamlined application structure for **new** Laravel applications, without requiring any changes to existing applications. The new application structure is intended to provide a leaner, more modern experience, while retaining many of the concepts that Laravel developers are already familiar with. Below we will discuss the highlights of Laravel's new application structure.
+ O Laravel 11 introduz uma estrutura de aplicação otimizada para novas aplicações Laravel, sem que seja necessário realizar quaisquer alterações em aplicações existentes. A nova estrutura de aplicação visa proporcionar uma experiência mais moderna e enxuta, mantendo muitos dos conceitos com os quais os desenvolvedores Laravel já são familiarizados. Abaixo discutimos as principais características da nova estrutura de aplicação do Laravel.
 
-#### The Application Bootstrap File
+#### O Arquivo Inicial de Inicialização do Aplicativo
 
-The `bootstrap/app.php` file has been revitalized as a code-first application configuration file. From this file, you may now customize your application's routing, middleware, service providers, exception handling, and more. This file unifies a variety of high-level application behavior settings that were previously scattered throughout your application's file structure:
+ O arquivo `bootstrap/app.php` foi revitalizado como um arquivo de configuração da aplicação iniciada por código. A partir deste arquivo, você pode agora personalizar o roteamento da sua aplicação, middleware, provedores de serviço, gerenciamento de exceções e muito mais. Esse arquivo unifica uma variedade de configurações de comportamento de aplicação iniciadas a nível superior que estavam espalhadas pela estrutura de arquivos da sua aplicação:
 
 ```php
 return Application::configure(basePath: dirname(__DIR__))
@@ -79,16 +79,16 @@ return Application::configure(basePath: dirname(__DIR__))
 ```
 
 <a name="service-providers"></a>
-#### Service Providers
+#### Fornecedores de serviços
 
-Instead of the default Laravel application structure containing five service providers, Laravel 11 only includes a single `AppServiceProvider`. The functionality of the previous service providers has been incorporated into the `bootstrap/app.php`, is handled automatically by the framework, or may be placed in your application's `AppServiceProvider`.
+ Em vez da estrutura de aplicativo Laravel padrão que contém cinco provedores de serviços, o Laravel 11 inclui apenas um único `AppServiceProvider`. A funcionalidade dos provedores de serviço anteriores foi incorporada ao `bootstrap/app.php`, é tratada automaticamente pelo framework ou pode ser colocada no `AppServiceProvider` do seu aplicativo.
 
-For example, event discovery is now enabled by default, largely eliminating the need for manual registration of events and their listeners. However, if you do need to manually register events, you may simply do so in the `AppServiceProvider`. Similarly, route model bindings or authorization gates you may have previously registered in the `AuthServiceProvider` may also be registered in the `AppServiceProvider`.
+ Por exemplo, o descobrimento de eventos agora é ativado por padrão, eliminando em grande parte a necessidade do registo manual de eventos e seus escutadores. No entanto, se você precisar registrar manuamente eventos, poderá fazer isso facilmente no `AppServiceProvider`. Do mesmo modo, os vínculos de modelos de rota ou portas de autorização que tenham sido previamente registradas no `AuthServiceProvider` podem ser registradas no `AppServiceProvider`.
 
 <a name="opt-in-routing"></a>
-#### Opt-in API and Broadcast Routing
+#### API de consentimento e roteamento de transmissão
 
-The `api.php` and `channels.php` route files are no longer present by default, as many applications do not require these files. Instead, they may be created using simple Artisan commands:
+ Os arquivos de roteamento `api.php` e `channels.php` não estão mais presentes por padrão, pois muitos aplicativos não os necessitam. Em vez disso, eles podem ser criados usando comandos simples do Artisan:
 
 ```shell
 php artisan install:api
@@ -99,9 +99,9 @@ php artisan install:broadcasting
 <a name="middleware"></a>
 #### Middleware
 
-Previously, new Laravel applications included nine middleware. These middleware performed a variety of tasks such as authenticating requests, trimming input strings, and validating CSRF tokens.
+ Anteriormente, os novos aplicativos Laravel incluíam nove middlewares que executavam várias funções, tais como autenticação de solicitações, redução de string de entrada e validação de token CSRF.
 
-In Laravel 11, these middleware have been moved into the framework itself, so that they do not add bulk to your application's structure. New methods for customizing the behavior of these middleware have been added to the framework and may be invoked from your application's `bootstrap/app.php` file:
+ No Laravel 11, esses middlewares foram movidos para o próprio framework, para que não agreguem volume à estrutura da aplicação. Novos métodos para customizar o comportamento desses middlewares foram adicionados ao framework e podem ser acionados a partir do arquivo `bootstrap/app.php` da aplicação:
 
 ```php
 ->withMiddleware(function (Middleware $middleware) {
@@ -115,12 +115,12 @@ In Laravel 11, these middleware have been moved into the framework itself, so th
 })
 ```
 
-Since all middleware can be easily customized via your application's `bootstrap/app.php`, the need for a separate HTTP "kernel" class has been eliminated.
+ Como todo o middleware pode ser facilmente personalizado através do arquivo `bootstrap/app.php` da aplicação, a necessidade de uma classe de "kernel" HTTP separada foi eliminada.
 
 <a name="scheduling"></a>
-#### Scheduling
+#### Agendamento
 
-Using a new `Schedule` facade, scheduled tasks may now be defined directly in your application's `routes/console.php` file, eliminating the need for a separate console "kernel" class:
+ Usando uma nova interface de usuário 'Programação', as tarefas programadas podem agora ser definidas diretamente no arquivo 'routes/console.php' do seu aplicativo, eliminando a necessidade de uma classe "kernel" de console separada:
 
 ```php
 use Illuminate\Support\Facades\Schedule;
@@ -129,9 +129,9 @@ Schedule::command('emails:send')->daily();
 ```
 
 <a name="exception-handling"></a>
-#### Exception Handling
+#### Manuseamento de exceções
 
-Like routing and middleware, exception handling can now be customized from your application's `bootstrap/app.php` file instead of a separate exception handler class, reducing the overall number of files included in a new Laravel application:
+ Assim como o roteamento e os middlewares, agora é possível personalizar o gerenciamento de exceções na arquitetura da aplicação. Isso pode ser feito no arquivo `bootstrap/app.php` em vez de uma classe separada de gerenciador de exceções, reduzindo assim a quantidade total de arquivos incluídos numa nova aplicação Laravel:
 
 ```php
 ->withExceptions(function (Exceptions $exceptions) {
@@ -144,9 +144,9 @@ Like routing and middleware, exception handling can now be customized from your 
 ```
 
 <a name="base-controller-class"></a>
-#### Base `Controller` Class
+#### Classe básica `Controller`
 
-The base controller included in new Laravel applications has been simplified. It no longer extends Laravel's internal `Controller` class, and the `AuthorizesRequests` and `ValidatesRequests` traits have been removed, as they may be included in your application's individual controllers if desired:
+ O controlador base incluído em novas aplicações Laravel foi simplificado. Não se estende mais à classe interna `Controller` do Laravel e os traços `AuthorizesRequests` e `ValidatesRequests` foram removidos, pois podem ser incluídos nos controladores individuais da sua aplicação caso necessite:
 
 ```php
     <?php
@@ -160,33 +160,33 @@ The base controller included in new Laravel applications has been simplified. It
 ```
 
 <a name="application-defaults"></a>
-#### Application Defaults
+#### Padrões de Aplicação
 
-By default, new Laravel applications use SQLite for database storage, as well as the `database` driver for Laravel's session, cache, and queue. This allows you to begin building your application immediately after creating a new Laravel application, without being required to install additional software or create additional database migrations.
+ Por padrão, novas aplicações Laravel utilizam o SQLite para armazenamento de bases de dados e o driver `database` para sessões, cache e fila do Laravel. Isso permite que você comece a criar sua aplicação imediatamente após a criação da nova aplicação Laravel sem ser necessário instalar software adicional ou criar migrações de banco de dados adicionais.
 
-In addition, over time, the `database` drivers for these Laravel services have become robust enough for production usage in many application contexts; therefore, they provide a sensible, unified choice for both local and production applications.
+ Além disso, ao longo do tempo, os drivers de banco de dados para esses serviços Laravel tornaram-se robustos o suficiente para uso em produção em muitos contextos de aplicativo; portanto, eles oferecem uma escolha sensata e unificada tanto para aplicativos locais quanto para a produção.
 
 <a name="reverb"></a>
 ### Laravel Reverb
 
-_Laravel Reverb was developed by [Joe Dixon](https://github.com/joedixon)_.
+ _O Laravel Reverb foi desenvolvido por [Joe Dixon](https://github.com/joedixon).
 
-[Laravel Reverb](https://reverb.laravel.com) brings blazing-fast and scalable real-time WebSocket communication directly to your Laravel application, and provides seamless integration with Laravel’s existing suite of event broadcasting tools, such as Laravel Echo.
+ O [Laravel Reverb](https://reverb.laravel.com) fornece uma comunicação WebSocket em tempo real extremamente rápida e escalável para o seu aplicativo Laravel, assim como integração perfeita com a suíte de ferramentas de transmissão de eventos do Laravel, como o Laravel Echo.
 
 ```shell
 php artisan reverb:start
 ```
 
-In addition, Reverb supports horizontal scaling via Redis's publish / subscribe capabilities, allowing you to distribute your WebSocket traffic across multiple backend Reverb servers all supporting a single, high-demand application.
+ Além disso, o Reverb suporta escalonamento horizontal através de capacidades de publicação/assinatura do Redis, permitindo que você distribua seu tráfego WebSocket por meio de vários servidores Reverb no backend, todos apoiando um único aplicativo com alta demanda.
 
-For more information on Laravel Reverb, please consult the complete [Reverb documentation](/docs/reverb).
+ Para mais informações sobre o Laravel Reverb, consulte a documentação completa [aqui](https://laravel.com/docs/5.8/reverb).
 
 <a name="rate-limiting"></a>
-### Per-Second Rate Limiting
+### Limitação por segundo de velocidade de transferência
 
-_Per-second rate limiting was contributed by [Tim MacDonald](https://github.com/timacdonald)_.
+ O limite por segundo foi contribuído por [Tim MacDonald](https://github.com/timacdonald).
 
-Laravel now supports "per-second" rate limiting for all rate limiters, including those for HTTP requests and queued jobs. Previously, Laravel's rate limiters were limited to "per-minute" granularity:
+ O Laravel agora suporta limitação por taxas em "segundos" para todos os limitadores de taxas, incluindo aqueles para solicitações HTTP e tarefas priorizadas. Anteriormente, os limitadores de taxas do Laravel tinham um grau de granularidade em "minutos":
 
 ```php
 RateLimiter::for('invoices', function (Request $request) {
@@ -194,14 +194,14 @@ RateLimiter::for('invoices', function (Request $request) {
 });
 ```
 
-For more information on rate limiting in Laravel, check out the [rate limiting documentation](/docs/routing#rate-limiting).
+ Para mais informações sobre o limite de taxas em Laravel, confira a documentação do recurso de [limitação de taxa] (/docs/routing#rate-limiting).
 
 <a name="health"></a>
-### Health Routing
+### Roteamento de saúde
 
-_Health routing was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+ O roteamento de saúde foi contribuído por [Taylor Otwell](https://github.com/taylorotwell).
 
-New Laravel 11 applications include a `health` routing directive, which instructs Laravel to define a simple health-check endpoint that may be invoked by third-party application health monitoring services or orchestration systems like Kubernetes. By default, this route is served at `/up`:
+ Novas aplicações Laravel 11 incluem uma diretiva de roteamento `health`, que instrui o Laravel a definir um simples ponto final de verificação de saúde que pode ser invocado por sistemas de monitorização de saúde de aplicações terceiras ou sistemas de orquestração, como o Kubernetes. Por predefinição, este caminho é servido em `/up`:
 
 ```php
 ->withRouting(
@@ -211,40 +211,40 @@ New Laravel 11 applications include a `health` routing directive, which instruct
 )
 ```
 
-When HTTP requests are made to this route, Laravel will also dispatch a `DiagnosingHealth` event, allowing you to perform additional health checks that are relevant to your application.
+ Quando solicitações HTTP são feitas para esta rota, o Laravel também envia um evento `DiagnosingHealth`, permitindo que você faça verificações de saúde adicionais, que sejam relevantes para seu aplicativo.
 
 <a name="encryption"></a>
-### Graceful Encryption Key Rotation
+### Gracinosa rotação de chave de encriptação
 
-_Graceful encryption key rotation was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+ A rotação elegante de chaves de encriptação foi contribuiu por [Taylor Otwell](https://github.com/taylorotwell).
 
-Since Laravel encrypts all cookies, including your application's session cookie, essentially every request to a Laravel application relies on encryption. However, because of this, rotating your application's encryption key would log all users out of your application. In addition, decrypting data that was encrypted by the previous encryption key becomes impossible.
+ Como o Laravel encripta todos os cookies, incluindo o cookie de sessão do seu aplicativo, essencialmente todas as requisições para uma aplicação Laravel dependem de encriptação. No entanto, como isso acontece, a alteração da chave de encriptação da sua aplicação fará com que todos os utilizadores saiam da sua aplicação. Além disso, o decodificar dados que foram encriptados pela chave de encriptação anterior torna-se impossível.
 
-Laravel 11 allows you to define your application's previous encryption keys as a comma-delimited list via the `APP_PREVIOUS_KEYS` environment variable.
+ O Laravel permite que você defina chaves de criptografia anteriores da aplicação como uma lista delimitada por vírgula por meio da variável do ambiente `APP_PREVIOUS_KEYS`.
 
-When encrypting values, Laravel will always use the "current" encryption key, which is within the `APP_KEY` environment variable. When decrypting values, Laravel will first try the current key. If decryption fails using the current key, Laravel will try all previous keys until one of the keys is able to decrypt the value.
+ Ao cifrar valores, o Laravel sempre usará a chave de cifragem "atual", que está dentro da variável ambiental `APP_KEY`. Ao decodificar valores, primeiro o Laravel tentará a chave atual. Se a decodificação falhar com a chave atual, o Laravel tentará todas as chaves anteriores até que uma consiga decodificar o valor.
 
-This approach to graceful decryption allows users to keep using your application uninterrupted even if your encryption key is rotated.
+ Essa abordagem à descriptografia permite que os usuários continuem utilizando o aplicativo sem interrupções, mesmo se a chave de criptografia for alterada.
 
-For more information on encryption in Laravel, check out the [encryption documentation](/docs/encryption).
+ Para obter mais informações sobre criptografia no Laravel, confira a documentação de [criptografia] (https://laravel.com/docs/5.7/encryption).
 
 <a name="automatic-password-rehashing"></a>
-### Automatic Password Rehashing
+### Recuperação automática de senhas
 
-_Automatic password rehashing was contributed by [Stephen Rees-Carter](https://github.com/valorin)_.
+ _ A funcionalidade de redefinição automática da senha foi proposta por [Stephen Rees-Carter](https://github.com/valorin).
 
-Laravel's default password hashing algorithm is bcrypt. The "work factor" for bcrypt hashes can be adjusted via the `config/hashing.php` configuration file or the `BCRYPT_ROUNDS` environment variable.
+ O algoritmo padrão de hashing da senha no Laravel é o bcrypt. O "factor de trabalho" dos hashes bcrypt pode ser ajustado no arquivo de configuração `config/hashing.php` ou na variável ambiental `BCRYPT_ROUNDS`.
 
-Typically, the bcrypt work factor should be increased over time as CPU / GPU processing power increases. If you increase the bcrypt work factor for your application, Laravel will now gracefully and automatically rehash user passwords as users authenticate with your application.
+ Normalmente, o fator de trabalho do bcrypt deve ser aumentado ao longo do tempo, à medida que o poder de processamento da CPU / GPU aumentar. Se você aumentar o fator de trabalho do bcrypt para sua aplicação, o Laravel agora irá reprocessar as senhas dos usuários com gentileza e automaticamente quando os usuários se autenticarem em sua aplicação.
 
 <a name="prompt-validation"></a>
-### Prompt Validation
+### Validação imediata
 
-_Prompt validator integration was contributed by [Andrea Marco Sartori](https://github.com/cerbero90)_.
+ O integrante de validação rápida foi contribuído por [Andrea Marco Sartori] (https://github.com/cerbero90).
 
-[Laravel Prompts](/docs/prompts) is a PHP package for adding beautiful and user-friendly forms to your command-line applications, with browser-like features including placeholder text and validation.
+ O Laravel Prompts (Avisos de Laravel) é um pacote para adição de formulários bonitos e fáceis de usar às suas aplicações da linha de comando, com funcionalidades semelhantes aos navegadores, tais como texto de localização e validação.
 
-Laravel Prompts supports input validation via closures:
+ O Laravel Prompts suporta a validação de entradas através de fechos:
 
 ```php
 $name = text(
@@ -257,7 +257,7 @@ $name = text(
 );
 ```
 
-However, this can become cumbersome when dealing with many inputs or complicated validation scenarios. Therefore, in Laravel 11, you may utilize the full power of Laravel's [validator](/docs/validation) when validating prompt inputs:
+ Contudo, isto pode tornar-se demorado quando se trata de muitos tipos de dados ou cenários complexos de validação. Por conseguinte, na versão 11 do Laravel, poderá utilizar a capacidade completa da [validadora] (/) para validar as informações inseridas:
 
 ```php
 $name = text('What is your name?', validate: [
@@ -266,11 +266,11 @@ $name = text('What is your name?', validate: [
 ```
 
 <a name="queue-interaction-testing"></a>
-### Queue Interaction Testing
+### Teste de interação em filas
 
-_Queue interaction testing was contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+ O teste de interação em fila foi contribuído por [Taylor Otwell](https://github.com/taylorotwell).
 
-Previously, attempting to test that a queued job was released, deleted, or manually failed was cumbersome and required the definition of custom queue fakes and stubs. However, in Laravel 11, you may easily test for these queue interactions using the `withFakeQueueInteractions` method:
+ Anteriormente, tentar verificar se uma tarefa agendada foi concluída, excluída ou falhou manualmente era incômodo e demandava a definição de fakes e stubs personalizados. No entanto, no Laravel 11, você pode testar facilmente essas interações da fila usando o método `withFakeQueueInteractions`:
 
 ```php
 use App\Jobs\ProcessPodcast;
@@ -282,14 +282,14 @@ $job->handle();
 $job->assertReleased(delay: 30);
 ```
 
-For more information on testing queued jobs, check out the [queue documentation](/docs/queues#testing).
+ Para mais informações sobre testes de tarefas agendadas, consulte a documentação da [fila](/docs/queues#testing).
 
 <a name="new-artisan-commands"></a>
-### New Artisan Commands
+### Novas ordens de artesão
 
-_Class creation Artisan commands were contributed by [Taylor Otwell](https://github.com/taylorotwell)_.
+ Os comandos de criação da classe Artisan foram fornecidos por [Taylor Otwell](https://github.com/taylorotwell).
 
-New Artisan commands have been added to allow the quick creation of classes, enums, interfaces, and traits:
+ Foram adicionados novos comandos de Arquiteto para criar rapidamente classes, enumerações, interfaces e características.
 
 ```shell
 php artisan make:class
@@ -299,11 +299,11 @@ php artisan make:trait
 ```
 
 <a name="model-cast-improvements"></a>
-### Model Casts Improvements
+### Melhoria introduzida na versão modelo
 
-_Model casts improvements were contributed by [Nuno Maduro](https://github.com/nunomaduro)_.
+ Melhorias no modelo foram contribuídas por [Nuno Maduro](https://github.com/nunomaduro).
 
-Laravel 11 supports defining your model's casts using a method instead of a property. This allows for streamlined, fluent cast definitions, especially when using casts with arguments:
+ O Laravel 11 suporta definição de cast dos seus modelos usando um método em vez da propriedade. Isso permite uma definição simplificada e fluente do cast, especialmente quando se usam casts com argumentos:
 
 ```php
     /**
@@ -322,14 +322,14 @@ Laravel 11 supports defining your model's casts using a method instead of a prop
     }
 ```
 
-For more information on attribute casting, review the [Eloquent documentation](/docs/eloquent-mutators#attribute-casting).
+ Para obter mais informações sobre o mapeamento de atributos, consulte a documentação do Eloquent em / docs/eloquent-mutators/#mapeamento-de-atributo.
 
 <a name="the-once-function"></a>
-### The `once` Function
+### A função `once`
 
-_The `once` helper was contributed by [Taylor Otwell](https://github.com/taylorotwell)_ and _[Nuno Maduro](https://github.com/nunomaduro)_.
+ O ajudante `once` foi contribuído por [Taylor Otwell](https://github.com/taylorotwell) e [Nuno Maduro](https://github.com/nunomaduro).
 
-The `once` helper function executes the given callback and caches the result in memory for the duration of the request. Any subsequent calls to the `once` function with the same callback will return the previously cached result:
+ A função auxiliar `once` executa o valor de retorno do callback e armazena em memória, para toda a duração da solicitação. Quaisquer chamadas subsequentes para a função `once` com o mesmo callback vai retornar o resultado previamente armazenado:
 
 ```php
     function random(): int
@@ -344,30 +344,30 @@ The `once` helper function executes the given callback and caches the result in 
     random(); // 123 (cached result)
 ```
 
-For more information on the `once` helper, check out the [helpers documentation](/docs/helpers#method-once).
+ Para mais informações sobre o operador de ajuda `once`, consulte a documentação de [ajudas](https://www.twproject.com/docs/concepts/help/).
 
 <a name="database-performance"></a>
-### Improved Performance When Testing With In-Memory Databases
+### Melhor desempenho ao testar com bancos de dados em memória
 
-_Improved in-memory database testing performance was contributed by [Anders Jenbo](https://github.com/AJenbo)_
+ _As melhorias do desempenho dos testes de banco de dados em memória foram contribuídas por [Anders Jenbo](https://github.com/AJenbo)
 
-Laravel 11 offers a significant speed boost when using the `:memory:` SQLite database during testing. To accomplish this, Laravel now maintains a reference to PHP's PDO object and reuses it across connections, often cutting total test run time in half.
+ O Laravel 11 oferece um significativo aumento de velocidade quando se utiliza o banco de dados SQLite `:memory:` durante os testes. Para isso, o Laravel agora mantém uma referência ao objeto PDO do PHP e a reutiliza nas conexões, reduzindo frequentemente pela metade o tempo total da execução dos testes.
 
 <a name="mariadb"></a>
-### Improved Support for MariaDB
+### Suporte melhorado para o MariaDB
 
-_Improved support for MariaDB was contributed by [Jonas Staudenmeir](https://github.com/staudenmeir) and [Julius Kiekbusch](https://github.com/Jubeki)_
+ O apoio melhorado ao MariaDB foi doado pelos seguintes contribuidores: [Jonas Staudenmeir](https://github.com/staudenmeir) e [Julius Kiekbusch](https://github.com/Jubeki).
 
-Laravel 11 includes improved support for MariaDB. In previous Laravel releases, you could use MariaDB via Laravel's MySQL driver. However, Laravel 11 now includes a dedicated MariaDB driver which provides better defaults for this database system.
+ O Laravel 11 inclui suporte melhorado para o MariaDB. Nos lançamentos anteriores do Laravel, era possível usar o MariaDB através do driver MySQL do Laravel. No entanto, o Laravel 11 agora inclui um driver dedicado ao MariaDB que fornece melhores predefinições para este sistema de banco de dados.
 
-For more information on Laravel's database drivers, check out the [database documentation](/docs/database).
+ Para obter mais informações sobre os controladores de banco de dados do Laravel, consulte a [documentação de banco de dados](/docs/database).
 
 <a name="inspecting-database"></a>
-### Inspecting Databases and Improved Schema Operations
+### Inspecionando bancos de dados e operações de esquema aprimoradas
 
-_Improved schema operations and database inspection was contributed by [Hafez Divandari](https://github.com/hafezdivandari)_
+ _As operações de esquema e a análise de banco de dados foram contribuídas por [Hafez Divandari] (https://github.com/hafezdivandari)
 
-Laravel 11 provides additional database schema operation and inspection methods, including the native modifying, renaming, and dropping of columns. Furthermore, advanced spatial types, non-default schema names, and native schema methods for manipulating tables, views, columns, indexes, and foreign keys are provided:
+ O Laravel 11 providencia operações e métodos de inspeção adicionais do esquema de base de dados, incluindo a renomeação, alteração e remoção nativa de colunas. Além disso, são fornecidos tipos espaciais avançados, nomes de esquemas não padrão e métodos de esquema nativos para manipular tabelas, vistas, colunas, índices e chaves estrangeiras:
 
 ```php
     use Illuminate\Support\Facades\Schema;

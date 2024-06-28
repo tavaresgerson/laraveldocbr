@@ -1,28 +1,28 @@
 # Laravel Reverb
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-[Laravel Reverb](https://github.com/laravel/reverb) brings blazing-fast and scalable real-time WebSocket communication directly to your Laravel application, and provides seamless integration with Laravel’s existing suite of [event broadcasting tools](/docs/broadcasting).
+ O Reverb de Laravel traz uma comunicação WebSocket em tempo real extremamente rápida e escalonável diretamente para seu aplicativo do Laravel, além disso, fornece integração perfeita com a série existente de ferramentas de transmissão de eventos do Laravel.
 
 <a name="installation"></a>
-## Installation
+## Instalação
 
-You may install Reverb using the `install:broadcasting` Artisan command:
+ Você pode instalar o Reverb usando o comando Artesiano `install:broadcasting`:
 
 ```
 php artisan install:broadcasting
 ```
 
 <a name="configuration"></a>
-## Configuration
+## Configuração
 
-Behind the scenes, the `install:broadcasting` Artisan command will run the `reverb:install` command, which will install Reverb with a sensible set of default configuration options. If you would like to make any configuration changes, you may do so by updating Reverb's environment variables or by updating the `config/reverb.php` configuration file.
+ Por trás dos bastidores, o comando Artisan `install:broadcasting` será executado pelo comando `reverb:install`, que instalará o Reverb com um conjunto razoável de opções de configuração por padrão. Se desejar fazer alterações na sua configuração, pode fazê-lo através da atualização das variáveis do ambiente ou através da alteração do ficheiro de configuração `config/reverb.php`.
 
 <a name="application-credentials"></a>
-### Application Credentials
+### Credenciais de aplicação
 
-In order to establish a connection to Reverb, a set of Reverb "application" credentials must be exchanged between the client and server. These credentials are configured on the server and are used to verify the request from the client. You may define these credentials using the following environment variables:
+ Para estabelecer uma conexão com o Reverb, um conjunto de credenciais da "aplicação" do Reverb deve ser trocado entre o cliente e o servidor. Essas credenciais são configuradas no servidor e usadas para verificar o pedido enviado pelo cliente. Você pode definir essas credenciais usando as variáveis de ambiente a seguir:
 
 ```ini
 REVERB_APP_ID=my-app-id
@@ -31,9 +31,9 @@ REVERB_APP_SECRET=my-app-secret
 ```
 
 <a name="allowed-origins"></a>
-### Allowed Origins
+### Fontes permitidas
 
-You may also define the origins from which client requests may originate by updating the value of the `allowed_origins` configuration value within the `apps` section of the `config/reverb.php` configuration file. Any requests from an origin not listed in your allowed origins will be rejected. You may allow all origins using `*`:
+ Você também pode definir a origem dos pedidos do cliente atualizando o valor do parâmetro de configuração `allowed_origins` na seção `apps` do arquivo de configuração `config/reverb.php`. Todos os pedidos provenientes de uma origem não listada nas origens permitidas serão rejeitados. Você pode permitir todas as origens usando o asterisco (`*`):
 
 ```php
 'apps' => [
@@ -46,11 +46,11 @@ You may also define the origins from which client requests may originate by upda
 ```
 
 <a name="additional-applications"></a>
-### Additional Applications
+### Aplicações Adicionais
 
-Typically, Reverb provides a WebSocket server for the application in which it is installed. However, it is possible to serve more than one application using a single Reverb installation.
+ Normalmente, o Reverb fornece um servidor WebSocket para a aplicação instalada. No entanto, é possível servir mais de uma aplicação utilizando uma única instalação do Reverb.
 
-For example, you may wish to maintain a single Laravel application which, via Reverb, provides WebSocket connectivity for multiple applications. This can be achieved by defining multiple `apps` in your application's `config/reverb.php` configuration file:
+ Por exemplo, pode pretender manter um único aplicativo Laravel que, através do Reverb, proporcione conectividade WebSocket para vários aplicações. Isto pode ser conseguido ao definir várias `apps` no ficheiro de configuração `config/reverb.php' da sua aplicação:
 
 ```php
 'apps' => [
@@ -68,17 +68,17 @@ For example, you may wish to maintain a single Laravel application which, via Re
 <a name="ssl"></a>
 ### SSL
 
-In most cases, secure WebSocket connections are handled by the upstream web server (Nginx, etc.) before the request is proxied to your Reverb server.
+ Na maioria dos casos, as conexões de WebSocket seguras são tratadas pelo servidor web principal (Nginx, entre outros) antes que o pedido seja encaminhado ao seu servidor Reverb.
 
-However, it can sometimes be useful, such as during local development, for the Reverb server to handle secure connections directly. If you are using [Laravel Herd's](https://herd.laravel.com) secure site feature or you are using [Laravel Valet](/docs/valet) and have run the [secure command](/docs/valet#securing-sites) against your application, you may use the Herd / Valet certificate generated for your site to secure your Reverb connections. To do so, set the `REVERB_HOST` environment variable to your site's hostname or explicitly pass the hostname option when starting the Reverb server:
+ No entanto, às vezes pode ser útil, como no desenvolvimento local, que o servidor Reverb possa lidar diretamente com conexões seguras. Se você estiver usando a função de site seguro do [Laravel Herd's](https://herd.laravel.com) ou se você estiver usando o [Laravel Valet](/docs/valet) e tiver executado o comando [seguro] (https://herd.laravel.com/) contra seu aplicativo, você pode usar o certificado Herd / Valet gerado para seu site para proteger suas conexões Reverb. Para fazer isso, defina a variável de ambiente `REVERB_HOST` como o nome do host do seu site ou passe explicitamente a opção de nome do host ao iniciar o servidor Reverb:
 
 ```sh
 php artisan reverb:start --host="0.0.0.0" --port=8080 --hostname="laravel.test"
 ```
 
-Since Herd and Valet domains resolve to `localhost`, running the command above will result in your Reverb server being accessible via the secure WebSocket protocol (`wss`) at `wss://laravel.test:8080`.
+ Como os domínios herd e valet são resolvidos por "localhost", executar o comando acima resultará no seu servidor Reverb sendo acessível via protocolo WebSocket seguro (`wss`) em `wss://laravel.test:8080`.
 
-You may also manually choose a certificate by defining `tls` options in your application's `config/reverb.php` configuration file. Within the array of `tls` options, you may provide any of the options supported by [PHP's SSL context options](https://www.php.net/manual/en/context.ssl.php):
+ Você também pode escolher manualmente um certificado definindo opções de `tls` no arquivo de configuração do seu aplicativo `config/reverb.php`. No interior da matriz de opções `tls`, você poderá fornecer qualquer uma das opções suportadas pelas [opções de contexto de SSL do PHP](https://www.php.net/manual/en/context.ssl.php):
 
 ```php
 'options' => [
@@ -89,25 +89,25 @@ You may also manually choose a certificate by defining `tls` options in your app
 ```
 
 <a name="running-server"></a>
-## Running the Server
+## Executar o servidor
 
-The Reverb server can be started using the `reverb:start` Artisan command:
+ O servidor Reverb pode ser iniciado utilizando o comando `reverb:start`:
 
 ```sh
 php artisan reverb:start
 ```
 
-By default, the Reverb server will be started at `0.0.0.0:8080`, making it accessible from all network interfaces.
+ Por padrão, o servidor de rede estará configurado para começar em `0.0.0.0:8080`, tornando-o acessível através de todas as interfaces de rede.
 
-If you need to specify a custom host or port, you may do so via the `--host` and `--port` options when starting the server:
+ Se for necessário especificar um servidor ou porta personalizados, será possível fazê-lo através das opções `--host` e `--porta`, ao iniciar o servidor:
 
 ```sh
 php artisan reverb:start --host=127.0.0.1 --port=9000
 ```
 
-Alternatively, you may define `REVERB_SERVER_HOST` and `REVERB_SERVER_PORT` environment variables in your application's `.env` configuration file.
+ Alternativamente, você pode definir as variáveis de ambiente `REVERB_SERVER_HOST` e `REVERB_SERVER_PORT` no arquivo de configuração do seu aplicativo `.env`.
 
-The `REVERB_SERVER_HOST` and `REVERB_SERVER_PORT` environment variables should not be confused with `REVERB_HOST` and `REVERB_PORT`. The former specify the host and port on which to run the Reverb server itself, while the latter pair instruct Laravel where to send broadcast messages. For example, in a production environment, you may route requests from your public Reverb hostname on port `443` to a Reverb server operating on `0.0.0.0:8080`. In this scenario, your environment variables would be defined as follows:
+ As variáveis de ambiente `REVERB_SERVER_HOST` e `REVERB_SERVER_PORT` não devem ser confundidas com `REVERB_HOST` e `REVERB_PORT`. A primeira especifica o host e a porta onde o próprio servidor Reverb funcionará, ao passo que as últimas instruem Laravel para informar onde enviam mensagens de transmissão. Por exemplo, em um ambiente de produção, você poderá encaminhar pedidos do nome de usuário público do Reverb na porta `443` para um servidor Reverb que funcione em `0.0.0.0:8080`. Nesse cenário, suas variáveis de ambiente seriam definidas da seguinte maneira:
 
 ```ini
 REVERB_SERVER_HOST=0.0.0.0
@@ -118,31 +118,31 @@ REVERB_PORT=443
 ```
 
 <a name="debugging"></a>
-### Debugging
+### Depuração
 
-To improve performance, Reverb does not output any debug information by default. If you would like to see the stream of data passing through your Reverb server, you may provide the `--debug` option to the `reverb:start` command:
+ Para melhorar o desempenho, o Reverb não apresenta informações de depuração por padrão. Se pretender ver a sequência de dados que passam pelo seu servidor do Reverb, poderá fornecer a opção `--debug` ao comando `reverb:start`:
 
 ```sh
 php artisan reverb:start --debug
 ```
 
 <a name="restarting"></a>
-### Restarting
+### Reiniciando
 
-Since Reverb is a long-running process, changes to your code will not be reflected without restarting the server via the `reverb:restart` Artisan command.
+ Uma vez que o processo do Reverb é de longa duração, as alterações no código não serão refletidas sem reiniciar o servidor através do comando de Artiesten `reverb:restart`.
 
-The `reverb:restart` command ensures all connections are gracefully terminated before stopping the server. If you are running Reverb with a process manager such as Supervisor, the server will be automatically restarted by the process manager after all connections have been terminated:
+ O comando `reverb:restart` garante que todas as conexões sejam terminadas com cortesia antes de parar o servidor. Se você estiver executando Reverb com um gerenciador de processos, como Supervisor, o servidor será automaticamente reiniciado pelo gerenciador de processos depois que todas as conexões forem terminadas:
 
 ```sh
 php artisan reverb:restart
 ```
 
 <a name="monitoring"></a>
-## Monitoring
+## Controlo
 
-Reverb may be monitored via an integration with [Laravel Pulse](/docs/pulse). By enabling Reverb's Pulse integration, you may track the number of connections and messages being handled by your server.
+ O reverb pode ser monitorado através de uma integração com o [Laravel Pulse](/docs/pulse). Ao permitir a integração do Reverb ao Pulse, você poderá controlar as conexões e mensagens que estão sendo processadas pelo seu servidor.
 
-To enable the integration, you should first ensure you have [installed Pulse](/docs/pulse#installation). Then, add any of Reverb's recorders to your application's `config/pulse.php` configuration file:
+ Para habilitar a integração, você deve primeiro garantir que você tenha [instalado o Pulse](/docs/pulse#installation). Em seguida, adicione qualquer gravador do Reverb ao arquivo de configuração `config/pulse.php` de seu aplicativo:
 
 ```php
 use Laravel\Reverb\Pulse\Recorders\ReverbConnections;
@@ -161,7 +161,7 @@ use Laravel\Reverb\Pulse\Recorders\ReverbMessages;
 ],
 ```
 
-Next, add the Pulse cards for each recorder to your [Pulse dashboard](/docs/pulse#dashboard-customization):
+ Em seguida, adicione os cartões Pulse para cada gravador ao seu painel de controle [Pulse](/docs/pulse#dashboard-customization):
 
 ```blade
 <x-pulse>
@@ -172,28 +172,28 @@ Next, add the Pulse cards for each recorder to your [Pulse dashboard](/docs/puls
 ```
 
 <a name="production"></a>
-## Running Reverb in Production
+## Executando o Reverb em produção
 
-Due to the long-running nature of WebSocket servers, you may need to make some optimizations to your server and hosting environment to ensure your Reverb server can effectively handle the optimal number of connections for the resources available on your server.
+ Devido à duração dos servidores da WebSocket, pode ser necessário otimizar seu servidor e ambiente de hospedagem para garantir que o servidor Reverb possa lidar com um número otimizado de conexões em relação aos recursos disponíveis no servidor.
 
-> [!NOTE]  
-> If your site is managed by [Laravel Forge](https://forge.laravel.com), you may automatically optimize your server for Reverb directly from the "Application" panel. By enabling the Reverb integration, Forge will ensure your server is production-ready, including installing any required extensions and increasing the allowed number of connections.
+ > [!ATENÇÃO]
+ [Laravel Forge](https://forge.laravel.com), você pode otimizar automaticamente seu servidor para Reverb diretamente do painel "Aplicativo". Ativando a integração com o Reverb, o Forge garantirá que seu servidor esteja pronto para produção, incluindo a instalação de extensões necessárias e aumento do número permitido de conexões.
 
 <a name="open-files"></a>
-### Open Files
+### Abrir Arquivos
 
-Each WebSocket connection is held in memory until either the client or server disconnects. In Unix and Unix-like environments, each connection is represented by a file. However, there are often limits on the number of allowed open files at both the operating system and application level.
+ Cada conexão WebSocket é armazenada em memória até o cliente ou o servidor se desconectar. Em ambientes Unix e Unix-like, cada conexão é representada por um arquivo. No entanto, existem limites no número de arquivos abertos permitidos tanto no nível do sistema operacional quanto do aplicativo.
 
 <a name="operating-system"></a>
-#### Operating System
+#### Sistema operativo
 
-On a Unix based operating system, you may determine the allowed number of open files using the `ulimit` command:
+ No sistema operativo Unix baseado, você pode determinar o número de arquivos abertos permitidos usando o comando `ulimit`:
 
 ```sh
 ulimit -n
 ```
 
-This command will display the open file limits allowed for different users. You may update these values by editing the `/etc/security/limits.conf` file. For example, updating the maximum number of open files to 10,000 for the `forge` user would look like the following:
+ O comando exibirá os limites de arquivos em aberto permitidos para diferentes usuários. Você poderá atualizar esses valores editando o arquivo `/etc/security/limits.conf`. Por exemplo, a atualização do número máximo de arquivos em aberto para 10.000 para o usuário `forge` seria feita da seguinte forma:
 
 ```ini
 # /etc/security/limits.conf
@@ -202,20 +202,20 @@ forge        hard  nofile  10000
 ```
 
 <a name="event-loop"></a>
-### Event Loop
+### Efeito do evento
 
-Under the hood, Reverb uses a ReactPHP event loop to manage WebSocket connections on the server. By default, this event loop is powered by `stream_select`, which doesn't require any additional extensions. However, `stream_select` is typically limited to 1,024 open files. As such, if you plan to handle more than 1,000 concurrent connections, you will need to use an alternative event loop not bound to the same restrictions.
+ No interior do motor, o Reverb utiliza um laço de eventos ReactPHP para gerir ligações WebSocket no servidor. Este laço por defeito é alimentado por `stream_select`, que não requer nenhuma extensão adicional. Contudo, `stream_select` é limitada tipicamente a 1024 ficheiros em aberto. Como tal, se pretende gerir mais de 1000 ligações concurrentes, necessitará utilizar um laço de eventos alternativo não vinculado às mesmas restrições.
 
-Reverb will automatically switch to an `ext-uv` powered loop when available. This PHP extension is available for install via PECL:
+ O reverb será automaticamente alterado para um loop alimentado por `ext-uv`, sempre que disponível. Esta extensão do PHP está disponível para instalação através da PECL:
 
 ```sh
 pecl install uv
 ```
 
 <a name="web-server"></a>
-### Web Server
+### Servidor da web
 
-In most cases, Reverb runs on a non web-facing port on your server. So, in order to route traffic to Reverb, you should configure a reverse proxy. Assuming Reverb is running on host `0.0.0.0` and port `8080` and your server utilizes the Nginx web server, a reverse proxy can be defined for your Reverb server using the following Nginx site configuration:
+ Na maioria dos casos, o Reverb é executado em um servidor sem porta direcionada à Internet. Então, para encaminhar o tráfego para o Reverb, você deverá configurar um proxy reverso. Supondo que o Reverb esteja sendo executado na hospedagem "0.0.0.0" e a porta "8080", e seu servidor utilize o Nginx como servidor web, o seguinte site do Nginx pode ser definido para o seu servidor Reverb:
 
 ```nginx
 server {
@@ -238,7 +238,7 @@ server {
 }
 ```
 
-Typically, web servers are configured to limit the number of allowed connections in order to prevent overloading the server. To increase the number of allowed connections on an Nginx web server to 10,000, the `worker_rlimit_nofile` and `worker_connections` values of the `nginx.conf` file should be updated:
+ Normalmente, os servidores da Web são configurados para limitar o número de conexões permitidas a fim de impedir a sobrecarga do servidor. Para aumentar o número de conexões permitidas em um servidor Nginx para 10.000, é necessário atualizar os valores `worker_rlimit_nofile` e `worker_connections` do arquivo `nginx.conf`:
 
 ```nginx
 user forge;
@@ -253,24 +253,24 @@ events {
 }
 ```
 
-The configuration above will allow up to 10,000 Nginx workers per process to be spawned. In addition, this configuration sets Nginx's open file limit to 10,000.
+ A configuração acima permitirá o nascimento de até 10 000 trabalhadores do Nginx por processo. Além disso, essa configuração define o limite de arquivos abertos para o Nginx em 10 000.
 
 <a name="ports"></a>
-### Ports
+### Portos
 
-Unix-based operating systems typically limit the number of ports which can be opened on the server. You may see the current allowed range via the following command:
+ Os sistemas operativos baseados no Unix limitam, por norma, o número de portas que podem ser abertas no servidor. Pode ver o intervalo atualmente permitido com o seguinte comando:
 
- ```sh
+```sh
  cat /proc/sys/net/ipv4/ip_local_port_range
 # 32768	60999
 ```
 
-The output above shows the server can handle a maximum of 28,231 (60,999 - 32,768) connections since each connection requires a free port. Although we recommend [horizontal scaling](#scaling) to increase the number of allowed connections, you may increase the number of available open ports by updating the allowed port range in your server's `/etc/sysctl.conf` configuration file.
+ A saída acima mostra que o servidor pode lidar com um máximo de 28.231 (60.999 - 32.768) conexões, pois cada conexão requer uma porta livre. Embora recomendamos a escalonamento horizontal (#escalonamento) para aumentar o número de conexões permitidas, você pode aumentar o número de portas livres disponíveis atualizando a faixa de portas permitida no arquivo de configuração do seu servidor `/etc/sysctl.conf`.
 
 <a name="process-management"></a>
-### Process Management
+### Gestão de processos
 
-In most cases, you should use a process manager such as Supervisor to ensure the Reverb server is continually running. If you are using Supervisor to run Reverb, you should update the `minfds` setting of your server's `supervisor.conf` file to ensure Supervisor is able to open the files required to handle connections to your Reverb server:
+ Na maioria dos casos, você deve usar um gerenciador de processos como o Supervisor para garantir que o servidor do Reverb esteja sempre funcionando. Se estiver usando o Supervisor para executar o Reverb, será necessário atualizar a configuração `minfds` do arquivo `supervisor.conf` do seu servidor para garantir que o Supervisor seja capaz de abrir os arquivos necessários para lidar com as conexões ao seu servidor Reverb:
 
 ```ini
 [supervisord]
@@ -279,16 +279,16 @@ minfds=10000
 ```
 
 <a name="scaling"></a>
-### Scaling
+### Dimensionamento
 
-If you need to handle more connections than a single server will allow, you may scale your Reverb server horizontally. Utilizing the publish / subscribe capabilities of Redis, Reverb is able to manage connections across multiple servers. When a message is received by one of your application's Reverb servers, the server will use Redis to publish the incoming message to all other servers.
+ Se você precisar gerenciar mais conexões do que permitido por um único servidor, poderá dimensionar seu servidor Reverb horizontalmente. Utilizando as capacidades de publicação/assinatura do Redis, o Reverb é capaz de gerenciar conexões em múltiplos servidores. Quando uma mensagem for recebida por um dos servidores do aplicativo Reverb, o servidor utilizará o Redis para publicar a mensagem entrando em todos os outros servidores.
 
-To enable horizontal scaling, you should set the `REVERB_SCALING_ENABLED` environment variable to `true` in your application's `.env` configuration file:
+ Para habilitar escalonamento horizontal, você deve definir a variável de ambiente `REVERB_SCALING_ENABLED` para `true` no arquivo de configuração do seu aplicativo `.env`:
 
 ```env
 REVERB_SCALING_ENABLED=true
 ```
 
-Next, you should have a dedicated, central Redis server to which all of the Reverb servers will communicate. Reverb will use the [default Redis connection configured for your application](/docs/redis#configuration) to publish messages to all of your Reverb servers.
+ Depois, você deve ter um servidor de Redis dedicado e central, no qual todos os servidores do Reverb vão se comunicar. O Reverb usarão a conexão [Redis padrão configurada para sua aplicação](/docs/redis#configuration) para publicar mensagens em todos os seus servidores de Reverb.
 
-Once you have enabled Reverb's scaling option and configured a Redis server, you may simply invoke the `reverb:start` command on multiple servers that are able to communicate with your Redis server. These Reverb servers should be placed behind a load balancer that distributes incoming requests evenly among the servers.
+ Depois de ativar a opção de escalonamento do Reverb e configurar um servidor Redis, pode simplesmente invocar o comando `reverb:start` em vários servidores capazes de se comunicarem com seu servidor Redis. Esses servidores Reverb devem ser colocados atrás de um balanceador de carga que distribui os pedidos recebidos uniformemente entre os servidores.

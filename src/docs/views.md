@@ -1,11 +1,11 @@
-# Views
+# Visões
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-Of course, it's not practical to return entire HTML documents strings directly from your routes and controllers. Thankfully, views provide a convenient way to place all of our HTML in separate files.
+ Naturalmente, não é prático devolver as estratégias de documentos HTML completos diretamente dos seus itinerários e controladores. Felizmente, os vistas fornecem uma forma conveniente para incluir todo o nosso código HTML em arquivos separados.
 
-Views separate your controller / application logic from your presentation logic and are stored in the `resources/views` directory. When using Laravel, view templates are usually written using the [Blade templating language](/docs/blade). A simple view might look something like this:
+ As vistas separam a lógica do controlador/aplicativo da apresentação e são armazenadas no diretório `resources/views`. Usando o Laravel, os modelos de exibição geralmente são escritos usando o [idioma Blade](https://laravel.com/docs/5.7/blade). Um modelo de exibição simples pode ser semelhante ao seguinte:
 
 ```blade
 <!-- View stored in resources/views/greeting.blade.php -->
@@ -17,7 +17,7 @@ Views separate your controller / application logic from your presentation logic 
 </html>
 ```
 
-Since this view is stored at `resources/views/greeting.blade.php`, we may return it using the global `view` helper like so:
+ Como esse modelo é armazenado em `resources/views/greeting.blade.php`, podemos retorná-lo usando o assistente global `view`, da seguinte forma:
 
 ```php
     Route::get('/', function () {
@@ -25,28 +25,28 @@ Since this view is stored at `resources/views/greeting.blade.php`, we may return
     });
 ```
 
-> [!NOTE]  
-> Looking for more information on how to write Blade templates? Check out the full [Blade documentation](/docs/blade) to get started.
+ > [!AVISO]
+ Para começar, consulte o documento [Documentação do Blade](/docs/blade).
 
 <a name="writing-views-in-react-or-vue"></a>
-### Writing Views in React / Vue
+### Visualizações de escrita no React/Vue
 
-Instead of writing their frontend templates in PHP via Blade, many developers have begun to prefer to write their templates using React or Vue. Laravel makes this painless thanks to [Inertia](https://inertiajs.com/), a library that makes it a cinch to tie your React / Vue frontend to your Laravel backend without the typical complexities of building an SPA.
+ Em vez de escrever os templates da interface do usuário em PHP por meio do Blade, muitos desenvolvedores começaram a preferir escrevê-los utilizando o React ou o Vue. O Laravel torna isso indolor graças à [Inertia](https://inertiajs.com/), uma biblioteca que facilita associar sua interface do usuário frontend ao backend do Laravel, sem as complexidades típicas da construção de um aplicativo único da Web.
 
-Our Breeze and Jetstream [starter kits](/docs/starter-kits) give you a great starting point for your next Laravel application powered by Inertia. In addition, the [Laravel Bootcamp](https://bootcamp.laravel.com) provides a full demonstration of building a Laravel application powered by Inertia, including examples in Vue and React.
+ Nossos Breeze e Jetstream [kits inicias](/docs/starter-kits) lhe darão um excelente ponto de partida para o seu próximo aplicativo Laravel alimentado por Inertia. Além disso, o [Laravel Bootcamp](https://bootcamp.laravel.com) fornece uma demonstração completa de como criar um aplicativo Laravel alimentado por Inertia, incluindo exemplos em Vue e React.
 
 <a name="creating-and-rendering-views"></a>
-## Creating and Rendering Views
+## Criando e renderizando visualizações
 
-You may create a view by placing a file with the `.blade.php` extension in your application's `resources/views` directory or by using the `make:view` Artisan command:
+ Você pode criar uma visualização colocando um arquivo com a extensão `.blade.php` no diretório `resources/views` da sua aplicação ou usando o comando do Artisan `make:view`:
 
 ```shell
 php artisan make:view greeting
 ```
 
-The `.blade.php` extension informs the framework that the file contains a [Blade template](/docs/blade). Blade templates contain HTML as well as Blade directives that allow you to easily echo values, create "if" statements, iterate over data, and more.
+ A extensão `.blade.php` informa o framework de que o arquivo contém um modelo [Blade](/docs/blade). Os modelos Blade incluem HTML e diretivas Blade que permitem a você mostrar facilmente valores, criar instruções "se", iteração sobre dados e muito mais.
 
-Once you have created a view, you may return it from one of your application's routes or controllers using the global `view` helper:
+ Depois de criar uma visualização, você poderá retorná-la por meio de um dos caminhos ou controladores do seu aplicativo usando o auxílio global "view":
 
 ```php
     Route::get('/', function () {
@@ -54,7 +54,7 @@ Once you have created a view, you may return it from one of your application's r
     });
 ```
 
-Views may also be returned using the `View` facade:
+ A página também pode ser devolvida usando a fachada `View`:
 
 ```php
     use Illuminate\Support\Facades\View;
@@ -62,24 +62,24 @@ Views may also be returned using the `View` facade:
     return View::make('greeting', ['name' => 'James']);
 ```
 
-As you can see, the first argument passed to the `view` helper corresponds to the name of the view file in the `resources/views` directory. The second argument is an array of data that should be made available to the view. In this case, we are passing the `name` variable, which is displayed in the view using [Blade syntax](/docs/blade).
+ Como você pode ver, o primeiro argumento passado para a assistente de visualização corresponde ao nome do arquivo da visualização no diretório `resources/views`. O segundo argumento é uma matriz de dados que devem estar disponíveis para a visualização. Neste caso, estamos passando a variável `name`, que será exibida na visualização usando [a sintaxe Blade](/docs/blade).
 
 <a name="nested-view-directories"></a>
-### Nested View Directories
+### Diretórios de visualização em nível superior
 
-Views may also be nested within subdirectories of the `resources/views` directory. "Dot" notation may be used to reference nested views. For example, if your view is stored at `resources/views/admin/profile.blade.php`, you may return it from one of your application's routes / controllers like so:
+ As vistas podem ser aninhadas dentro de subdiretórios do diretório `resources/views`. É possível fazer referências a vistas aninhadas por meio da notação "ponto". Por exemplo, se sua vista estiver armazenada em `resources/views/admin/profile.blade.php`, você pode retorná-la de um dos roteadores ou controladores da aplicação como mostra a seguir:
 
 ```php
     return view('admin.profile', $data);
 ```
 
-> [!WARNING]  
-> View directory names should not contain the `.` character.
+ > [!AVISO]
+ > Os nomes de diretório não devem conter o caractere ``.
 
 <a name="creating-the-first-available-view"></a>
-### Creating the First Available View
+### Criar a primeira vista disponível
 
-Using the `View` facade's `first` method, you may create the first view that exists in a given array of views. This may be useful if your application or package allows views to be customized or overwritten:
+ Usando o método `first` da fachada `View`, você pode criar a primeira visualização que existe em um determinado array de visualizações. Isso pode ser útil caso sua aplicação ou pacote permita que as visualizações sejam personalizadas ou sobrepostas:
 
 ```php
     use Illuminate\Support\Facades\View;
@@ -88,9 +88,9 @@ Using the `View` facade's `first` method, you may create the first view that exi
 ```
 
 <a name="determining-if-a-view-exists"></a>
-### Determining if a View Exists
+### Determinar se existe uma visualização
 
-If you need to determine if a view exists, you may use the `View` facade. The `exists` method will return `true` if the view exists:
+ Se você precisar determinar se uma view existe, pode utilizar o facade `View`. O método `exists` retornará `true` caso a view exista:
 
 ```php
     use Illuminate\Support\Facades\View;
@@ -101,9 +101,9 @@ If you need to determine if a view exists, you may use the `View` facade. The `e
 ```
 
 <a name="passing-data-to-views"></a>
-## Passing Data to Views
+## Transmissão de dados a visualizações
 
-As you saw in the previous examples, you may pass an array of data to views to make that data available to the view:
+ Como você viu nos exemplos anteriores, é possível passar um array de dados para a visualização para torná-las disponíveis para ela:
 
 ```php
     return view('greetings', ['name' => 'Victoria']);
@@ -111,7 +111,7 @@ As you saw in the previous examples, you may pass an array of data to views to m
 
 When passing information in this manner, the data should be an array with key / value pairs. After providing data to a view, you can then access each value within your view using the data's keys, such as `<?php echo $name; ?>`.
 
-As an alternative to passing a complete array of data to the `view` helper function, you may use the `with` method to add individual pieces of data to the view. The `with` method returns an instance of the view object so that you can continue chaining methods before returning the view:
+ Como alternativa à passagem de uma matriz completa de dados para a função auxiliar `view`, é possível usar o método `with` para adicionar dados individuais ao modelo. O método `with` retorna uma instância do objeto de modelo, permitindo continuar acionando os métodos antes da sua entrega:
 
 ```php
     return view('greeting')
@@ -120,9 +120,9 @@ As an alternative to passing a complete array of data to the `view` helper funct
 ```
 
 <a name="sharing-data-with-all-views"></a>
-### Sharing Data With All Views
+### Compartilhando dados com todas as visualizações
 
-Occasionally, you may need to share data with all views that are rendered by your application. You may do so using the `View` facade's `share` method. Typically, you should place calls to the `share` method within a service provider's `boot` method. You are free to add them to the `App\Providers\AppServiceProvider` class or generate a separate service provider to house them:
+ Ocasionalmente, você pode precisar compartilhar dados com todas as visualizações renderizadas por seu aplicativo. Você pode fazer isso usando o método `share` da faca de vista. Normalmente, você deve colocar chamadas para o método `share` dentro do método `boot` do provedor de serviços. É livre adicioná-los à classe `App\Providers\AppServiceProvider` ou gerar um provedor de serviço separado para hospedá-los:
 
 ```php
     <?php
@@ -152,13 +152,13 @@ Occasionally, you may need to share data with all views that are rendered by you
 ```
 
 <a name="view-composers"></a>
-## View Composers
+## Visualize compositores
 
-View composers are callbacks or class methods that are called when a view is rendered. If you have data that you want to be bound to a view each time that view is rendered, a view composer can help you organize that logic into a single location. View composers may prove particularly useful if the same view is returned by multiple routes or controllers within your application and always needs a particular piece of data.
+ A operação Composer de visual é uma função retornada ou um método de classe que é chamado quando um visual é renderizado. Se você tiver dados que deseja ser vinculados a um visual sempre que esse visual for renderizado, os composers de visual podem ajudá-lo a organizar essa lógica em uma única localização. Os composers de visuais provavelmente serão úteis se o mesmo visual tiver sido enviado por vários rotas ou controladores em sua aplicação e sempre precisar de um dado específico.
 
-Typically, view composers will be registered within one of your application's [service providers](/docs/providers). In this example, we'll assume that the `App\Providers\AppServiceProvider` will house this logic.
+ Normalmente, os composers de views são registrados em um dos [fornecedores de serviço da aplicação] (/) do seu aplicativo. Neste exemplo, assumimos que o `App\Providers\AppServiceProvider` contém essa lógica.
 
-We'll use the `View` facade's `composer` method to register the view composer. Laravel does not include a default directory for class based view composers, so you are free to organize them however you wish. For example, you could create an `app/View/Composers` directory to house all of your application's view composers:
+ Usaremos o método `composer` da facade `View` para registrar o composer de views. O Laravel não inclui um diretório padrão para compostores de views baseados em classes, então você pode organizá-los do jeito que preferir. Por exemplo, você poderia criar um diretório `app/View/Composers` para abrigar todos os compostores de views do seu aplicativo:
 
 ```php
     <?php
@@ -200,7 +200,7 @@ We'll use the `View` facade's `composer` method to register the view composer. L
     }
 ```
 
-Now that we have registered the composer, the `compose` method of the `App\View\Composers\ProfileComposer` class will be executed each time the `profile` view is being rendered. Let's take a look at an example of the composer class:
+ Agora que o compositor foi registrado, o método `compose` da classe `App\View\Composers\ProfileComposer` será executado sempre que a view `profile` for renderizada. Vamos ver um exemplo da classe de composer:
 
 ```php
     <?php
@@ -229,12 +229,12 @@ Now that we have registered the composer, the `compose` method of the `App\View\
     }
 ```
 
-As you can see, all view composers are resolved via the [service container](/docs/container), so you may type-hint any dependencies you need within a composer's constructor.
+ Como pode verificar, todos os composers de visualização são resolvidos através do [conjunto de serviços](/docs/container). Desta forma, poderá indicar, pelo tipo, quaisquer dependências que necessite no construtor de um composer.
 
 <a name="attaching-a-composer-to-multiple-views"></a>
-#### Attaching a Composer to Multiple Views
+#### Anexar um compositor a várias visualizações
 
-You may attach a view composer to multiple views at once by passing an array of views as the first argument to the `composer` method:
+ Você pode anexar um compositor de visualização a várias visualizações ao mesmo tempo, passando uma matriz de visualizações como o primeiro argumento do método `composer`:
 
 ```php
     use App\Views\Composers\MultiComposer;
@@ -246,7 +246,7 @@ You may attach a view composer to multiple views at once by passing an array of 
     );
 ```
 
-The `composer` method also accepts the `*` character as a wildcard, allowing you to attach a composer to all views:
+ O método `composer` também aceita o caractere `*` como um sinal de interrogação, permitindo anexar um compositor a todas as visualizações:
 
 ```php
     use Illuminate\Support\Facades;
@@ -258,9 +258,9 @@ The `composer` method also accepts the `*` character as a wildcard, allowing you
 ```
 
 <a name="view-creators"></a>
-### View Creators
+### Visualize criadores
 
-View "creators" are very similar to view composers; however, they are executed immediately after the view is instantiated instead of waiting until the view is about to render. To register a view creator, use the `creator` method:
+ Os "criadores de exibição" são muito semelhantes aos compositores de exibições; no entanto, eles são executados imediatamente após a exibição é instanciada em vez de esperar até que a visualização esteja prestes a ser renderizada. Para registrar um criador de exibição, use o método `creator`:
 
 ```php
     use App\View\Creators\ProfileCreator;
@@ -270,17 +270,17 @@ View "creators" are very similar to view composers; however, they are executed i
 ```
 
 <a name="optimizing-views"></a>
-## Optimizing Views
+## Otimizar visualizações
 
-By default, Blade template views are compiled on demand. When a request is executed that renders a view, Laravel will determine if a compiled version of the view exists. If the file exists, Laravel will then determine if the uncompiled view has been modified more recently than the compiled view. If the compiled view either does not exist, or the uncompiled view has been modified, Laravel will recompile the view.
+ Por padrão, as visualizações de template Blade são compiladas sob demanda. Quando é executada uma requisição que renderize um template, o Laravel determina se existe uma versão compilada do template. Se o arquivo existir, o Laravel verifica se a versão não compilada foi modificada mais recentemente do que a versão compilada. Caso o template não esteja compilado ou tenha sido modificado, será feita uma nova compilação dele.
 
-Compiling views during the request may have a small negative impact on performance, so Laravel provides the `view:cache` Artisan command to precompile all of the views utilized by your application. For increased performance, you may wish to run this command as part of your deployment process:
+ A compilação de arquivos de visualização durante a requisição pode ter um pequeno impacto negativo nos parâmetros de desempenho; por isso, o Laravel fornece o comando "view:cache" do Artisan para pré-compilar todos os arquivos de visualização utilizados pela sua aplicação. Para maior desempenho, é recomendável executar este comando como parte do processo de implantação:
 
 ```shell
 php artisan view:cache
 ```
 
-You may use the `view:clear` command to clear the view cache:
+ Você pode usar o comando `view:clear` para apagar o cache da vista:
 
 ```shell
 php artisan view:clear

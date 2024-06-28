@@ -1,17 +1,17 @@
-# Rate Limiting
+# Limitação de taxas
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-Laravel includes a simple to use rate limiting abstraction which, in conjunction with your application's [cache](cache), provides an easy way to limit any action during a specified window of time.
+ O Laravel inclui uma abordagem simples de limitação do número de solicitações que, em conjunto com o [cache] da sua aplicação, fornece um método fácil para limitar as ações durante um período especificado.
 
-> [!NOTE]  
-> If you are interested in rate limiting incoming HTTP requests, please consult the [rate limiter middleware documentation](routing#rate-limiting).
+ > [!AVISO]
+ [Documentação de middleware de limitação de velocidade] (routing#rate-limiting).
 
 <a name="cache-configuration"></a>
-### Cache Configuration
+### Configuração do cache
 
-Typically, the rate limiter utilizes your default application cache as defined by the `default` key within your application's `cache` configuration file. However, you may specify which cache driver the rate limiter should use by defining a `limiter` key within your application's `cache` configuration file:
+ Normalmente, o limitador de taxa utiliza seu cache de aplicativo por padrão definido pela chave `default` no arquivo de configuração do cache da sua aplicação. No entanto, você pode especificar qual driver de cache o limitador de taxa deve usar, definindo a chave `limiter` no arquivo de configuração do cache da sua aplicação:
 
 ```php
     'default' => env('CACHE_STORE', 'database'),
@@ -20,11 +20,11 @@ Typically, the rate limiter utilizes your default application cache as defined b
 ```
 
 <a name="basic-usage"></a>
-## Basic Usage
+## Uso Básico
 
-The `Illuminate\Support\Facades\RateLimiter` facade may be used to interact with the rate limiter. The simplest method offered by the rate limiter is the `attempt` method, which rate limits a given callback for a given number of seconds.
+ A face `Illuminate\Support\Facades\RateLimiter` permite interagir com o limitador de velocidade. O método mais simples oferecido pelo limitador é o método `attempt`, que limita a velocidade de um determinado callback por um número específico de segundos.
 
-The `attempt` method returns `false` when the callback has no remaining attempts available; otherwise, the `attempt` method will return the callback's result or `true`. The first argument accepted by the `attempt` method is a rate limiter "key", which may be any string of your choosing that represents the action being rate limited:
+ O método `attempt` retorna `false` quando o callback não tem mais tentativas disponíveis; de outro modo, o método `attempt` irá retornar o resultado do callback ou `true`. O primeiro argumento aceito pelo método `attempt` é uma "chave" para limitador de velocidade, que pode ser qualquer string escolhida pela sua aplicação e representa a ação com limite de velocidade:
 
 ```php
     use Illuminate\Support\Facades\RateLimiter;
@@ -42,7 +42,7 @@ The `attempt` method returns `false` when the callback has no remaining attempts
     }
 ```
 
-If necessary, you may provide a fourth argument to the `attempt` method, which is the "decay rate", or the number of seconds until the available attempts are reset. For example, we can modify the example above to allow five attempts every two minutes:
+ Se necessário, pode fornecer um quarto argumento ao método `attempt`, que é a "taxa de degradação" ou o número de segundos até os atempados disponíveis serem reiniciados. Por exemplo, pode modificar o exemplo acima para permitir cinco tentativas a cada dois minutos:
 
 ```php
     $executed = RateLimiter::attempt(
@@ -56,9 +56,9 @@ If necessary, you may provide a fourth argument to the `attempt` method, which i
 ```
 
 <a name="manually-incrementing-attempts"></a>
-### Manually Incrementing Attempts
+### Incrementando as tentativas manualmente
 
-If you would like to manually interact with the rate limiter, a variety of other methods are available. For example, you may invoke the `tooManyAttempts` method to determine if a given rate limiter key has exceeded its maximum number of allowed attempts per minute:
+ Se você quiser interagir manualmente com o limitador de taxa, existem vários outros métodos disponíveis. Por exemplo, é possível invocar o método `tooManyAttempts` para determinar se uma determinada chave do limitador de taxa atingiu seu número máximo de tentativas permitidas por minuto:
 
 ```php
     use Illuminate\Support\Facades\RateLimiter;
@@ -72,7 +72,7 @@ If you would like to manually interact with the rate limiter, a variety of other
     // Send message...
 ```
 
-Alternatively, you may use the `remaining` method to retrieve the number of attempts remaining for a given key. If a given key has retries remaining, you may invoke the `increment` method to increment the number of total attempts:
+ Como alternativa, você pode usar o método `remaining` para recuperar o número de tentativas restantes em uma determinada chave. Se houver mais tentativas possíveis para a chave, você poderá invocar o método `increment` para incrementar o número total de tentativas:
 
 ```php
     use Illuminate\Support\Facades\RateLimiter;
@@ -84,16 +84,16 @@ Alternatively, you may use the `remaining` method to retrieve the number of atte
     }
 ```
 
-If you would like to increment the value for a given rate limiter key by more than one, you may provide the desired amount to the `increment` method:
+ Se você desejar incrementar o valor de uma chave específica do limitador de taxa em mais que um, poderá fornecer a quantia desejada ao método `increment`:
 
 ```php
     RateLimiter::increment('send-message:'.$user->id, amount: 5);
 ```
 
 <a name="determining-limiter-availability"></a>
-#### Determining Limiter Availability
+#### Determinar a disponibilidade de limitadores
 
-When a key has no more attempts left, the `availableIn` method returns the number of seconds remaining until more attempts will be available:
+ Quando um código de chave não tem mais tentativas disponíveis, o método `availableIn` retorna o número de segundos que restam até as próximas tentativas estarão disponíveis:
 
 ```php
     use Illuminate\Support\Facades\RateLimiter;
@@ -110,9 +110,9 @@ When a key has no more attempts left, the `availableIn` method returns the numbe
 ```
 
 <a name="clearing-attempts"></a>
-### Clearing Attempts
+### Tentativas de compensação
 
-You may reset the number of attempts for a given rate limiter key using the `clear` method. For example, you may reset the number of attempts when a given message is read by the receiver:
+ Você pode redefinir o número de tentativas para uma determinada chave do limite máximo usando o método `clear`. Por exemplo, você pode redefinir o número de tentativas quando um determinado mensagem é lida pelo receptor:
 
 ```php
     use App\Models\Message;

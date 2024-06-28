@@ -1,28 +1,28 @@
-# Error Handling
+# Lidando com erros
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-When you start a new Laravel project, error and exception handling is already configured for you; however, at any point, you may use the `withExceptions` method in your application's `bootstrap/app.php` to manage how exceptions are reported and rendered by your application.
+ Quando iniciar um novo projeto Laravel, o processamento de erros e exceções já está configurado para você; no entanto, a qualquer momento, poderá utilizar o método `withExceptions` no `bootstrap/app.php` da aplicação para gerir como as exceções são reportadas e renderizadas pela sua aplicação.
 
-The `$exceptions` object provided to the `withExceptions` closure is an instance of `Illuminate\Foundation\Configuration\Exceptions` and is responsible for managing exception handling in your application. We'll dive deeper into this object throughout this documentation.
+ O objeto `$exceptions`, disponibilizado para o fecho `withExceptions`, é uma instância de `Illuminate\Foundation\Configuration\Exceptions` e é responsável pela gestão do tratamento de exceções na sua aplicação. Durante a documentação, aprofundaremos esta questão.
 
 <a name="configuration"></a>
-## Configuration
+## Configuração
 
-The `debug` option in your `config/app.php` configuration file determines how much information about an error is actually displayed to the user. By default, this option is set to respect the value of the `APP_DEBUG` environment variable, which is stored in your `.env` file.
+ A opção `debug` do seu arquivo de configuração `config/app.php` determina quantas informações sobre um erro são realmente exibidas ao usuário. Por padrão, esta opção é definida para respeitar o valor da variável ambiental `APP_DEBUG`, que é armazenada em seu arquivo `.env`.
 
-During local development, you should set the `APP_DEBUG` environment variable to `true`. **In your production environment, this value should always be `false`. If the value is set to `true` in production, you risk exposing sensitive configuration values to your application's end users.**
+ Durante o desenvolvimento local, você deve definir a variável de ambiente `APP_DEBUG` como `true`. **No ambiente de produção, esse valor sempre deve ser `false`. Se o valor for definido como `true` em um ambiente de produção, os usuários finais da aplicação correm o risco de terem acesso a valores de configuração confidenciais.**
 
 <a name="handling-exceptions"></a>
-## Handling Exceptions
+## Manuseando exceções
 
 <a name="reporting-exceptions"></a>
-### Reporting Exceptions
+### Relatório de exceções
 
-In Laravel, exception reporting is used to log exceptions or send them to an external service [Sentry](https://github.com/getsentry/sentry-laravel) or [Flare](https://flareapp.io). By default, exceptions will be logged based on your [logging](/docs/logging) configuration. However, you are free to log exceptions however you wish.
+ No Laravel, o relato de exceções é utilizado para registar exceções ou enviá-las a um serviço externo [Sentry](https://github.com/getsentry/sentry-laravel) ou [Flare](https://flareapp.io). Por padrão, as exceções serão registradas com base na sua configuração de [registo](/docs/logging). No entanto, pode registar exceções da forma que pretender.
 
-If you need to report different types of exceptions in different ways, you may use the `report` exception method in your application's `bootstrap/app.php` to register a closure that should be executed when an exception of a given type needs to be reported. Laravel will determine what type of exception the closure reports by examining the type-hint of the closure:
+ Se você precisar reportar tipos diferentes de exceções de maneiras distintas, poderá usar o método `report` da exceção em seu aplicativo `bootstrap/app.php`, para registrar um fecho que deve ser executado quando uma exceção do tipo especificado for reportada. O Laravel definirá o tipo de exceção que o fecho irá reportar, examinando a indicação do tipo no fecho:
 
 ```php
     ->withExceptions(function (Exceptions $exceptions) {
@@ -32,7 +32,7 @@ If you need to report different types of exceptions in different ways, you may u
     })
 ```
 
-When you register a custom exception reporting callback using the `report` method, Laravel will still log the exception using the default logging configuration for the application. If you wish to stop the propagation of the exception to the default logging stack, you may use the `stop` method when defining your reporting callback or return `false` from the callback:
+ Quando você registrar uma callback de relatório personalizada de exceções usando o método `report`, o Laravel ainda registrará a exceção usando a configuração padrão de logs da aplicação. Se você deseja impedir que a exceção se propague para a pilha de registros padrão, você pode usar o método `stop` ao definir sua callback de relatório ou retornar `false` da callback:
 
 ```php
     ->withExceptions(function (Exceptions $exceptions) {
@@ -46,13 +46,13 @@ When you register a custom exception reporting callback using the `report` metho
     })
 ```
 
-> [!NOTE]  
-> To customize the exception reporting for a given exception, you may also utilize [reportable exceptions](/docs/errors#renderable-exceptions).
+ > [!NOTA]
+ [Exceções que devem ser comunicadas] (Razões para as quais devem ser comunicadas as exceções).
 
 <a name="global-log-context"></a>
-#### Global Log Context
+#### Conteúdo global do registo
 
-If available, Laravel automatically adds the current user's ID to every exception's log message as contextual data. You may define your own global contextual data using the `context` exception method in your application's `bootstrap/app.php` file. This information will be included in every exception's log message written by your application:
+ Se disponível, o Laravel adiciona automaticamente o ID do usuário atual aos mensagens de log das exceções como dados contextuais. Pode definir os seus próprios dados contextuais globais utilizando o método `context` da exceção no arquivo `bootstrap/app.php`. Esta informação será incluída nos logs das suas exceções:
 
 ```php
     ->withExceptions(function (Exceptions $exceptions) {
@@ -63,9 +63,9 @@ If available, Laravel automatically adds the current user's ID to every exceptio
 ```
 
 <a name="exception-log-context"></a>
-#### Exception Log Context
+#### Aparência do registo de exceções
 
-While adding context to every log message can be useful, sometimes a particular exception may have unique context that you would like to include in your logs. By defining a `context` method on one of your application's exceptions, you may specify any data relevant to that exception that should be added to the exception's log entry:
+ Apesar de adicionar um contexto para cada mensagem do registo poder ser útil, algumas exceções podem ter contextos exclusivos que pretende incluir nos seus logs. Definição da metodologia `context` em uma das suas aplicações permite-lhe especificar quais dados relevantes para essa exceção devem ser adicionados ao registo da mesma:
 
 ```php
     <?php
@@ -91,9 +91,9 @@ While adding context to every log message can be useful, sometimes a particular 
 ```
 
 <a name="the-report-helper"></a>
-#### The `report` Helper
+#### O Auxiliar de Relatório
 
-Sometimes you may need to report an exception but continue handling the current request. The `report` helper function allows you to quickly report an exception without rendering an error page to the user:
+ Às vezes, é necessário informar uma exceção, mas continuar processando o pedido atual. A função auxiliar `report` permite que você informe uma exceção rapidamente sem renderizar uma página de erro para o usuário:
 
 ```php
     public function isValid(string $value): bool
@@ -109,11 +109,11 @@ Sometimes you may need to report an exception but continue handling the current 
 ```
 
 <a name="deduplicating-reported-exceptions"></a>
-#### Deduplicating Reported Exceptions
+#### Remover duplicações de exceções comunicadas
 
-If you are using the `report` function throughout your application, you may occasionally report the same exception multiple times, creating duplicate entries in your logs.
+ Se estiver a usar a função `report` em todo o seu programa, poderá ocasionalmente informar a mesma exceção várias vezes, criando entradas duplicadas nos registos.
 
-If you would like to ensure that a single instance of an exception is only ever reported once, you may invoke the `dontReportDuplicates` exception method in your application's `bootstrap/app.php` file:
+ Se você deseja garantir que uma única exceção seja relatada apenas uma vez, pode invocar o método de exceção `dontReportDuplicates` no arquivo `bootstrap/app.php` da sua aplicação:
 
 ```php
     ->withExceptions(function (Exceptions $exceptions) {
@@ -121,7 +121,7 @@ If you would like to ensure that a single instance of an exception is only ever 
     })
 ```
 
-Now, when the `report` helper is called with the same instance of an exception, only the first call will be reported:
+ Agora, quando a ajuda `report` é invocada com a mesma instância de uma exceção, somente a primeira chamada será relatada:
 
 ```php
 $original = new RuntimeException('Whoops!');
@@ -139,13 +139,13 @@ report($caught); // ignored
 ```
 
 <a name="exception-log-levels"></a>
-### Exception Log Levels
+### Níveis de log de exceções
 
-When messages are written to your application's [logs](/docs/logging), the messages are written at a specified [log level](/docs/logging#log-levels), which indicates the severity or importance of the message being logged.
+ Quando as mensagens são escritas nos logs da aplicação ([logs](/docs/logging), elas são escritas em um nível de log [especificado](/docs/logging#log-levels), que indica a gravidade ou importância da mensagem sendo registrada.
 
-As noted above, even when you register a custom exception reporting callback using the `report` method, Laravel will still log the exception using the default logging configuration for the application; however, since the log level can sometimes influence the channels on which a message is logged, you may wish to configure the log level that certain exceptions are logged at.
+ Conforme observado acima, mesmo ao registrar uma devolução de chamada de relato de exceções personalizadas usando o método `report`, o Laravel ainda irá registrar a exceção usando a configuração padrão de registro da aplicação; entretanto, uma vez que o nível do log pode influenciar os canais em que as mensagens são registradas, é possível configurar o nível de registro para determinadas exceções.
 
-To accomplish this, you may use the `level` exception method in your application's `bootstrap/app.php` file. This method receives the exception type as its first argument and the log level as its second argument:
+ Para realizar esta operação, pode utilizar o método de exceção `level` no arquivo do aplicativo `bootstrap/app.php`. Este método recebe o tipo da exceção como seu primeiro parâmetro e o nível de registo como segundo parâmetro:
 
 ```php
     use PDOException;
@@ -157,9 +157,9 @@ To accomplish this, you may use the `level` exception method in your application
 ```
 
 <a name="ignoring-exceptions-by-type"></a>
-### Ignoring Exceptions by Type
+### Ignorando exceções por tipo
 
-When building your application, there will be some types of exceptions you never want to report. To ignore these exceptions, you may use the `dontReport` exception method in your application's `bootstrap/app.php` file. Any class provided to this method will never be reported; however, they may still have custom rendering logic:
+ Ao construir o seu aplicativo, poderá haver alguns tipos de exceções que nunca pretende relatar. Para ignorar estas exceções, pode utilizar a metodologia `dontReport` na arquivo do aplicativo `bootstrap/app.php`. Quaisquer classes fornecidas a esta função não serão relatadas; contudo poderá ainda incluir lógica de renderização personalizada:
 
 ```php
     use App\Exceptions\InvalidOrderException;
@@ -171,7 +171,7 @@ When building your application, there will be some types of exceptions you never
     })
 ```
 
-Internally, Laravel already ignores some types of errors for you, such as exceptions resulting from 404 HTTP errors or 419 HTTP responses generated by invalid CSRF tokens. If you would like to instruct Laravel to stop ignoring a given type of exception, you may use the `stopIgnoring` exception method in your application's `bootstrap/app.php` file:
+ Internamente, o Laravel ignora alguns tipos de erros automaticamente, como as exceções resultantes de erros HTTP 404 ou respostas HTTP 419 geradas por tokens CSRF inválidos. Caso queira instruir o Laravel para parar de ignorar um determinado tipo de exceção, poderá usar o método `stopIgnoring` da classe Exception no arquivo "bootstrap/app.php" do seu aplicativo:
 
 ```php
     use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -182,11 +182,11 @@ Internally, Laravel already ignores some types of errors for you, such as except
 ```
 
 <a name="rendering-exceptions"></a>
-### Rendering Exceptions
+### Exceções de renderização
 
-By default, the Laravel exception handler will convert exceptions into an HTTP response for you. However, you are free to register a custom rendering closure for exceptions of a given type. You may accomplish this by using the `render` exception method in your application's `bootstrap/app.php` file.
+ Por padrão, o gerenciador de exceções do Laravel converte as exceções em respostas HTTP para você. No entanto, você pode registrar um fechamento personalizado de renderização para exceções de um determinado tipo. Para isso, use a método `render` da classe Exceção em seu arquivo `bootstrap/app.php`.
 
-The closure passed to the `render` method should return an instance of `Illuminate\Http\Response`, which may be generated via the `response` helper. Laravel will determine what type of exception the closure renders by examining the type-hint of the closure:
+ O encerramento passado para o método `render` deve retornar uma instância de `Illuminate\Http\Response`, que pode ser gerada através da função auxiliar `response`. A plataforma Laravel determinará que tipo de exceção o fecho renderiza ao analisar a indicação do tipo no encerramento:
 
 ```php
     use App\Exceptions\InvalidOrderException;
@@ -199,7 +199,7 @@ The closure passed to the `render` method should return an instance of `Illumina
     })
 ```
 
-You may also use the `render` method to override the rendering behavior for built-in Laravel or Symfony exceptions such as `NotFoundHttpException`. If the closure given to the `render` method does not return a value, Laravel's default exception rendering will be utilized:
+ É possível também utilizar o método `render` para redefinir o comportamento de renderização para exceções incorporadas do Laravel ou Symfony, como por exemplo, `NotFoundHttpException`. Se o fechamento fornecido ao método `render` não retornar um valor, será utilizado a renderização padrão da exceção do Laravel:
 
 ```php
     use Illuminate\Http\Request;
@@ -217,9 +217,9 @@ You may also use the `render` method to override the rendering behavior for buil
 ```
 
 <a name="rendering-exceptions-as-json"></a>
-#### Rendering Exceptions as JSON
+#### Transformação de exceções em formato JSON
 
-When rendering an exception, Laravel will automatically determine if the exception should be rendered as an HTML or JSON response based on the `Accept` header of the request. If you would like to customize how Laravel determines whether to render HTML or JSON exception responses, you may utilize the `shouldRenderJsonWhen` method:
+ Ao renderizar uma exceção, o Laravel determinará automaticamente se a exceção deve ser renderizada como resposta de um pedido em formato HTML ou JSON, com base no cabeçalho `Accept` do pedido. Se pretender personalizar a forma como é determinada a exibição de respostas de exceções em HTML ou JSON pelo Laravel, pode utilizar o método `shouldRenderJsonWhen`:
 
 ```php
     use Illuminate\Http\Request;
@@ -237,9 +237,9 @@ When rendering an exception, Laravel will automatically determine if the excepti
 ```
 
 <a name="customizing-the-exception-response"></a>
-#### Customizing the Exception Response
+#### Personalizar a resposta a exceções
 
-Rarely, you may need to customize the entire HTTP response rendered by Laravel's exception handler. To accomplish this, you may register a response customization closure using the `respond` method:
+ Raramente você poderá precisar personalizar toda a resposta HTTP gerada pelo gerenciador de exceções do Laravel. Para fazer isso, você pode registrar um fechamento de customização da resposta usando o método `respond`:
 
 ```php
     use Symfony\Component\HttpFoundation\Response;
@@ -258,9 +258,9 @@ Rarely, you may need to customize the entire HTTP response rendered by Laravel's
 ```
 
 <a name="renderable-exceptions"></a>
-### Reportable and Renderable Exceptions
+### Exceções notificáveis e executáveis
 
-Instead of defining custom reporting and rendering behavior in your application's `bootstrap/app.php` file, you may define `report` and `render` methods directly on your application's exceptions. When these methods exist, they will automatically be called by the framework:
+ Em vez de definir comportamentos personalizados de relatório e renderização no arquivo `bootstrap/app.php` da sua aplicação, você pode definir os métodos `report` e `render` diretamente nas exceções de sua aplicação. Quando estes métodos existirem, eles serão automaticamente acionados pelo framework:
 
 ```php
     <?php
@@ -291,7 +291,7 @@ Instead of defining custom reporting and rendering behavior in your application'
     }
 ```
 
-If your exception extends an exception that is already renderable, such as a built-in Laravel or Symfony exception, you may return `false` from the exception's `render` method to render the exception's default HTTP response:
+ Se a sua exceção estender uma exceção que já seja executável, como uma exceção incorporada do Laravel ou Symfony, poderá devolver `false` na métrica `render` para renderizar a resposta HTTP padrão da exceção:
 
 ```php
     /**
@@ -308,7 +308,7 @@ If your exception extends an exception that is already renderable, such as a bui
     }
 ```
 
-If your exception contains custom reporting logic that is only necessary when certain conditions are met, you may need to instruct Laravel to sometimes report the exception using the default exception handling configuration. To accomplish this, you may return `false` from the exception's `report` method:
+ Se a lógica de relatório personalizada da sua exceção estiver disponível somente quando certas condições forem atendidas, você pode precisar instruir o Laravel para que relate algumas vezes as suas exceções usando a configuração padrão do gerenciamento de exceções. Para fazer isso, você poderá retornar `false` da metodologia `report` da sua exceção:
 
 ```php
     /**
@@ -327,15 +327,15 @@ If your exception contains custom reporting logic that is only necessary when ce
     }
 ```
 
-> [!NOTE]  
-> You may type-hint any required dependencies of the `report` method and they will automatically be injected into the method by Laravel's [service container](/docs/container).
+ > [!OBSERVAÇÃO]
+ O [conteúdo do conteúdo de serviço](/docs/container).
 
 <a name="throttling-reported-exceptions"></a>
-### Throttling Reported Exceptions
+### Reporte de exceções que limitam a largura de banda
 
-If your application reports a very large number of exceptions, you may want to throttle how many exceptions are actually logged or sent to your application's external error tracking service.
+ Se o seu aplicativo relatar um número muito grande de exceções, você pode querer limitar o número de exceções que são realmente registradas ou enviadas ao serviço externo do seu aplicativo para rastreamento de erros.
 
-To take a random sample rate of exceptions, you may use the `throttle` exception method in your application's `bootstrap/app.php` file. The `throttle` method receives a closure that should return a `Lottery` instance:
+ Para selecionar um valor aleatório para a frequência das exceções, você pode usar o método de exceção `throttle` no arquivo do aplicativo `bootstrap/app.php`. O método `throttle` recebe uma função que deve retornar uma instância da classe `Lottery`:
 
 ```php
     use Illuminate\Support\Lottery;
@@ -348,7 +348,7 @@ To take a random sample rate of exceptions, you may use the `throttle` exception
     })
 ```
 
-It is also possible to conditionally sample based on the exception type. If you would like to only sample instances of a specific exception class, you may return a `Lottery` instance only for that class:
+ É também possível amostrar condicionalmente com base no tipo da exceção. Se pretender somente amostras de instâncias de uma classe de exceção específica, poderá devolver apenas uma `Lottery` para essa classe:
 
 ```php
     use App\Exceptions\ApiMonitoringException;
@@ -364,7 +364,7 @@ It is also possible to conditionally sample based on the exception type. If you 
     })
 ```
 
-You may also rate limit exceptions logged or sent to an external error tracking service by returning a `Limit` instance instead of a `Lottery`. This is useful if you want to protect against sudden bursts of exceptions flooding your logs, for example, when a third-party service used by your application is down:
+ Você também pode controlar as exceções registradas ou enviadas para um serviço externo de rastreamento de erros ao retornar uma instância `Limit` em vez de uma `Lottery`. Isso é útil se você quiser proteger contra súbitas ondas de exceções inundando seus logs, por exemplo, quando um serviço de terceiros usado pelo seu aplicativo está down:
 
 ```php
     use Illuminate\Broadcasting\BroadcastException;
@@ -380,7 +380,7 @@ You may also rate limit exceptions logged or sent to an external error tracking 
     })
 ```
 
-By default, limits will use the exception's class as the rate limit key. You can customize this by specifying your own key using the `by` method on the `Limit`:
+ Por padrão, os limites utilizam a classe da exceção como o nome do limite de taxa. Você pode personalizar isso especificando seu próprio nome usando o método `by` no `Limit`:
 
 ```php
     use Illuminate\Broadcasting\BroadcastException;
@@ -396,7 +396,7 @@ By default, limits will use the exception's class as the rate limit key. You can
     })
 ```
 
-Of course, you may return a mixture of `Lottery` and `Limit` instances for different exceptions:
+ É claro que você poderá retornar uma mistura de instâncias `Lottery` e `Limit` para diferentes exceções:
 
 ```php
     use App\Exceptions\ApiMonitoringException;
@@ -417,32 +417,32 @@ Of course, you may return a mixture of `Lottery` and `Limit` instances for diffe
 ```
 
 <a name="http-exceptions"></a>
-## HTTP Exceptions
+## Exceções de HTTP
 
-Some exceptions describe HTTP error codes from the server. For example, this may be a "page not found" error (404), an "unauthorized error" (401), or even a developer generated 500 error. In order to generate such a response from anywhere in your application, you may use the `abort` helper:
+ Existem algumas exceções que descrevem códigos de erro do servidor HTTP. Por exemplo, pode ser um erro "página não encontrada" (404), um erro "não autorizado" (401) ou até mesmo um erro 500 gerado pelo desenvolvedor. Para gerar uma resposta assim em qualquer lugar do seu aplicativo, você pode usar o `abort` auxiliar:
 
 ```php
     abort(404);
 ```
 
 <a name="custom-http-error-pages"></a>
-### Custom HTTP Error Pages
+### Páginas de erro personalizadas para HTTP
 
-Laravel makes it easy to display custom error pages for various HTTP status codes. For example, to customize the error page for 404 HTTP status codes, create a `resources/views/errors/404.blade.php` view template. This view will be rendered for all 404 errors generated by your application. The views within this directory should be named to match the HTTP status code they correspond to. The `Symfony\Component\HttpKernel\Exception\HttpException` instance raised by the `abort` function will be passed to the view as an `$exception` variable:
+ O Laravel facilita a exibição de páginas personalizadas de erro para vários códigos de estado HTTP. Por exemplo, para personalizar a página de erro para o código 404, crie um modelo de visualização `resources/views/errors/404.blade.php`. Esse modelo será exibido para todos os erros gerados por sua aplicação. Os modelos nessa pasta devem ter nomes que correspondam ao código de estado HTTP a eles relacionados. A instância da classe `Symfony\Component\HttpKernel\Exception\HttpException`, lançada pela função `abort`, será passada para o modelo como uma variável `$exception`:
 
 ```php
     <h2>{{ $exception->getMessage() }}</h2>
 ```
 
-You may publish Laravel's default error page templates using the `vendor:publish` Artisan command. Once the templates have been published, you may customize them to your liking:
+ Você pode publicar os modelos padrão de página de erro do Laravel usando o comando "Artisan" `vendor: publish`. Depois que os modelos forem publicados, você poderá personalizá-los da forma que preferir:
 
 ```shell
 php artisan vendor:publish --tag=laravel-errors
 ```
 
 <a name="fallback-http-error-pages"></a>
-#### Fallback HTTP Error Pages
+#### Páginas de erro por defeito do protocolo HTTP
 
-You may also define a "fallback" error page for a given series of HTTP status codes. This page will be rendered if there is not a corresponding page for the specific HTTP status code that occurred. To accomplish this, define a `4xx.blade.php` template and a `5xx.blade.php` template in your application's `resources/views/errors` directory. 
+ Também é possível definir uma página de erro como "reserva" para uma determinada série de códigos de estado HTTP. Essa página será renderizada se não existir uma página correspondente ao código de estado HTTP específico que ocorreu. Defina um modelo `4xx.blade.php` e um modelo `5xx.blade.php`, no diretório `resources/views/errors`, da aplicação.
 
-When defining fallback error pages, the fallback pages will not affect `404`, `500`, and `503` error responses since Laravel has internal, dedicated pages for these status codes. To customize the pages rendered for these status codes, you should define a custom error page for each of them individually.
+ Ao definir as páginas de erro de recurso, elas não afetarão as respostas de erros `404`, `500` e `503`, uma vez que o Laravel possui páginas internas dedicadas para estes códigos. Para personalizar as páginas renderizadas para esses códigos, você deve definir uma página de erro personalizada individualmente para cada um deles.

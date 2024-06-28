@@ -1,14 +1,14 @@
-# Console Tests
+# Teste do console
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-In addition to simplifying HTTP testing, Laravel provides a simple API for testing your application's [custom console commands](/docs/{{version}}/artisan).
+ Além de simplificar os testes do HTTP, o Laravel oferece uma API simples para testar comandos personalizados do console da aplicação.
 
 <a name="success-failure-expectations"></a>
-## Success / Failure Expectations
+## Esperanças de sucesso/fracasso
 
-To get started, let's explore how to make assertions regarding an Artisan command's exit code. To accomplish this, we will use the `artisan` method to invoke an Artisan command from our test. Then, we will use the `assertExitCode` method to assert that the command completed with a given exit code:
+ Para começar, vamos explorar como fazer afirmações referentes ao código de saída de um comando Artisan. Para isso, usaremos o método `artisan` para invocar um comando do Artisan em nosso teste. Então, usaremos o método `assertExitCode` para garantir que o comando foi concluído com um determinado código de saída:
 
 ```php tab=Pest
 test('console command', function () {
@@ -26,13 +26,13 @@ public function test_console_command(): void
 }
 ```
 
-You may use the `assertNotExitCode` method to assert that the command did not exit with a given exit code:
+ Você pode usar o método `assertNotExitCode` para garantir que o comando não saiu com um determinado código de saída:
 
 ```php
     $this->artisan('inspire')->assertNotExitCode(1);
 ```
 
-Of course, all terminal commands typically exit with a status code of `0` when they are successful and a non-zero exit code when they are not successful. Therefore, for convenience, you may utilize the `assertSuccessful` and `assertFailed` assertions to assert that a given command exited with a successful exit code or not:
+ Obviamente, todos os comandos de terminal normalmente saem com um código de status `0` (é bem-sucedido) e um código de saída diferente de zero quando é inválido. Portanto, para conveniência, você pode utilizar as afirmações `assertSuccessful` e `assertFailed` para garantir que determinado comando saiu com um código de status bem-sucedido ou não:
 
 ```php
     $this->artisan('inspire')->assertSuccessful();
@@ -41,9 +41,9 @@ Of course, all terminal commands typically exit with a status code of `0` when t
 ```
 
 <a name="input-output-expectations"></a>
-## Input / Output Expectations
+## Espera de Entrada/Saída
 
-Laravel allows you to easily "mock" user input for your console commands using the `expectsQuestion` method. In addition, you may specify the exit code and text that you expect to be output by the console command using the `assertExitCode` and `expectsOutput` methods. For example, consider the following console command:
+ O Laravel permite-lhe "mockar" facilmente a entrada de utilizador nos comandos do console através do método `expectsQuestion`. Além disso, pode especificar o código de saída e texto esperado para ser emitido pelo comando do console utilizando os métodos `assertExitCode` e `expectsOutput`. Por exemplo:
 
 ```php
     Artisan::command('question', function () {
@@ -59,7 +59,7 @@ Laravel allows you to easily "mock" user input for your console commands using t
     });
 ```
 
-You may test this command with the following test:
+ É possível verificar este comando com o seguinte teste:
 
 ```php tab=Pest
 test('console command', function () {
@@ -87,7 +87,7 @@ public function test_console_command(): void
 }
 ```
 
-You may also assert that a console command does not generate any output using the `doesntExpectOutput` method:
+ Você também poderá assegurar que um comando de console não gera nenhum resultado utilizando o método `doesntExpectOutput`:
 
 ```php tab=Pest
 test('console command', function () {
@@ -109,7 +109,7 @@ public function test_console_command(): void
 }
 ```
 
- The `expectsOutputToContain` and `doesntExpectOutputToContain` methods may be used to make assertions against a portion of the output:
+ Os métodos `expectsOutputToContain` e `doesntExpectOutputToContain` podem ser utilizados para fazer asserções em relação a uma parte do resultado da execução.
 
 ```php tab=Pest
 test('console command', function () {
@@ -132,9 +132,9 @@ public function test_console_command(): void
 ```
 
 <a name="confirmation-expectations"></a>
-#### Confirmation Expectations
+#### Esperanças de confirmação
 
-When writing a command which expects confirmation in the form of a "yes" or "no" answer, you may utilize the `expectsConfirmation` method:
+ Ao escrever um comando que espera uma confirmação na forma de uma resposta "sim" ou "não", você pode utilizar o método `expectsConfirmation`:
 
 ```php
     $this->artisan('module:import')
@@ -143,9 +143,9 @@ When writing a command which expects confirmation in the form of a "yes" or "no"
 ```
 
 <a name="table-expectations"></a>
-#### Table Expectations
+#### Expectativas da tabela
 
-If your command displays a table of information using Artisan's `table` method, it can be cumbersome to write output expectations for the entire table. Instead, you may use the `expectsTable` method. This method accepts the table's headers as its first argument and the table's data as its second argument:
+ Se o comando exibir uma tabela de informações usando o método `table` do Artisan, pode ser complicado escrever expectativas de saída para toda a tabela. Em vez disso, você pode usar o método `expectsTable`. Este método aceita os cabeçalhos da tabela como seu primeiro argumento e os dados da tabela como segundo argumento:
 
 ```php
     $this->artisan('users:all')
@@ -159,9 +159,9 @@ If your command displays a table of information using Artisan's `table` method, 
 ```
 
 <a name="console-events"></a>
-## Console Events
+## Eventos da consola
 
-By default, the `Illuminate\Console\Events\CommandStarting` and `Illuminate\Console\Events\CommandFinished` events are not dispatched while running your application's tests. However, you can enable these events for a given test class by adding the `Illuminate\Foundation\Testing\WithConsoleEvents` trait to the class:
+ Por padrão, os eventos Illuminate\Console\Events\CommandStarting e Illuminate\Console\Events\CommandFinished não são disparados enquanto a aplicação está em execução. No entanto, pode ativar estes eventos para uma determinada classe de teste, adicionando o traço Illuminate\Foundation\Testing\WithConsoleEvents à mesma:
 
 ```php tab=Pest
 <?php

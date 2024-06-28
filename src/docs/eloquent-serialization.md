@@ -1,20 +1,20 @@
-# Eloquent: Serialization
+# Eloquente: Série
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-When building APIs using Laravel, you will often need to convert your models and relationships to arrays or JSON. Eloquent includes convenient methods for making these conversions, as well as controlling which attributes are included in the serialized representation of your models.
+ Ao criar APIs com o uso do Laravel, geralmente você precisará converter seus modelos e relações em arrays ou JSON. O Eloquent inclui métodos convenientes para fazer essas conversões, além de permitir que você controle quais atributos são incluídos na representação serializada dos seus modelos.
 
-> [!NOTE]  
-> For an even more robust way of handling Eloquent model and collection JSON serialization, check out the documentation on [Eloquent API resources](/docs/{{version}}/eloquent-resources).
+ > [!ATENÇÃO]
+ [Recursos da API Eloquent](/docs/{{version}}/eloquent-resources).
 
 <a name="serializing-models-and-collections"></a>
-## Serializing Models and Collections
+## Serialização de modelos e coleções
 
 <a name="serializing-to-arrays"></a>
-### Serializing to Arrays
+### Seriado em matrizes
 
-To convert a model and its loaded [relationships](/docs/{{version}}/eloquent-relationships) to an array, you should use the `toArray` method. This method is recursive, so all attributes and all relations (including the relations of relations) will be converted to arrays:
+ Para converter um modelo e suas relacionamentos carregados em um array, você deve usar o método `toArray`. Esse método é recursivo. Assim, todos os atributos e todas as relações (inclusive as relações das relações) serão convertidos para arrays:
 
 ```php
     use App\Models\User;
@@ -24,7 +24,7 @@ To convert a model and its loaded [relationships](/docs/{{version}}/eloquent-rel
     return $user->toArray();
 ```
 
-The `attributesToArray` method may be used to convert a model's attributes to an array but not its relationships:
+ O método `attributesToArray` pode ser usado para converter atributos de um modelo em um array, mas não as relações:
 
 ```php
     $user = User::first();
@@ -32,7 +32,7 @@ The `attributesToArray` method may be used to convert a model's attributes to an
     return $user->attributesToArray();
 ```
 
-You may also convert entire [collections](/docs/{{version}}/eloquent-collections) of models to arrays by calling the `toArray` method on the collection instance:
+ Você também pode converter inteiras [coleções de modelos](/docs/{{ version }}/eloquent-collections) para matrizes, chamando o método `toArray` na instância da coleção.
 
 ```php
     $users = User::all();
@@ -41,9 +41,9 @@ You may also convert entire [collections](/docs/{{version}}/eloquent-collections
 ```
 
 <a name="serializing-to-json"></a>
-### Serializing to JSON
+### Serializar para JSON
 
-To convert a model to JSON, you should use the `toJson` method. Like `toArray`, the `toJson` method is recursive, so all attributes and relations will be converted to JSON. You may also specify any JSON encoding options that are [supported by PHP](https://secure.php.net/manual/en/function.json-encode.php):
+ Para converter um modelo para o formato JSON, você deverá utilizar a metodologia `toJson`. Assim como no caso da `toArray`, a metodologia `toJson` é recursiva, ou seja, todos os atributos e relações serão convertidos em JSON. Além disso, você pode especificar qualquer opção de codificação do JSON que esteja [aprovada pelo PHP](https://secure.php.net/manual/en/function.json-encode.php):
 
 ```php
     use App\Models\User;
@@ -55,13 +55,13 @@ To convert a model to JSON, you should use the `toJson` method. Like `toArray`, 
     return $user->toJson(JSON_PRETTY_PRINT);
 ```
 
-Alternatively, you may cast a model or collection to a string, which will automatically call the `toJson` method on the model or collection:
+ Como alternativa, você pode convert um modelo ou coleção em uma string, o que chamará automaticamente o método `toJson` do modelo ou da coleção:
 
 ```php
     return (string) User::find(1);
 ```
 
-Since models and collections are converted to JSON when cast to a string, you can return Eloquent objects directly from your application's routes or controllers. Laravel will automatically serialize your Eloquent models and collections to JSON when they are returned from routes or controllers:
+ Como os modelos e coleções são convertidos para o JSON quando transformados em uma string, você pode devolver objetos Eloquent diretamente pelos rotas ou controladores da aplicação. O Laravel serializa automaticamente seus modelos e suas coleções como JSON ao serem retornados nos rotas ou controladores:
 
 ```php
     Route::get('users', function () {
@@ -70,14 +70,14 @@ Since models and collections are converted to JSON when cast to a string, you ca
 ```
 
 <a name="relationships"></a>
-#### Relationships
+#### Relações
 
-When an Eloquent model is converted to JSON, its loaded relationships will automatically be included as attributes on the JSON object. Also, though Eloquent relationship methods are defined using "camel case" method names, a relationship's JSON attribute will be "snake case".
+ Quando um modelo Eloquent é convertido para JSON, suas relações carregadas serão automaticamente incluídas como atributos no objeto JSON. Além disso, embora os métodos de relação do Eloquent sejam definidos usando nomes de método em "casa de letras", o atributo da relação em JSON será "case sensível".
 
 <a name="hiding-attributes-from-json"></a>
-## Hiding Attributes From JSON
+## Esconder atributos do arquivo JSON
 
-Sometimes you may wish to limit the attributes, such as passwords, that are included in your model's array or JSON representation. To do so, add a `$hidden` property to your model. Attributes that are listed in the `$hidden` property's array will not be included in the serialized representation of your model:
+ Às vezes você pode desejar limitar os atributos, como senhas, incluídas na representação do modelo em um array ou JSON. Para fazer isso, adicione uma propriedade de `$hidden` ao seu modelo. Os atributos listados na matriz da propriedade `$hidden` não serão incluídos na representação serializada do seu modelo:
 
 ```php
     <?php
@@ -97,10 +97,10 @@ Sometimes you may wish to limit the attributes, such as passwords, that are incl
     }
 ```
 
-> [!NOTE]  
-> To hide relationships, add the relationship's method name to your Eloquent model's `$hidden` property.
+ > [!NOTA]
+ > Para ocultar relações, adicione o nome da metodologia de relacionamento à propriedade `$hidden` do modelo Eloquent.
 
-Alternatively, you may use the `visible` property to define an "allow list" of attributes that should be included in your model's array and JSON representation. All attributes that are not present in the `$visible` array will be hidden when the model is converted to an array or JSON:
+ Como alternativa, é possível usar a propriedade `visible` para definir uma "lista de permissão" com atributos que devem ser incluídos no array do modelo e na representação JSON. Todos os atributos que não estiverem presentes no array `$visible` serão ocultados quando o modelo for convertido em um array ou em JSON:
 
 ```php
     <?php
@@ -121,21 +121,21 @@ Alternatively, you may use the `visible` property to define an "allow list" of a
 ```
 
 <a name="temporarily-modifying-attribute-visibility"></a>
-#### Temporarily Modifying Attribute Visibility
+#### Mudar temporariamente a visibilidade de um atributo
 
-If you would like to make some typically hidden attributes visible on a given model instance, you may use the `makeVisible` method. The `makeVisible` method returns the model instance:
+ Se você quiser tornar alguns atributos normalmente ocultos visíveis em uma determinada instância de modelo, poderá usar o método `makeVisible`. O método `makeVisible` retorna a instância do modelo:
 
 ```php
     return $user->makeVisible('attribute')->toArray();
 ```
 
-Likewise, if you would like to hide some attributes that are typically visible, you may use the `makeHidden` method.
+ Da mesma forma que no exemplo anterior, se você quiser ocultar alguns atributos que são normalmente visíveis, pode usar o método `makeHidden`.
 
 ```php
     return $user->makeHidden('attribute')->toArray();
 ```
 
-If you wish to temporarily override all of the visible or hidden attributes, you may use the `setVisible` and `setHidden` methods respectively:
+ Se pretender ignorar temporariamente todos os atributos visíveis ou ocultos, pode usar as métodos `setVisible` e `setHidden`, respetivamente:
 
 ```php
     return $user->setVisible(['id', 'name'])->toArray();
@@ -144,9 +144,9 @@ If you wish to temporarily override all of the visible or hidden attributes, you
 ```
 
 <a name="appending-values-to-json"></a>
-## Appending Values to JSON
+## Adicionando valores ao JSON
 
-Occasionally, when converting models to arrays or JSON, you may wish to add attributes that do not have a corresponding column in your database. To do so, first define an [accessor](/docs/{{version}}/eloquent-mutators) for the value:
+ Às vezes, ao converter modelos para arrays ou JSON, talvez você deseje adicionar atributos que não tenham uma coluna correspondente em seu banco de dados. Para fazer isso, defina primeiro um [acessório](/docs/{{version}}/eloquent-mutators) para o valor:
 
 ```php
     <?php
@@ -170,7 +170,7 @@ Occasionally, when converting models to arrays or JSON, you may wish to add attr
     }
 ```
 
-If you would like the accessor to always be appended to your model's array and JSON representations, you may add the attribute name to the `appends` property of your model. Note that attribute names are typically referenced using their "snake case" serialized representation, even though the accessor's PHP method is defined using "camel case":
+ Se você preferir que o atributo seja sempre anexado aos arrays e representações JSON do modelo, adicione o nome dele à propriedade `appends` do seu modelo. Note que os nomes dos atributos são normalmente referenciados usando sua representação serializada em "snake case", mesmo que a metodologia PHP do accessor tenha sido definida usando "camel case":
 
 ```php
     <?php
@@ -190,12 +190,12 @@ If you would like the accessor to always be appended to your model's array and J
     }
 ```
 
-Once the attribute has been added to the `appends` list, it will be included in both the model's array and JSON representations. Attributes in the `appends` array will also respect the `visible` and `hidden` settings configured on the model.
+ Depois que o atributo for adicionado à lista `appends`, ele será incluído tanto na representação em matriz quanto na JSON do modelo. Além disso, os atributos da lista `appends` também respeitarão as configurações de visibilidade e ocultação configuradas no modelo.
 
 <a name="appending-at-run-time"></a>
-#### Appending at Run Time
+#### Anexar na Hora de Execução
 
-At runtime, you may instruct a model instance to append additional attributes using the `append` method. Or, you may use the `setAppends` method to override the entire array of appended properties for a given model instance:
+ Em tempo de execução, você pode instruir uma instância do modelo para adicionar atributos extras usando o método `append`. Ou, você pode usar o método `setAppends` para substituir a matriz completa de propriedades anexadas por uma determinada instância de modelo:
 
 ```php
     return $user->append('is_admin')->toArray();
@@ -204,12 +204,12 @@ At runtime, you may instruct a model instance to append additional attributes us
 ```
 
 <a name="date-serialization"></a>
-## Date Serialization
+## Data de serialização
 
 <a name="customizing-the-default-date-format"></a>
-#### Customizing the Default Date Format
+#### Personalizando o formato padrão de data
 
-You may customize the default serialization format by overriding the `serializeDate` method. This method does not affect how your dates are formatted for storage in the database:
+ Pode personalizar o formato de serialização padrão através da suplementação da metodologia `serializeDate`. Esta metodologia não afeta a forma como as datas são formatadas para armazenamento no banco de dados:
 
 ```php
     /**
@@ -222,9 +222,9 @@ You may customize the default serialization format by overriding the `serializeD
 ```
 
 <a name="customizing-the-date-format-per-attribute"></a>
-#### Customizing the Date Format per Attribute
+#### Personalizar o formato de data por atributo
 
-You may customize the serialization format of individual Eloquent date attributes by specifying the date format in the model's [cast declarations](/docs/{{version}}/eloquent-mutators#attribute-casting):
+ Você pode personalizar o formato de serialização dos atributos de data individuais do Eloquent, especificando o formato da data nas declarações de cast ([/docs/{{version}}/eloquent-mutators#attribute-casting]:
 
 ```php
     protected function casts(): array

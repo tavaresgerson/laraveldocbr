@@ -1,17 +1,17 @@
-# URL Generation
+# Geração de URL
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-Laravel provides several helpers to assist you in generating URLs for your application. These helpers are primarily helpful when building links in your templates and API responses, or when generating redirect responses to another part of your application.
+ O Laravel disponibiliza vários helper (auxiliares) para ajudá-lo a gerar URLs para a sua aplicação. Esses auxiliares são úteis principalmente quando você estiver criando links em modelos e respostas da API, ou ao gerar respostas de redirecionamento para outra parte da sua aplicação.
 
 <a name="the-basics"></a>
-## The Basics
+## O básico
 
 <a name="generating-urls"></a>
-### Generating URLs
+### Gerando URLs
 
-The `url` helper may be used to generate arbitrary URLs for your application. The generated URL will automatically use the scheme (HTTP or HTTPS) and host from the current request being handled by the application:
+ O assistente `url` permite gerar URLs arbitrárias para a sua aplicação. A URL gerada utilizará automaticamente o esquema (HTTP ou HTTPS) e a hospedagem do pedido atual da aplicação:
 
 ```php
     $post = App\Models\Post::find(1);
@@ -21,7 +21,7 @@ The `url` helper may be used to generate arbitrary URLs for your application. Th
     // http://example.com/posts/1
 ```
 
-To generate a URL with query string parameters, you may use the `query` method:
+ Para gerar uma URL com parâmetros de string de consulta, você pode usar o método `query`:
 
 ```php
     echo url()->query('/posts', ['search' => 'Laravel']);
@@ -33,7 +33,7 @@ To generate a URL with query string parameters, you may use the `query` method:
     // http://example.com/posts?sort=latest&search=Laravel
 ```
 
-Providing query string parameters that already exist in the path will overwrite their existing value:
+ Fornecer parâmetros de strings de consulta que já existem no caminho irá substituir seu valor atual:
 
 ```php
     echo url()->query('/posts?sort=latest', ['sort' => 'oldest']);
@@ -41,7 +41,7 @@ Providing query string parameters that already exist in the path will overwrite 
     // http://example.com/posts?sort=oldest
 ```
 
-Arrays of values may also be passed as query parameters. These values will be properly keyed and encoded in the generated URL:
+ Você também pode usar arrays de valores como parâmetros de consulta. Estes valores serão devidamente encaminhados e codificados na URL gerada:
 
 ```php
     echo $url = url()->query('/posts', ['columns' => ['title', 'body']]);
@@ -54,9 +54,9 @@ Arrays of values may also be passed as query parameters. These values will be pr
 ```
 
 <a name="accessing-the-current-url"></a>
-### Accessing the Current URL
+### Acesso ao endereço atual da página
 
-If no path is provided to the `url` helper, an `Illuminate\Routing\UrlGenerator` instance is returned, allowing you to access information about the current URL:
+ Se nenhum caminho for especificado para a ajuda de `url`, uma instância `Illuminate\Routing\UrlGenerator` é retornada, permitindo o acesso à informação da URL atual:
 
 ```php
     // Get the current URL without the query string...
@@ -69,7 +69,7 @@ If no path is provided to the `url` helper, an `Illuminate\Routing\UrlGenerator`
     echo url()->previous();
 ```
 
-Each of these methods may also be accessed via the `URL` [facade](/docs/facades):
+ Cada um destes métodos também pode ser acessado através da `facade` URL (/docs/facades):
 
 ```php
     use Illuminate\Support\Facades\URL;
@@ -78,9 +78,9 @@ Each of these methods may also be accessed via the `URL` [facade](/docs/facades)
 ```
 
 <a name="urls-for-named-routes"></a>
-## URLs for Named Routes
+## URLs para Rotas Com Nomes
 
-The `route` helper may be used to generate URLs to [named routes](/docs/routing#named-routes). Named routes allow you to generate URLs without being coupled to the actual URL defined on the route. Therefore, if the route's URL changes, no changes need to be made to your calls to the `route` function. For example, imagine your application contains a route defined like the following:
+ O recurso de ajuda "route" pode ser utilizado para gerar URLs de [rotas nomeadas](/docs/routing#named-routes). As rotas nomeadas permitem que você genere URLs sem ficar vinculado ao URL real definido na rota. Portanto, se o URL da rota mudar, não é necessário fazer alterações em chamadas à função "route". Por exemplo, imagine uma aplicação com uma rota definida como a seguinte:
 
 ```php
     Route::get('/post/{post}', function (Post $post) {
@@ -88,7 +88,7 @@ The `route` helper may be used to generate URLs to [named routes](/docs/routing#
     })->name('post.show');
 ```
 
-To generate a URL to this route, you may use the `route` helper like so:
+ Para gerar um URL para esta rota, você pode usar o recurso auxiliar `route`, da seguinte maneira:
 
 ```php
     echo route('post.show', ['post' => 1]);
@@ -96,7 +96,7 @@ To generate a URL to this route, you may use the `route` helper like so:
     // http://example.com/post/1
 ```
 
-Of course, the `route` helper may also be used to generate URLs for routes with multiple parameters:
+ Claro que o `route` poderá ser utilizado para gerar URLs com vários parâmetros em rotas:
 
 ```php
     Route::get('/post/{post}/comment/{comment}', function (Post $post, Comment $comment) {
@@ -108,7 +108,7 @@ Of course, the `route` helper may also be used to generate URLs for routes with 
     // http://example.com/post/1/comment/3
 ```
 
-Any additional array elements that do not correspond to the route's definition parameters will be added to the URL's query string:
+ Quaisquer elementos adicionais da matriz que não correspondem aos parâmetros de definição da rota serão adicionados ao parâmetro query da URL.
 
 ```php
     echo route('post.show', ['post' => 1, 'search' => 'rocket']);
@@ -117,20 +117,20 @@ Any additional array elements that do not correspond to the route's definition p
 ```
 
 <a name="eloquent-models"></a>
-#### Eloquent Models
+#### Modelos eloqüentes
 
-You will often be generating URLs using the route key (typically the primary key) of [Eloquent models](/docs/eloquent). For this reason, you may pass Eloquent models as parameter values. The `route` helper will automatically extract the model's route key:
+ Geralmente você estará gerando URLs utilizando a chave de rota (normalmente o chave primária) dos [modelos Eloquent] (/docs/eloquent). Por este motivo, é possível passar modelos Eloquent como valores do parâmetro. O helper `route` irá extrair automaticamente a chave da rota do modelo:
 
 ```php
     echo route('post.show', ['post' => $post]);
 ```
 
 <a name="signed-urls"></a>
-### Signed URLs
+### URLs assinadas
 
-Laravel allows you to easily create "signed" URLs to named routes. These URLs have a "signature" hash appended to the query string which allows Laravel to verify that the URL has not been modified since it was created. Signed URLs are especially useful for routes that are publicly accessible yet need a layer of protection against URL manipulation.
+ O Laravel permite criar facilmente URLs "assinadas" para rotas nomeadas. Essas URLs têm um hash de assinatura anexado à string de consulta, que permite ao Laravel verificar se a URL não foi modificada desde que foi criada. As URLs assinadas são especialmente úteis para as rotas publicamente acessíveis mas que precisam de uma camada de proteção contra a manipulação da URL.
 
-For example, you might use signed URLs to implement a public "unsubscribe" link that is emailed to your customers. To create a signed URL to a named route, use the `signedRoute` method of the `URL` facade:
+ Por exemplo, você pode usar URLs assinadas para implementar um link de "cancelamento" pública que é enviado por e-mail aos seus clientes. Para criar uma URL assinada com uma rota nomeada, use o método `signedRoute` da faca `URL`:
 
 ```php
     use Illuminate\Support\Facades\URL;
@@ -138,13 +138,13 @@ For example, you might use signed URLs to implement a public "unsubscribe" link 
     return URL::signedRoute('unsubscribe', ['user' => 1]);
 ```
 
-You may exclude the domain from the signed URL hash by providing the `absolute` argument to the `signedRoute` method:
+ Você pode excluir o domínio do hash da URL assinada, fornecendo o argumento `absolute` para a metodologia `signedRoute`:
 
 ```php
     return URL::signedRoute('unsubscribe', ['user' => 1], absolute: false);
 ```
 
-If you would like to generate a temporary signed route URL that expires after a specified amount of time, you may use the `temporarySignedRoute` method. When Laravel validates a temporary signed route URL, it will ensure that the expiration timestamp that is encoded into the signed URL has not elapsed:
+ Se desejar gerar uma URL de rota assinada temporária que expira após um determinado período de tempo, você poderá usar o método `temporarySignedRoute`. Quando o Laravel valida uma URL de rota assinada temporária, ele garante que a marcação da data e hora não tenha decorrido:
 
 ```php
     use Illuminate\Support\Facades\URL;
@@ -155,9 +155,9 @@ If you would like to generate a temporary signed route URL that expires after a 
 ```
 
 <a name="validating-signed-route-requests"></a>
-#### Validating Signed Route Requests
+#### Validação de pedidos de rota assinados
 
-To verify that an incoming request has a valid signature, you should call the `hasValidSignature` method on the incoming `Illuminate\Http\Request` instance:
+ Para verificar se uma requisição recebida possui uma assinatura válida, você deve chamar o método `hasValidSignature` em uma instância da requisição `Illuminate\Http\Request`:
 
 ```php
     use Illuminate\Http\Request;
@@ -171,7 +171,7 @@ To verify that an incoming request has a valid signature, you should call the `h
     })->name('unsubscribe');
 ```
 
-Sometimes, you may need to allow your application's frontend to append data to a signed URL, such as when performing client-side pagination. Therefore, you can specify request query parameters that should be ignored when validating a signed URL using the `hasValidSignatureWhileIgnoring` method. Remember, ignoring parameters allows anyone to modify those parameters on the request:
+ Por vezes, poderá ter de permitir que o frontend da aplicação adicione dados a um URL assinado, por exemplo, ao efetuar uma paginação do lado do cliente. Para tal, pode especificar parâmetros da consulta que devem ser ignorados quando se valida um URL assinado através do método `hasValidSignatureWhileIgnoring`. Lembre-se de que a opção de ignorar os parâmetros permite que qualquer pessoa modifique estes no pedido.
 
 ```php
     if (! $request->hasValidSignatureWhileIgnoring(['page', 'order'])) {
@@ -179,7 +179,7 @@ Sometimes, you may need to allow your application's frontend to append data to a
     }
 ```
 
-Instead of validating signed URLs using the incoming request instance, you may assign the `signed` (`Illuminate\Routing\Middleware\ValidateSignature`) [middleware](/docs/middleware) to the route. If the incoming request does not have a valid signature, the middleware will automatically return a `403` HTTP response:
+ Em vez de validação das URLs assinadas usando o parâmetro da solicitação de entrada, pode ser atribuído um módulo de validação (`signed`) [de middleware](/docs/middleware) ao roteamento. Se a solicitação de entrada não possuir uma assinatura válida, o módulo retornará automaticamente uma resposta HTTP `403`:
 
 ```php
     Route::post('/unsubscribe/{user}', function (Request $request) {
@@ -187,7 +187,7 @@ Instead of validating signed URLs using the incoming request instance, you may a
     })->name('unsubscribe')->middleware('signed');
 ```
 
-If your signed URLs do not include the domain in the URL hash, you should provide the `relative` argument to the middleware:
+ Se as suas URLs assinadas não incluírem o domínio na expressão hash da URL, você deve fornecer o argumento `relative` ao middleware:
 
 ```php
     Route::post('/unsubscribe/{user}', function (Request $request) {
@@ -196,9 +196,9 @@ If your signed URLs do not include the domain in the URL hash, you should provid
 ```
 
 <a name="responding-to-invalid-signed-routes"></a>
-#### Responding to Invalid Signed Routes
+#### Resposta a rotas assinadas inválidas
 
-When someone visits a signed URL that has expired, they will receive a generic error page for the `403` HTTP status code. However, you can customize this behavior by defining a custom "render" closure for the `InvalidSignatureException` exception in your application's `bootstrap/app.php` file:
+ Quando alguém visita uma URL assinada que expirou, receberá uma página de erro genérica para o código de status HTTP "403". No entanto, você pode personalizar esse comportamento definindo um fecho de renderização personalizado para a exceção `InvalidSignatureException` no arquivo `bootstrap/app.php` da sua aplicação:
 
 ```php
     use Illuminate\Routing\Exceptions\InvalidSignatureException;
@@ -211,9 +211,9 @@ When someone visits a signed URL that has expired, they will receive a generic e
 ```
 
 <a name="urls-for-controller-actions"></a>
-## URLs for Controller Actions
+## URLs para ações do controlador
 
-The `action` function generates a URL for the given controller action:
+ A função `action` gera um URL para a ação do controlador dada:
 
 ```php
     use App\Http\Controllers\HomeController;
@@ -221,16 +221,16 @@ The `action` function generates a URL for the given controller action:
     $url = action([HomeController::class, 'index']);
 ```
 
-If the controller method accepts route parameters, you may pass an associative array of route parameters as the second argument to the function:
+ Se o método do controlador aceitar parâmetros de rota, você poderá passar um array associação de parâmetros de rota como segundo argumento à função.
 
 ```php
     $url = action([UserController::class, 'profile'], ['id' => 1]);
 ```
 
 <a name="default-values"></a>
-## Default Values
+## Valores Padrão
 
-For some applications, you may wish to specify request-wide default values for certain URL parameters. For example, imagine many of your routes define a `{locale}` parameter:
+ Para algumas aplicações, pode ser desejável especificar valores padrão para alguns parâmetros da solicitação de forma global. Por exemplo, digamos que muitos dos seus roteadores definem um parâmetro `{locale}`:
 
 ```php
     Route::get('/{locale}/posts', function () {
@@ -238,7 +238,7 @@ For some applications, you may wish to specify request-wide default values for c
     })->name('post.index');
 ```
 
-It is cumbersome to always pass the `locale` every time you call the `route` helper. So, you may use the `URL::defaults` method to define a default value for this parameter that will always be applied during the current request. You may wish to call this method from a [route middleware](/docs/middleware#assigning-middleware-to-routes) so that you have access to the current request:
+ É demorado sempre passar o `locale` todas as vezes que você chama o helper `route`. Por isso, você pode usar o método `URL::defaults` para definir um valor padrão para este parâmetro que será sempre aplicado durante a solicitação atual. Você pode querer chamar esse método de um [middleware de rota](/docs/middleware#assigning-middleware-to-routes) para ter acesso à solicitação atual:
 
 ```php
     <?php
@@ -266,12 +266,12 @@ It is cumbersome to always pass the `locale` every time you call the `route` hel
     }
 ```
 
-Once the default value for the `locale` parameter has been set, you are no longer required to pass its value when generating URLs via the `route` helper.
+ Uma vez que o valor padrão para o parâmetro `locale` tenha sido definido, você não precisa mais passar seu valor ao gerar URLs por meio do auxiliar `route`.
 
 <a name="url-defaults-middleware-priority"></a>
-#### URL Defaults and Middleware Priority
+#### Padrões de URLs e prioridade do middleware
 
-Setting URL default values can interfere with Laravel's handling of implicit model bindings. Therefore, you should [prioritize your middleware](/docs/middleware#sorting-middleware) that set URL defaults to be executed before Laravel's own `SubstituteBindings` middleware. You can accomplish this using the `priority` middleware method in your application's `bootstrap/app.php` file:
+ O definir valores padrão de URL pode interferir no manuseamento dos elos modelos implícitos do Laravel. Por conseguinte, você deve [priorizar seu middleware](/docs/middleware#sorting-middleware) que defina valores padrão para URLs a serem executados antes do próprio middleware `SubstituteBindings` do Laravel. Você pode fazer isso usando o método de middleware `priority` no arquivo `bootstrap/app.php` do seu aplicativo:
 
 ```php
 ->withMiddleware(function (Middleware $middleware) {

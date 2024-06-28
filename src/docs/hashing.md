@@ -1,30 +1,30 @@
-# Hashing
+# Funcionamento com hashing
 
 <a name="introduction"></a>
-## Introduction
+## Introdução
 
-The Laravel `Hash` [facade](/docs/{{version}}/facades) provides secure Bcrypt and Argon2 hashing for storing user passwords. If you are using one of the [Laravel application starter kits](/docs/{{version}}/starter-kits), Bcrypt will be used for registration and authentication by default.
+ O `Hash` Laravel [facade] (http://laravel.com/docs/5.0/facades) oferece a funcionalidade de hashing segura Bcrypt e Argon2 para armazenamento de senhas do usuário. Se você estiver usando um dos [kits iniciais da aplicação Laravel] (http://laravel.com/docs/5.0/starter-kits), o Bcrypt será usado por padrão para cadastro e autenticação.
 
-Bcrypt is a great choice for hashing passwords because its "work factor" is adjustable, which means that the time it takes to generate a hash can be increased as hardware power increases. When hashing passwords, slow is good. The longer an algorithm takes to hash a password, the longer it takes malicious users to generate "rainbow tables" of all possible string hash values that may be used in brute force attacks against applications.
+ O Bcrypt é uma excelente escolha para criptografar senhas porque o seu "fator de trabalho" é ajustável, o que significa que o tempo necessário para gerar um hash pode ser aumentado à medida que o poder do hardware aumenta. Quando se trata de criptografia de senhas, lentidão é positiva. Quanto mais demorado for um algoritmo na criação de um hash, maior será a dificuldade dos utilizadores mal-intencionados em gerar "tabelas arco-íris" de todos os valores possíveis da string hash que poderiam ser usadas nos ataques brutos contra as aplicações.
 
 <a name="configuration"></a>
-## Configuration
+## Configuração
 
-By default, Laravel uses the `bcrypt` hashing driver when hashing data. However, several other hashing drivers are supported, including [`argon`](https://en.wikipedia.org/wiki/Argon2) and [`argon2id`](https://en.wikipedia.org/wiki/Argon2).
+ Por padrão, o Laravel usa o driver de hashing `bcrypt` para gerar hashes de dados. No entanto, existem vários outros drivers de hashing suportados, incluindo [`argon`](https://en.wikipedia.org/wiki/Argon2) e [`argon2id`](https://en.wikipedia.org/wiki/Argon2).
 
-You may specify your application's hashing driver using the `HASH_DRIVER` environment variable. But, if you want to customize all of Laravel's hashing driver options, you should publish the complete `hashing` configuration file using the `config:publish` Artisan command:
+ Você pode especificar o driver de hashing da aplicação usando a variável de ambiente `HASH_DRIVER`. Mas se você quiser personalizar todas as opções do driver de hashing do Laravel, publique o arquivo de configuração completo "hashing" usando o comando Artisan `config:publish`:
 
 ```bash
 php artisan config:publish hashing
 ```
 
 <a name="basic-usage"></a>
-## Basic Usage
+## Uso Básico
 
 <a name="hashing-passwords"></a>
-### Hashing Passwords
+### Comentários de senhas
 
-You may hash a password by calling the `make` method on the `Hash` facade:
+ Você pode criptografar uma senha chamando o método `make` na fachada `Hash`:
 
 ```php
     <?php
@@ -54,9 +54,9 @@ You may hash a password by calling the `make` method on the `Hash` facade:
 ```
 
 <a name="adjusting-the-bcrypt-work-factor"></a>
-#### Adjusting The Bcrypt Work Factor
+#### Ajustar o fator de trabalho do Bcrypt
 
-If you are using the Bcrypt algorithm, the `make` method allows you to manage the work factor of the algorithm using the `rounds` option; however, the default work factor managed by Laravel is acceptable for most applications:
+ Se você estiver usando o algoritmo Bcrypt, a método `make` permite gerenciar o fator de trabalho do algoritmo utilizando a opção `rounds`. No entanto, o fator de trabalho padrão administrado pelo Laravel é aceitável para a maioria dos aplicativos:
 
 ```php
     $hashed = Hash::make('password', [
@@ -65,9 +65,9 @@ If you are using the Bcrypt algorithm, the `make` method allows you to manage th
 ```
 
 <a name="adjusting-the-argon2-work-factor"></a>
-#### Adjusting The Argon2 Work Factor
+#### Ajustar o fator de trabalho do Argon2
 
-If you are using the Argon2 algorithm, the `make` method allows you to manage the work factor of the algorithm using the `memory`, `time`, and `threads` options; however, the default values managed by Laravel are acceptable for most applications:
+ Se você estiver usando o algoritmo Argon2, a função make permite que gere o fator de trabalho do algoritmo usando as opções memory, time e threads; no entanto, os valores padrão administrados pelo Laravel são aceitáveis para a maioria dos aplicativos:
 
 ```php
     $hashed = Hash::make('password', [
@@ -77,13 +77,13 @@ If you are using the Argon2 algorithm, the `make` method allows you to manage th
     ]);
 ```
 
-> [!NOTE]  
-> For more information on these options, please refer to the [official PHP documentation regarding Argon hashing](https://secure.php.net/manual/en/function.password-hash.php).
+ > [!NOTA]
+ [Documentação oficial do PHP sobre a função de hashing Argon](https://secure.php.net/manual/pt_BR/function.password-hash.php).
 
 <a name="verifying-that-a-password-matches-a-hash"></a>
-### Verifying That a Password Matches a Hash
+### Verificação de se uma senha coincide com um hash
 
-The `check` method provided by the `Hash` facade allows you to verify that a given plain-text string corresponds to a given hash:
+ O método `check`, fornecido pela fachada `Hash`, permite verificar se uma determinada cadeia de texto plano corresponde a um determinado hash:
 
 ```php
     if (Hash::check('plain-text', $hashedPassword)) {
@@ -92,9 +92,9 @@ The `check` method provided by the `Hash` facade allows you to verify that a giv
 ```
 
 <a name="determining-if-a-password-needs-to-be-rehashed"></a>
-### Determining if a Password Needs to be Rehashed
+### Determinar se uma senha precisa ser reprocessada
 
-The `needsRehash` method provided by the `Hash` facade allows you to determine if the work factor used by the hasher has changed since the password was hashed. Some applications choose to perform this check during the application's authentication process:
+ O método `needsRehash`, fornecido pela interface de trabalho `Hash`, permite determinar se o fator de trabalho usado pelo algoritmo de criptografia foi alterado desde que a senha foi transformada. Em alguns casos, as aplicações realizam esta verificação durante o processo de autenticação da aplicação:
 
 ```php
     if (Hash::needsRehash($hashed)) {
@@ -103,11 +103,11 @@ The `needsRehash` method provided by the `Hash` facade allows you to determine i
 ```
 
 <a name="hash-algorithm-verification"></a>
-## Hash Algorithm Verification
+## Verificação de algoritmo de hash
 
-To prevent hash algorithm manipulation, Laravel's `Hash::check` method will first verify the given hash was generated using the application's selected hashing algorithm. If the algorithms are different, a `RuntimeException` exception will be thrown.
+ Para impedir uma manipulação do algoritmo de hashing, o método Laravel `Hash::check` verifica se o hash fornecido foi gerado usando o algoritmo de hashing selecionado pela aplicação. Se os algoritmos forem diferentes, será lançada uma exceção `RuntimeException`.
 
-This is the expected behavior for most applications, where the hashing algorithm is not expected to change and different algorithms can be an indication of a malicious attack. However, if you need to support multiple hashing algorithms within your application, such as when migrating from one algorithm to another, you can disable hash algorithm verification by setting the `HASH_VERIFY` environment variable to `false`:
+ Este é o comportamento esperado para a maioria dos aplicativos. Não se deve esperar que o algoritmo de hashing mude e diferentes algoritmos podem indicar um ataque malicioso. No entanto, se for necessário suportar vários algoritmos hash dentro da aplicação, como na migração de um para outro, você pode desativar a verificação do algoritmo hash ao definir a variável de ambiente `HASH_VERIFY` para `false`:
 
 ```ini
 HASH_VERIFY=false
