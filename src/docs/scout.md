@@ -119,7 +119,7 @@ composer require typesense/typesense-php
 
  Em seguida, defina a variável de ambiente `SCOUT_DRIVER`, bem como suas credenciais do anfitrião e chave da API do Typesense no arquivo .env da sua aplicação:
 
-```env
+```
 SCOUT_DRIVER=typesense
 TYPESENSE_API_KEY=masterKey
 TYPESENSE_HOST=localhost
@@ -127,7 +127,7 @@ TYPESENSE_HOST=localhost
 
  Se necessário, você também pode especificar o port, caminho e protocolo da sua instalação:
 
-```env
+```
 TYPESENSE_PORT=8108
 TYPESENSE_PATH=
 TYPESENSE_PROTOCOL=http

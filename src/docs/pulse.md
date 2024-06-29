@@ -386,7 +386,7 @@ Recorders\SlowRequests::class => [
 
  Cada servidor de notificação deve ter um nome exclusivo. Por padrão, o Pulse irá utilizar o valor retornado pela função PHP `gethostname`. Se você deseja personalizar isso, pode definir a variável ambiental `PULSE_SERVER_NAME`:
 
-```env
+```
 PULSE_SERVER_NAME=load-balancer
 ```
 
@@ -442,7 +442,7 @@ public function boot(): void
 
  Você pode personalizar a conexão de banco de dados [usada pelo Pulse](/docs/database#configuration) definindo a variável de ambiente `PULSE_DB_CONNECTION`.
 
-```env
+```
 PULSE_DB_CONNECTION=pulse
 ```
 

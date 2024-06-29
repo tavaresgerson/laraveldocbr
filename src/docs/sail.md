@@ -148,7 +148,7 @@ sail php script.php
 
  Os comandos do Composer podem ser executados usando o comando `composer`. O contêiner de aplicação do Laravel Sail inclui uma instalação do Composer:
 
-```nothing
+```
 sail composer require laravel/sanctum
 ```
 

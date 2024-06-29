@@ -388,7 +388,7 @@ createInertiaApp({
 
  Considere a seguinte estrutura de projeto:
 
-```nothing
+```
 public/
   taylor.png
 resources/
@@ -539,13 +539,13 @@ export default defineConfig({
 
  Se os ativos compilados com o Vite estiverem implantados em um domínio diferente da sua aplicação, por exemplo, via CDN, você deve especificar a variável de ambiente `ASSET_URL` no arquivo `.env` do seu aplicativo:
 
-```env
+```
 ASSET_URL=https://cdn.example.com
 ```
 
  Depois de configurar o URL do ativo, todos os novos URLs dos seus ativos terão um prefixo com o valor especificado:
 
-```nothing
+```
 https://cdn.example.com/build/assets/app.9dce8d17.js
 ```
 
@@ -556,7 +556,7 @@ https://cdn.example.com/build/assets/app.9dce8d17.js
 
  Você pode inserir variáveis de ambiente no seu JavaScript, ao antepor-lhes `VITE_` no arquivo `.env` da aplicação.
 
-```env
+```
 VITE_SENTRY_DSN_PUBLIC=http://example.com
 ```
 

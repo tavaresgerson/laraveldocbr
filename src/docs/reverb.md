@@ -285,7 +285,7 @@ minfds=10000
 
  Para habilitar escalonamento horizontal, você deve definir a variável de ambiente `REVERB_SCALING_ENABLED` para `true` no arquivo de configuração do seu aplicativo `.env`:
 
-```env
+```
 REVERB_SCALING_ENABLED=true
 ```
 

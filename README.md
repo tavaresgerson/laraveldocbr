@@ -1,7 +1,7 @@
 # Laravel 11.x
 - ## Prólogo
-    - [Release Notes](/src/docs/releases.md) ✅
-    - [Upgrade Guide](/src/docs/upgrade.md)
+    - [Notas da Versão](/src/docs/releases.md) ✅
+    - [Upgrade Guide](/src/docs/upgrade.md) ✅
     - [Contribution Guide](/src/docs/contributions.md)
 - ## Começando
     - [Installation](/src/docs/installation.md)

@@ -114,7 +114,7 @@ content: [
 
  Ao contrário da página de paginação baseada em indício, que inclui um número de página na string de consulta dos URLs gerados pelo Paginador, a página de paginação baseada no cursor coloca uma string "cursor" na string de consulta. O cursor é uma string codificada que contém o local onde a próxima pesquisa por páginas deve começar e a direção da mesma:
 
-```nothing
+```
 http://localhost/users?cursor=eyJpZCI6MTUsIl9wb2ludHNUb05leHRJdGVtcyI6dHJ1ZX0
 ```
 

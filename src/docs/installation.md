@@ -40,13 +40,13 @@
 
  Depois de instalar o PHP e o Composer, você pode criar um novo projeto do Laravel através do comando `create-project` do Composer:
 
-```nothing
+```
 composer create-project laravel/laravel example-app
 ```
 
  Ou você pode criar novos projetos do Laravel instalando globalmente o [instalador Laravel](https://github.com/laravel/installer) por meio de Composer:
 
-```nothing
+```
 composer global require laravel/installer
 
 laravel new example-app
@@ -54,7 +54,7 @@ laravel new example-app
 
  Depois que o projeto tiver sido criado, inicie o servidor de desenvolvimento local do Laravel usando a linha de comando `serve` do Laravel Artisan:
 
-```nothing
+```
 cd example-app
 
 php artisan serve
@@ -133,7 +133,7 @@ php artisan migrate
 
  Depois de instalar o Herd, a maneira mais rápida de criar um novo projeto Laravel é usando o Laravel CLI, que está incluso com o Herd:
 
-```nothing
+```
 cd ~/Herd
 laravel new my-app
 cd my-app
@@ -155,7 +155,7 @@ herd open
 
  Depois de instalar o Herd, a maneira mais rápida de criar um novo projeto do Laravel é usando o Laravel CLI, que vem com Herd. Para começar, abra o Powershell e execute os seguintes comandos:
 
-```nothing
+```
 cd ~\Herd
 laravel new my-app
 cd my-app

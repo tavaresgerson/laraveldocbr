@@ -1455,7 +1455,7 @@ class ExampleTest extends TestCase
 
  O Laravel inclui suporte a alguns serviços de correio eletrónico mantidos pelo Symfony, como o Mailgun e o Postmark. No entanto, poderá pretender estender o suporte do Laravel a outros serviços de correio eletrónico mantidos pelo Symfony. Pode fazê-lo através da requisição do necessário servidor de correio eletrónico Symfony através de Composer e registo no Laravel. Por exemplo, poderá instalar e registar o "Brevo" (anteriormente "Sendinblue") como serviço de correio eletrónico Symfony:
 
-```none
+```
 composer require symfony/brevo-mailer symfony/http-client
 ```
 

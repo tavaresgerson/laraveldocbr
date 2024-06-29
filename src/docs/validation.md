@@ -880,7 +880,7 @@ $validator->after([
 
  Se a regra de validação falhar, produzirá a seguinte mensagem de erro:
 
-```none
+```
 The credit card number field is required when payment type is cc.
 ```
 
@@ -899,7 +899,7 @@ Instead of displaying `cc` as the payment type value, you may specify a more use
 
  Após definir esse valor, a regra de validação produz o seguinte erro:
 
-```none
+```
 The credit card number field is required when payment type is credit card.
 ```
 

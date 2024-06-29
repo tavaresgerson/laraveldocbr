@@ -1271,7 +1271,7 @@ php artisan make:component Alert --inline
 
  Por vezes, quando uma componente é constituída por muitos modelos de Blade, pode ser desejável agrupar os modelos da dada componente num único diretório. Por exemplo, imagine uma componente "accordion" com a seguinte estrutura de diretórios:
 
-```none
+```
 /resources/views/components/accordion.blade.php
 /resources/views/components/accordion/item.blade.php
 ```
@@ -1290,7 +1290,7 @@ php artisan make:component Alert --inline
 
  Felizmente, o Blade permite que você coloque um arquivo `index.blade.php` dentro do diretório de modelos de um componente. Se houver um modelo `index.blade.php` para o componente, ele será renderizado como o nó "raiz" do componente. Assim, podemos continuar usando a mesma sintaxe Blade apresentada no exemplo acima; porém, precisaremos ajustar nossa estrutura de diretórios da seguinte forma:
 
-```none
+```
 /resources/views/components/accordion/index.blade.php
 /resources/views/components/accordion/item.blade.php
 ```
