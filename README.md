@@ -1,11 +1,11 @@
 # Laravel 11.x
 - ## Prólogo
     - [Notas da Versão](/src/docs/releases.md) ✅
-    - [Upgrade Guide](/src/docs/upgrade.md) ✅
-    - [Contribution Guide](/src/docs/contributions.md)
+    - [Guia de atualização](/src/docs/upgrade.md) ✅
+    - [Guia de Contribuição](/src/docs/contributions.md) ✅
 - ## Começando
-    - [Installation](/src/docs/installation.md)
-    - [Configuration](/src/docs/configuration.md)
+    - [Instalação](/src/docs/installation.md) ✅
+    - [Configuração](/src/docs/configuration.md) ✅
     - [Directory Structure](/src/docs/structure.md)
     - [Frontend](/src/docs/frontend.md)
     - [Starter Kits](/src/docs/starter-kits.md)
