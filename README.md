@@ -6,9 +6,9 @@
 - ## Começando
     - [Instalação](/src/docs/installation.md) ✅
     - [Configuração](/src/docs/configuration.md) ✅
-    - [Directory Structure](/src/docs/structure.md)
-    - [Frontend](/src/docs/frontend.md)
-    - [Starter Kits](/src/docs/starter-kits.md)
+    - [Estrutura de Diretórios](/src/docs/structure.md) ✅
+    - [Frontend](/src/docs/frontend.md) ✅
+    - [Starter Kits](/src/docs/starter-kits.md) ✅
     - [Deployment](/src/docs/deployment.md)
 - ## Conceitos de Arquitetura
     - [Request Lifecycle](/src/docs/lifecycle.md)

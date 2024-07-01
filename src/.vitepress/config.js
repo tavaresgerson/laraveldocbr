@@ -31,7 +31,7 @@ export default {
     darkModeSwitchLabel: 'Aparência',
     outline: {
       label: 'Nesta página',
-      deep: 3
+      level: 'deep'
     },
     // theme-level options
     logo: { light: '/header_logo.svg', dark: '/header_logo.svg' },
