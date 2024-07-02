@@ -339,7 +339,7 @@ php artisan make:policy PostPolicy --model=Post
  Se você tiver usado a opção `--model` ao gerar seu policy através da consola Artisan, ele já conterá métodos para as ações "viewAny", "view", "create", "update", "delete", "restore" e "forceDelete".
 
  > [!ATENÇÃO]
- Existe um [conjunto de serviços] ({{version}}/container), que permite referenciar, através da especificação do tipo de dependência no construtor da estratégia de segurança, a dependência necessária para a sua injeção automática.
+ Existe um [conjunto de serviços] (container), que permite referenciar, através da especificação do tipo de dependência no construtor da estratégia de segurança, a dependência necessária para a sua injeção automática.
 
 ### Respostas de política
 
@@ -614,7 +614,7 @@ php artisan make:policy PostPolicy --model=Post
 
 ### Por meio do middleware
 
- O Laravel inclui um middleware que pode autorizar ações antes mesmo de o pedido receber os seus rotas ou controladores. Por padrão, o middleware `Illuminate\Auth\Middleware\Authorize` poderá ser associado a uma rota usando o [alias de middleware](/docs/{{version}}/middleware#middleware-alias), que é automaticamente registrado pelo Laravel. Vamos explorar um exemplo do uso do middleware `can` para autorizar que um utilizador possa atualizar um post:
+ O Laravel inclui um middleware que pode autorizar ações antes mesmo de o pedido receber os seus rotas ou controladores. Por padrão, o middleware `Illuminate\Auth\Middleware\Authorize` poderá ser associado a uma rota usando o [alias de middleware](/docs/middleware#middleware-alias), que é automaticamente registrado pelo Laravel. Vamos explorar um exemplo do uso do middleware `can` para autorizar que um utilizador possa atualizar um post:
 
 ```php
     use App\Models\Post;
@@ -624,7 +624,7 @@ php artisan make:policy PostPolicy --model=Post
     })->middleware('can:update,post');
 ```
 
- Neste exemplo, o middleware `can` está recebendo dois argumentos. O primeiro é o nome da ação que pretendemos autorizar e o segundo é o parâmetro de rota que pretendemos passar à método do modelo. No caso, como estamos usando o [enlaçamento implícito](/docs/{{version}}/routing#implicit-binding), um modelo `App\Models\Post` será passado para a metodologia de política. Se o utilizador não estiver autorizado a executar a ação dada, o middleware irá retornar uma resposta HTTP com um código de status 403.
+ Neste exemplo, o middleware `can` está recebendo dois argumentos. O primeiro é o nome da ação que pretendemos autorizar e o segundo é o parâmetro de rota que pretendemos passar à método do modelo. No caso, como estamos usando o [enlaçamento implícito](/docs/routing#implicit-binding), um modelo `App\Models\Post` será passado para a metodologia de política. Se o utilizador não estiver autorizado a executar a ação dada, o middleware irá retornar uma resposta HTTP com um código de status 403.
 
  Para mais conveniência, você pode também anexar o middleware `can` à sua rota usando o método `can`:
 
@@ -749,7 +749,7 @@ php artisan make:policy PostPolicy --model=Post
 
  Apesar da autorização sempre ter que ser tratada no servidor, frequentemente pode ser conveniente disponibilizar ao seu aplicativo front-end dados de autorização para que a interface gráfica da sua aplicação seja devidamente apresentada. O Laravel não define uma convenção obrigatória para expor informações de autorização a um front-end alimentado por Inertia.
 
- No entanto, se você estiver usando um dos [pacotes de inicialização](/docs/{{version}}/starter-kits) baseados em Inertia do Laravel, seu aplicativo já possui um middleware `HandleInertiaRequests`. Dentro deste middleware, no método `share`, você pode retornar dados compartilhados que serão fornecidos a todas as páginas da Inertia em seu aplicativo. Estes dados compartilhados podem servir como uma localização conveniente para definir informações de autorização do usuário:
+ No entanto, se você estiver usando um dos [pacotes de inicialização](/docs/starter-kits) baseados em Inertia do Laravel, seu aplicativo já possui um middleware `HandleInertiaRequests`. Dentro deste middleware, no método `share`, você pode retornar dados compartilhados que serão fornecidos a todas as páginas da Inertia em seu aplicativo. Estes dados compartilhados podem servir como uma localização conveniente para definir informações de autorização do usuário:
 
 ```php
 <?php

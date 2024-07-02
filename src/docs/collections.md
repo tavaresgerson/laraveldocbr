@@ -367,7 +367,7 @@
     // [[1, 2, 3, 4], [5, 6, 7]]
 ```
 
- Esse método é especialmente útil em [vistas](/docs/{{version}}/views), quando você trabalha com sistemas de grid, como o Bootstrap ([Bootstrap](https://getbootstrap.com/docs/5.3/layout/grid/)). Por exemplo, imagine que você tenha uma coleção de modelos Eloquent (/docs/{{version}}/eloquent) que deseja exibir em um grid:
+ Esse método é especialmente útil em [vistas](/docs/views), quando você trabalha com sistemas de grid, como o Bootstrap ([Bootstrap](https://getbootstrap.com/docs/5.3/layout/grid/)). Por exemplo, imagine que você tenha uma coleção de modelos Eloquent (/docs/eloquent) que deseja exibir em um grid:
 
 ```blade
 @foreach ($products->chunk(3) as $chunk)
@@ -4092,7 +4092,7 @@ Optionally, you may pass a comparison operator as the second parameter. Supporte
     // 59
 ```
 
- Para ilustrar o uso desse método, imagine um aplicativo que envia faturas da base de dados usando um cursor. É possível definir uma [tarefa agendada](/docs/{{version}}/scheduling) que é executada a cada 15 minutos e processa apenas faturas por até 14 minutos:
+ Para ilustrar o uso desse método, imagine um aplicativo que envia faturas da base de dados usando um cursor. É possível definir uma [tarefa agendada](/docs/scheduling) que é executada a cada 15 minutos e processa apenas faturas por até 14 minutos:
 
 ```php
     use App\Models\Invoice;

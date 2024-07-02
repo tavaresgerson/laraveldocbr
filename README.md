@@ -9,7 +9,7 @@
     - [Estrutura de Diretórios](/src/docs/structure.md) ✅
     - [Frontend](/src/docs/frontend.md) ✅
     - [Starter Kits](/src/docs/starter-kits.md) ✅
-    - [Deployment](/src/docs/deployment.md)
+    - [Deployment](/src/docs/deployment.md) ✅
 - ## Conceitos de Arquitetura
     - [Request Lifecycle](/src/docs/lifecycle.md)
     - [Service Container](/src/docs/container.md)

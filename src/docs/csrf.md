@@ -29,7 +29,7 @@
 <a name="preventing-csrf-requests"></a>
 ## Evitar requisições CSRF
 
- O Laravel gera automaticamente um "token" CSRF para cada [sessão de usuário ativo](/docs/{{version}}/session) gerenciada pela aplicação. Este token é utilizado para verificar se o utilizador autenticado é realmente a pessoa que está a fazer os pedidos à aplicação. Uma vez que este token é armazenado na sessão do utilizador e altera-se sempre que a sessão for regenerada, uma aplicação maliciosa não tem acesso ao mesmo.
+ O Laravel gera automaticamente um "token" CSRF para cada [sessão de usuário ativo](/docs/session) gerenciada pela aplicação. Este token é utilizado para verificar se o utilizador autenticado é realmente a pessoa que está a fazer os pedidos à aplicação. Uma vez que este token é armazenado na sessão do utilizador e altera-se sempre que a sessão for regenerada, uma aplicação maliciosa não tem acesso ao mesmo.
 
  O token de CSRF da sessão atual pode ser acessado por meio da sessão da requisição ou por meio do auxílio de função `csrf_token`:
 
@@ -61,7 +61,7 @@
 <a name="csrf-tokens-and-spas"></a>
 ### Tokens de CSRF e SPAs
 
- Se você estiver construindo um SPA que utiliza o Laravel como um back-end de API, consulte a documentação do [Laravel Sanctum](/docs/{{version}}/sanctum) para obter informações sobre autenticação com sua API e proteção contra vulnerabilidades CSRF.
+ Se você estiver construindo um SPA que utiliza o Laravel como um back-end de API, consulte a documentação do [Laravel Sanctum](/docs/sanctum) para obter informações sobre autenticação com sua API e proteção contra vulnerabilidades CSRF.
 
 <a name="csrf-excluding-uris"></a>
 ### Excluindo os URIs da proteção contra a CSRF

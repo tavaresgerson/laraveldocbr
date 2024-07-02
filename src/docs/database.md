@@ -3,7 +3,7 @@
 <a name="introduction"></a>
 ## Introdução
 
- Quase todas as aplicações web modernas interagem com base de dados. O Laravel torna extremamente fácil a interação com várias bases de dados através do SQL bruto, um [construtor de consulta fluido](/docs/{{version}}/queries), e o [ORM Eloquent](/docs/{{version}}/eloquent). Atualmente, o Laravel fornece suporte interno para cinco bases de dados:
+ Quase todas as aplicações web modernas interagem com base de dados. O Laravel torna extremamente fácil a interação com várias bases de dados através do SQL bruto, um [construtor de consulta fluido](/docs/queries), e o [ORM Eloquent](/docs/eloquent). Atualmente, o Laravel fornece suporte interno para cinco bases de dados:
 
 <div class="content-list" markdown="1">
 
@@ -20,7 +20,7 @@
 
  A configuração dos serviços de base de dados do Laravel está localizada no arquivo de configuração `config/database.php` da aplicação. Neste arquivo, você poderá definir todas as conexões com a base de dados e especificar qual ligação será usada por padrão. A maioria das opções de configuração nesse arquivo são direcionadas pelos valores das variáveis de ambiente da aplicação. Exemplos para a maioria dos sistemas de banco de dados suportados pelo Laravel estão disponíveis neste arquivo.
 
- Por padrão, a configuração de ambiente [de amostra do Laravel](/docs/{{version}}/configuration#environment-configuration) está pronta para uso com o [Laravel Sail] (/docs/{{version}}/sail), que é uma configuração do Docker para desenvolvimento de aplicações Laravel na máquina local. No entanto, você pode modificar a configuração de banco de dados conforme necessário para o seu banco de dados local.
+ Por padrão, a configuração de ambiente [de amostra do Laravel](/docs/configuration#environment-configuration) está pronta para uso com o [Laravel Sail] (/docs/sail), que é uma configuração do Docker para desenvolvimento de aplicações Laravel na máquina local. No entanto, você pode modificar a configuração de banco de dados conforme necessário para o seu banco de dados local.
 
 <a name="sqlite-configuration"></a>
 #### Configuração do SQLite
@@ -276,7 +276,7 @@ driver://username:password@host:port/database?options
 <a name="listening-for-query-events"></a>
 ### Ouvindo eventos de consulta
 
- Se você deseja especificar uma função de fechamento que é invocada para cada consulta SQL executada pelo seu aplicativo, você pode usar o método `listen` da faca `DB`. Este método pode ser útil para registrar consultas ou fazer debug. Você pode registrar sua função de fechamento na consulta no método `boot` de um [fornecedor de serviços](/docs/{{version}}/providers):
+ Se você deseja especificar uma função de fechamento que é invocada para cada consulta SQL executada pelo seu aplicativo, você pode usar o método `listen` da faca `DB`. Este método pode ser útil para registrar consultas ou fazer debug. Você pode registrar sua função de fechamento na consulta no método `boot` de um [fornecedor de serviços](/docs/providers):
 
 ```php
     <?php
@@ -314,7 +314,7 @@ driver://username:password@host:port/database?options
 <a name="monitoring-cumulative-query-time"></a>
 ### Monitorando tempo de consulta acumulativo
 
- Um gargalo comum das performances de aplicações web modernas é o tempo gasto a interrogar os bancos de dados. Felizmente, Laravel permite acionar um fecho ou callback escolhido pelo utilizador quando este tempo for demasiado elevado durante uma única consulta ao banco de dados. Para iniciar, disponibilize o limiar de tempo de consulta (em milésimos) e o fecho para a função `whenQueryingForLongerThan`. Pode invocar esta função na metoda `boot` de um [fornecedor de serviços](/docs/{{version}}/providers):
+ Um gargalo comum das performances de aplicações web modernas é o tempo gasto a interrogar os bancos de dados. Felizmente, Laravel permite acionar um fecho ou callback escolhido pelo utilizador quando este tempo for demasiado elevado durante uma única consulta ao banco de dados. Para iniciar, disponibilize o limiar de tempo de consulta (em milésimos) e o fecho para a função `whenQueryingForLongerThan`. Pode invocar esta função na metoda `boot` de um [fornecedor de serviços](/docs/providers):
 
 ```php
     <?php
@@ -402,7 +402,7 @@ driver://username:password@host:port/database?options
 ```
 
  > [!ATENÇÃO]
- [ construção de consultas](/docs/{{version}}/queries) e
+ [ construção de consultas](/docs/queries) e
 
 <a name="connecting-to-the-database-cli"></a>
 ## Conectando-se ao DB CLIs
@@ -472,7 +472,7 @@ php artisan db:table users
 
  Usando o comando do artesão `db:monitor`, é possível instruir o Laravel a enviar um evento `Illuminate\Database\Events\DatabaseBusy` se o banco de dados estiver gerenciando mais que um determinado número de conexões em aberto.
 
- Para começar, você deve agendar o comando `db:monitor` para [executar a cada minuto] (/docs/{{version}}/scheduling). O comando aceita os nomes das configurações de conexão do banco de dados que deseja monitorar, bem como o número máximo de conexões abertas que devem ser toleradas antes da distribuição de um evento:
+ Para começar, você deve agendar o comando `db:monitor` para [executar a cada minuto] (/docs/scheduling). O comando aceita os nomes das configurações de conexão do banco de dados que deseja monitorar, bem como o número máximo de conexões abertas que devem ser toleradas antes da distribuição de um evento:
 
 ```shell
 php artisan db:monitor --databases=mysql,pgsql --max=100

@@ -350,7 +350,7 @@ php artisan make:resource UserCollection
 }
 ```
 
- Se você deseja desativar a embelezamento do recurso mais externo, deverá invocar o método `withoutWrapping` na base da classe `Illuminate\Http\Resources\Json\JsonResource`. Normalmente, esse método é chamado do seu `AppServiceProvider` ou outro [fornecedor de serviços] (/docs/{{version}}/providers) que é carregado em todas as solicitações para sua aplicação:
+ Se você deseja desativar a embelezamento do recurso mais externo, deverá invocar o método `withoutWrapping` na base da classe `Illuminate\Http\Resources\Json\JsonResource`. Normalmente, esse método é chamado do seu `AppServiceProvider` ou outro [fornecedor de serviços] (/docs/providers) que é carregado em todas as solicitações para sua aplicação:
 
 ```php
     <?php
@@ -690,7 +690,7 @@ php artisan make:resource UserCollection
     }
 ```
 
- Se o seu relacionamento estiver usando um [modelo de tabela intermediária personalizada](/docs/{{version}}/eloquent-relationships#defining-custom-intermediate-table-models), você pode passar uma instância do modelo de tabela intermediária como o primeiro argumento para o método `whenPivotLoaded`:
+ Se o seu relacionamento estiver usando um [modelo de tabela intermediária personalizada](/docs/eloquent-relationships#defining-custom-intermediate-table-models), você pode passar uma instância do modelo de tabela intermediária como o primeiro argumento para o método `whenPivotLoaded`:
 
 ```php
     'expires_at' => $this->whenPivotLoaded(new Membership, function () {

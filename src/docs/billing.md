@@ -312,7 +312,7 @@ CASHIER_LOGGER=stack
 
 #### Construção de um middleware subscrito
 
- Para conveniência, você pode criar um [middleware](/docs/{{version}}/middleware) que determine se o pedido chegou de um usuário inscrito. Depois que este middleware tiver sido definido, você poderá facilmente atribuí-lo a uma rota para impedir que os usuários não inscritos tenham acesso à rota:
+ Para conveniência, você pode criar um [middleware](/docs/middleware) que determine se o pedido chegou de um usuário inscrito. Depois que este middleware tiver sido definido, você poderá facilmente atribuí-lo a uma rota para impedir que os usuários não inscritos tenham acesso à rota:
 
 ```php
     <?php
@@ -954,7 +954,7 @@ cardButton.addEventListener('click', async (e) => {
     }
 ```
 
- O método `subscribed` também é uma boa opção para um [médio de rota](/docs/{{version}}/middleware), permitindo que você filtre o acesso às rotas e controles com base no status de assinatura do usuário:
+ O método `subscribed` também é uma boa opção para um [médio de rota](/docs/middleware), permitindo que você filtre o acesso às rotas e controles com base no status de assinatura do usuário:
 
 ```php
     <?php
@@ -1705,7 +1705,7 @@ cardButton.addEventListener('click', async (e) => {
 ```
 
  > [!AVISO]
- Adicione o atributo `trial_ends_at` ao modelo faturável, na definição da classe, com as informações em formato de data (conforme especificado no guia de [data emitido](/docs/{{version}}/eloquent-mutators#date-casting).
+ Adicione o atributo `trial_ends_at` ao modelo faturável, na definição da classe, com as informações em formato de data (conforme especificado no guia de [data emitido](/docs/eloquent-mutators#date-casting).
 
  O caixa refere-se a este tipo de teste como "teste genérico", pois não está associado a qualquer assinatura existente. O método `onTrial` na instância do modelo faturável retornará `true` se a data atual não passar o valor de `trial_ends_at`:
 
@@ -1808,7 +1808,7 @@ php artisan cashier:webhook --disabled
 
 #### Webhook e proteção contra ataques XSRF
 
- Como os webhook da Stripe precisam contornar a proteção de [CSRF] ({{version}}/csrf) do Laravel, você deve assegurar que o Laravel não tente validar o token CSRF para os webhooks da Stripe. Para isso, você deve excluir `stripe/*` da proteção de CSRF em seu arquivo `bootstrap/app.php`:
+ Como os webhook da Stripe precisam contornar a proteção de [CSRF] (csrf) do Laravel, você deve assegurar que o Laravel não tente validar o token CSRF para os webhooks da Stripe. Para isso, você deve excluir `stripe/*` da proteção de CSRF em seu arquivo `bootstrap/app.php`:
 
 ```php
     ->withMiddleware(function (Middleware $middleware) {
@@ -1825,7 +1825,7 @@ php artisan cashier:webhook --disabled
  - `Laravel\Cashier\Events\WebhookReceived`
  `- Laravel\Cashier\Events\WebhookHandled
 
- Ambos os eventos contêm o conteúdo completo do webhook Stripe. Por exemplo, se desejar tratar o webhook `invoice.payment_succeeded`, poderá registar um [ouvinte](/docs/{{version}}/events#defining-listeners) que irá gerir o evento:
+ Ambos os eventos contêm o conteúdo completo do webhook Stripe. Por exemplo, se desejar tratar o webhook `invoice.payment_succeeded`, poderá registar um [ouvinte](/docs/events#defining-listeners) que irá gerir o evento:
 
 ```php
     <?php

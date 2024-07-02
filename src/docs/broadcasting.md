@@ -5,9 +5,9 @@
 
  Em muitas aplicações web modernas, os WebSockets são utilizados para implementar interfaces de utilizador em tempo real que se atualizam automaticamente. Normalmente, quando alguns dados são atualizados no servidor, uma mensagem é enviada por meio de uma ligação WebSocket a ser tratada pelo cliente. Os WebSockets proporcionam uma alternativa mais eficiente ao sondar continuamente o servidor da aplicação quanto à alterações dos dados que devem ser refletidas na sua interface gráfica.
 
- Por exemplo, imagine que seu aplicativo seja capaz de exportar os dados do usuário para um arquivo CSV e enviá-lo por email. No entanto, a criação deste arquivo CSV leva vários minutos, então você opta por criar e enviar o CSV dentro de uma [tarefa agendada](/docs/{{version}}/queues). Quando o CSV tiver sido criado e enviado ao usuário, podemos usar a transmissão de eventos para distribuir um evento `App\Events\UserDataExported` que é recebido pelo nosso JavaScript do aplicativo. Uma vez que o evento é recebido, podemos exibir uma mensagem para o usuário informando que seu CSV foi enviado por email sem que seja necessário atualizar a página.
+ Por exemplo, imagine que seu aplicativo seja capaz de exportar os dados do usuário para um arquivo CSV e enviá-lo por email. No entanto, a criação deste arquivo CSV leva vários minutos, então você opta por criar e enviar o CSV dentro de uma [tarefa agendada](/docs/queues). Quando o CSV tiver sido criado e enviado ao usuário, podemos usar a transmissão de eventos para distribuir um evento `App\Events\UserDataExported` que é recebido pelo nosso JavaScript do aplicativo. Uma vez que o evento é recebido, podemos exibir uma mensagem para o usuário informando que seu CSV foi enviado por email sem que seja necessário atualizar a página.
 
- Para ajudá-lo a desenvolver esses tipos de recursos, o Laravel facilita a "transmissão" do lado servidor dos [eventos Laravel](/docs/{{version}}/events). Essa transmissão permite que você compartilhe os mesmos nomes e dados entre seu aplicativo Laravel no lado servidor e seu aplicativo JavaScript no lado cliente.
+ Para ajudá-lo a desenvolver esses tipos de recursos, o Laravel facilita a "transmissão" do lado servidor dos [eventos Laravel](/docs/events). Essa transmissão permite que você compartilhe os mesmos nomes e dados entre seu aplicativo Laravel no lado servidor e seu aplicativo JavaScript no lado cliente.
 
  Os conceitos básicos por trás da transmissão são simples: os clientes se conectam a canais específicos no front-end, enquanto o aplicativo Laravel transmite eventos para esses canais no back-end. Esses eventos podem conter qualquer dado adicional que você deseja disponibilizar ao front-end.
 
@@ -31,7 +31,7 @@
 
  Toda a configuração de transmissão de eventos do aplicativo é armazenada no arquivo de configuração `config/broadcasting.php`. Não se preocupe se este diretório não existir em seu aplicativo; ele será criado quando você executar o comando Artisan `install:broadcasting`.
 
- O Laravel suporta vários dispositivos de transmissão na caixa: [Laravel Reverb](/docs/{{version}}/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com) e um driver `log` para desenvolvimento e depuração locais. Além disso, o Laravel inclui um driver `null`, que permite desativar a transmissão durante testes. Um exemplo de configuração está incluído para cada um desses drivers no arquivo de configuração `config/broadcasting.php`.
+ O Laravel suporta vários dispositivos de transmissão na caixa: [Laravel Reverb](/docs/reverb), [Pusher Channels](https://pusher.com/channels), [Ably](https://ably.com) e um driver `log` para desenvolvimento e depuração locais. Além disso, o Laravel inclui um driver `null`, que permite desativar a transmissão durante testes. Um exemplo de configuração está incluído para cada um desses drivers no arquivo de configuração `config/broadcasting.php`.
 
 <a name="installation"></a>
 #### Instalação
@@ -47,12 +47,12 @@ php artisan install:broadcasting
 <a name="queue-configuration"></a>
 #### Configuração da fila
 
- Antes de transmitir quaisquer eventos, você deve primeiro configurar e executar um [trabalhador de fila](/docs/{{version}}/queues). Todas as transmissões de evento são realizadas por meio de tarefas em fila para que o tempo de resposta do seu aplicativo não seja afetado seriamente por eventos sendo transmitidos.
+ Antes de transmitir quaisquer eventos, você deve primeiro configurar e executar um [trabalhador de fila](/docs/queues). Todas as transmissões de evento são realizadas por meio de tarefas em fila para que o tempo de resposta do seu aplicativo não seja afetado seriamente por eventos sendo transmitidos.
 
 <a name="reverb"></a>
 ### Eco
 
- Ao executar o comando `install:broadcasting`, você será solicitado a instalar [Laravel Reverb](/docs/{{version}}/reverb). Claro que você também poderá instalar o Reverb manualmente usando o gerenciador de pacotes Composer. Uma vez que o Reverb está atualmente em versão beta, será necessário instalar explicitamente a versão beta:
+ Ao executar o comando `install:broadcasting`, você será solicitado a instalar [Laravel Reverb](/docs/reverb). Claro que você também poderá instalar o Reverb manualmente usando o gerenciador de pacotes Composer. Uma vez que o Reverb está atualmente em versão beta, será necessário instalar explicitamente a versão beta:
 
 ```sh
 composer require laravel/reverb:@beta
@@ -216,7 +216,7 @@ npm run build
 ```
 
  > [!ATENÇÃO]
- [Vários idiomas](/docs/{{version}}/vite).
+ [Vários idiomas](/docs/vite).
 
 <a name="using-an-existing-client-instance"></a>
 #### Usando uma instância de cliente existente
@@ -440,7 +440,7 @@ Echo.private(`orders.${orderId}`)
     }
 ```
 
- Após implementar a interface `ShouldBroadcast`, você só precisa [enviar o evento] (/docs/{{version}}/events), como normalmente faria. Uma vez que o evento tenha sido enviado, um [trabalho agendado] (/docs/{{version}}/queues) irá transmitir automaticamente o evento usando seu driver de transmissão especificado.
+ Após implementar a interface `ShouldBroadcast`, você só precisa [enviar o evento] (/docs/events), como normalmente faria. Uma vez que o evento tenha sido enviado, um [trabalho agendado] (/docs/queues) irá transmitir automaticamente o evento usando seu driver de transmissão especificado.
 
 <a name="broadcast-name"></a>
 ### Transmissão de nomes
@@ -613,7 +613,7 @@ php artisan channel:list
 <a name="authorization-callback-model-binding"></a>
 #### Associação de modelo de callback à autorização
 
- Assim como as rotas HTTP, as rotas de canais também podem ser benéficas para o [vinculamento do modelo da rota](/docs/{{version}}/routing#route-model-binding) implícito e explícito. Por exemplo, em vez de receber um número de pedido como uma string ou numérica, você pode solicitar a instância atual do modelo `Order` (Pedido):
+ Assim como as rotas HTTP, as rotas de canais também podem ser benéficas para o [vinculamento do modelo da rota](/docs/routing#route-model-binding) implícito e explícito. Por exemplo, em vez de receber um número de pedido como uma string ou numérica, você pode solicitar a instância atual do modelo `Order` (Pedido):
 
 ```php
     use App\Models\Order;
@@ -625,7 +625,7 @@ php artisan channel:list
 ```
 
  > [AVERIGOMETE]
- [Escopo de vinculação implícito do modelo](/docs/{{version}}/routing#implicit-model-binding-scoping). No entanto, esse é um problema raro porque a maioria dos canais podem ser vinculados com base na chave primária única de um único modelo.
+ [Escopo de vinculação implícito do modelo](/docs/routing#implicit-model-binding-scoping). No entanto, esse é um problema raro porque a maioria dos canais podem ser vinculados com base na chave primária única de um único modelo.
 
 <a name="authorization-callback-authentication"></a>
 #### Autenticação de chamada de autorização
@@ -686,7 +686,7 @@ php artisan make:channel OrderChannel
 ```
 
  > [!AVISO]
- [Contêiner de serviço](/docs/{{version}}/container). Então, você pode indicar qualquer dependência necessária pelo seu canal em seu construtor.
+ [Contêiner de serviço](/docs/container). Então, você pode indicar qualquer dependência necessária pelo seu canal em seu construtor.
 
 <a name="broadcasting-events"></a>
 ## Transmissão de eventos
@@ -994,7 +994,7 @@ Echo.join(`chat.${roomId}`)
  > [AVERTISSEMENT]
  > Antes de ler a documentação abaixo sobre transmissão de modelo, recomendamos que você conheça os conceitos gerais dos serviços de transmissão de modelos do Laravel e como criar manualmente e ouvir eventos de transmissão.
 
- É comum transmitir eventos quando os [modelos Eloquent] (/docs/{{version}}/eloquent) do aplicativo são criados, atualizados ou excluídos. Claro que isso pode ser feito facilmente definindo manualmente [eventos personalizados para alterações de estado de modelos Eloquent] (/docs/{{version}}/eloquent#events) e marcando esses eventos com a interface `ShouldBroadcast`.
+ É comum transmitir eventos quando os [modelos Eloquent] (/docs/eloquent) do aplicativo são criados, atualizados ou excluídos. Claro que isso pode ser feito facilmente definindo manualmente [eventos personalizados para alterações de estado de modelos Eloquent] (/docs/eloquent#events) e marcando esses eventos com a interface `ShouldBroadcast`.
 
  No entanto, se você não estiver usando esses eventos para outros propósitos em sua aplicação, poderá ser cansativo criar classes de evento apenas com o intuito de transmiti-los. Para sanar isso, o Laravel permite que você indique que um modelo Eloquent deve transmitir automaticamente suas mudanças no estado.
 
@@ -1206,7 +1206,7 @@ Echo.private(`chat.${roomId}`)
 <a name="notifications"></a>
 ## Notificações
 
- Ao combinar a transmissão de eventos com as notificações ([notificações](/docs/{{version}}/notificações)), sua aplicação JavaScript pode receber novas notificações ao ocorrerem sem necessitar de recarregar a página. Antes de começar, leia a documentação sobre como usar o [canal de notificação de transmissão](/docs/{{version}}/notificações#broadcast-notifications).
+ Ao combinar a transmissão de eventos com as notificações ([notificações](/docs/notificações)), sua aplicação JavaScript pode receber novas notificações ao ocorrerem sem necessitar de recarregar a página. Antes de começar, leia a documentação sobre como usar o [canal de notificação de transmissão](/docs/notificações#broadcast-notifications).
 
  Depois de configurar uma notificação para usar o canal de transmissão, você poderá ouvir os eventos de transmissão usando o método `notification` do Echo. Lembre-se de que o nome do canal deve combinar com a classe da entidade que recebe as notificações:
 

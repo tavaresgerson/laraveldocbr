@@ -598,7 +598,7 @@ php83
 <a name="configuring-cron-schedules"></a>
 ### Configure os horários do cron
 
- O Laravel fornece uma maneira prática de [programar tarefas cron](/docs/{{version}}/scheduling) programando um único comando Artisan "schedule:run" para ser executado a cada minuto. O comando "schedule:run" analisará o calendário definido em seu arquivo "routes/console.php" para determinar quais tarefas agendadas devem ser executadas.
+ O Laravel fornece uma maneira prática de [programar tarefas cron](/docs/scheduling) programando um único comando Artisan "schedule:run" para ser executado a cada minuto. O comando "schedule:run" analisará o calendário definido em seu arquivo "routes/console.php" para determinar quais tarefas agendadas devem ser executadas.
 
  Se você deseja que o comando `schedule:run` seja executado para um site do tipo Homestead, defina a opção `schedule` como `true`, quando definir o site:
 

@@ -6,7 +6,7 @@
  Ao criar APIs com o uso do Laravel, geralmente você precisará converter seus modelos e relações em arrays ou JSON. O Eloquent inclui métodos convenientes para fazer essas conversões, além de permitir que você controle quais atributos são incluídos na representação serializada dos seus modelos.
 
  > [!ATENÇÃO]
- [Recursos da API Eloquent](/docs/{{version}}/eloquent-resources).
+ [Recursos da API Eloquent](/docs/eloquent-resources).
 
 <a name="serializing-models-and-collections"></a>
 ## Serialização de modelos e coleções
@@ -146,7 +146,7 @@
 <a name="appending-values-to-json"></a>
 ## Adicionando valores ao JSON
 
- Às vezes, ao converter modelos para arrays ou JSON, talvez você deseje adicionar atributos que não tenham uma coluna correspondente em seu banco de dados. Para fazer isso, defina primeiro um [acessório](/docs/{{version}}/eloquent-mutators) para o valor:
+ Às vezes, ao converter modelos para arrays ou JSON, talvez você deseje adicionar atributos que não tenham uma coluna correspondente em seu banco de dados. Para fazer isso, defina primeiro um [acessório](/docs/eloquent-mutators) para o valor:
 
 ```php
     <?php
@@ -224,7 +224,7 @@
 <a name="customizing-the-date-format-per-attribute"></a>
 #### Personalizar o formato de data por atributo
 
- Você pode personalizar o formato de serialização dos atributos de data individuais do Eloquent, especificando o formato da data nas declarações de cast ([/docs/{{version}}/eloquent-mutators#attribute-casting]:
+ Você pode personalizar o formato de serialização dos atributos de data individuais do Eloquent, especificando o formato da data nas declarações de cast ([/docs/eloquent-mutators#attribute-casting]:
 
 ```php
     protected function casts(): array

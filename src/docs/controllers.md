@@ -212,7 +212,7 @@ php artisan make:controller PhotoController --resource
 <a name="soft-deleted-models"></a>
 #### Modelos apagados soft
 
- Normalmente, o mapeamento de modelo implícito não recuperará modelos que tenham sido [excluídos por omissão](/docs/{{version}}/eloquent#omission-deletion), e, em vez disso, retornará uma resposta 404 HTTP. No entanto, você pode instruir o framework a permitir modelos excluídos por omissão invocando o método `withTrashed` ao definir sua rota de recurso:
+ Normalmente, o mapeamento de modelo implícito não recuperará modelos que tenham sido [excluídos por omissão](/docs/eloquent#omission-deletion), e, em vez disso, retornará uma resposta 404 HTTP. No entanto, você pode instruir o framework a permitir modelos excluídos por omissão invocando o método `withTrashed` ao definir sua rota de recurso:
 
 ```php
     use App\Http\Controllers\PhotoController;
@@ -229,7 +229,7 @@ php artisan make:controller PhotoController --resource
 <a name="specifying-the-resource-model"></a>
 #### Especificando o modelo de recursos
 
- Se você estiver utilizando o [mapeamento de modelo de rota](/docs/{{version}}/routing#route-model-binding) e desejar que os métodos do controlador de recursos indiquem um tipo para uma instância do modelo, pode usar a opção `--model` ao gerar o controlador:
+ Se você estiver utilizando o [mapeamento de modelo de rota](/docs/routing#route-model-binding) e desejar que os métodos do controlador de recursos indiquem um tipo para uma instância do modelo, pode usar a opção `--model` ao gerar o controlador:
 
 ```shell
 php artisan make:controller PhotoController --model=Photo --resource
@@ -238,7 +238,7 @@ php artisan make:controller PhotoController --model=Photo --resource
 <a name="generating-form-requests"></a>
 #### Gerar Pedidos de Formulário
 
- Você pode fornecer a opção `--requests` ao gerar um controlador de recursos para instruir o Artisan a criar classes [de solicitação do formulário] (/docs/{{version}}/validation#form-request-validation) para os métodos de armazenamento e atualização do controlador:
+ Você pode fornecer a opção `--requests` ao gerar um controlador de recursos para instruir o Artisan a criar classes [de solicitação do formulário] (/docs/validation#form-request-validation) para os métodos de armazenamento e atualização do controlador:
 
 ```shell
 php artisan make:controller PhotoController --model=Photo --resource --requests
@@ -310,7 +310,7 @@ php artisan make:controller PhotoController --api
 <a name="scoping-nested-resources"></a>
 #### Delimitação de recursos aninhados
 
- O recurso de vinculação de modelo implícita do Laravel ([vinculação de modelo implícita de roteamento](/docs/{{version}}/routing#implicit-model-binding-scoping)) pode agilizar automaticamente a vinculação dos modelos filhos, de forma que o modelo filho resolvido seja confirmado como pertencente ao modelo pai. Ao definir um recurso aninhado, você pode habilitar a vinculação automática e indicar ao Laravel qual campo o recurso filho deve ser recuperado por meio do método `scoped`. Para mais informações sobre como fazer isto, consulte a documentação sobre [vinculação de rotas de recursos escopo restrito] (https://laravel.com/docs/5.8/rest#restful-scoping-resource-routes).
+ O recurso de vinculação de modelo implícita do Laravel ([vinculação de modelo implícita de roteamento](/docs/routing#implicit-model-binding-scoping)) pode agilizar automaticamente a vinculação dos modelos filhos, de forma que o modelo filho resolvido seja confirmado como pertencente ao modelo pai. Ao definir um recurso aninhado, você pode habilitar a vinculação automática e indicar ao Laravel qual campo o recurso filho deve ser recuperado por meio do método `scoped`. Para mais informações sobre como fazer isto, consulte a documentação sobre [vinculação de rotas de recursos escopo restrito] (https://laravel.com/docs/5.8/rest#restful-scoping-resource-routes).
 
 <a name="shallow-nesting"></a>
 #### Incubação em ninhos rasos
@@ -371,7 +371,7 @@ php artisan make:controller PhotoController --api
 <a name="restful-scoping-resource-routes"></a>
 ### Abordando as rotas de recursos
 
- A funcionalidade de [vinculação automática de modelo com escopo](/docs/{{version}}/routing#implicit-model-binding-scoping) do Laravel permite o vinculo de modelos implícitos aninhados, garantindo que o modelo filho resolvido pertence ao modelo pai. Ao utilizar o método `scoped` para definir o recurso filho aninhado, pode ativar a vinculação automática e especificar qual campo deve ser utilizado para recuperar o recurso filho:
+ A funcionalidade de [vinculação automática de modelo com escopo](/docs/routing#implicit-model-binding-scoping) do Laravel permite o vinculo de modelos implícitos aninhados, garantindo que o modelo filho resolvido pertence ao modelo pai. Ao utilizar o método `scoped` para definir o recurso filho aninhado, pode ativar a vinculação automática e especificar qual campo deve ser utilizado para recuperar o recurso filho:
 
 ```php
     use App\Http\Controllers\PhotoCommentController;
@@ -407,7 +407,7 @@ php artisan make:controller PhotoController --api
     }
 ```
 
- O pluralizer do Laravel suporta [várias linguagens que você pode configurar de acordo com suas necessidades](/docs/{{version}}/localization#pluralization-language). Depois que os verbos e a língua da pluralização foram personalizados, uma inscrição do recurso na rota como `Route::resource('publicacion', PublicacionController::class)` produzirá os seguintes endereços URI:
+ O pluralizer do Laravel suporta [várias linguagens que você pode configurar de acordo com suas necessidades](/docs/localization#pluralization-language). Depois que os verbos e a língua da pluralização foram personalizados, uma inscrição do recurso na rota como `Route::resource('publicacion', PublicacionController::class)` produzirá os seguintes endereços URI:
 
 ```
     /publicacion/crear
@@ -511,7 +511,7 @@ Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();
 <a name="constructor-injection"></a>
 #### Injeção de construtores
 
- O [conjunto de serviços Laravel](/docs/{{version}}/container) é utilizado para resolver todos os controladores do Laravel. Como resultado, pode fornecer o tipo-hint para quaisquer dependências que possa precisar no seu construtor. As dependências declaradas serão automaticamente resolvidas e injetadas na instância do controlador:
+ O [conjunto de serviços Laravel](/docs/container) é utilizado para resolver todos os controladores do Laravel. Como resultado, pode fornecer o tipo-hint para quaisquer dependências que possa precisar no seu construtor. As dependências declaradas serão automaticamente resolvidas e injetadas na instância do controlador:
 
 ```php
     <?php

@@ -3,7 +3,7 @@
 <a name="introduction"></a>
 ## Introdução
 
- Quando testar sua aplicação ou inserir dados na base de dados, talvez seja necessário inserir alguns registros. Em vez de especificar manualmente o valor de cada coluna, o Laravel permite definir um conjunto de atributos padrão para os [modelos Eloquent](/docs/{{version}}/eloquent) usando fatorias de modelo.
+ Quando testar sua aplicação ou inserir dados na base de dados, talvez seja necessário inserir alguns registros. Em vez de especificar manualmente o valor de cada coluna, o Laravel permite definir um conjunto de atributos padrão para os [modelos Eloquent](/docs/eloquent) usando fatorias de modelo.
 
  Para ver um exemplo de como escrever uma fabricação, confira o arquivo `database/factories/UserFactory.php` em sua aplicação. Essa fabricação é incluída com todas as novas aplicações do Laravel e contém a seguinte definição da fábrica:
 
@@ -136,7 +136,7 @@ php artisan make:factory PostFactory
 <a name="trashed-state"></a>
 #### Estado "degradado"
 
- Se o seu modelo Eloquent puder ser [excluído silenciosamente](/docs/{{version}}/eloquent#soft-deleting), você poderá invocar a método de estado `trashed` interna para indicar que o modelo criado já foi "excluído silenciosamente". Você não precisa definir manualmente o estado `trashed`, pois ele está automaticamente disponível em todas as fábricas:
+ Se o seu modelo Eloquent puder ser [excluído silenciosamente](/docs/eloquent#soft-deleting), você poderá invocar a método de estado `trashed` interna para indicar que o modelo criado já foi "excluído silenciosamente". Você não precisa definir manualmente o estado `trashed`, pois ele está automaticamente disponível em todas as fábricas:
 
 ```php
     use App\Models\User;
@@ -509,7 +509,7 @@ php artisan make:factory PostFactory
 <a name="polymorphic-relationships"></a>
 ### Relações polimórficas
 
- [Relações polimórficas](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) também podem ser criadas usando fatorias. Relações "morph many" (polimórficas) são criadas da mesma forma que as relações "has many" tradicionais. Por exemplo, se um modelo `App\Models\Post` tem uma relação polimórfica com um modelo `App\Models\Comment`:
+ [Relações polimórficas](/docs/eloquent-relationships#polymorphic-relationships) também podem ser criadas usando fatorias. Relações "morph many" (polimórficas) são criadas da mesma forma que as relações "has many" tradicionais. Por exemplo, se um modelo `App\Models\Post` tem uma relação polimórfica com um modelo `App\Models\Comment`:
 
 ```php
     use App\Models\Post;

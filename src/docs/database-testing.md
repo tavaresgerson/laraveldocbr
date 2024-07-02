@@ -55,9 +55,9 @@ class ExampleTest extends TestCase
 <a name="model-factories"></a>
 ## Fábricas de modelo
 
- Durante os testes, você poderá precisar inserir alguns registros em sua base de dados antes do início dos testes. Em vez de especificar manualmente o valor de cada coluna ao criar esses dados de teste, o Laravel permite que você defina um conjunto de atributos por padrão para cada um dos seus [modelos Eloquent](https://laravel.com/docs/{{version}}/eloquent). Isso é feito usando os [fabricantes de modelos](https://laravel.com/docs/{{version}}/eloquent-factories).
+ Durante os testes, você poderá precisar inserir alguns registros em sua base de dados antes do início dos testes. Em vez de especificar manualmente o valor de cada coluna ao criar esses dados de teste, o Laravel permite que você defina um conjunto de atributos por padrão para cada um dos seus [modelos Eloquent](https://laravel.com/docs/eloquent). Isso é feito usando os [fabricantes de modelos](https://laravel.com/docs/eloquent-factories).
 
- Para saber mais sobre como criar e utilizar fábricas de modelos para criar modelos, consulte a documentação completa [sobre fábricas de modelos](/docs/{{version}}/eloquent-factories). Depois de ter definido uma fábrica de modelos, poderá utilizá-la no seu teste para criar modelos:
+ Para saber mais sobre como criar e utilizar fábricas de modelos para criar modelos, consulte a documentação completa [sobre fábricas de modelos](/docs/eloquent-factories). Depois de ter definido uma fábrica de modelos, poderá utilizá-la no seu teste para criar modelos:
 
 ```php tab=Pest
 use App\Models\User;
@@ -83,7 +83,7 @@ public function test_models_can_be_instantiated(): void
 <a name="running-seeders"></a>
 ## Semeando em movimento
 
- Se pretender usar os [semeadores de base de dados](/docs/{{version}}/seeding) para preencher a sua base de dados durante um teste de funcionalidade, pode invocar o método `seed`. Por defeito, o método `seed` executa o `DatabaseSeeder`, que deve executar todos os outros semeadores. Como alternativa, é possível passar uma classe específica de semeador ao método `seed`:
+ Se pretender usar os [semeadores de base de dados](/docs/seeding) para preencher a sua base de dados durante um teste de funcionalidade, pode invocar o método `seed`. Por defeito, o método `seed` executa o `DatabaseSeeder`, que deve executar todos os outros semeadores. Como alternativa, é possível passar uma classe específica de semeador ao método `seed`:
 
 ```php tab=Pest
 <?php

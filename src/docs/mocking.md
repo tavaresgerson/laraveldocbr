@@ -10,7 +10,7 @@
 <a name="mocking-objects"></a>
 ## Zombar de objetos
 
- Quando você estiver usando um objeto que será injetado na sua aplicação através do [conjunto de serviços](/docs/{{version}}/container) da Laravel, precisará vincular a instância falsa ao conjunto como uma vinculação `instance`. Isto instruirá o conjunto para usar a instância falsa desse objeto em vez da construção do próprio objeto:
+ Quando você estiver usando um objeto que será injetado na sua aplicação através do [conjunto de serviços](/docs/container) da Laravel, precisará vincular a instância falsa ao conjunto como uma vinculação `instance`. Isto instruirá o conjunto para usar a instância falsa desse objeto em vez da construção do próprio objeto:
 
 ```php tab=Pest
 use App\Service;
@@ -105,7 +105,7 @@ public function test_something_can_be_mocked(): void
     }
 ```
 
- Podemos simular o chamado à interface `Cache`, utilizando o método `shouldReceive`, que devolve uma instância de um mock do [Mockery](https://github.com/padraic/mockery). Uma vez que as interfaces são resolvidas e gerenciadas pelo [conjunto de serviços](/docs/{{version}}/container) do Laravel, eles têm muito mais capacidade de teste do que uma classe estatica típica. Por exemplo, podemos simular o nosso chamado ao método `get` da interface `Cache`:
+ Podemos simular o chamado à interface `Cache`, utilizando o método `shouldReceive`, que devolve uma instância de um mock do [Mockery](https://github.com/padraic/mockery). Uma vez que as interfaces são resolvidas e gerenciadas pelo [conjunto de serviços](/docs/container) do Laravel, eles têm muito mais capacidade de teste do que uma classe estatica típica. Por exemplo, podemos simular o nosso chamado ao método `get` da interface `Cache`:
 
 ```php tab=Pest
 <?php
@@ -149,7 +149,7 @@ class UserControllerTest extends TestCase
 ```
 
  > [!AVISO]
- [Métodos de teste de HTTP](/docs/{{version}}/http-tests), como `get` e `post`, ao executar seu teste. Do mesmo modo, invocar o método `Config::set` nos seus testes em vez de simular a facade `Config`.
+ [Métodos de teste de HTTP](/docs/http-tests), como `get` e `post`, ao executar seu teste. Do mesmo modo, invocar o método `Config::set` nos seus testes em vez de simular a facade `Config`.
 
 <a name="facade-spies"></a>
 ### Espiões da fachada

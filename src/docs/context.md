@@ -8,7 +8,7 @@
 <a name="how-it-works"></a>
 ### Como funciona
 
- A melhor maneira de entender as capacidades do contexto do Laravel é vê-lo em ação usando os recursos integrados de log. Para começar, você pode [adicionar informações ao contexto](#capturing-context) usando o facade `Context`. Neste exemplo, usaremos um [middleware](/docs/{{version}}/middleware) para adicionar a URL da solicitação e um identificador de rastreamento exclusivo ao contexto em cada solicitação recebida:
+ A melhor maneira de entender as capacidades do contexto do Laravel é vê-lo em ação usando os recursos integrados de log. Para começar, você pode [adicionar informações ao contexto](#capturing-context) usando o facade `Context`. Neste exemplo, usaremos um [middleware](/docs/middleware) para adicionar a URL da solicitação e um identificador de rastreamento exclusivo ao contexto em cada solicitação recebida:
 
 ```php
 <?php
@@ -36,7 +36,7 @@ class AddContext
 }
 ```
 
- As informações adicionadas ao contexto são automaticamente anexadas como metadados a todos os [registros de logs](/docs/{{version}}/logging) que são escritos durante toda a requisição. Anexar o contexto como um metadado permite diferenciar as informações passadas para cada registro de log das informações compartilhadas via `Context`. Por exemplo, imagine escrevermos o seguinte registo:
+ As informações adicionadas ao contexto são automaticamente anexadas como metadados a todos os [registros de logs](/docs/logging) que são escritos durante toda a requisição. Anexar o contexto como um metadado permite diferenciar as informações passadas para cada registro de log das informações compartilhadas via `Context`. Por exemplo, imagine escrevermos o seguinte registo:
 
 ```php
 Log::info('User authenticated.', ['auth_id' => Auth::id()]);

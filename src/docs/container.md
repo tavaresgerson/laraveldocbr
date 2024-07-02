@@ -36,7 +36,7 @@
     }
 ```
 
- Nesse exemplo, o `UserController` precisa recuperar usuários de uma fonte de dados. Então, vamos **injetar** um serviço que é capaz de recuperar os usuários. Em contexto, a nossa `UserRepository` provavelmente usa [Eloquent](/docs/{{version}}/eloquent) para recuperar informações dos usuários no banco de dados. No entanto, uma vez que o repositório é injetado, podemos facilmente substituí-lo por outra implementação. Além disso, também podemos facilmente "mockear" ou criar uma implementação fictícia da `UserRepository` ao testarmos nosso aplicativo.
+ Nesse exemplo, o `UserController` precisa recuperar usuários de uma fonte de dados. Então, vamos **injetar** um serviço que é capaz de recuperar os usuários. Em contexto, a nossa `UserRepository` provavelmente usa [Eloquent](/docs/eloquent) para recuperar informações dos usuários no banco de dados. No entanto, uma vez que o repositório é injetado, podemos facilmente substituí-lo por outra implementação. Além disso, também podemos facilmente "mockear" ou criar uma implementação fictícia da `UserRepository` ao testarmos nosso aplicativo.
 
  Uma compreensão profunda do contêiner de serviços Laravel é essencial para construir uma aplicação poderosa e grande, bem como contribuir com o núcleo Laravel em si.
 
@@ -60,7 +60,7 @@
 
  Neste exemplo, quando acessarmos o caminho `/` da aplicação, automaticamente resolveremos a classe `Service` e injetaremos-lhe no controlador do caminho. Isso é uma grande mudança. Significa que podemos desenvolver nossa aplicação e usar a injeção de dependência sem nos preocuparmos com arquivos de configuração volumosos.
 
- Felizmente, muitas das classes que você escreverá ao criar um aplicativo Laravel recebem suas dependências automaticamente através do contêiner. Isso inclui [controladores](/docs/{{version}}/controllers), [listeners de eventos](/docs/{{version}}/events), [middlewares](/docs/{{version}}/middleware) e outros. Além disso, você pode indicar as dependências no método `handle` dos [jobs agendados](/docs/{{version}}/queues). Uma vez que você sinta o poder da injeção de dependência automática e sem configuração, será impossível desenvolver sem ela.
+ Felizmente, muitas das classes que você escreverá ao criar um aplicativo Laravel recebem suas dependências automaticamente através do contêiner. Isso inclui [controladores](/docs/controllers), [listeners de eventos](/docs/events), [middlewares](/docs/middleware) e outros. Além disso, você pode indicar as dependências no método `handle` dos [jobs agendados](/docs/queues). Uma vez que você sinta o poder da injeção de dependência automática e sem configuração, será impossível desenvolver sem ela.
 
 <a name="when-to-use-the-container"></a>
 ### Quando utilizar o contêiner
@@ -75,9 +75,9 @@
     });
 ```
 
- Em muitos casos, graças à injeção de dependência automática e [facade](/docs/{{version}}/facades), você pode construir aplicações Laravel sem **sequer** interagir manualmente com o container. Então, quando você iria interagir manualmente com o container? Vamos analisar duas situações.
+ Em muitos casos, graças à injeção de dependência automática e [facade](/docs/facades), você pode construir aplicações Laravel sem **sequer** interagir manualmente com o container. Então, quando você iria interagir manualmente com o container? Vamos analisar duas situações.
 
- Primeiro, se você escrever uma classe que implemente uma interface e deseja indicar essa interface como tipo em um roteamento ou no construtor de uma classe, é necessário [enviar ao contêiner informações sobre a resolução dessa interface (#binding-interfaces-to-implementations)]. Em segundo lugar, se você estiver [escrevendo um pacote Laravel](/docs/{{version}}/packages) que planeja compartilhar com outros desenvolvedores do Laravel, pode ser necessário associar os serviços do seu pacote ao contêiner.
+ Primeiro, se você escrever uma classe que implemente uma interface e deseja indicar essa interface como tipo em um roteamento ou no construtor de uma classe, é necessário [enviar ao contêiner informações sobre a resolução dessa interface (#binding-interfaces-to-implementations)]. Em segundo lugar, se você estiver [escrevendo um pacote Laravel](/docs/packages) que planeja compartilhar com outros desenvolvedores do Laravel, pode ser necessário associar os serviços do seu pacote ao contêiner.
 
 <a name="binding"></a>
 ## Vínculo
@@ -88,7 +88,7 @@
 <a name="simple-bindings"></a>
 #### Ligações simples
 
- Quase todos os binding de contêineres de serviço serão registrados no [provedores de serviços](/docs/{{version}}/providers). A maioria dos exemplos demonstrará o uso do contêiner nesse contexto.
+ Quase todos os binding de contêineres de serviço serão registrados no [provedores de serviços](/docs/providers). A maioria dos exemplos demonstrará o uso do contêiner nesse contexto.
 
  Dentro de um provedor de serviços, você sempre pode acessar o container através da propriedade `$this->app`. Podemos registrar uma vinculação usando o método `bind`, passando o nome da classe ou interface que deseja registrar junto com um fechamento que retorne uma instância da classe:
 
@@ -153,7 +153,7 @@ $this->app->singletonIf(Transistor::class, function (Application $app) {
 <a name="binding-scoped"></a>
 #### Associando Escopo a Singletons
 
- O método `scoped` liga uma classe ou interface ao contêiner, que só deve ser resolvido uma vez dentro do ciclo de vida de um pedido/trabalho no Laravel. Embora este método seja semelhante ao método `singleton`, as instâncias registradas usando o método `scoped` serão removidas sempre que o aplicativo Laravel iniciar um novo "ciclo de vida", por exemplo, quando um [trabalhador Octane do Laravel](/docs/{{version}}/octane) processa um novo pedido ou quando um trabalhador de filas do Laravel [processa um novo trabalho:
+ O método `scoped` liga uma classe ou interface ao contêiner, que só deve ser resolvido uma vez dentro do ciclo de vida de um pedido/trabalho no Laravel. Embora este método seja semelhante ao método `singleton`, as instâncias registradas usando o método `scoped` serão removidas sempre que o aplicativo Laravel iniciar um novo "ciclo de vida", por exemplo, quando um [trabalhador Octane do Laravel](/docs/octane) processa um novo pedido ou quando um trabalhador de filas do Laravel [processa um novo trabalho:
 
 ```php
     use App\Services\Transistor;
@@ -393,7 +393,7 @@ $this->app->singletonIf(Transistor::class, function (Application $app) {
     }
 ```
 
- Se você estiver fora de um provedor de serviços em uma localização do seu código que não tenha acesso à variável `$app`, poderá usar o facade `App` [Facade](/docs/{{version}}/facades) ou o helper `app` [Helper] (/) para resolver uma instância de classe no contêiner.
+ Se você estiver fora de um provedor de serviços em uma localização do seu código que não tenha acesso à variável `$app`, poderá usar o facade `App` [Facade](/docs/facades) ou o helper `app` [Helper] (/) para resolver uma instância de classe no contêiner.
 
 ```php
     use App\Services\Transistor;
@@ -420,7 +420,7 @@ $this->app->singletonIf(Transistor::class, function (Application $app) {
 <a name="automatic-injection"></a>
 ### Injeção automática
 
- Como alternativa e mais importante, você pode indicar a dependência no construtor de uma classe que é resolvida pelo contêiner, incluindo [controladores](/docs/{{version}}/controllers), [event listeners](/docs/{{version}}/events), [middleware](/docs/{{version}}/middleware) e outros. Além disso, você pode indicar dependências no método `handle` de [trabalhos agendados](/docs/{{version}}/queues). Na prática, é dessa maneira que a maioria dos seus objetos deve ser resolvida pelo contêiner.
+ Como alternativa e mais importante, você pode indicar a dependência no construtor de uma classe que é resolvida pelo contêiner, incluindo [controladores](/docs/controllers), [event listeners](/docs/events), [middleware](/docs/middleware) e outros. Além disso, você pode indicar dependências no método `handle` de [trabalhos agendados](/docs/queues). Na prática, é dessa maneira que a maioria dos seus objetos deve ser resolvida pelo contêiner.
 
  Por exemplo, você pode indicar o tipo de um repositório definido pela aplicação no construtor do controlador. O repositório será resolvido e injetado automaticamente na classe:
 

@@ -5,7 +5,7 @@
 
  O recurso de Anticipação do Laravel permite que você antecipe o resultado de uma solicitação futura HTTP. Um dos principais casos de uso é a capacidade de fornecer validação "ao vivo" para seu aplicativo JavaScript front-end sem precisar duplicar as regras de validação do back-end do aplicativo. O recurso de Anticipação combina muito bem com os [estilos iniciais](/docs/{{ version}}/starter-kits) baseados em Inertia do Laravel.
 
- Quando o Laravel recebe uma "solicitação precognitiva", ele executará todos os middlewares da rota e resolverá as dependências do controlador da rota, incluindo a validação de solicitações [de formulário](/docs/{{version}}/validation#form-request-validation) - mas não executará realmente o método do controlador da rota.
+ Quando o Laravel recebe uma "solicitação precognitiva", ele executará todos os middlewares da rota e resolverá as dependências do controlador da rota, incluindo a validação de solicitações [de formulário](/docs/validation#form-request-validation) - mas não executará realmente o método do controlador da rota.
 
 <a name="live-validation"></a>
 ## Validação em Tempo Real
@@ -15,7 +15,7 @@
 
  Usando o Laravel Precognition, você poderá oferecer experiências de validação ao vivo aos seus usuários sem a necessidade de duplicar suas regras de validação em sua aplicação Vue frontend. Para ilustrar como isso funciona, vamos construir um formulário para criação de novos usuários dentro da nossa aplicação.
 
- Primeiro, para habilitar Precognition em uma rota, o middleware `HandlePrecognitiveRequests` deve ser adicionado à definição da rota. Você também deverá criar um [pedido com formulário](/docs/{{version}}/validation#form-request-validation) para armazenar as regras de validação da rota:
+ Primeiro, para habilitar Precognition em uma rota, o middleware `HandlePrecognitiveRequests` deve ser adicionado à definição da rota. Você também deverá criar um [pedido com formulário](/docs/validation#form-request-validation) para armazenar as regras de validação da rota:
 
 ```php
 use App\Http\Requests\StoreUserRequest;
@@ -163,7 +163,7 @@ const submit = () => form.submit()
 ### Usando o Vue e a Inertia
 
  > [!ATENÇÃO]
- [Kits iniciais](https://laravel.com/docs/{{version}}/starter-kits) oferecem escadas de autenticação de back-end e front-end para seu novo aplicativo Laravel.
+ [Kits iniciais](https://laravel.com/docs/starter-kits) oferecem escadas de autenticação de back-end e front-end para seu novo aplicativo Laravel.
 
  Antes de utilizar o Precognition com Vue e Inertia, revisar a nossa documentação geral sobre [utilizar o Precognition com Vue] (#using-vue). Ao utilizar o Vue com a Inertia, será necessário instalar a biblioteca Precognition compatível com a Inertia através do NPM:
 
@@ -196,7 +196,7 @@ const submit = () => form.submit({
 
  Usando o Laravel Precognition, você pode oferecer experiências de validação ao vivo para seus usuários sem precisar duplicar suas regras de validação em seu aplicativo front-end React. Para ilustrar como funciona, criaremos um formulário para a criação de novos usuários dentro do nosso aplicativo.
 
- Primeiro, para habilitar Precognition para uma rota, o middleware `HandlePrecognitiveRequests` deve ser adicionado à definição da rota. Além disso, é necessário criar um [form request (requerimento em formulário)](/docs/{{version}}/validation#form-request-validation) para armazenar as regras de validação da rota:
+ Primeiro, para habilitar Precognition para uma rota, o middleware `HandlePrecognitiveRequests` deve ser adicionado à definição da rota. Além disso, é necessário criar um [form request (requerimento em formulário)](/docs/validation#form-request-validation) para armazenar as regras de validação da rota:
 
 ```php
 use App\Http\Requests\StoreUserRequest;
@@ -339,7 +339,7 @@ const submit = (e) => {
 ### Usando o React e a Inertia
 
  > [!NOTA]
- [Kits de iniciação](/docs/{{version}}/starter-kits) Kits de inicialização do Laravel providenciam um esqueleto para a autenticação tanto no backend quanto no frontend de uma nova aplicação do Laravel.
+ [Kits de iniciação](/docs/starter-kits) Kits de inicialização do Laravel providenciam um esqueleto para a autenticação tanto no backend quanto no frontend de uma nova aplicação do Laravel.
 
  Antes de usar o Precognition com o React e a Inertia, leia nossa documentação geral sobre [o uso do Precognion com o React] (#using-react). Ao utilizar o React com a Inertia, você precisará instalar a biblioteca Precognion compatível com a Inertia via NPM:
 
@@ -374,7 +374,7 @@ const submit = (e) => {
 
  Com o Laravel Precognition, você pode oferecer experiências de validação ao vivo para seus usuários sem precisar duplicar suas regras de validação em seu aplicativo Alpine front-end. Para ilustrar como ele funciona, construiremos um formulário para a criação de novos usuários em nossa aplicação.
 
- Primeiro, para habilitar Precognition em uma rota, o middleware `HandlePrecognitiveRequests` deve ser adicionado à definição da rota. Você também deve criar um [pedido de formulário](/docs/{{version}}/validation#pedido-de-formulário) para armazenar as regras de validação da rota:
+ Primeiro, para habilitar Precognition em uma rota, o middleware `HandlePrecognitiveRequests` deve ser adicionado à definição da rota. Você também deve criar um [pedido de formulário](/docs/validation#pedido-de-formulário) para armazenar as regras de validação da rota:
 
 ```php
 use App\Http\Requests\CreateUserRequest;

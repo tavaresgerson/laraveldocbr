@@ -1522,7 +1522,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 
 ### Campo de CSRF
 
- Sempre que você definir um formulário HTML em sua aplicação, você deve incluir um campo de token CSRF escondido no formulário para que a middleware de proteção [contra CSRF](/docs/{{version}}/csrf) possa validar o pedido. Você pode usar a diretiva Blade `@csrf` para gerar o campo de token:
+ Sempre que você definir um formulário HTML em sua aplicação, você deve incluir um campo de token CSRF escondido no formulário para que a middleware de proteção [contra CSRF](/docs/csrf) possa validar o pedido. Você pode usar a diretiva Blade `@csrf` para gerar o campo de token:
 
 ```blade
 <form method="POST" action="/profile">
@@ -1574,7 +1574,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
     class="@error('email') is-invalid @else is-valid @enderror">
 ```
 
- Pode passar um nome de uma **sacola específica de erros** [no caminho](/docs/{{version}}/validation#named-error-bags) como segundo parâmetro para a diretiva `@error` para recuperar mensagens de erro da validação em páginas que contêm vários formulários:
+ Pode passar um nome de uma **sacola específica de erros** [no caminho](/docs/validation#named-error-bags) como segundo parâmetro para a diretiva `@error` para recuperar mensagens de erro da validação em páginas que contêm vários formulários:
 
 ```blade
 <!-- /resources/views/auth.blade.php -->

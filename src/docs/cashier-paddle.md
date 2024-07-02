@@ -318,7 +318,7 @@ CASHIER_CURRENCY_LOCALE=nl_BE
 <a name="quickstart-building-a-subscribed-middleware"></a>
 #### Criação de uma middleware assinada
 
- Por conveniência, você pode criar um [middleware](/docs/{{version}}/middleware) que determine se o pedido está vindo de um usuário cadastrado. Depois deste middleware ser definido, você pode facilmente atribuí-lo a uma rota para impedir que os usuários não cadastrados tenham acesso à rota:
+ Por conveniência, você pode criar um [middleware](/docs/middleware) que determine se o pedido está vindo de um usuário cadastrado. Depois deste middleware ser definido, você pode facilmente atribuí-lo a uma rota para impedir que os usuários não cadastrados tenham acesso à rota:
 
 ```php
     <?php
@@ -1312,7 +1312,7 @@ $options['settings']['frameInitialHeight'] = 366;
 <a name="webhooks-csrf-protection"></a>
 #### Webhook e proteção contra o ataque de cross-site request forgery (CSRF)
 
- Como os Webhooks do Paddle precisam contornar a proteção contra [CSRF de Laravel](/docs/{{version}}/csrf), você deve garantir que o Laravel não tente verificar o token CSRF para webhooks entrantes do Paddle. Para fazer isso, você deve excluir `paddle/*` da proteção contra CSRF no arquivo `bootstrap/app.php`:
+ Como os Webhooks do Paddle precisam contornar a proteção contra [CSRF de Laravel](/docs/csrf), você deve garantir que o Laravel não tente verificar o token CSRF para webhooks entrantes do Paddle. Para fazer isso, você deve excluir `paddle/*` da proteção contra CSRF no arquivo `bootstrap/app.php`:
 
 ```php
     ->withMiddleware(function (Middleware $middleware) {
@@ -1325,7 +1325,7 @@ $options['settings']['frameInitialHeight'] = 366;
 <a name="webhooks-local-development"></a>
 #### Webhook e desenvolvimento local
 
- Para o Paddle poder enviar seus webhooks de aplicação durante o desenvolvimento local, você precisará expor sua aplicação por meio de um serviço de compartilhamento de site, como [Ngrok](https://ngrok.com/) ou [Expose](https://expose.dev/docs/introduction). Se estiver desenvolvendo seu aplicativo localmente usando o [Sail do Laravel](/docs/{{version}}/sail), você poderá usar o comando de compartilhamento de site do Sail ([comandos de compartilhamento do site do Sail](/docs/{{version}}/sail#sharing-your-site).
+ Para o Paddle poder enviar seus webhooks de aplicação durante o desenvolvimento local, você precisará expor sua aplicação por meio de um serviço de compartilhamento de site, como [Ngrok](https://ngrok.com/) ou [Expose](https://expose.dev/docs/introduction). Se estiver desenvolvendo seu aplicativo localmente usando o [Sail do Laravel](/docs/sail), você poderá usar o comando de compartilhamento de site do Sail ([comandos de compartilhamento do site do Sail](/docs/sail#sharing-your-site).
 
 <a name="defining-webhook-event-handlers"></a>
 ### Definindo os manipuladores de evento do Webhook
@@ -1335,7 +1335,7 @@ $options['settings']['frameInitialHeight'] = 366;
  - `Laravel\Paddle\Events\WebhookReceived`
  - `Laravel\Paddle\Events\WebhookHandled`
 
- Ambos os eventos contêm o conteúdo completo do webhook Paddle. Por exemplo, se você pretender usar o webhook `transaction.billed`, poderá registrar um [ouvinte](/docs/{{version}}/events#defining-listeners) para lidar com esse evento:
+ Ambos os eventos contêm o conteúdo completo do webhook Paddle. Por exemplo, se você pretender usar o webhook `transaction.billed`, poderá registrar um [ouvinte](/docs/events#defining-listeners) para lidar com esse evento:
 
 ```php
     <?php
@@ -1534,4 +1534,4 @@ Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->forma
 
  Durante os testes, você deverá testar manualmente seu fluxo de cobrança para garantir que sua integração funciona conforme o esperado.
 
- Para testes automatizados, incluindo aqueles executados dentro de um ambiente de CI, você pode usar o [Cliente HTTP do Laravel](/docs/{{version}}/http-client#testing) para fingir chamadas HTTP feitas à Paddle. Embora isso não teste as respostas reais da Paddle, fornece uma maneira de testar seu aplicativo sem chamar a API da Paddle.
+ Para testes automatizados, incluindo aqueles executados dentro de um ambiente de CI, você pode usar o [Cliente HTTP do Laravel](/docs/http-client#testing) para fingir chamadas HTTP feitas à Paddle. Embora isso não teste as respostas reais da Paddle, fornece uma maneira de testar seu aplicativo sem chamar a API da Paddle.

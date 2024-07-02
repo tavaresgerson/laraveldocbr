@@ -89,7 +89,7 @@
 <a name="redirecting-with-flashed-session-data"></a>
 ## Redirecionamento com dados de sessão exibidos
 
- O redirecionamento para uma nova URL e o [flash de dados para a sessão](/docs/{{version}}/session#flash-data) são normalmente realizados ao mesmo tempo. Normalmente, isto é feito após ter executado com sucesso uma ação quando flasha uma mensagem de sucesso na sessão. Para maior conveniência, poderá criar uma instância `RedirectResponse` e flashar dados para a sessão num único método fluente:
+ O redirecionamento para uma nova URL e o [flash de dados para a sessão](/docs/session#flash-data) são normalmente realizados ao mesmo tempo. Normalmente, isto é feito após ter executado com sucesso uma ação quando flasha uma mensagem de sucesso na sessão. Para maior conveniência, poderá criar uma instância `RedirectResponse` e flashar dados para a sessão num único método fluente:
 
 ```php
     Route::post('/user/profile', function () {
@@ -105,7 +105,7 @@
     return back()->withInput();
 ```
 
- Após encaminhar o usuário para a página desejada, você poderá mostrar uma mensagem exibida no [sessão] (/) utilizando a sintaxe Blade (/docs/{{version}}/blade). Por exemplo:
+ Após encaminhar o usuário para a página desejada, você poderá mostrar uma mensagem exibida no [sessão] (/) utilizando a sintaxe Blade (/docs/blade). Por exemplo:
 
 ```blade
     @if (session('status'))

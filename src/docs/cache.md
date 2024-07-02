@@ -19,7 +19,7 @@
 <a name="prerequisites-database"></a>
 #### Banco de dados
 
- Para usar o driver de cache "database", você precisa ter uma tabela de banco de dados para conter os dados do cache. Normalmente, isto é incluído na migração padrão `0001_01_01_000001_create_cache_table.php` do Laravel [migração de banco de dados](/docs/{{version}}/migrations); no entanto, se sua aplicação não possuir essa migração, você poderá usar o comando Artisan `make:cache-table` para criá-la:
+ Para usar o driver de cache "database", você precisa ter uma tabela de banco de dados para conter os dados do cache. Normalmente, isto é incluído na migração padrão `0001_01_01_000001_create_cache_table.php` do Laravel [migração de banco de dados](/docs/migrations); no entanto, se sua aplicação não possuir essa migração, você poderá usar o comando Artisan `make:cache-table` para criá-la:
 
 ```shell
 php artisan make:cache-table
@@ -65,7 +65,7 @@ php artisan migrate
 <a name="redis"></a>
 #### Redis
 
- Antes de usar um cache Redis com o Laravel, será necessário instalar a extensão PHP PhpRedis através da PECL ou instalar o pacote `predis/predis` (~2.0) através do Composer. [Laravel Sail](/docs/{{version}}/sail) já inclui essa extensão. Além disso, as plataformas de implantação oficiais do Laravel, como o [Laravel Forge](https://forge.laravel.com) e o [Laravel Vapor](https://vapor.laravel.com), têm a extensão PhpRedis instalada por padrão.
+ Antes de usar um cache Redis com o Laravel, será necessário instalar a extensão PHP PhpRedis através da PECL ou instalar o pacote `predis/predis` (~2.0) através do Composer. [Laravel Sail](/docs/sail) já inclui essa extensão. Além disso, as plataformas de implantação oficiais do Laravel, como o [Laravel Forge](https://forge.laravel.com) e o [Laravel Vapor](https://vapor.laravel.com), têm a extensão PhpRedis instalada por padrão.
 
  Para mais informações sobre como configurar o Redis, consulte a página de documentação do Laravel [Redis](https://laravel.com/docs/5.7/redis#configuration) (em inglês).
 
@@ -477,14 +477,14 @@ composer require aws/aws-sdk-php
     }
 ```
 
- O primeiro argumento passado para o método `extend` é o nome do driver. Isso corresponde à opção `driver` no arquivo de configuração `config/cache.php`. O segundo argumento é um fechamento que deve retornar uma instância da classe `Illuminate\Cache\Repository`. O fechamento recebe como parâmetro a instância `$app`, que é uma instância do [conjunto de serviços](/docs/{{version}}/container).
+ O primeiro argumento passado para o método `extend` é o nome do driver. Isso corresponde à opção `driver` no arquivo de configuração `config/cache.php`. O segundo argumento é um fechamento que deve retornar uma instância da classe `Illuminate\Cache\Repository`. O fechamento recebe como parâmetro a instância `$app`, que é uma instância do [conjunto de serviços](/docs/container).
 
  Depois de seu extensão ser registrada, atualize a variável ambiente `CACHE_STORE` ou a opção `default` dentro do arquivo de configuração da aplicação, `config/cache.php`, com o nome da sua extensão.
 
 <a name="events"></a>
 ## Eventos
 
- Para executar o código em todas as operações de memória transparente, você pode ouvir vários eventos [disponíveis](/docs/{{version}}/events), que são enviados pela memória transparente:
+ Para executar o código em todas as operações de memória transparente, você pode ouvir vários eventos [disponíveis](/docs/events), que são enviados pela memória transparente:
 
 |  Nome do evento |
 |-----------------------------------------|

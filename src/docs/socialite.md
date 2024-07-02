@@ -145,7 +145,7 @@ composer require laravel/socialite
     $user = Socialite::driver('slack')->asBotUser()->user();
 ```
 
- Ao gerar um token do bot, o método `user` ainda retornará uma instância de `Laravel\Socialite\Two\User`. No entanto, só a propriedade `token` será atualizada. Este token pode ser armazenado para [enviar notificações aos espaços de trabalho do Slack do usuário autenticado] (/docs/{{version}}/notifications#notifying-external-slack-workspaces).
+ Ao gerar um token do bot, o método `user` ainda retornará uma instância de `Laravel\Socialite\Two\User`. No entanto, só a propriedade `token` será atualizada. Este token pode ser armazenado para [enviar notificações aos espaços de trabalho do Slack do usuário autenticado] (/docs/notifications#notifying-external-slack-workspaces).
 
 <a name="optional-parameters"></a>
 ### Parâmetros opcionais
