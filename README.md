@@ -11,13 +11,13 @@
     - [Starter Kits](/src/docs/starter-kits.md) ✅
     - [Deployment](/src/docs/deployment.md) ✅
 - ## Conceitos de Arquitetura
-    - [Request Lifecycle](/src/docs/lifecycle.md)
-    - [Service Container](/src/docs/container.md)
-    - [Service Providers](/src/docs/providers.md)
-    - [Facades](/src/docs/facades.md)
+    - [Request Lifecycle](/src/docs/lifecycle.md) ✅
+    - [Service Container](/src/docs/container.md) ✅
+    - [Service Providers](/src/docs/providers.md) ✅
+    - [Facades](/src/docs/facades.md) ✅
 - ## O básico
-    - [Routing](/src/docs/routing.md)
-    - [Middleware](/src/docs/middleware.md)
+    - [Roteamento](/src/docs/routing.md) ✅
+    - [Middleware](/src/docs/middleware.md) ✅
     - [CSRF Protection](/src/docs/csrf.md)
     - [Controllers](/src/docs/controllers.md)
     - [Requests](/src/docs/requests.md)
