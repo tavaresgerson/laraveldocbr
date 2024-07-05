@@ -20,7 +20,7 @@
     - [Middleware](/src/docs/middleware.md) ✅
     - [CSRF Protection](/src/docs/csrf.md) ✅
     - [Controllers](/src/docs/controllers.md) ✅
-    - [Requests](/src/docs/requests.md)
+    - [Requests](/src/docs/requests.md) ✅
     - [Responses](/src/docs/responses.md)
     - [Views](/src/docs/views.md)
     - [Blade Templates](/src/docs/blade.md)
