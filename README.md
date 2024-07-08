@@ -20,9 +20,9 @@
     - [Middleware](/src/docs/middleware.md) ✅
     - [CSRF Protection](/src/docs/csrf.md) ✅
     - [Controllers](/src/docs/controllers.md) ✅
-    - [Requests](/src/docs/requests.md) ✅
-    - [Responses](/src/docs/responses.md)
-    - [Views](/src/docs/views.md)
+    - [Requisições](/src/docs/requests.md) ✅
+    - [Responses](/src/docs/responses.md) ✅
+    - [Views](/src/docs/views.md) ✅
     - [Blade Templates](/src/docs/blade.md)
     - [Asset Bundling](/src/docs/vite.md)
     - [URL Generation](/src/docs/urls.md)
