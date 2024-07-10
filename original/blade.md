@@ -463,8 +463,9 @@ In addition, the `@required` directive may be used to indicate if a given elemen
 
 ### Including Subviews
 
-> [!NOTE]  
-> While you're free to use the `@include` directive, Blade [components](#components) provide similar functionality and offer several benefits over the `@include` directive such as data and attribute binding.
+::: info NOTA
+Embora você possa usar a diretiva `@include`, o Blade [components](#componentes) fornece funcionalidade semelhante e oferece vários benefícios em relação à diretiva `@include`, como vinculação de dados e atributos.
+:::
 
 Blade's `@include` directive allows you to include a Blade view from within another view. All variables that are available to the parent view will be made available to the included view:
 
@@ -804,8 +805,7 @@ You may execute this method from your component template by invoking the variabl
 
 #### Accessing Attributes and Slots Within Component Classes
 
-Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a closure from your component's `render` method. The closure will receive a `$data` array as its only argument. This array will contain several 
-elements that provide information about the component:
+Blade components also allow you to access the component name, attributes, and slot inside the class's render method. However, in order to access this data, you should return a closure from your component's `render` method. The closure will receive a `$data` array as its only argument. This array will contain several elements that provide information about the component:
 
 ```php
     use Closure;

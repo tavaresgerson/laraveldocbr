@@ -21,8 +21,8 @@
     - [CSRF Protection](/src/docs/csrf.md) ✅
     - [Controllers](/src/docs/controllers.md) ✅
     - [Requisições](/src/docs/requests.md) ✅
-    - [Responses](/src/docs/responses.md) ✅
-    - [Views](/src/docs/views.md) ✅
+    - [Respostas](/src/docs/responses.md) ✅
+    - [Views (visualizações)](/src/docs/views.md) ✅
     - [Blade Templates](/src/docs/blade.md)
     - [Asset Bundling](/src/docs/vite.md)
     - [URL Generation](/src/docs/urls.md)

@@ -1,23 +1,21 @@
-# Modelos de lâminas
+# Blade
 
 ## Introdução
+O Blade é um motor de templates simples e poderoso incluído no Laravel. Diferente de alguns motores de template PHP, o Blade não o restringe da utilização do código PHP puro nos seus modelos. Na verdade, todos os modelos do Blade são compilados para código PHP puro e armazenados em cache até serem modificados, significando que o Blade não impõe quaisquer sobrecargas à sua aplicação. Os arquivos de template têm normalmente a extensão `.blade.php` e são armazenados no diretório `resources/views`.
 
- O Blade é um motor de modelagem simples e poderoso incluído no Laravel. Diferente de alguns motores de modelagem PHP, o Blade não o restringe da utilização do código PHP puro nos seus modelos. Na verdade, todos os modelos do Blade são compilados para código PHP puro e armazenados em cache até serem modificados, significando que o Blade não impõe quaisquer sobrecargas à sua aplicação. Os arquivos de modelo .blade.php têm normalmente a extensão `.blade.php` e são armazenados no diretório `resources/views`.
+É possível retornar views Blade a partir de rotas ou controladores usando o recurso auxiliar global `view`. Claro que, como mencionado na documentação sobre [visualizações](/docs/views), é possível passar dados para a view Blade usando o segundo argumento do recurso auxiliar `view`:
 
- É possível retornar vistas Blade a partir de rotas ou controladores usando o recurso auxiliar global `view`. Claro que, como mencionado na documentação sobre [vistas](/docs/{{ version }}/views), é possível passar dados para a vista Blade usando o segundo argumento do recurso auxiliar `view`:
+```blade
+    Route::get('/', function () {
+        return view('greeting', ['name' => 'Finn']);
+    });
+```
 
- Rota::get ('/', função () {
-
- Retorna a exibição 'Greeting' com o nome 'Finn'.
- )
-
-### Sobrecarregando a lâmina com o LiveWire
-
- Quer levar os seus modelos Blade ao próximo nível e criar interfaces dinâmicas com facilidade? Confira o [Laravel Livewire](https://livewire.laravel.com). O Livewire permite que você escreva componentes Blade, que são aumentados com funcionalidades dinâmicas que normalmente seriam possíveis apenas por meio de frameworks frontend como React ou Vue, fornecendo uma excelente abordagem para criar interfaces frontend modernas e reativas sem as complexidades, renderização do lado do cliente ou etapas de compilação de muitos frameworks JavaScript.
+### Sobrecarregando a Blade com o LiveWire
+Quer levar os seus templates Blade ao próximo nível e criar interfaces dinâmicas com facilidade? Confira o [Laravel Livewire](https://livewire.laravel.com). O Livewire permite que você escreva componentes Blade, que são aumentados com funcionalidades dinâmicas que normalmente seriam possíveis apenas por meio de frameworks frontend como React ou Vue, fornecendo uma excelente abordagem para criar interfaces frontend modernas e reativas sem as complexidades, renderização do lado do cliente ou etapas de compilação de muitos frameworks JavaScript.
 
 ## Mostrar dados
-
- É possível exibir dados que são passados aos seus vistas Blade usando aspas duplas, por exemplo, considerando o seguinte caminho:
+É possível exibir dados que são passados as suas visualizações Blade usando aspas duplas, por exemplo, considerando o seguinte caminho:
 
 ```php
     Route::get('/', function () {
@@ -25,24 +23,24 @@
     });
 ```
 
- Você pode exibir o conteúdo da variável `name` da seguinte maneira:
+Você pode exibir o conteúdo da variável `name` da seguinte maneira:
 
 ```blade
 Hello, {{ $name }}.
 ```
 
- > [!NOTA]
- > As declarações de eco de `{{ }}` do Blade são automaticamente enviadas pela função `htmlspecialchars` do PHP para evitar ataques XSS.
+::: info NOTA
+As instruções de eco `{{ }}` do Blade são enviadas automaticamente através da função `htmlspecialchars` do PHP para evitar ataques XSS.
+:::
 
- Você não está limitado ao mostrar o conteúdo das variáveis passadas à vista. Pode também efetuar a impressão dos resultados de qualquer função PHP. Na verdade, você pode inserir qualquer código PHP que desejar dentro da instrução echo da Blade:
+Você não está limitado ao mostrar o conteúdo das variáveis passadas à view. Você também pode efetuar a impressão dos resultados de qualquer função PHP. Na verdade, você pode inserir qualquer código PHP que desejar dentro da instrução echo da Blade:
 
 ```blade
 The current UNIX timestamp is {{ time() }}.
 ```
 
 ### Codificação de entidades HTML
-
- Por padrão, o Blade (e a função Laravel `e`) irá duplicar a codificação das entidades HTML. Se pretender desativar a dupla codificação, chamamos a método `Blade::withoutDoubleEncoding` na metodologia `boot` do seu `AppServiceProvider`:
+Por padrão, o Blade (e a função Laravel `e`) irá duplicar a codificação das entidades HTML. Se pretender desativar a dupla codificação, chamamos a método `Blade::withoutDoubleEncoding` na metodologia `boot` do seu `AppServiceProvider`:
 
 ```php
     <?php
@@ -55,7 +53,7 @@ The current UNIX timestamp is {{ time() }}.
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Bootstrap any application services.
+         * Inicialize qualquer serviço de aplicativo.
          */
         public function boot(): void
         {
@@ -65,20 +63,18 @@ The current UNIX timestamp is {{ time() }}.
 ```
 
 #### Exibição de dados não encerrados
-
- Por padrão, as declarações de código Blade `'{}'` são enviadas automaticamente para a função PHP `htmlspecialchars` para evitar ataques XSS. Se não pretender que os seus dados sejam escapados, poderá utilizar a seguinte sintaxe:
+Por padrão, as declarações de código Blade `{{ }}` são enviadas automaticamente para a função PHP `htmlspecialchars` para evitar ataques XSS. Se você não pretender que os seus dados sejam escapados, poderá utilizar a seguinte sintaxe:
 
 ```blade
 Hello, {!! $name !!}.
 ```
 
- > [ATENÇÃO]
- > Tenha muito cuidado ao reproduzir conteúdo fornecido por usuários de seu aplicativo. Normalmente, você deve usar a sintaxe dos aspas duplas e do caractere de escape para evitar ataques XSS ao exibir dados fornecidos pelo usuário.
+::: warning ATENÇÃO
+Tenha muito cuidado ao reproduzir conteúdo fornecido por usuários de seu aplicativo. Normalmente, você deve usar a sintaxe das aspas duplas e do caractere de escape para evitar ataques XSS ao exibir dados fornecidos pelo usuário.
+:::
 
-
-### Arquiteturas de Blade e JavaScript
-
- Como muitos frameworks JavaScript também utilizam aspas "acartonadas" para indicar que determinada expressão deve ser exibida no browser, você pode usar o símbolo `@` para informar ao motor de renderização Blade que uma expressão não deve ser alterada. Por exemplo:
+### Blade e frameworks javascript
+Como muitas estruturas JavaScript também usam chaves "curvas" para indicar que uma determinada expressão deve ser exibida no navegador, você pode usar o símbolo `@` para informar ao mecanismo de renderização do Blade que uma expressão deve permanecer intacta. Por exemplo:
 
 ```blade
 <h1>Laravel</h1>
@@ -86,9 +82,9 @@ Hello, {!! $name !!}.
 Hello, @{{ name }}.
 ```
 
- Nesse exemplo, o símbolo `@` será removido pelo Blade; no entanto, a expressão `{{ name }}` permanecerá intocada pelo motor do Blade, permitindo que seja renderizada pelo seu framework JavaScript.
+Nesse exemplo, o símbolo `@` será removido pelo Blade; no entanto, a expressão `{{ name }}` permanecerá intocada pelo motor do Blade, permitindo que seja renderizada pelo seu framework JavaScript.
 
- O símbolo `@' também pode ser utilizado para evitar as diretivas Blade:
+O símbolo `@' também pode ser utilizado para evitar as diretivas Blade:
 
 ```blade
 {{-- Blade template --}}
@@ -99,8 +95,7 @@ Hello, @{{ name }}.
 ```
 
 #### Exibição de JSON
-
- Às vezes, você pode enviar um array para sua visualização com a intenção de renderizá-lo como JSON para inicializar uma variável JavaScript. Por exemplo:
+Às vezes, você pode enviar um array para sua visualização com a intenção de renderizá-lo como JSON para inicializar uma variável JavaScript. Por exemplo:
 
 ```blade
 <script>
@@ -108,7 +103,7 @@ Hello, @{{ name }}.
 </script>
 ```
 
- No entanto, ao invés de chamar manualmente `json_encode`, você pode usar o direcionador da metodologia `Illuminate\Support\Js::from`. O método `from` aceita os mesmos argumentos que a função PHP `json_encode`; no entanto, ele garante que o JSON resultante será devidamente escapado para inclusão dentro de citações HTML. O método `from` retorna uma sentença do comando JavaScript `JSON.parse` que converte um objeto ou matriz dados em um objeto JavaScript válido:
+No entanto, ao invés de chamar manualmente `json_encode`, você pode usar o método `Illuminate\Support\Js::from`. O método `from` aceita os mesmos argumentos que a função PHP `json_encode`; no entanto, ele garante que o JSON resultante será devidamente escapado para inclusão dentro de citações HTML. O método `from` retorna uma sentença do comando JavaScript `JSON.parse` que converte um objeto ou matriz dados em um objeto JavaScript válido:
 
 ```blade
 <script>
@@ -116,7 +111,7 @@ Hello, @{{ name }}.
 </script>
 ```
 
- As versões mais recentes do esqueleto da aplicação Laravel incluem uma interface `Js`, que fornece um acesso conveniente a essas funcionalidades dentro dos modelos Blade:
+As versões mais recentes do esqueleto da aplicação Laravel incluem uma interface `Js`, que fornece um acesso conveniente a essas funcionalidades dentro dos modelos Blade:
 
 ```blade
 <script>
@@ -124,12 +119,12 @@ Hello, @{{ name }}.
 </script>
 ```
 
- > [!AVISO]
- > Você só deve usar o método `Js::from` para renderizar variáveis existentes como JSON. O plantão de modelagem Blade é baseado em expressões regulares e tentar passar uma expressão complexa para a diretiva pode causar falhas inesperadas.
+::: warning ATENÇÃO
+Você só deve usar o método `Js::from` para renderizar variáveis existentes como JSON. O template Blade é baseado em expressões regulares e tentar passar uma expressão complexa para a diretiva pode causar falhas inesperadas.
+:::
 
 #### A diretiva '@verbatim'
-
- Se você estiver exibindo variáveis de JavaScript em uma grande parte do modelo, poderá envolver o código HTML na diretiva `@verbatim`, para não precisar adicionar um símbolo `@` a cada instrução Blade echo:
+Se você estiver exibindo variáveis de JavaScript em uma grande parte do template, vocÊ poderá envolver o código HTML na diretiva `@verbatim`, para não precisar adicionar um símbolo `@` a cada instrução echo no Blade:
 
 ```blade
 @verbatim
@@ -139,13 +134,11 @@ Hello, @{{ name }}.
 @endverbatim
 ```
 
-## Diretivas de laminação
-
- Além da herança de modelos e exibição de dados, o Blade fornece atalhos convenientes para estruturas de controle do PHP comuns, tais como expressões condicionais e loops. Estes atalhos oferecem uma maneira limpa e concisa de trabalhar com estruturas de controle do PHP, mas permanecem familiares aos seus homólogos do PHP.
+## Diretivas do Blade
+Além da herança de templates e exibição de dados, o Blade fornece atalhos convenientes para estruturas de controle comuns do PHP, tais como expressões condicionais e loops. Estes atalhos oferecem uma maneira limpa e concisa de trabalhar com estruturas de controle do PHP, mas permanecem familiares aos seus homólogos do PHP.
 
 ### Seções de Condicional
-
- Você pode construir declarações `se` utilizando as diretivas `@if`, `@elseif`, `@else` e `@endif`. Essas diretivas funcionam de maneira idêntica às correspondentes no PHP:
+Você pode construir declarações `if` utilizando as diretivas `@if`, `@elseif`, `@else` e `@endif`. Essas diretivas funcionam de maneira idêntica às correspondentes no PHP:
 
 ```blade
 @if (count($records) === 1)
@@ -157,7 +150,7 @@ Hello, @{{ name }}.
 @endif
 ```
 
- Por conveniência, o Blade também oferece a diretiva `@except`:
+Por conveniência, o Blade também oferece a diretiva `@unless`:
 
 ```blade
 @unless (Auth::check())
@@ -165,69 +158,66 @@ Hello, @{{ name }}.
 @endunless
 ```
 
- Além das diretivas condicionais já discutidas, as diretivas `@isset` e `@empty` podem ser utilizadas como atalhos para suas respectivas funções do PHP:
+Além das diretivas condicionais já discutidas, as diretivas `@isset` e `@empty` podem ser utilizadas como atalhos para suas respectivas funções do PHP:
 
 ```blade
 @isset($records)
-    // $records is defined and is not null...
+    // $records está definido e não é nulo...
 @endisset
 
 @empty($records)
-    // $records is "empty"...
+    // $records é "empty"...
 @endempty
 ```
 
 #### Diretivas de autenticação
-
- As diretivas `@auth` e `@guest` podem ser utilizadas para determinar rapidamente se o usuário atual está autenticado ou é um visitante:
+As diretivas `@auth` e `@guest` podem ser utilizadas para determinar rapidamente se o usuário atual está [autenticado](/docs/authentication) ou é um visitante:
 
 ```blade
 @auth
-    // The user is authenticated...
+    // O usuário está autenticado...
 @endauth
 
 @guest
-    // The user is not authenticated...
+    // O usuário não está autenticado...
 @endguest
 ```
 
- Se necessário, você pode especificar a verificação de autenticação ao usar as diretivas `@auth` e `@guest`:
+Se necessário, você pode especificar a verificação de autenticação ao usar as diretivas `@auth` e `@guest`:
 
 ```blade
 @auth('admin')
-    // The user is authenticated...
+    // O usuário está autenticado...
 @endauth
 
 @guest('admin')
-    // The user is not authenticated...
+    // O usuário não está autenticado...
 @endguest
 ```
 
 #### Diretivas Ambientais
-
- Você pode verificar se o aplicativo está sendo executado no ambiente de produção usando a diretiva `@production`:
+Você pode verificar se o aplicativo está sendo executado no ambiente de produção usando a diretiva `@production`:
 
 ```blade
 @production
-    // Production specific content...
+    // Conteúdo específico de produção...
 @endproduction
 ```
 
- Ou você pode determinar se o aplicativo está sendo executado em um ambiente específico usando a diretiva `@env`:
+Ou você pode determinar se o aplicativo está sendo executado em um ambiente específico usando a diretiva `@env`:
 
 ```blade
 @env('staging')
-    // The application is running in "staging"...
+    // O aplicativo está sendo executado em "staging"...
 @endenv
 
 @env(['staging', 'production'])
-    // The application is running in "staging" or "production"...
+    // O aplicativo está sendo executado em "staging" ou "production"...
 @endenv
 ```
 
 #### Diretivas da secção
-
- Você pode determinar se uma seção de herança de modelo tem conteúdo usando a diretiva `@hasSection`:
+Você pode determinar se uma seção de herança do template tem conteúdo usando a diretiva `@hasSection`:
 
 ```blade
 @hasSection('navigation')
@@ -239,7 +229,7 @@ Hello, @{{ name }}.
 @endif
 ```
 
- Você pode usar a diretiva `sectionMissing` para determinar se uma seção não tem conteúdo:
+Você pode usar a diretiva `sectionMissing` para determinar se uma seção não tem conteúdo:
 
 ```blade
 @sectionMissing('navigation')
@@ -250,8 +240,7 @@ Hello, @{{ name }}.
 ```
 
 #### Diretivas da sessão
-
- A diretiva `@session` pode ser usada para determinar se um valor de sessão existe. Se o valor da sessão existir, os conteúdos do modelo dentro das diretivas `@session` e `@endsession` serão avaliados. Dentro dos conteúdos da diretiva `@session`, você pode ecoar a variável `$value` para mostrar o valor da sessão:
+A diretiva `@session` pode ser usada para determinar se um valor de sessão existe. Se o valor da sessão existir, os conteúdos do template entre as diretivas `@session` e `@endsession` serão avaliados. Dentro dos conteúdos da diretiva `@session`, você pode ecoar a variável `$value` para mostrar o valor da sessão:
 
 ```blade
 @session('status')
@@ -261,28 +250,26 @@ Hello, @{{ name }}.
 @endsession
 ```
 
-### Alternância de Etiquetação
-
- As instruções do tipo `@switch`, `@case`, `@break`, `@default` e `@endswitch` permitem a construção de declarações `switch`:
+### Declarações de troca
+As instruções switch podem ser construídas usando as diretivas `@switch`, `@case`, `@break`, `@default` e `@endswitch`:
 
 ```blade
 @switch($i)
     @case(1)
-        First case...
+        Primeiro caso...
         @break
 
     @case(2)
-        Second case...
+        Segundo caso...
         @break
 
     @default
-        Default case...
+        Caso padrão...
 @endswitch
 ```
 
-### Laços
-
- Além das declarações condicionais, o Blade oferece diretivas simples para trabalhar com estruturas de loop do PHP. Novamente, cada uma dessas diretivas funciona da mesma forma que as correspondentes no PHP:
+### Loops
+Além das declarações condicionais, o Blade oferece diretivas simples para trabalhar com estruturas de loop do PHP. Novamente, cada uma dessas diretivas funciona da mesma forma que as correspondentes no PHP:
 
 ```blade
 @for ($i = 0; $i < 10; $i++)
@@ -304,10 +291,10 @@ Hello, @{{ name }}.
 @endwhile
 ```
 
- > [!ATENÇÃO]
- Use a variável do laço [#the-loop-variable](@ref loop-variables) para obter informações valiosas sobre o laço, como saber se você está na primeira ou última iteração do laço.
+::: info NOTA
+Ao iterar através de um loop `foreach`, você pode usar a [variável do loop](#variavel-do-loop) para obter informações valiosas sobre o loop, como se você está na primeira ou na última iteração do loop.
 
- Ao utilizar bucles, pode também ignorar a iteração atual ou terminar o loop usando as diretivas `@continue` e `@break`:
+Ao utilizar loops, você também pode ignorar a iteração atual ou terminar o loop usando as diretivas `@continue` e `@break`:
 
 ```blade
 @foreach ($users as $user)
@@ -323,7 +310,7 @@ Hello, @{{ name }}.
 @endforeach
 ```
 
- Pode também incluir a condição de continuação ou interrupção na declaração da diretiva:
+Pode também incluir a condição de continuação ou interrupção na declaração da diretiva:
 
 ```blade
 @foreach ($users as $user)
@@ -335,9 +322,8 @@ Hello, @{{ name }}.
 @endforeach
 ```
 
-### A variável do laço
-
- Ao interagir com um loop `foreach`, existe uma variável `$loop` que permite acessar informações úteis, como o índice atual do loop e se é a primeira ou última iteração:
+### A variável do loop
+Ao interagir com um loop `foreach`, existe uma variável `$loop` que permite acessar informações úteis, como o índice atual do loop e se é a primeira ou última iteração:
 
 ```blade
 @foreach ($users as $user)
@@ -353,7 +339,7 @@ Hello, @{{ name }}.
 @endforeach
 ```
 
- Se você estiver em um laço aninhado, poderá acessar a variável do laço pai através da propriedade `parent`:
+Se você estiver em um loop aninhado, poderá acessar a variável do laço pai através da propriedade `parent`:
 
 ```blade
 @foreach ($users as $user)
@@ -365,24 +351,23 @@ Hello, @{{ name }}.
 @endforeach
 ```
 
- A variável `$loop` também inclui várias outras propriedades úteis:
+A variável `$loop` também inclui várias outras propriedades úteis:
 
-|  Bens |  Descrição |
-|--------------------|--------------------------------------------------------|
-|  `index($loop)` |  O índice da iteração corrente do laço (começa em 0). |
-|  `$loop->iteração` |  A iteração do loop atual (começa em 1). |
-|  `$loop->remaining` |  As iterações remanescentes na loop. |
-|  `contagem($loop)` |  O número total de itens na matriz que está sendo iterada. |
-|  `$loop->first` |  Se esta é a primeira execução do loop. |
-|  `$loop->ultimo` |  Se esta é a última iteração do laço. |
-|  `$loop->par` |  Se esta é uma iteração par ou ímpar no decorrer do laço. |
-|  `$loop->par’ |  Se essa é uma iteração estranha da loop. |
-|  `$loop->depth` |  Nível de nidificação da loop atual. |
-|  `$loop->parent` |  Quando numa loop aninhada, a variável da loop principal. |
+| Propriedade         | Descrição                                                 |
+|---------------------|-----------------------------------------------------------|
+| `$loop->index`      | O índice da iteração corrente do laço (começa em 0).      |
+| `$loop->iteration`  | A iteração do loop atual (começa em 1).                   |
+| `$loop->remaining`  | As iterações remanescentes na loop.                       |
+| `$loop->count`      | O número total de itens na matriz que está sendo iterada. |
+| `$loop->first`      | Se esta é a primeira execução do loop.                    |
+| `$loop->last`       | Se esta é a última iteração do laço.                      |
+| `$loop->even`       | Se esta é uma iteração par ou ímpar no decorrer do laço.  |
+| `$loop->odd`        | Se essa é uma iteração estranha da loop.                  |
+| `$loop->depth`      | Nível de nidificação da loop atual.                       |
+| `$loop->parent`     | Quando numa loop aninhada, a variável da loop principal.  |
 
-### Categorias e estilos condicionais
-
- A diretiva `@class` compila condicionalmente uma string de classe CSS. A diretiva aceita um array de classes onde a chave do array contém a(s) classe(s) que você deseja adicionar, ao passo que o valor é uma expressão boolean. Se o elemento do array tiver uma chave numérica, ele será sempre incluído na lista de classes renderizadas:
+### Classes e estilos condicionais
+A diretiva `@class` compila condicionalmente uma string de classe CSS. A diretiva aceita um array de classes onde a chave do array contém a(s) classe(s) que você deseja adicionar, ao passo que o valor é uma expressão boolean. Se o elemento do array tiver uma chave numérica, ele será sempre incluído na lista de classes renderizadas:
 
 ```blade
 @php
@@ -400,7 +385,7 @@ Hello, @{{ name }}.
 <span class="p-4 text-gray-500 bg-red"></span>
 ```
 
- Da mesma forma, a diretiva `@style` pode ser usada para adicionar condicionalmente estilos CSS em linha a um elemento HTML:
+Da mesma forma, a diretiva `@style` pode ser usada para adicionar condicionalmente estilos CSS em linha a um elemento HTML:
 
 ```blade
 @php
@@ -416,8 +401,7 @@ Hello, @{{ name }}.
 ```
 
 ### Atributos adicionais
-
- Para maior conveniência, você pode usar a diretiva `@checked` para indicar facilmente se um determinado campo de rádio ou caixa de seleção HTML está "marcado". Essa diretiva irá mostrar `checked` se a condição for `true`:
+Para maior conveniência, você pode usar a diretiva `@checked` para indicar facilmente se um determinado campo de rádio ou caixa de seleção HTML está "marcado". Essa diretiva irá mostrar `checked` se a condição for `true`:
 
 ```blade
 <input type="checkbox"
@@ -426,7 +410,7 @@ Hello, @{{ name }}.
         @checked(old('active', $user->active)) />
 ```
 
- Da mesma forma, pode ser utilizada a diretiva `@selected` para indicar se uma opção de seleção deve estar "selecionada":
+Da mesma forma, pode ser utilizada a diretiva `@selected` para indicar se uma opção de seleção deve estar "selecionada":
 
 ```blade
 <select name="version">
@@ -438,13 +422,13 @@ Hello, @{{ name }}.
 </select>
 ```
 
- Além disso, pode ser utilizada a diretiva `@disabled` para indicar se um determinado elemento deve estar "inativo":
+Além disso, pode ser utilizada a diretiva `@disabled` para indicar se um determinado elemento deve estar "inativo":
 
 ```blade
 <button type="submit" @disabled($errors->isNotEmpty())>Submit</button>
 ```
 
- Além disso, a diretiva `@readonly` pode ser utilizada para indicar se um determinado elemento deverá ser "não-editável":
+Além disso, a diretiva `@readonly` pode ser utilizada para indicar se um determinado elemento deverá ser "somente-leitura":
 
 ```blade
 <input type="email"
@@ -453,7 +437,7 @@ Hello, @{{ name }}.
         @readonly($user->isNotAdmin()) />
 ```
 
- Além disso, a diretiva `@required` pode ser utilizada para indicar se um determinado elemento é "obrigatório":
+Adicionalmente, a diretiva `@required` pode ser utilizada para indicar se um determinado elemento é "obrigatório":
 
 ```blade
 <input type="text"
@@ -462,12 +446,13 @@ Hello, @{{ name }}.
         @required($user->isAdmin()) />
 ```
 
-### Incluindo sub-vídeos
+### Incluindo sub-views
 
- > [!OBSERVAÇÃO]
- As classes ([Componentes](#componentes) fornecem funcionalidade semelhante e oferecem vários benefícios em relação à diretiva `@include`, como ligação de dados e atributos.
+::: info NOTA
+Embora você possa usar a diretiva `@include`, o Blade [components](#componentes) fornece funcionalidade semelhante e oferece vários benefícios em relação à diretiva `@include`, como vinculação de dados e atributos.
+:::
 
- A diretiva @include do Blade permite-lhe incluir uma visualização de Blade numa outra visualização. As variáveis que estão disponíveis na visualização principal estarão também disponíveis na visualização incluída:
+A diretiva `@include` do Blade permite-lhe incluir uma visualização do Blade numa outra visualização. As variáveis que estão disponíveis na visualização principal estarão também disponíveis na visualização incluída:
 
 ```blade
 <div>
@@ -479,19 +464,19 @@ Hello, @{{ name }}.
 </div>
 ```
 
- Apesar da visualização incluída herdar todos os dados disponíveis na visualização pai, você também poderá passar um array de dados adicionais que serão disponibilizados à visualização incluída.
+Apesar da visualização incluída herdar todos os dados disponíveis na visualização pai, você também poderá passar um array de dados adicionais que serão disponibilizados à visualização incluída.
 
 ```blade
 @include('view.name', ['status' => 'complete'])
 ```
 
- Se você tentar incluir uma vista que não existe, o Laravel irá exibir um erro. Se você deseja incluir uma vista que pode ou não estar presente, você deve usar a diretiva `@includeIf`:
+Se você tentar incluir uma visualização que não existe, o Laravel irá exibir um erro. Se você desejar incluir uma view que pode ou não estar presente, você deve usar a diretiva `@includeIf`:
 
 ```blade
 @includeIf('view.name', ['status' => 'complete'])
 ```
 
- Se quiser incluir uma visualização se uma expressão booleana dada for `verdadeira` ou `falsa`, pode utilizar as diretivas `@includeWhen` e `@includeUnless`:
+Se quiser incluir uma visualização se uma expressão booleana dada for `true` ou `false`, você pode utilizar as diretivas `@includeWhen` e `@includeUnless`:
 
 ```blade
 @includeWhen($boolean, 'view.name', ['status' => 'complete'])
@@ -499,61 +484,60 @@ Hello, @{{ name }}.
 @includeUnless($boolean, 'view.name', ['status' => 'complete'])
 ```
 
- Para incluir o primeiro visual existente numa determinada sequência de visualizações, pode utilizar a diretiva `includeFirst`:
+Para incluir o primeiro visual existente numa determinada sequência de visualizações, você pode utilizar a diretiva `includeFirst`:
 
 ```blade
 @includeFirst(['custom.admin', 'admin'], ['status' => 'complete'])
 ```
 
- > [!AVISO]
- > Devemos evitar o uso das constantes `__DIR__` e `__FILE__` em nossas visualizações do Blade pois elas remetem à localização da visualização compilada e que está sendo utilizada naquele momento.
+::: warning ATENÇÃO
+Devemos evitar o uso das constantes `__DIR__` e `__FILE__` em nossas visualizações do Blade pois elas remetem à localização da visualização compilada e que está sendo utilizada naquele momento.
+:::
 
-#### Exibição de visuais para coleções
-
- É possível combinar loops e inclui em uma linha com a diretiva `@each` do Blade:
+#### Exibição de views para coleções
+Você pode combinar loops e inclusões em uma linha com a diretiva `@each` do Blade:
 
 ```blade
 @each('view.name', $jobs, 'job')
 ```
 
- O primeiro argumento da diretiva `@each` é a visualização a ser renderizada para cada elemento no array ou coleção. O segundo argumento é o array ou coleção que você deseja iterar, enquanto o terceiro argumento é o nome de variável que receberá o valor atual da iteração na visualização. Assim, por exemplo, se você estiver iterando um array de "jobs" (trabalhos), normalmente desejará acessar cada trabalho como uma variável "job". A chave do array para a iteração atual estará disponível na variável `key` da visualização.
+O primeiro argumento da diretiva `@each` é a visualização a ser renderizada para cada elemento no array ou coleção. O segundo argumento é o array ou coleção que você deseja iterar, enquanto o terceiro argumento é o nome da variável que receberá o valor atual da iteração na visualização. Assim, por exemplo, se você estiver iterando um array de "jobs" (trabalhos), normalmente desejará acessar cada trabalho como uma variável "job". A chave do array para a iteração atual estará disponível na variável `key` da visualização.
 
- Você também pode passar um quarto argumento à diretiva `@each`. Este argumento define o modelo que será renderizado se o array especificado estiver vazio.
+Você também pode passar um quarto argumento à diretiva `@each`. Este argumento define o modelo que será renderizado se o array especificado estiver vazio.
 
 ```blade
 @each('view.name', $jobs, 'job', 'view.empty')
 ```
 
- > [Atenção]
- > As vistas renderizadas por meio de `@each` não herdam as variáveis da vista pai. Se a vista filha necessitar dessas variáveis, você deve usar as diretivas `@foreach` e `@include`.
+::: warning ATENÇÃO
+As views renderizadas por meio de `@each` não herdam as variáveis da view pai. Se a view filha necessitar dessas variáveis, você deve usar as diretivas `@foreach` e `@include`.
+:::
 
 ### A Diretiva `@once`
-
- A diretiva `@once` permite-lhe definir uma parte do modelo que só será executada uma vez por ciclo de representação. Isto poderá ser útil para empurrar um determinado pedaço de JavaScript para a parte superior da página usando [pilhas](#pilhas). Por exemplo, se estiver a representar um determinado [componente](#componentes) numa loop, poderá querer empurrar o JavaScript para a parte superior apenas na primeira vez que o componente for representado:
+A diretiva `@once` permite-lhe definir uma parte do modelo que só será executada uma vez por ciclo de representação. Isto poderá ser útil para empurrar um determinado pedaço de JavaScript para a parte superior da página usando [stacks](#pilhas) (pilhas). Por exemplo, se você estiver a representar um determinado [componente](#componentes) num loop, poderá querer empurrar o JavaScript para a parte superior apenas na primeira vez que o componente for representado:
 
 ```blade
 @once
     @push('scripts')
         <script>
-            // Your custom JavaScript...
+            // Seu JavaScript customizado...
         </script>
     @endpush
 @endonce
 ```
 
- Uma vez que a diretiva `@once` é usada com frequência em conjunto com as diretivas `@push` ou `@prepend`, estão disponíveis as diretivas `@pushOnce` e `@prependOnce`:
+Como a diretiva `@once` é frequentemente usada em conjunto com as diretivas `@push` ou `@prepend`, as diretivas `@pushOnce` e `@prependOnce` estão disponíveis para sua conveniência:
 
 ```blade
 @pushOnce('scripts')
     <script>
-        // Your custom JavaScript...
+        // Seu JavaScript customizado...
     </script>
 @endPushOnce
 ```
 
-### Programação no nível básico
-
- Em algumas situações, é útil inserir código PHP em suas visualizações. Você pode usar a diretiva Blade `@php` para executar um bloco de código PHP simples no seu modelo:
+### PHP Puro
+Em algumas situações, é útil inserir código PHP em suas visualizações. Você pode usar a diretiva `@php` do Blade para executar um bloco de código PHP simples no seu modelo:
 
 ```blade
 @php
@@ -561,65 +545,62 @@ Hello, @{{ name }}.
 @endphp
 ```
 
- Ou se você só precisa usar o PHP para importar uma classe, pode usar a diretiva `@use`:
+Ou se você só precisa usar o PHP para importar uma classe, pode usar a diretiva `@use`:
 
 ```blade
 @use('App\Models\Flight')
 ```
 
- Um segundo argumento pode ser fornecido à diretiva `@use` para criar um alias da classe importada:
+Um segundo argumento pode ser fornecido à diretiva `@use` para criar um alias da classe importada:
 
 ```php
 @use('App\Models\Flight', 'FlightModel')
 ```
 
 ### Comentários
-
- Além disso, o Blade permite que você defina comentários em suas vistas. No entanto, ao contrário dos comentários do HTML, os comentários do Blade não são incluídos no HTML devolvido pela sua aplicação:
+Além disso, o Blade permite que você defina comentários em suas vistas. No entanto, ao contrário dos comentários do HTML, os comentários do Blade não são incluídos no HTML devolvido pela sua aplicação:
 
 ```blade
 {{-- This comment will not be present in the rendered HTML --}}
 ```
 
 ## Componentes
+Os componentes e os slots fornecem benefícios semelhantes as _sections_, _layouts_ e _includes_; no entanto, alguns podem considerar que a forma de uso dos componentes e slots é mais fácil de compreender. Existem duas abordagens para escrever componentes: componentes com base em classes e componentes anônimos.
 
- Os componentes e os slots fornecem benefícios semelhantes aos seções, layouts e inclui; no entanto, alguns podem considerar que o modelo mental dos componentes e slots é mais fácil de compreender. Existem duas abordagens para escrever componentes: componentes com base em classes e componentes anónimos.
-
- Para criar um componente baseado em classes, pode utilizar o comando de linha de comandos `make:component`. Para ilustrar a utilização de componentes, criaremos um simples componente `Alert`. O comando `make:component` colocará o componente no diretório `app/View/Components`:
+Para criar um componente baseado em classes, você pode utilizar a linha de comando do Artisan `make:component`. Para ilustrar a utilização de componentes, criaremos um simples componente de nome `Alert`. O comando `make:component` colocará o componente no diretório `app/View/Components`:
 
 ```shell
 php artisan make:component Alert
 ```
 
- O comando `make:component` também criará um modelo de visualização para o componente. A visualização será colocada na pasta `resources/views/components`. Para os componentes da sua própria aplicação, normalmente não é necessário proceder a qualquer tipo de registo do mesmo, uma vez que os mesmos são automaticamente descobertos nas pastas `app/View/Components` e `resources/views/components`.
+O comando `make:component` também criará um modelo de visualização para o componente. A visualização será colocada na pasta `resources/views/components`. Para os componentes da sua própria aplicação, normalmente não é necessário proceder com qualquer tipo de registo do mesmo, uma vez que os mesmos são automaticamente descobertos nas pastas `app/View/Components` e `resources/views/components`.
 
- Você também pode criar componentes dentro de subdiretórios:
+Você também pode criar componentes dentro de subdiretórios:
 
 ```shell
 php artisan make:component Forms/Input
 ```
 
- Comando acima irá criar um componente `Input` na pasta `app/View/Components/Forms`, e a vista será colocada na pasta `resources/views/components/forms`.
+O comando acima irá criar um componente `Input` na pasta `app/View/Components/Forms`, e a view será colocada na pasta `resources/views/components/forms`.
 
- Se você desejar criar um componente anônimo (um componente com apenas um modelo Blade e sem nenhuma classe), poderá usar a marca --view ao invocar o comando `make:component`:
+Se você desejar criar um componente anônimo (um componente com apenas um template Blade e sem nenhuma classe), poderá usar a flag `--view` ao invocar o comando `make:component`:
 
 ```shell
 php artisan make:component forms.input --view
 ```
 
-The command above will create a Blade file at `resources/views/components/forms/input.blade.php` which can be rendered as a component via `<x-forms.input />`.
+O comando acima criará um arquivo Blade em `resources/views/components/forms/input.blade.php` que pode ser renderizado como um componente via `<x-forms.input />`.
 
 #### Registo Manual de Componentes do Pacote
+Quando você escreve componentes para seu próprio aplicativo, esses componentes são descobertos automaticamente nas pastas `app/View/Components` e `resources/views/components`.
 
- Quando você escreve componentes para seu próprio aplicativo, esses componentes são descobertos automaticamente nas pastas `app/View/Components` e `resources/views/components`.
-
- No entanto, se estiver criando um pacote que utiliza os componentes Blade, precisará de registar manualmente a sua classe de componentes e o seu alias HTML tag. Normalmente, deve registar os seus componentes no método `boot` do fornecedor do serviço do seu pacote:
+No entanto, se estiver criando um pacote que utiliza os componentes Blade, precisará registrar manualmente a sua classe de componentes e o seu alias HTML. Normalmente, você deve registrar os seus componentes no método `boot` do fornecedor do serviço do seu pacote:
 
 ```php
     use Illuminate\Support\Facades\Blade;
 
     /**
-     * Bootstrap your package's services.
+     * Inicialize os serviços do seu pacote.
      */
     public function boot(): void
     {
@@ -633,13 +614,13 @@ The command above will create a Blade file at `resources/views/components/forms/
 <x-package-alert/>
 ```
 
- Como alternativa, você pode usar o método `componentNamespace` para fazer o auto carregamento de classes de componentes por convenção. Por exemplo, um pacote com a extensão Nightshade poderia ter os componentes Calendar e ColorPicker que ficam dentro do namespace Package\Views\Components:
+Como alternativa, você pode usar o método `componentNamespace` para fazer o auto carregamento de classes de componentes por convenção. Por exemplo, um pacote com o nome _Nightshade_ poderia ter os componentes _Calendar_ e _ColorPicker_ que ficam dentro do namespace `Package\Views\Components`:
 
 ```php
     use Illuminate\Support\Facades\Blade;
 
     /**
-     * Bootstrap your package's services.
+     * Inicialize os serviços do seu pacote.
      */
     public function boot(): void
     {
@@ -647,18 +628,17 @@ The command above will create a Blade file at `resources/views/components/forms/
     }
 ```
 
- Isso permite o uso de componentes do pacote pelo seu namespace do fornecedor usando a sintaxe `package-name::`:
+Isso permite o uso de componentes do pacote pelo seu namespace do fornecedor usando a sintaxe `package-name::`:
 
 ```blade
 <x-nightshade::calendar />
 <x-nightshade::color-picker />
 ```
 
- O Blade irá, automaticamente, detetar a classe associada a este componente baseando-se no nome dele, utilizando uma notação Pascal. Os subdiretórios são também suportados utilizando notação ponto (dot).
+O Blade detectará automaticamente a classe que está vinculada a este componente colocando em pascal o nome do componente. Subdiretórios também são suportados usando a notação "ponto".
 
 ### Componentes de renderização
-
- Para exibir um componente, você pode usar uma tag de componente Blade dentro de um de seus modelos Blade. As tags de componentes Blade começam com a palavra-chave `x-` seguida pelo nome do componente em caixa baixa:
+Para exibir um componente, você pode usar uma tag de componente Blade dentro de um de seus templates Blade. As tags de componentes Blade começam com a palavra-chave `x-` seguida pelo nome do componente em caixa baixa:
 
 ```blade
 <x-alert/>
@@ -666,19 +646,19 @@ The command above will create a Blade file at `resources/views/components/forms/
 <x-user-profile/>
 ```
 
- Se a classe de componentes estiver aninhada mais profundamente no diretório `app/View/Components`, pode utilizar o caractere `.` para indicar a aninhamento de diretórios. Por exemplo, supondo que um componente esteja localizado em `app/View/Components/Inputs/Button.php`, pode renderizá-lo da seguinte forma:
+Se a classe de componentes estiver aninhada mais profundamente no diretório `app/View/Components`, você pode utilizar o caractere `.` para indicar a aninhamento de diretórios. Por exemplo, supondo que um componente esteja localizado em `app/View/Components/Inputs/Button.php`, você pode renderizá-lo da seguinte forma:
 
 ```blade
 <x-inputs.button/>
 ```
 
- Se você desejar renderizar condicionalmente seu componente, poderá definir um método `shouldRender` na classe do componente. Se o método `shouldRender` retornar `false`, o componente não será renderizado:
+Se você desejar renderizar condicionalmente seu componente, poderá definir um método `shouldRender` na classe do componente. Se o método `shouldRender` retornar `false`, o componente não será renderizado:
 
 ```php
     use Illuminate\Support\Str;
 
     /**
-     * Whether the component should be rendered
+     * Se o componente deve ser renderizado
      */
     public function shouldRender(): bool
     {
@@ -687,14 +667,13 @@ The command above will create a Blade file at `resources/views/components/forms/
 ```
 
 ### Passagem de dados para componentes
-
- Você pode passar dados para os componentes Blade usando atributos de HTML. Valores primitivos codificados com caractere de byte podem ser passados para o componente usando strings simples como atributos HTML. Expressões e variáveis PHP devem ser passadas ao componente por meio de atributos que utilizam o símbolo `:` como prefixo:
+Você pode passar dados para componentes do Blade usando atributos HTML. Valores primitivos codificados podem ser passados ​​para o componente usando strings de atributos HTML simples. Expressões e variáveis ​​PHP devem ser passadas para o componente através de atributos que usam o caractere `:` como prefixo:
 
 ```blade
 <x-alert type="error" :message="$message"/>
 ```
 
- É recomendável definir todos os atributos de dados do componente no construtor da sua classe. Todas as propriedades públicas disponíveis em um componente serão automaticamente disponibilizadas na visualização. Não é necessário passar os dados para a visualização pelo método `render` do componente:
+É recomendável definir todos os atributos de dados do componente no construtor da sua classe. Todas as propriedades públicas disponíveis em um componente serão automaticamente disponibilizadas na visualização. Não é necessário passar os dados para a visualização pelo método `render` do componente:
 
 ```php
     <?php
@@ -707,7 +686,7 @@ The command above will create a Blade file at `resources/views/components/forms/
     class Alert extends Component
     {
         /**
-         * Create the component instance.
+         * Crie a instância do componente.
          */
         public function __construct(
             public string $type,
@@ -715,7 +694,7 @@ The command above will create a Blade file at `resources/views/components/forms/
         ) {}
 
         /**
-         * Get the view / contents that represent the component.
+         * Obtenha a visualização/conteúdo que representa o componente.
          */
         public function render(): View
         {
@@ -724,7 +703,7 @@ The command above will create a Blade file at `resources/views/components/forms/
     }
 ```
 
- Ao renderizar seu componente, você pode exibir o conteúdo das variáveis públicas do seu componente ecoando-as pelo nome:
+Ao renderizar seu componente, você pode exibir o conteúdo das variáveis públicas do seu componente ecoando-as pelo nome:
 
 ```blade
 <div class="alert alert-{{ $type }}">
@@ -733,39 +712,36 @@ The command above will create a Blade file at `resources/views/components/forms/
 ```
 
 #### Casing
-
- Os argumentos de um construtor de componente devem ser especificados com "camelCase", ao passo que o "kebab-case" deve ser utilizado para referenciar os nomes dos argumentos nos atributos HTML. Por exemplo, dados os seguintes componentes:
+Os argumentos de um construtor de componente devem ser especificados com "camelCase", ao passo que o "kebab-case" deve ser utilizado para referenciar os nomes dos argumentos nos atributos HTML. Por exemplo, dados os seguintes componentes:
 
 ```php
     /**
-     * Create the component instance.
+     * Crie a instância do componente.
      */
     public function __construct(
         public string $alertType,
     ) {}
 ```
 
- O argumento `$alertType` pode ser fornecido ao componente da seguinte maneira:
+O argumento `$alertType` pode ser fornecido ao componente da seguinte maneira:
 
 ```blade
 <x-alert alert-type="danger" />
 ```
 
 #### Síntaxe de atributos curta
-
- Ao passar atributos para componentes, você também pode usar uma sintaxe de "atributo curto". Isso geralmente é mais conveniente, pois o nome do atributo costuma corresponder ao nome da variável a que ele se refere:
+Ao passar atributos para componentes, você também pode usar uma sintaxe de "atributo curto". Isso geralmente é mais conveniente, pois o nome do atributo costuma corresponder ao nome da variável a que ele se refere:
 
 ```blade
-{{-- Short attribute syntax... --}}
+{{-- Sintaxe de atributo curta... --}}
 <x-profile :$userId :$name />
 
-{{-- Is equivalent to... --}}
+{{-- É equivalente a... --}}
 <x-profile :user-id="$userId" :name="$name" />
 ```
 
 #### Fugindo da apresentação de atributos
-
- Como alguns frameworks de JavaScript, como o Alpine.js, também usam atributos com um sinal de igual (=), você poderá usar um sinal duplo (::) para indicar ao Blade que esse não é um expressão PHP. Por exemplo:
+Como alguns frameworks de JavaScript, como o Alpine.js, também usam atributos com um sinal de igual (=), você poderá usar um sinal duplo (::) para indicar ao Blade que essa não é um expressão PHP. Por exemplo:
 
 ```blade
 <x-button ::class="{ danger: isDeleting }">
@@ -773,7 +749,7 @@ The command above will create a Blade file at `resources/views/components/forms/
 </x-button>
 ```
 
- O seguinte HTML será executado pelo Blade:
+O seguinte HTML será executado pelo Blade:
 
 ```blade
 <button :class="{ danger: isDeleting }">
@@ -782,12 +758,11 @@ The command above will create a Blade file at `resources/views/components/forms/
 ```
 
 #### Métodos de componentes
-
- Além das variáveis públicas estarem disponíveis para o modelo de componente, é possível invocar quaisquer métodos públicos do mesmo. Por exemplo, suponhamos que um componente tenha um método `isSelected`:
+Além das variáveis públicas estarem disponíveis para o template de componente, é possível invocar quaisquer métodos públicos do mesmo. Por exemplo, suponhamos que um componente tenha um método `isSelected`:
 
 ```php
     /**
-     * Determine if the given option is the currently selected option.
+     * Determine se a opção fornecida é a opção atualmente selecionada.
      */
     public function isSelected(string $option): bool
     {
@@ -795,7 +770,7 @@ The command above will create a Blade file at `resources/views/components/forms/
     }
 ```
 
- Você pode executar esse método a partir do modelo de seu componente, chamando-o da variável que corresponde ao nome do método:
+Você pode executar esse método a partir do template de seu componente, chamando-o da variável que corresponde ao nome do método:
 
 ```blade
 <option {{ $isSelected($value) ? 'selected' : '' }} value="{{ $value }}">
@@ -804,15 +779,13 @@ The command above will create a Blade file at `resources/views/components/forms/
 ```
 
 #### Acessando atributos e slots dentro de classes de componentes
-
- Com componentes de Blade também é possível acessar o nome do componente, atributos e slot no método render da classe. No entanto, para obter esses dados, você deve retornar um fecho de sua função `render`. O fecho receberá como único argumento uma matriz `$data`. Essa matriz contém várias informações sobre o componente.
- elementos que fornecem informações sobre o componente:
+Os componentes Blade também permitem acessar o nome do componente, atributos e slot dentro do método de renderização da classe. Porém, para acessar esses dados, você deve retornar uma closure do método `render` do seu componente. A closure receberá um array `$data` como único argumento. Este array conterá vários elementos que fornecem informações sobre o componente:
 
 ```php
     use Closure;
 
     /**
-     * Get the view / contents that represent the component.
+     * Obtenha a visualização/conteúdo que representa o componente.
      */
     public function render(): Closure
     {
@@ -826,19 +799,18 @@ The command above will create a Blade file at `resources/views/components/forms/
     }
 ```
 
-The `componentName` is equal to the name used in the HTML tag after the `x-` prefix. So `<x-alert />`'s `componentName` will be `alert`. The `attributes` element will contain all of the attributes that were present on the HTML tag. The `slot` element is an `Illuminate\Support\HtmlString` instance with the contents of the component's slot.
+O `componentName` é igual ao nome usado na tag HTML após o prefixo `x-`. Portanto, o `componentName` de `<x-alert />` será `alert`. O elemento `attributes` conterá todos os atributos que estavam presentes na tag HTML. O elemento `slot` é uma instância `Illuminate\Support\HtmlString` com o conteúdo do slot do componente.
 
- O comando de encerramento deve retornar uma cadeia de caracteres. Se a cadeia correspondente corresponder a uma visualização existente, essa visualização será renderizada. Caso contrário, a cadeia é avaliada como visualização Blade em linha.
+O closure deve retornar uma cadeia de caracteres. Se a cadeia correspondente corresponder a uma visualização existente, essa visualização será renderizada. Caso contrário, a cadeia é avaliada como visualização Blade em linha.
 
 #### Dependências adicionais
-
- Se o seu componente tiver dependências do [conjunto de serviços Laravel] (/docs/{{ version }}/container), você poderá incluí-las antes de todos os atributos de dados do componente, que serão automaticamente injetados pelo conjunto de serviços:
+Se o seu componente tiver dependências do [conjunto de serviços Laravel](/docs/container), você poderá incluí-las antes de todos os atributos de dados do componente, que serão automaticamente injetados pelo conjunto de serviços:
 
 ```php
 use App\Services\AlertCreator;
 
 /**
- * Create the component instance.
+ * Crie a instância do componente.
  */
 public function __construct(
     public AlertCreator $creator,
@@ -848,8 +820,7 @@ public function __construct(
 ```
 
 #### Esconder atributos/métodos
-
- Se você deseja impedir que alguns métodos ou propriedades públicas sejam expostos como variáveis no modelo do componente, poderá adicioná-los a uma propriedade de array chamada `$except` em seu componente.
+Se você deseja impedir que alguns métodos ou propriedades públicas sejam expostos como variáveis no modelo do componente, poderá adicioná-los a uma propriedade de array chamada `$except` em seu componente.
 
 ```php
     <?php
@@ -861,14 +832,14 @@ public function __construct(
     class Alert extends Component
     {
         /**
-         * The properties / methods that should not be exposed to the component template.
+         * As propriedades/métodos que não devem ser expostos ao modelo de componente.
          *
          * @var array
          */
         protected $except = ['type'];
 
         /**
-         * Create the component instance.
+         * Crie a instância do componente.
          */
         public function __construct(
             public string $type,
@@ -877,27 +848,26 @@ public function __construct(
 ```
 
 ### Atributos de componentes
-
- Já estudamos o envio de atributos de dados para um componente; no entanto, por vezes poderão ser necessários especificar atributos HTML adicionais, tais como "class", que não façam parte dos dados necessários para o bom funcionamento do componente. Normalmente, você deseja enviar estes atributos adicionais ao elemento raiz do modelo de componente. Por exemplo, imagine-se que desejamos renderizar um componente "alert":
+Já estudamos o envio de atributos de dados para um componente; no entanto, por vezes poderão ser necessários especificar atributos HTML adicionais, tais como "class", que não façam parte dos dados necessários para o bom funcionamento do componente. Normalmente, você deseja enviar estes atributos adicionais ao elemento raiz do template do componente. Por exemplo, imagine que desejamos renderizar um componente "alert":
 
 ```blade
 <x-alert type="error" :message="$message" class="mt-4"/>
 ```
 
- Todos os atributos que não fazem parte do construtor da componente serão automaticamente adicionados ao "attribute bag" (mochila de atributos) da mesma. Este "attribute bag" é disponibilizado automaticamente à componente através da variável `$attributes`. Todos os atributos podem ser renderizados na componente, ecoando esta variável:
+Todos os atributos que não fazem parte do construtor da componente serão automaticamente adicionados ao "attribute bag" (mochila de atributos) da mesma. Este "attribute bag" é disponibilizado automaticamente ao componente através da variável `$attributes`. Todos os atributos podem ser renderizados no componente, ecoando esta variável:
 
 ```blade
 <div {{ $attributes }}>
-    <!-- Component content -->
+    <!-- Conteúdo do componente -->
 </div>
 ```
 
- > [ATENÇÃO]
-> Using directives such as `@env` within component tags is not supported at this time. For example, `<x-alert :live="@env('production')"/>` will not be compiled.
+::: warning ATENÇÃO
+O uso de diretivas como `@env` nas tags dos componentes não é suportado no momento. Por exemplo, `<x-alert :live="@env('production')"/>` não será compilado.
+:::
 
-#### Atributos por padrão/fusionados
-
- Às vezes, pode ser necessário especificar valores padrão para atributos ou unir valores adicionais a alguns dos atributos de um componente. Para realizar isto, utilize o método `merge` da sacola de atributos. Este método é especialmente útil na definição de um conjunto de classes CSS padrão que devem sempre ser aplicadas a um componente:
+#### Atributos padrão/mesclados
+Às vezes, pode ser necessário especificar valores padrão para atributos ou unir valores adicionais a alguns dos atributos de um componente. Para realizar isto, utilize o método `merge` da sacola de atributos. Este método é especialmente útil na definição de um conjunto de classes CSS padrão que devem sempre ser aplicadas a um componente:
 
 ```blade
 <div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }}>
