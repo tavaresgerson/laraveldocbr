@@ -875,13 +875,13 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 </div>
 ```
 
- Se assumirmos que este componente é utilizado da seguinte forma:
+Se assumirmos que este componente é utilizado da seguinte forma:
 
 ```blade
 <x-alert type="error" :message="$message" class="mb-4"/>
 ```
 
- O HTML renderizado da componente aparecerá como o seguinte:
+O HTML renderizado do componente aparecerá como o seguinte:
 
 ```blade
 <div class="alert alert-error mb-4">
@@ -889,9 +889,8 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 </div>
 ```
 
-#### Fusão condicional de classes
-
- Às vezes poderá querer juntar classes se uma determinada condição for `true`. Pode fazer-se através do método `class`, que aceita um array de classes. O índice do array contém a classe ou as classes que pretende adicionar, enquanto o valor é uma expressão boolean. Se o elemento do array tiver um índice numérico, será sempre incluído na lista de classes gerada:
+#### Mesclagem condicional de classes
+Às vezes você poderá querer juntar classes se uma determinada condição for `true`. Você pode fazer isso através do método `class`, que aceita um array de classes. O índice do array contém a classe ou as classes que pretende adicionar, enquanto o valor é uma expressão boolean. Se o elemento do array tiver um índice numérico, será sempre incluído na lista de classes gerada:
 
 ```blade
 <div {{ $attributes->class(['p-4', 'bg-red' => $hasError]) }}>
@@ -899,7 +898,7 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 </div>
 ```
 
- Se você precisar mesclar outros atributos em seu componente, poderá utilizar a ordem `class`-> `merge`:
+Se você precisar mesclar outros atributos em seu componente, você pode encadear o método `merge` no método `class`:
 
 ```blade
 <button {{ $attributes->class(['p-4'])->merge(['type' => 'button']) }}>
@@ -907,12 +906,12 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 </button>
 ```
 
- > [!NOTA]
- [Diretiva `@class`](#conditional-classes).
+::: info NOTA
+Se você precisar compilar classes condicionalmente em outros elementos HTML que não deveriam receber atributos mesclados, você pode usar a [diretiva `@class`](#classes-condicionais).
+:::
 
-#### Fundido de atributos não classificados
-
- Ao fundir atributos que não são atributos de "class", os valores fornecidos ao método `merge` serão considerados como valores "padrão" do atributo. No entanto, diferente do atributo `class`, estes atributos não serão fundidos com valores de atributos injetados, mas sim, sobrescritos. Por exemplo, a implementação de um componente "button" pode ter o seguinte aspeto:
+#### Mesclando atributos não classificados
+Ao mesclar atributos que não são atributos de "class", os valores fornecidos ao método `merge` serão considerados como valores "padrão" do atributo. No entanto, diferente do atributo `class`, estes atributos não serão fundidos com valores de atributos injetados, mas sim, sobrescritos. Por exemplo, a implementação de um componente "button" pode ter o seguinte aspecto:
 
 ```blade
 <button {{ $attributes->merge(['type' => 'button']) }}>
@@ -920,7 +919,7 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 </button>
 ```
 
- Para tornar o componente de botão com um tipo personalizado, ele pode ser especificado durante a utilização do componente. Se não for especificado nenhum tipo, será utilizado o tipo "botão":
+Para tornar o componente de botão com um tipo personalizado, ele pode ser especificado durante a utilização do componente. Se não for especificado nenhum tipo, será utilizado o tipo `button`:
 
 ```blade
 <x-button type="submit">
@@ -928,7 +927,7 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 </x-button>
 ```
 
- O HTML renderizado da componente `button` neste exemplo seria:
+O HTML renderizado do componente `button` neste exemplo seria:
 
 ```blade
 <button type="submit">
@@ -936,7 +935,7 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 </button>
 ```
 
- Se pretender que um atributo diferente de `class` tenha o seu valor padrão e valores injetados juntos, poderá usar a método `prepends`. Neste exemplo, o atributo `data-controller` começará sempre por `profile-controller` e quaisquer outros valores injetados do `data-controller` serão inseridos depois deste valor padrão:
+Se você pretender que um atributo diferente de `class` tenha o seu valor padrão e valores injetados juntos, você poderá usar a método `prepends`. Neste exemplo, o atributo `data-controller` começará sempre por `profile-controller` e quaisquer outros valores injetados do `data-controller` serão inseridos depois deste valor padrão:
 
 ```blade
 <div {{ $attributes->merge(['data-controller' => $attributes->prepends('profile-controller')]) }}>
@@ -945,32 +944,31 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 ```
 
 #### Recuperando e filtrando atributos
-
- Você pode filtrar os atributos usando o método `filter`. Esse método aceita um fechamento que deve retornar `true` se você deseja manter o atributo no saco de atributos:
+Você pode filtrar os atributos usando o método `filter`. Esse método aceita uma closure que deve retornar `true` se você deseja manter o atributo na mochila de atributos:
 
 ```blade
 {{ $attributes->filter(fn (string $value, string $key) => $key == 'foo') }}
 ```
 
- Para conveniência, você pode usar o método `whereStartsWith` para recuperar todos os atributos cujos nomes começam com uma determinada string.
+Para conveniência, você pode usar o método `whereStartsWith` para recuperar todos os atributos cujos nomes começam com uma determinada string.
 
 ```blade
 {{ $attributes->whereStartsWith('wire:model') }}
 ```
 
- Por outro lado, o método `whereDoesntStartWith` pode ser utilizado para excluir todos os atributos cujos nomes começam com uma determinada string.
+Por outro lado, o método `whereDoesntStartWith` pode ser utilizado para excluir todos os atributos cujos nomes começam com uma determinada string.
 
 ```blade
 {{ $attributes->whereDoesntStartWith('wire:model') }}
 ```
 
- Usando o método `first`, você pode exibir o primeiro atributo em uma sacola de atributos especificada:
+Usando o método `first`, você pode exibir o primeiro atributo em uma mochila de atributos especificada:
 
 ```blade
 {{ $attributes->whereStartsWith('wire:model')->first() }}
 ```
 
- Se você deseja verificar se um atributo está presente no componente, poderá usar o método `has`. Esse método aceita como único argumento o nome do atributo e retorna uma booleana que indica se o atributo está ou não presente:
+Se você deseja verificar se um atributo está presente no componente, poderá usar o método `has`. Esse método aceita como único argumento o nome do atributo e retorna um valor booleano que indica se o atributo está ou não presente:
 
 ```blade
 @if ($attributes->has('class'))
@@ -978,7 +976,7 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 @endif
 ```
 
- Se um array for passado ao método `has`, este irá determinar se todos os atributos apresentados estão presentes no componente:
+Se um array for passado ao método `has`, este irá determinar se todos os atributos apresentados estão presentes no componente:
 
 ```blade
 @if ($attributes->has(['name', 'class']))
@@ -986,7 +984,7 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 @endif
 ```
 
- O método `hasAny` pode ser utilizado para determinar se existem atributos do componente ou se são nulos:
+O método `hasAny` pode ser utilizado para determinar se existem atributos do componente ou se são nulos:
 
 ```blade
 @if ($attributes->hasAny(['href', ':href', 'v-bind:href']))
@@ -994,32 +992,27 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 @endif
 ```
 
- Você pode recuperar o valor de um atributo específico usando o método `get`:
+Você pode recuperar o valor de um atributo específico usando o método `get`:
 
 ```blade
 {{ $attributes->get('class') }}
 ```
 
 ### Palavras-chave reservadas
-
- Por padrão, algumas palavras-chave são reservadas para uso interno do Blade para a renderização de componentes. As seguintes palavras-chave não podem ser definidas como propriedades públicas ou nomes de métodos dentro dos seus componentes:
+Por padrão, algumas palavras-chave são reservadas para uso interno do Blade para a renderização de componentes. As seguintes palavras-chave não podem ser definidas como propriedades públicas ou nomes de métodos dentro dos seus componentes:
 
 <div class="content-list" markdown="1">
 
- - `data`
- `- 'rendimento'
- - `resolveView`:
- - ``deveriaRender``
- - `visualizar`
- - ``com atributos``
- - `withName`
+- `data`
+- `render`
+- `resolveView`
+- `shouldRender`
+- `view`
+- `withAttributes`
+- `withName`
 
-</div>
-
-
-### Slot machines
-
- Freqüentemente será necessário transmitir conteúdo adicional para seu componente por meio de "vagas". As vagas do componente são renderizadas ecoando a variável `$slot`. Para explorar este conceito, imaginemos que um componente `alert` tem o seguinte mark-up:
+### Slots
+Freqüentemente será necessário passar conteúdo adicional para seu componente por meio de "slots". Os slots do componente são renderizados ecoando a variável `$slot`. Para explorar este conceito, imaginemos que um componente `alert` tem o seguinte mark-up:
 
 ```blade
 <!-- /resources/views/components/alert.blade.php -->
@@ -1029,7 +1022,7 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 </div>
 ```
 
- Podemos transmitir conteúdo ao slot injetando conteúdo no componente:
+Podemos passar o conteúdo ao slot injetando-o no componente:
 
 ```blade
 <x-alert>
@@ -1037,7 +1030,7 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 </x-alert>
 ```
 
- Às vezes, um componente pode precisar renderizar vários slots diferentes em locais diferentes dentro do componente. Vamos modificar nosso componente de alerta para permitir a injeção de um slot "title":
+Às vezes, um componente pode precisar renderizar vários slots diferentes em locais diferentes dentro do componente. Vamos modificar nosso componente de alerta para permitir a injeção de um slot "title":
 
 ```blade
 <!-- /resources/views/components/alert.blade.php -->
@@ -1049,7 +1042,7 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 </div>
 ```
 
- Você pode definir o conteúdo do espaço nomeado usando a tag `x-slot`. Qualquer conteúdo não dentro de uma tag explícita `x-slot` será enviada para a componente na variável `$slot`:
+Você pode definir o conteúdo do espaço nomeado usando a tag `x-slot`. Qualquer conteúdo não dentro de uma tag explícita `x-slot` será enviada para a componente na variável `$slot`:
 
 ```xml
 <x-alert>
@@ -1061,7 +1054,7 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 </x-alert>
 ```
 
- É possível invocar o método `isEmpty` de um slot para determinar se ele contém conteúdo:
+É possível invocar o método `isEmpty` de um slot para determinar se ele tem conteúdo:
 
 ```blade
 <span class="alert-title">{{ $title }}</span>
@@ -1075,7 +1068,7 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 </div>
 ```
 
- Além disso, o método `hasActualContent` pode ser utilizado para determinar se a slot contém um conteúdo "real", que não seja um comentário HTML.
+Além disso, o método `hasActualContent` pode ser utilizado para determinar se o slot contém um conteúdo "real", que não seja um comentário HTML.
 
 ```blade
 @if ($slot->hasActualContent())
@@ -1084,8 +1077,7 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 ```
 
 #### Slot de escopo
-
- Se você tiver utilizado um framework JavaScript como Vue, conhecerá os "slots contextuais", que permitem o acesso a dados ou métodos de uma componente dentro do seu slot. Pode obter um comportamento semelhante em Laravel definindo métodos públicos ou propriedades na sua componente e acedendo à componente dentro do seu slot através da variável `$component`. Neste exemplo, assumiremos que o componente `x-alert` tem um método público `formatAlert`, definido na classe de componente:
+Se você usou uma estrutura JavaScript como o Vue, pode estar familiarizado com os "slots com escopo", que permitem acessar dados ou métodos do componente dentro do seu slot. Você pode obter um comportamento semelhante no Laravel definindo métodos ou propriedades públicas em seu componente e acessando o componente dentro de seu slot através da variável `$component`. Neste exemplo, assumiremos que o componente `x-alert` possui um método público `formatAlert` definido em sua classe de componente:
 
 ```blade
 <x-alert>
@@ -1098,8 +1090,7 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 ```
 
 #### Atributos de slot
-
- Assim como é possível atribuir componentes de Blade, você pode atribuir atributos adicionais para vagas, como nomes de classe CSS.
+Assim como é possível atribuir componentes do Blade, você pode criar atributos adicionais para slots, como nomes de classe CSS.
 
 ```xml
 <x-card class="shadow-sm">
@@ -1115,7 +1106,7 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 </x-card>
 ```
 
- Para interagir com os atributos de um slot, pode aceder à propriedade `attributes` da variável do slot. Consulte mais informações sobre como interagir com atributos na documentação de [atributos dos componentes] ():
+Para interagir com os atributos de um slot, você pode acessar à propriedade `attributes` da variável do slot. Consulte mais informações sobre como interagir com atributos na documentação de [atributos dos componentes](#atributos-dos-componentes):
 
 ```blade
 @props([
@@ -1136,33 +1127,32 @@ O uso de diretivas como `@env` nas tags dos componentes não é suportado no mom
 </div>
 ```
 
-### Visualizações de componentes em linha
+### Visualizações de componentes inline
+Para componentes muito pequenos, pode parecer complicado gerenciar a classe do componente e o template de visualização do componente. Por esta razão, você pode retornar a marcação do componente diretamente do método `render`:
 
- Para componentes muito pequenos, pode ser incômodo gerenciar tanto a classe de componente quanto o modelo do visualizador. Por isso, você pode retornar a marcação do componente diretamente da método `render`:
-
- /**
- * Obter a visualização/conteúdo que representa a componente.
- */
- função pública render(): String
- {
- return <<<'Blade'
+```blade
+    /**
+     * Get the view / contents that represent the component.
+     */
+    public function render(): string
+    {
+        return <<<'blade'
             <div class="alert alert-danger">
- {{ $slot }}
+                {{ $slot }}
             </div>
- lâmina;
- }
+        blade;
+    }
+```
 
-#### Gerar componentes de visualização em linha
-
- Para criar uma componente que renderiza um visual in-line, você pode usar a opção "inline" ao executar o comando `make:component`:
+#### Gerar componentes de visualização inline
+Para criar uma componente que renderiza um visual in-line, você pode usar a opção "inline" ao executar o comando `make:component`:
 
 ```shell
 php artisan make:component Alert --inline
 ```
 
 ### Componentes Dinâmicos
-
- Às vezes você pode precisar renderizar um componente, mas não sabe qual é o componente que deve ser renderizado até o momento de execução. Nesta situação, você pode usar o componente integrado ao Laravel chamado `dynamic-component` para renderizar o componente com base em um valor ou variável no momento da execução:
+Às vezes você pode precisar renderizar um componente, mas não sabe qual é o componente que deve ser renderizado até o momento da execução. Nesta situação, você pode usar o componente integrado ao Laravel chamado `dynamic-component` para renderizar o componente com base em um valor ou variável no momento da execução:
 
 ```blade
 // $componentName = "secondary-button";
@@ -1170,21 +1160,22 @@ php artisan make:component Alert --inline
 <x-dynamic-component :component="$componentName" class="mt-4" />
 ```
 
-### Registo manual de componentes
+### Registro manual de componentes
 
- > [AVISO]
- > A documentação sobre registo manual de componentes aplica-se principalmente àqueles que estão a escrever pacotes Laravel que incluem componentes de visualização. Se não estiver a criar um pacote, esta parte da documentação do componente pode não ser relevante para si.
+::: warning ATENÇÃO
+A documentação a seguir sobre o registro manual de componentes é aplicável principalmente para aqueles que estão escrevendo pacotes Laravel que incluem componentes de visualização. Se você não estiver escrevendo um pacote, esta parte da documentação do componente pode não ser relevante para você.
+:::
 
- Ao escrever componentes para o seu próprio aplicativo, os componentes são descobertos automaticamente nas diretórias `app/View/Components` e `resources/views/components`.
+Ao escrever componentes para o seu aplicativo, os componentes são descobertos automaticamente nos diretórios `app/View/Components` e `resources/views/components` pelo Laravel.
 
- No entanto, se estiver a criar um pacote que utiliza componentes Blade ou pretende colocar os componentes em diretórios não convencionais, necessitará de registar manualmente sua classe de componentes e seu alias HTML de etiqueta para garantir que o Laravel saiba onde procurar o componente. Normalmente, deve registar os seus componentes no método `boot` do provedor de serviços do pacote:
+No entanto, se estiver a criar um pacote que utiliza componentes Blade ou pretende colocar os componentes em diretórios não convencionais, será necessário registrar manualmente sua classe de componentes e seu apelido HTML para garantir que o Laravel saiba onde procurar o componente. Normalmente, você deve registrar os seus componentes no método `boot` do provedor de serviços do pacote:
 
 ```php
     use Illuminate\Support\Facades\Blade;
     use VendorPackage\View\Components\AlertComponent;
 
     /**
-     * Bootstrap your package's services.
+     * Inicialize os serviços do seu pacote.
      */
     public function boot(): void
     {
@@ -1192,21 +1183,20 @@ php artisan make:component Alert --inline
     }
 ```
 
- Uma vez que seu componente tenha sido registrado, você poderá renderizá-lo utilizando um de seus aliases de tag:
+Uma vez que seu componente tenha sido registrado, você poderá renderizá-lo utilizando um de seus aliases de tag:
 
 ```blade
 <x-package-alert/>
 ```
 
 #### Carregamento automático de componentes do pacote
-
- Alternativamente, você pode usar o método `componentNamespace` para carregar componentes por convenção. Por exemplo, um pacote `Nightshade` pode ter os componentes `Calendar` e `ColorPicker`, que ficam dentro do namespace `Package\Views\Components`:
+Alternativamente, você pode usar o método `componentNamespace` para carregar componentes por convenção. Por exemplo, um pacote `Nightshade` pode ter os componentes `Calendar` e `ColorPicker`, que ficam dentro do namespace `Package\Views\Components`:
 
 ```php
     use Illuminate\Support\Facades\Blade;
 
     /**
-     * Bootstrap your package's services.
+     * Inicialize os serviços do seu pacote.
      */
     public function boot(): void
     {
@@ -1214,18 +1204,17 @@ php artisan make:component Alert --inline
     }
 ```
 
- Isto permite a utilização de componentes do pacote pelo seu próprio nome de espaço de nomes, usando a sintaxe `package-name::`:
+Isto permite a utilização de componentes do pacote pelo seu próprio namespace, usando a sintaxe `package-name::`:
 
 ```blade
 <x-nightshade::calendar />
 <x-nightshade::color-picker />
 ```
 
- O Blade vai detetar automaticamente a classe ligada a esse componente através da construção em Pascal do nome do componente. Os subdiretórios também são suportados, utilizando a notação "ponto".
+O Blade vai detectar automaticamente a classe ligada a esse componente através da construção em pascal-case do nome do componente. Os subdiretórios também são suportados utilizando a notação "ponto".
 
-## Componentes anónimos
-
- Semelhante aos componentes em linha, os componentes anônimos proporcionam um mecanismo para gerenciar um componente por meio de um único arquivo. No entanto, os componentes anônimos utilizam apenas um arquivo de visualização e não têm nenhuma classe associada. Para definir um componente anônimo, você só precisa incluir uma matriz template Blade em sua pasta `resources/views/components`. Por exemplo, supondo que você tenha definido um componente como `resources/views/components/alert.blade.php`, você pode renderizá-lo da seguinte maneira:
+## Componentes anônimos
+Semelhante aos componentes inline, os componentes anônimos proporcionam um mecanismo para gerenciar um componente por meio de um único arquivo. No entanto, os componentes anônimos utilizam apenas um arquivo de visualização e não têm nenhuma classe associada. Para definir um componente anônimo, você só precisa incluir uma matriz de templates Blade em sua pasta `resources/views/components`. Por exemplo, supondo que você tenha definido um componente como `resources/views/components/alert.blade.php`, você pode renderizá-lo da seguinte maneira:
 
 ```blade
 <x-alert/>
@@ -1237,16 +1226,15 @@ php artisan make:component Alert --inline
 <x-inputs.button/>
 ```
 
-### Componentes de índice anónimos
-
- Por vezes, quando uma componente é constituída por muitos modelos de Blade, pode ser desejável agrupar os modelos da dada componente num único diretório. Por exemplo, imagine uma componente "accordion" com a seguinte estrutura de diretórios:
+### Componentes de índice anônimos
+Às vezes, quando um componente é composto de vários templates Blade, você pode querer agrupar os modelos de determinado componente em um único diretório. Por exemplo, imagine um componente "accordion" com a seguinte estrutura de diretórios:
 
 ```
 /resources/views/components/accordion.blade.php
 /resources/views/components/accordion/item.blade.php
 ```
 
- Essa estrutura de diretório permite que você monte o componente "acordeão" e seus elementos da seguinte maneira:
+Essa estrutura de diretório permite que você monte o componente "accordion" e seus elementos da seguinte maneira:
 
 ```blade
 <x-accordion>
@@ -1256,9 +1244,9 @@ php artisan make:component Alert --inline
 </x-accordion>
 ```
 
- No entanto, para executar a componente de acordeão através do `x-accordeon`, fomos obrigados a colocar o modelo da "index" na pasta `resources/views/components` em vez de aninhá-lo dentro da pasta `accordion`.
+No entanto, para renderizar o componente _accordion_ via `x-accordion`, fomos forçados a colocar o template do componente _accordion_ "index" no diretório `resources/views/components` em vez de aninhá-lo dentro do diretório `accordion` com os outros templates relacionados ao _accordion_.
 
- Felizmente, o Blade permite que você coloque um arquivo `index.blade.php` dentro do diretório de modelos de um componente. Se houver um modelo `index.blade.php` para o componente, ele será renderizado como o nó "raiz" do componente. Assim, podemos continuar usando a mesma sintaxe Blade apresentada no exemplo acima; porém, precisaremos ajustar nossa estrutura de diretórios da seguinte forma:
+Felizmente, o Blade permite que você coloque um arquivo `index.blade.php` dentro do diretório de template de um componente. Quando existe um template `index.blade.php` para o componente, ele será renderizado como o nó "raiz" do componente. Portanto, podemos continuar a usar a mesma sintaxe do Blade dada no exemplo acima; no entanto, ajustaremos nossa estrutura de diretórios assim:
 
 ```
 /resources/views/components/accordion/index.blade.php
@@ -1266,10 +1254,9 @@ php artisan make:component Alert --inline
 ```
 
 ### Propriedades e atributos dos dados
+Como os componentes anônimos não têm nenhuma classe associada, você pode se perguntar como definir quais dados devem ser passados para a componente como variáveis e quais atributos devem ser colocados na [sacola de atributos da componente](#component-attributes).
 
- Como as componentes anônimas não têm nenhuma classe associada, você pode se perguntar como definir quais dados devem ser passados para a componente como variáveis e quais atributos devem ser colocados na [sacola de atributos da componente](#component-attributes).
-
- Pode especificar quais atributos devem ser considerados variáveis de dados utilizando a diretiva `@props` na parte superior do modelo Blade do seu componente. Todos os outros atributos no componente estarão disponíveis através da sacola de atributos do mesmo. Se pretender fornecer uma variável de dados com um valor por defeito, pode especificar o nome da variável como chave do array e o seu valor predefinido como valor do array:
+Você pode especificar quais atributos devem ser considerados variáveis ​​de dados usando a diretiva `@props` na parte superior do modelo Blade do seu componente. Todos os outros atributos do componente estarão disponíveis no pacote de atributos do componente. Se você deseja atribuir um valor padrão a uma variável de dados, você pode especificar o nome da variável como a chave do array e o valor padrão como o valor do array:
 
 ```blade
 <!-- /resources/views/components/alert.blade.php -->
@@ -1281,15 +1268,14 @@ php artisan make:component Alert --inline
 </div>
 ```
 
- Considerando a definição da componente acima, podemos renderizar a mesma da seguinte forma:
+Considerando a definição do componente acima, podemos renderizar a mesma da seguinte forma:
 
 ```blade
 <x-alert type="error" :message="$message" class="mb-4"/>
 ```
 
-### Acessando dados de pais
-
-Sometimes you may want to access data from a parent component inside a child component. In these cases, you may use the `@aware` directive. For example, imagine we are building a complex menu component consisting of a parent `<x-menu>` and child `<x-menu.item>`:
+### Acessando os dados dos pais
+Às vezes você pode querer acessar dados de um componente pai dentro de um componente filho. Nestes casos, você pode usar a diretiva `@aware`. Por exemplo, imagine que estamos construindo um componente de menu complexo que consiste em um pai `<x-menu>` e um filho `<x-menu.item>`:
 
 ```blade
 <x-menu color="purple">
@@ -1298,7 +1284,7 @@ Sometimes you may want to access data from a parent component inside a child com
 </x-menu>
 ```
 
-The `<x-menu>` component may have an implementation like the following:
+O componente `<x-menu>` pode ter uma implementação como a seguinte:
 
 ```blade
 <!-- /resources/views/components/menu/index.blade.php -->
@@ -1310,7 +1296,7 @@ The `<x-menu>` component may have an implementation like the following:
 </ul>
 ```
 
-Because the `color` prop was only passed into the parent (`<x-menu>`), it won't be available inside `<x-menu.item>`. However, if we use the `@aware` directive, we can make it available inside `<x-menu.item>` as well:
+Como a propriedade `color` só foi passada para o pai (`<x-menu>`), ela não estará disponível dentro de `<x-menu.item>`. Porém, se usarmos a diretiva `@aware`, podemos disponibilizá-la também dentro de `<x-menu.item>`:
 
 ```blade
 <!-- /resources/views/components/menu/item.blade.php -->
@@ -1322,18 +1308,18 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 </li>
 ```
 
- > [!AVISO]
- > A diretiva `@aware` não tem acesso aos dados do nível superior que não tenham sido explicitamente passados à componente de nível superior através dos atributos HTML. Os valores padrão `@props`, que não tenham sido explicitamente passados à componente de nível superior, não são acedidos pela diretiva `@aware`.
+::: warning ATENÇÃO
+A diretiva `@aware` não pode acessar dados do pai que não sejam passados ​​explicitamente para o componente superior por meio de atributos HTML. Os valores padrão de `@props` que não são passados ​​explicitamente para o componente pai não podem ser acessados ​​pela diretiva `@aware`.
+:::
 
-### Caminhos de componentes anónimos
+### Caminhos de componentes anônimos
+Como discutido anteriormente, normalmente os componentes anônimos são definidos colocando um modelo Blade na pasta `resources/views/components`. No entanto, ocasionalmente você poderá querer registrar outros caminhos de componentes anônimos no Laravel em adição ao caminho padrão.
 
- Como discutido anteriormente, normalmente os componentes anónimos são definidos colocando um modelo Blade na pasta `resources/views/components`. No entanto, ocasionalmente poderá querer registar outros caminhos de componentes anónimos no Laravel em adição ao caminho padrão.
-
- O método `anonymousComponentPath` aceita o "path" para a localização do componente anônimo como seu primeiro argumento e um namespace opcional sob o qual os componentes devem ser colocados como seu segundo argumento. Tipicamente, esse método deve ser chamado do método `boot` de um dos [fornecedores de serviços](/docs/latest/providers) da sua aplicação:
+O método `anonymousComponentPath` aceita o "_path_" para a localização do componente anônimo como seu primeiro argumento e um namespace opcional sob o qual os componentes devem ser colocados como seu segundo argumento. Tipicamente, esse método deve ser chamado no método `boot` de um dos [provedores de serviços](/docs/providers) da sua aplicação:
 
 ```php
     /**
-     * Bootstrap any application services.
+     * Inicialize qualquer serviço de aplicativo.
      */
     public function boot(): void
     {
@@ -1341,33 +1327,31 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
     }
 ```
 
- Quando os caminhos dos componentes são registrados sem um prefisso especificado como no exemplo acima, eles também podem ser renderizados nos seus componentes Blade sem um correspondente prefisso. Por exemplo, se existir um componente `panel.blade.php` no caminho registrado acima, ele poderá ser renderizado da seguinte maneira:
+Quando os caminhos dos componentes são registrados sem um prefixo especificado, como no exemplo acima, eles também podem ser renderizados nos componentes do Blade sem um prefixo correspondente. Por exemplo, se existir um componente `panel.blade.php` no caminho registrado acima, ele poderá ser renderizado da seguinte forma:
 
 ```blade
 <x-panel />
 ```
 
- O prefixo "namespace" pode ser fornecido como o segundo argumento ao método `anonymousComponentPath`:
+O prefixo "namespace" pode ser fornecido como o segundo argumento ao método `anonymousComponentPath`:
 
 ```php
     Blade::anonymousComponentPath(__DIR__.'/../components', 'dashboard');
 ```
 
- Quando um prefixo é fornecido, os componentes dentro daquele "espaço de nome" podem ser renderizados usando o prefixo junto ao namespace do componente e o nome do componente quando este for renderizado:
+Quando um prefixo é fornecido, os componentes dentro daquele "espaço de nome" podem ser renderizados usando o prefixo junto ao namespace do componente e o nome do componente quando este for renderizado:
 
 ```blade
 <x-dashboard::panel />
 ```
 
-## Organização do edifício
+## Construindo layouts
 
 ### Layouts usando componentes
-
- A maioria dos aplicativos da Web mantêm o mesmo formato geral através de várias páginas. Seria incrivelmente complicado e difícil manter nosso aplicativo se tivéssemos que repetir o layout HTML completo em cada visualização que criamos. Felizmente, é conveniente definir esse formato como um único [Componente Blade (# componentes)] e, em seguida, usá-lo por todo o aplicativo.
+A maioria dos aplicativos da Web mantêm o mesmo formato geral através de várias páginas. Seria incrivelmente complicado e difícil manter nosso aplicativo se tivéssemos que repetir o layout HTML completo em cada visualização que criamos. Felizmente, é conveniente definir esse formato como um único [Componente Blade](#componentes) e, em seguida, usá-lo por todo o aplicativo.
 
 #### Definindo o componente de layout
-
- Por exemplo, imagine que estamos construindo um aplicativo de lista "todo". Podemos definir um componente `layout` que se assemelha ao seguinte:
+Por exemplo, imagine que estamos construindo um aplicativo de lista "todo". Podemos definir um componente `layout` que se assemelha ao seguinte:
 
 ```blade
 <!-- resources/views/components/layout.blade.php -->
@@ -1385,8 +1369,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 ```
 
 #### Aplicando o componente de layout
-
- Definida a componente `layout`, podemos criar uma vista Blade que utilize essa composição. Neste exemplo, definimos uma simples vista que mostra nossa lista de tarefas:
+Definido o componente `layout`, podemos criar uma view Blade que utilize essa composição. Neste exemplo, definimos uma simples visualização que mostra nossa lista de tarefas:
 
 ```blade
 <!-- resources/views/tasks.blade.php -->
@@ -1398,7 +1381,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 </x-layout>
 ```
 
- Lembre-se que o conteúdo inserido em um componente será fornecido para a variável padrão `$slot` no nosso componente `layout`. Como você deve ter reparado, nosso `layout` também respeita um slot de título se houver um; caso contrário, o título padrão é mostrado. Podemos injetar um título personalizado da nossa visualização de lista de tarefas usando o sintaxe de slot padronizado discutido na [documentação do componente](/#components):
+Lembre-se que o conteúdo inserido em um componente será fornecido para a variável padrão `$slot` no nosso componente `layout`. Como você deve ter reparado, nosso `layout` também respeita um slot de título se houver um; caso contrário, o título padrão é mostrado. Podemos injetar um título personalizado da nossa visualização de lista de tarefas usando o sintaxe de slot padronizado discutido na [documentação do componente](/#components):
 
 ```blade
 <!-- resources/views/tasks.blade.php -->
@@ -1414,7 +1397,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 </x-layout>
 ```
 
- Agora que definimos nossos layouts e as visões de tarefas, só precisamos devolver a visualização "tarefa" de uma rota:
+Agora que definimos nossos layouts e as visões de tarefas, só precisamos devolver a view "tasks" de uma rota:
 
 ```php
     use App\Models\Task;
@@ -1424,13 +1407,12 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
     });
 ```
 
-### Layouts usando a Herança de Modelo
+### Layouts usando a Herança de Template
 
 #### Definição de um layout
+Os layouts também podem ser criados através da "herança de templates". Esta foi a forma mais utilizada para a construção de aplicações antes da introdução dos [componentes](#componentes).
 
- Os layouts também podem ser criados através da "herança de modelo". Esta foi a forma mais utilizada para a construção de aplicações antes da introdução dos componentes.
-
- Vamos começar com um exemplo simples. Primeiro, vamos examinar o layout da página. Como a maioria das aplicações web mantém o mesmo layout geral em várias páginas, é conveniente definir esse layout como uma única visualização Blade:
+Vamos começar com um exemplo simples. Primeiro, vamos examinar o layout da página. Como a maioria das aplicações web mantém o mesmo layout geral em várias páginas, é conveniente definir esse layout como uma única visualização Blade:
 
 ```blade
 <!-- resources/views/layouts/app.blade.php -->
@@ -1451,13 +1433,12 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 </html>
 ```
 
- Como pode ver, este arquivo contém uma marcação HTML típica. No entanto, note as diretivas "@section" e "@yield". A diretiva "@section", tal como o nome indica, define uma seção de conteúdo, enquanto a diretiva "@yield" é utilizada para exibir o conteúdo de determinada seção.
+Como pode ver, este arquivo contém uma marcação HTML típica. No entanto, note as diretivas `@section` e `@yield`. A diretiva `@section`, tal como o nome indica, define uma seção de conteúdo, enquanto a diretiva `@yield` é utilizada para exibir o conteúdo de determinada seção.
 
- Agora que definimos um modelo para nossa aplicação, vamos definir uma página filha (child page) que herda o modelo.
+Agora que definimos um modelo para nossa aplicação, vamos definir uma página filha (child page) que herda o modelo.
 
 #### Estendendo um layout
-
- Ao definir uma visualização de nível inferior, utilize a diretiva Blade `@extends` para especificar que modelo o filho da visualização "herdará". As visualizações que se baseiam em um modelo de layout podem injetar conteúdo nas secções do modelo utilizando as diretivas `@section`. Lembre-se que, tal como indicado no exemplo anterior, a reprodução destes conteúdos nas secções está sujeita ao comando `@yield`:
+Ao definir uma visualização de nível inferior, utilize a diretiva Blade `@extends` para especificar que modelo o filho da visualização "herdará". As visualizações que se baseiam em um modelo de layout podem injetar conteúdo nas secções do modelo utilizando as diretivas `@section`. Lembre-se que, tal como indicado no exemplo anterior, a reprodução destes conteúdos nas secções está sujeita ao comando `@yield`:
 
 ```blade
 <!-- resources/views/child.blade.php -->
@@ -1477,12 +1458,13 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 @endsection
 ```
 
- Neste exemplo, a seção `sidebar` está utilizando a diretiva `@@parent` para anexar (em vez de sobrescrever) o conteúdo à barra lateral do layout. A diretiva `@@parent` será substituída pelo conteúdo do layout quando a visualização for renderizada.
+Neste exemplo, a seção `sidebar` está utilizando a diretiva `@@parent` para anexar (em vez de sobrescrever) o conteúdo à barra lateral do layout. A diretiva `@@parent` será substituída pelo conteúdo do layout quando a visualização for renderizada.
 
- > [!ATENÇÃO]
- > Ao contrário do exemplo anterior, esta seção `sidebar` termina com `@endsection` em vez de `@show`. O atalho `@endsection` apenas definirá uma seção, ao passo que o `@show` definirá e **imediatamente renderizará** a seção.
+::: info NOTA
+Ao contrário do exemplo anterior, esta seção `sidebar` termina com `@endsection` em vez de `@show`. O atalho `@endsection` apenas definirá uma seção, ao passo que o `@show` definirá e **imediatamente renderizará** a seção.
+:::
 
- A diretiva `@yield` também aceita um valor padrão como seu segundo parâmetro, e esse valor será renderizado se o bloco de código estiver definido como `undefined`:
+A diretiva `@yield` também aceita um valor padrão como seu segundo parâmetro, e esse valor será renderizado se o bloco de código estiver definido como `undefined`:
 
 ```blade
 @yield('content', 'Default content')
@@ -1491,8 +1473,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 ## Formulários
 
 ### Campo de CSRF
-
- Sempre que você definir um formulário HTML em sua aplicação, você deve incluir um campo de token CSRF escondido no formulário para que a middleware de proteção [contra CSRF](/docs/csrf) possa validar o pedido. Você pode usar a diretiva Blade `@csrf` para gerar o campo de token:
+Sempre que você definir um formulário HTML em sua aplicação, você deve incluir um campo de token CSRF escondido no formulário para que a middleware de proteção [contra CSRF](/docs/csrf) possa validar o pedido. Você pode usar a diretiva Blade `@csrf` para gerar o campo de token:
 
 ```blade
 <form method="POST" action="/profile">
@@ -1502,9 +1483,8 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 </form>
 ```
 
-### Campo Método
-
- Como os formulários HTML não conseguem fazer solicitações PUT, PATCH ou DELETE, é necessário adicionar um campo `_method` oculto para imitar esses verbos HTTP. A diretiva `@method` do Blade pode criar esse campo:
+### Campo _method
+Como os formulários HTML não conseguem fazer solicitações PUT, PATCH ou DELETE, é necessário adicionar um campo `_method` oculto para imitar esses verbos HTTP. A diretiva `@method` do Blade pode criar esse campo:
 
 ```blade
 <form action="/foo/bar" method="POST">
@@ -1515,8 +1495,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 ```
 
 ### Erros de validação
-
- A diretiva `@error` permite verificar rapidamente se há mensagens de erro de validação para um determinado atributo. Dentro da diretiva `@error`, você pode usar a variável `$message` para exibir a mensagem de erro:
+A diretiva `@error` permite verificar rapidamente se há mensagens de erro de validação para um determinado atributo. Dentro da diretiva `@error`, você pode usar a variável `$message` para exibir a mensagem de erro:
 
 ```blade
 <!-- /resources/views/post/create.blade.php -->
@@ -1532,7 +1511,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 @enderror
 ```
 
- Uma vez que a directiva `@error' compile uma declaração "se", pode utilizar a directiva `@else' para exibir o conteúdo quando não existir um erro para um atributo:
+Uma vez que a directiva `@error` compile uma declaração "_if_", você pode utilizar a directiva `@else` para exibir o conteúdo quando não existir um erro para um atributo:
 
 ```blade
 <!-- /resources/views/auth.blade.php -->
@@ -1544,7 +1523,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
     class="@error('email') is-invalid @else is-valid @enderror">
 ```
 
- Pode passar um nome de uma **sacola específica de erros** [no caminho](/docs/validation#named-error-bags) como segundo parâmetro para a diretiva `@error` para recuperar mensagens de erro da validação em páginas que contêm vários formulários:
+Você pode passar [o nome de um pacote de erros específico](/docs/validation#named-error-bags) como o segundo parâmetro para a diretiva `@error` para recuperar mensagens de erro de validação em páginas contendo vários formulários:
 
 ```blade
 <!-- /resources/views/auth.blade.php -->
@@ -1560,9 +1539,8 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 @enderror
 ```
 
-## Pilhas
-
- O Blade permite que você crie um vetor de pilhas nomeadas, que pode ser renderizado em outra posição ou em outro layout. Isso é particularmente útil para especificar bibliotecas JavaScript exigidas por suas views filhas:
+## Stacks
+O Blade permite que você crie um vetor de pilhas nomeadas, que pode ser renderizado em outra posição ou em outro layout. Isso é particularmente útil para especificar bibliotecas JavaScript exigidas por suas views filhas:
 
 ```blade
 @push('scripts')
@@ -1570,7 +1548,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 @endpush
 ```
 
- Se você quiser `@pushar` conteúdo se uma expressão booleana determinada for `verdadeira`, poderá usar a diretiva `@pushIf`:
+Se você quiser `@push` (empurrar um) conteúdo se uma determinada expressão booleana for avaliada como `true`, você pode usar a diretiva `@pushIf`:
 
 ```blade
 @pushIf($shouldPush, 'scripts')
@@ -1578,7 +1556,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 @endPushIf
 ```
 
- Você pode empurrar para uma pilha quantas vezes forem necessárias. Para exibir o conteúdo completo da pilha, passe o nome da pilha para a diretiva `@pilha`:
+Você pode empurrar para uma pilha quantas vezes forem necessárias. Para exibir o conteúdo completo da pilha, passe o nome da pilha para a diretiva `@stack`:
 
 ```blade
 <head>
@@ -1588,14 +1566,14 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 </head>
 ```
 
- Se você pretender adicionar conteúdo no início de uma pilha, você deve usar a diretiva `@prepend`:
+Se você pretender adicionar conteúdo no início de uma pilha, você deve usar a diretiva `@prepend`:
 
 ```blade
 @push('scripts')
     This will be second...
 @endpush
 
-// Later...
+// Depois...
 
 @prepend('scripts')
     This will be first...
@@ -1603,8 +1581,7 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 ```
 
 ## Injeção de Serviços
-
- A diretiva `@inject` pode ser usada para recuperar um serviço do contêiner de serviços da Laravel. O primeiro argumento passado à diretiva `@inject` é o nome da variável na qual o serviço será alocado, enquanto que o segundo é o nome da classe ou interface do serviço que você deseja resolver:
+A diretiva `@inject` pode ser usada para recuperar um serviço do contêiner de serviços do Laravel. O primeiro argumento passado à diretiva `@inject` é o nome da variável na qual o serviço será alocado, enquanto que o segundo é o nome da classe ou interface do serviço que você deseja resolver:
 
 ```blade
 @inject('metrics', 'App\Services\MetricsService')
@@ -1614,9 +1591,8 @@ Because the `color` prop was only passed into the parent (`<x-menu>`), it won't 
 </div>
 ```
 
-## Implementação de modelos de lâminas em linha
-
- Por vezes, pode ser necessário transformar uma string de modelo Blade bruto num HTML válido. Isto pode ser feito utilizando a `render` método fornecido pela faca `Blade`. O método `render` aceita a string do modelo Blade e um array opcional de dados para fornecer ao modelo:
+## Renderizando modelos de blade embutidos
+Às vezes, você pode precisar transformar uma string de template Blade bruta em HTML válido. Você pode fazer isso usando o método `render` fornecido pela facade `Blade`. O método `render` aceita a string do template Blade e um array opcional de dados para fornecer ao template:
 
 ```php
 use Illuminate\Support\Facades\Blade;
@@ -1624,7 +1600,7 @@ use Illuminate\Support\Facades\Blade;
 return Blade::render('Hello, {{ $name }}', ['name' => 'Julian Bashir']);
 ```
 
- O Laravel executa os modelos Blade inline escrevendo-os para a pasta `storage/framework/views`. Se preferir que o Laravel remova estes ficheiros temporários após a renderização do modelo, pode fornecer o argumento `deleteCachedView` à metodologia:
+O Laravel executa os templates Blade inline escrevendo-os para a pasta `storage/framework/views`. Se preferir que o Laravel remova estes ficheiros temporários após a renderização do template, você pode fornecer o argumento ao método `deleteCachedView`:
 
 ```php
 return Blade::render(
@@ -1634,9 +1610,8 @@ return Blade::render(
 );
 ```
 
-## Implementando fragmentos de lâminas
-
- Quando usar frameworks de front-end como [Turbo](https://turbo.hotwired.dev/) e [htmx](https://htmx.org/), pode ser necessário, ocasionalmente, retornar apenas uma parte de um modelo Blade dentro da resposta HTTP. Os "fragments" do Blade permitem fazer exatamente isso. Para começar, coloque uma parte do seu modelo Blade dentro das diretivas `@fragment` e `@endfragment`:
+## Implementando fragmentos de Blade
+Quando usar frameworks de front-end como [Turbo](https://turbo.hotwired.dev/) e [htmx](https://htmx.org/), pode ser necessário, ocasionalmente, retornar apenas uma parte de um template Blade dentro da resposta HTTP. Os "fragments" do Blade permitem fazer exatamente isso. Para começar, coloque uma parte do seu template Blade dentro das diretivas `@fragment` e `@endfragment`:
 
 ```blade
 @fragment('user-list')
@@ -1648,20 +1623,20 @@ return Blade::render(
 @endfragment
 ```
 
- Por exemplo, ao renderizar a visualização que utiliza esse modelo, você pode chamar o método `fragment` para especificar que apenas o fragmento especificado deverá ser incluído na resposta HTTP enviada:
+Por exemplo, ao renderizar a visualização que utiliza esse modelo, você pode chamar o método `fragment` para especificar que apenas o fragmento especificado deverá ser incluído na resposta HTTP enviada:
 
 ```php
 return view('dashboard', ['users' => $users])->fragment('user-list');
 ```
 
- O método `fragmentIf` permite retornar condicionalmente um fragmento de uma vista com base em uma determinada condição. Caso contrário, será retornado o conteúdo completo da vista:
+O método `fragmentIf` permite retornar condicionalmente um fragmento de uma view com base em uma determinada condição. Caso contrário, será retornado o conteúdo completo da view:
 
 ```php
 return view('dashboard', ['users' => $users])
     ->fragmentIf($request->hasHeader('HX-Request'), 'user-list');
 ```
 
- As métricas `fragments` e `fragmentsIf` permitem que você retorne múltiplos fragmentos da página na resposta. Os fragmentos são concatenados:
+Os métodos `fragments` e `fragmentsIf` permitem que você retorne múltiplos fragmentos da página na resposta. Os fragmentos são concatenados:
 
 ```php
 view('dashboard', ['users' => $users])
@@ -1674,11 +1649,10 @@ view('dashboard', ['users' => $users])
     );
 ```
 
-## Extendendo a lâmina
+## Extendendo o Blade
+O Blade permite a definição de diretivas personalizadas utilizando o método `directive`. Quando o compilador do Blade encontra uma diretiva personalizada, ele chama o callback especificado com o nome da expressão que contém a diretiva.
 
- O Blade permite a definição de diretivas personalizadas utilizando o método `directive`. Quando o compilador do Blade encontra uma diretiva personalizada, ele chama o callback especificado com o nome da expressão que contém a diretiva.
-
- O exemplo seguinte cria uma diretiva `@datetime($var)`, que formata um valor de entrada, o qual deve ser uma instância da classe DateTime.
+O exemplo seguinte cria uma diretiva `@datetime($var)`, que formata um valor de entrada, o qual deve ser uma instância da classe DateTime.
 
 ```php
     <?php
@@ -1691,7 +1665,7 @@ view('dashboard', ['users' => $users])
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register any application services.
+         * Registre quaisquer serviços de aplicativo.
          */
         public function register(): void
         {
@@ -1699,7 +1673,7 @@ view('dashboard', ['users' => $users])
         }
 
         /**
-         * Bootstrap any application services.
+         * Inicialize qualquer serviço de aplicativo.
          */
         public function boot(): void
         {
@@ -1710,27 +1684,27 @@ view('dashboard', ['users' => $users])
     }
 ```
 
- Como você pode ver, vamos concatenar o método `format` com qualquer expressão passada para a diretiva. Então, nesse exemplo, o código de PHP gerado por essa diretiva será:
+Como você pode ver, vamos concatenar o método `format` com qualquer expressão passada para a diretiva. Então, nesse exemplo, o código PHP gerado por essa diretiva será:
 
 ```php
     <?php echo ($var)->format('m/d/Y H:i'); ?>
 ```
 
- > [AVISO]
- > Após atualizar a lógica de uma diretiva Blade será necessário excluir todas as visualizações armazenadas em cache. As visualizações armazenadas em cache podem ser removidas utilizando o comando `view:clear` do Artisan.
+::: warning ATENÇÃO
+Após atualizar a lógica de uma diretiva Blade será necessário excluir todas as visualizações armazenadas em cache. As visualizações armazenadas em cache podem ser removidas utilizando o comando `view:clear` do Artisan.
+:::
 
 ### Echos personalizados
+Se você tentar fazer o "echo" de um objeto usando Blade, o método `__toString` do objeto será acionado. O método [`__toString`](https://www.php.net/manual/en/language.oop5.magic.php#object.tostring) é um dos "métodos mágicos" incluídos no PHP. No entanto, às vezes você pode não ter controle sobre o método `__toString` de uma determinada classe, como quando a classe que você está interagindo pertence a uma biblioteca de terceiros.
 
- Se você tentar fazer o "echo" de um objeto usando Blade, o método `__toString` do objeto será acionado. O método [`__toString`](https://www.php.net/manual/en/language.oop5.magic.php#object.tostring) é um dos "métodos mágicos" incluídos no PHP. No entanto, às vezes você pode não ter controle sobre o método `__toString` de uma determinada classe, como quando a classe que você está interagindo pertence a uma biblioteca de terceiros.
-
- Nestas situações, o Blade permite registar um manipulador de eco personalizado para esse tipo específico de objeto. Para conseguir isto, devem ser chamados os métodos `stringable` do Blade. O método `stringable` aceita um fecho que deve indicar o tipo de objecto a responsabilidade do qual é renderizar. Normalmente, o método `stringable` é invocado no âmbito da função `boot` na classe `AppServiceProvider` da aplicação:
+Nesses casos, o Blade permite registrar um manipulador de eco personalizado para aquele tipo específico de objeto. Para fazer isso, você deve invocar o método `stringable` do Blade. O método `stringable` aceita uma closure. Esta closure deve indicar o tipo de objeto que ele é responsável pela renderização. Normalmente, o método `stringable` deve ser invocado dentro do método `boot` da classe `AppServiceProvider` da sua aplicação:
 
 ```php
     use Illuminate\Support\Facades\Blade;
     use Money\Money;
 
     /**
-     * Bootstrap any application services.
+     * Inicialize qualquer serviço de aplicativo.
      */
     public function boot(): void
     {
@@ -1740,21 +1714,20 @@ view('dashboard', ['users' => $users])
     }
 ```
 
- Depois de definido o seu manipulador personalizado do comando "echo", você pode simplesmente imprimir o objeto em sua modelagem do Blade:
+Depois de definido o seu manipulador personalizado do comando "echo", você pode simplesmente imprimir o objeto em sua modelagem do Blade:
 
 ```blade
 Cost: {{ $money }}
 ```
 
-### Asteriscos personalizados em declarações de condicional
-
- Programar uma diretiva personalizada é por vezes mais complexo do que necessário na definição de declarações condicionais simples e personalizadas. Por esta razão, o Blade fornece um método `Blade::if` que permite definir rapidamente diretivas condicionais personalizadas utilizando closures. Por exemplo, podemos definir uma condicional personalizada que verifique o disco configurado como parâmetro padrão na aplicação. Podemos fazer isto no método `boot` do nosso `AppServiceProvider`:
+### Instruções If personalizadas
+Programar uma diretiva personalizada é por vezes mais complexo do que necessário na definição de declarações condicionais simples e personalizadas. Por esta razão, o Blade fornece um método `Blade::if` que permite definir rapidamente diretivas condicionais personalizadas utilizando closures. Por exemplo, podemos definir uma condicional personalizada que verifique o disco configurado como parâmetro padrão na aplicação. Podemos fazer isto no método `boot` do nosso `AppServiceProvider`:
 
 ```php
     use Illuminate\Support\Facades\Blade;
 
     /**
-     * Bootstrap any application services.
+     * Inicialize qualquer serviço de aplicativo.
      */
     public function boot(): void
     {
@@ -1764,7 +1737,7 @@ Cost: {{ $money }}
     }
 ```
 
- Depois que o condicional personalizado for definido, você poderá usá-lo em seus modelos:
+Depois que a condicional personalizada for definida, você poderá usá-la em seus templates:
 
 ```blade
 @disk('local')

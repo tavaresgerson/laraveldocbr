@@ -23,8 +23,8 @@
     - [Requisições](/src/docs/requests.md) ✅
     - [Respostas](/src/docs/responses.md) ✅
     - [Views (visualizações)](/src/docs/views.md) ✅
-    - [Blade Templates](/src/docs/blade.md)
-    - [Asset Bundling](/src/docs/vite.md)
+    - [Templates Blade](/src/docs/blade.md) ✅
+    - [Pacote de ativos](/src/docs/vite.md)
     - [URL Generation](/src/docs/urls.md)
     - [Session](/src/docs/session.md)
     - [Validation](/src/docs/validation.md)

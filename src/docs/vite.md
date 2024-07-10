@@ -1,44 +1,37 @@
-# Agrupamento de Ativos (Vite)
+# Pacote de ativos (Vite)
 
-<a name="introduction"></a>
 ## Introdução
+[Vite](https://vitejs.dev) é uma ferramenta de compilação de frontend moderno que oferece um ambiente de desenvolvimento extremamente rápido e integra os seus códigos em ativos prontos para produção. Normalmente, ao construir aplicativos com o Laravel, você usará o Vite para integrar arquivos CSS e JavaScript do seu aplicativo em ativos prontos para a produção
 
- [Vite](https://vitejs.dev) é uma ferramenta de compilação de frontend moderno que oferece um ambiente de desenvolvimento extremamente rápido e integra os seus códigos em ativos prontos para produção. Normalmente, ao construir aplicativos com o Laravel, você usará o Vite para integrar arquivos CSS e JavaScript do seu aplicativo em ativos prontos para a produção
+O Laravel é totalmente integrado com o Vite, fornecendo um plug-in oficial e uma diretiva Blade para carregar seus ativos para desenvolvimento e produção.
 
- O Laravel é totalmente integrado com o Vite, fornecendo um plug-in oficial e uma diretiva Blade para carregar seus ativos para desenvolvimento e produção.
+::: info NOTA
+Você está executando o Laravel Mix? Vite substituiu o Laravel Mix em novas instalações do Laravel. Para documentação do Mix, visite o site [Laravel Mix](https://laravel-mix.com/). Se você quiser mudar para o Vite, consulte nosso [guia de migração](https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-laravel-mix-to-vite ).
+:::
 
- > [!AVISO]
- [Sítio web do Laravel Mixed](https://laravel-mix.com/). Se quiseres mudar para o Vite, por favor consulta os nossos
-
-<a name="vite-or-mix"></a>
 #### Escolha entre o Vite e o Laravel Mix
+Antes de migrar para o Vite, os novos aplicativos Laravel utilizavam o [Mix](https://laravel-mix.com/), que é alimentado pelo [webpack](https://webpack.js.org/) ao agrupar ativos. O Vite se concentra em fornecer uma experiência mais rápida e produtiva para a criação de aplicações JavaScript ricas. Se você estiver desenvolvendo um Single Page Application (SPA), incluindo aqueles desenvolvidos com ferramentas como [Inertia](https://inertiajs.com/), o Vite será a escolha perfeita.
 
- Antes de migrar para o Vite, os novos aplicativos Laravel utilizavam [Mix](https://laravel-mix.com/), que é alimentado pelo [webpack](https://webpack.js.org/) ao agrupar ativos. O Vite se concentra em fornecer uma experiência mais rápida e produtiva para a criação de aplicações JavaScript ricas. Se você estiver desenvolvendo um Single Page Application (SPA), incluindo aqueles desenvolvidos com ferramentas como [Inertia](https://inertiajs.com/), o Vite será a escolha perfeita.
+O Vite também funciona bem com aplicativos tradicionais renderizados do lado do servidor com "pingos" de JavaScript, incluindo aqueles que utilizam [Livewire](https://livewire.laravel.com). No entanto, ele carece de algumas características suportadas pelo Laravel Mix, como a capacidade de copiar ativos arbitrários na compilação que não são referenciados diretamente em seu aplicativo JavaScript.
 
- O Vite também funciona bem com aplicativos tradicionais renderizados do lado do servidor com "pingos" de JavaScript, incluindo aqueles que utilizam [Livewire](https://livewire.laravel.com). No entanto, ele carece de algumas características suportadas pelo Laravel Mix, como a capacidade de copiar ativos arbitrários no compilado que não são referenciados diretamente em seu aplicativo JavaScript.
-
-<a name="migrating-back-to-mix"></a>
 #### Migração para o Mix
+Se você iniciou um novo aplicativo Laravel usando nosso escopo Vite, mas precisa voltar ao Laravel Mix e webpack? Não há problema. Consulte nosso [guia oficial sobre a migração do Vite para o Mix] (https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-vite-to-laravel-mix).
 
- Você iniciou um novo aplicativo Laravel usando nosso escopo Vite, mas precisa voltar ao Laravel Mix e webpack? Não há problema. Consulte nosso [guia oficial sobre a migração do Vite para o Mix] (https://github.com/laravel/vite-plugin/blob/main/UPGRADE.md#migrating-from-vite-to-laravel-mix).
-
-<a name="installation"></a>
 ## Instalação e configuração
 
- > [!AVISO]
- Os [Kits de Inicialização](/docs/starter-kits) já incluem todo este suporte e são o meio mais rápido para começar a trabalhar com Laravel e Vite.
+::: info INFO
+A documentação a seguir discute como instalar e configurar manualmente o plugin Laravel Vite. No entanto, os [starter kits](/docs/starter-kits) do Laravel já incluem todos esses scaffolding e são a maneira mais rápida de começar a usar o Laravel e o Vite.
+:::
 
-<a name="installing-node"></a>
 ### Instalando o Node
-
- Você precisa certificar-se de que o Node.js (16+) e o NPM estão instalados antes de executar o Vite e o plugin Laravel:
+Você precisa certificar-se de que o Node.js (16+) e o NPM estão instalados antes de executar o Vite e o plugin Laravel:
 
 ```sh
 node -v
 npm -v
 ```
 
- Você pode instalar facilmente a versão mais recente do Node e NPM usando instaladores gráficos simples no [site oficial do Node](https://nodejs.org/en/download/). Se você estiver usando o [Laravel Sail](https://laravel.com/docs/sail), poderá invocar o Node e o NPM por meio do Sail:
+Você pode instalar facilmente a versão mais recente do Node e NPM usando instaladores gráficos simples no [site oficial do Node](https://nodejs.org/en/download/). Se você estiver usando o [Laravel Sail](https://laravel.com/docs/sail), poderá invocar o Node e o NPM por meio do Sail:
 
 ```sh
 ./vendor/bin/sail node -v
