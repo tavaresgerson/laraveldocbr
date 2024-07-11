@@ -24,7 +24,7 @@
     - [Respostas](/src/docs/responses.md) ✅
     - [Views (visualizações)](/src/docs/views.md) ✅
     - [Templates Blade](/src/docs/blade.md) ✅
-    - [Pacote de ativos](/src/docs/vite.md)
+    - [Pacote de ativos](/src/docs/vite.md) ✅
     - [URL Generation](/src/docs/urls.md)
     - [Session](/src/docs/session.md)
     - [Validation](/src/docs/validation.md)

@@ -38,21 +38,17 @@ Você pode instalar facilmente a versão mais recente do Node e NPM usando insta
 ./vendor/bin/sail npm -v
 ```
 
-<a name="installing-vite-and-laravel-plugin"></a>
 ### Instalando o Vite e o plugin do Laravel
-
- Em uma instalação recente do Laravel, você encontrará um arquivo `package.json` na raiz da estrutura de diretórios da aplicação. O arquivo padrão `package.json` já inclui tudo que é necessário para começar a usar o Vite e o plugin Laravel. Você pode instalar as dependências front-end da sua aplicação por meio do NPM:
+Em uma instalação recente do Laravel, você encontrará um arquivo `package.json` na raiz da estrutura de diretórios da aplicação. O arquivo padrão `package.json` já inclui tudo que é necessário para começar a usar o Vite e o plugin Laravel. Você pode instalar as dependências front-end da sua aplicação por meio do NPM:
 
 ```sh
 npm install
 ```
 
-<a name="configuring-vite"></a>
 ### Configurando o Vite
+O Vite é configurado por meio de um arquivo `vite.config.js` na raiz do seu projeto. Você é livre para personalizar este arquivo de acordo com suas necessidades, e você também pode instalar outros plugins que o aplicativo exija, como `@vitejs/plugin-vue` ou `@vitejs/plugin-react`.
 
- O Vite é configurado por meio de um arquivo `vite.config.js` na raiz do seu projeto. É livre para personalizar este arquivo de acordo com suas necessidades, e você também pode instalar outros plugins que o aplicativo exija, como `@vitejs/plugin-vue` ou `@vitejs/plugin-react`.
-
- O plugin Laravel Vite exige que você especifique os pontos de entrada para a sua aplicação. Estes podem ser arquivos JavaScript ou CSS e incluem linguagens pré-processadas como TypeScript, JSX, TSX e Sass.
+O plugin Laravel Vite exige que você especifique os pontos de entrada para a sua aplicação. Estes podem ser arquivos JavaScript ou CSS e incluem linguagens pré-processadas como TypeScript, JSX, TSX e Sass.
 
 ```js
 import { defineConfig } from 'vite';
@@ -68,7 +64,7 @@ export default defineConfig({
 });
 ```
 
- Se você estiver construindo um SPA (aplicativo de página inicial), incluindo aplicativos construídos usando Inertia, o Vite funciona melhor sem pontos de entrada do CSS:
+Se você estiver construindo um SPA, incluindo aplicativos construídos usando Inertia, o Vite funciona melhor sem pontos de entrada do CSS:
 
 ```js
 import { defineConfig } from 'vite';
@@ -84,23 +80,21 @@ export default defineConfig({
 });
 ```
 
- Em vez disso, você deve importar seu CSS via JavaScript. Normalmente isto seria feito no arquivo `resources/js/app.js` do aplicativo:
+Em vez disso, você deve importar seu CSS via JavaScript. Normalmente isto seria feito no arquivo `resources/js/app.js` do aplicativo:
 
 ```js
 import './bootstrap';
 import '../css/app.css'; // [tl! add]
 ```
 
- O plug-in do Laravel também suporta vários pontos de entrada e opções avançadas de configuração, como [pontos de entrada SSR (Serviço em Nuvem)](#ssr).
+O plug-in do Laravel também suporta vários pontos de entrada e opções avançadas de configuração, como [pontos de entrada SSR](#ssr).
 
-<a name="working-with-a-secure-development-server"></a>
 #### Trabalhando com um servidor de desenvolvimento seguro
+Se o servidor web de desenvolvimento do usuário estiver servindo a aplicação por meio do HTTPS, poderá ocorrer problemas para se conectar ao servidor de desenvolvimento Vite.
 
- Se o servidor web de desenvolvimento do usuário estiver servindo a aplicação por meio do HTTPS, poderá ocorrer problemas para se conectar ao servidor de desenvolvimento Vite.
+Se você estiver usando o [Laravel Herd](https://herd.laravel.com) e tiver protegido o site ou estiver usando o [Laravel Valet](/docs/valet) e tiver executado o [comando seguro](/docs/valet#securing-sites) em sua aplicação, o plugin Laravel Vite detectará e usará automaticamente o certificado TLS gerado para você.
 
- Se estiver a utilizar o [Laravel Herd](https://herd.laravel.com) e proteger o site ou se estiver a utilizar o [Laravel Valet](/docs/valet) e executado o comando [seguro](/docs/valet#securing-sites) contra a aplicação, o plugin Laravel Vite irá detectar automaticamente e usar o certificado TLS gerado.
-
- Se você proteger o site usando um servidor que não combina com o nome do diretório do aplicativo, poderá especificar manualmente o host no arquivo `vite.config.js` do seu aplicativo:
+Se você proteger o site usando um servidor que não combina com o nome do diretório do aplicativo, poderá especificar manualmente o host no arquivo `vite.config.js` do seu aplicativo:
 
 ```js
 import { defineConfig } from 'vite';
@@ -116,7 +110,7 @@ export default defineConfig({
 });
 ```
 
- Para utilizar outro servidor web, é necessário gerar um certificado de confiança e configurá-lo manualmente no Vite.
+Para utilizar outro servidor web, é necessário gerar um certificado de confiança e configurá-lo manualmente no Vite.
 
 ```js
 // ...
@@ -137,12 +131,10 @@ export default defineConfig({
 });
 ```
 
- Se você não conseguir gerar um certificado confiável para seu sistema, poderá instalar e configurar o plugin [`@vitejs/plugin-basic-ssl`](https://github.com/vitejs/vite-plugin-basic-ssl). Quando usar certificados não confiáveis, será necessário aceitar a aviso do certificado para o servidor de desenvolvimento do Vite no seu navegador seguindo o link "Local" em sua consola ao executar o comando `npm run dev`.
+Se você não conseguir gerar um certificado confiável para seu sistema, poderá instalar e configurar o plugin [`@vitejs/plugin-basic-ssl`](https://github.com/vitejs/vite-plugin-basic-ssl). Quando usar certificados não confiáveis, será necessário aceitar a aviso do certificado para o servidor de desenvolvimento do Vite no seu navegador seguindo o link "Local" em seu console ao executar o comando `npm run dev`.
 
-<a name="configuring-hmr-in-sail-on-wsl2"></a>
 #### Executando o Servidor de Desenvolvimento em Sail na WSL2
-
- Quando você estiver executando o servidor de desenvolvimento do Vite dentro do [Laravel Sail](/docs/sail) no Windows Subsystem for Linux 2 (WSL2), deve adicionar a seguinte configuração ao arquivo `vite.config.js` para garantir que o navegador possa se comunicar com o servidor de desenvolvimento:
+Quando você estiver executando o servidor de desenvolvimento do Vite dentro do [Laravel Sail](/docs/sail) no Windows Subsystem for Linux 2 (WSL2), você deve adicionar a seguinte configuração ao arquivo `vite.config.js` para garantir que o navegador possa se comunicar com o servidor de desenvolvimento:
 
 ```js
 // ...
@@ -157,12 +149,10 @@ export default defineConfig({
 });
 ```
 
- Se as alterações no seu arquivo não estiverem a ser refletidas no browser enquanto o servidor de desenvolvimento está em execução, poderá também precisar de configurar a opção [`server.watch.usePolling`] (https://vitejs.dev/config/server-options.html#server-watch) do Vite.
+Se as alterações no seu arquivo não estiverem a ser refletidas no browser enquanto o servidor de desenvolvimento está em execução, poderá também precisar configurar a opção [`server.watch.usePolling`] (https://vitejs.dev/config/server-options.html#server-watch) do Vite.
 
-<a name="loading-your-scripts-and-styles"></a>
 ### Carregando os seus scripts e estilos
-
-With your Vite entry points configured, you may now reference them in a `@vite()` Blade directive that you add to the `<head>` of your application's root template:
+Com seus pontos de entrada do Vite configurados, agora você pode referenciá-los em uma diretiva Blade `@vite()` que você adiciona ao `<head>` do template raiz da sua aplicação:
 
 ```blade
 <!doctype html>
@@ -173,7 +163,7 @@ With your Vite entry points configured, you may now reference them in a `@vite()
 </head>
 ```
 
- Se você estiver importando seu CSS através do JavaScript, será necessário incluir o ponto de entrada do JavaScript:
+Se você estiver importando seu CSS através do JavaScript, será necessário incluir o ponto de entrada do JavaScript:
 
 ```blade
 <!doctype html>
@@ -184,23 +174,21 @@ With your Vite entry points configured, you may now reference them in a `@vite()
 </head>
 ```
 
- A diretiva `@vite` irá detectar automaticamente o servidor de desenvolvimento do Vite e injetará o cliente Vite para ativar a substituição de módulos em tempo de execução. No modo de compilação, a diretiva carrega seus ativos compilados e com versão, incluindo qualquer CSS importado.
+A diretiva `@vite` irá detectar automaticamente o servidor de desenvolvimento do Vite e injetará o cliente Vite para ativar a substituição de módulos em tempo de execução. No modo de compilação, a diretiva carrega seus ativos compilados e com versão, incluindo qualquer CSS importado.
 
- Se necessário, você também pode especificar o caminho de construção de seus ativos compilados ao invocar a diretiva `@vite`:
+Se necessário, você também pode especificar o caminho de construção de seus ativos compilados ao invocar a diretiva `@vite`:
 
 ```blade
 <!doctype html>
 <head>
-    {{-- Given build path is relative to public path. --}}
+    {{-- O caminho de construção fornecido é relativo ao caminho público. --}}
 
     @vite('resources/js/app.js', 'vendor/courier/build')
 </head>
 ```
 
-<a name="inline-assets"></a>
-#### Ativos On-Line
-
- Às vezes pode ser necessário incluir o conteúdo bruto dos recursos, em vez de fazer um link para a versão do recurso. Por exemplo, você poderá precisar incluir o conteúdo do recurso diretamente na página ao passar conteúdo HTML para um gerador de PDF. Pode exportar o conteúdo dos recursos Vite usando o método `content` providenciado pela interface "Vite":
+#### Assets inline
+Às vezes pode ser necessário incluir o conteúdo bruto dos recursos, em vez de fazer um link para a versão do recurso. Por exemplo, você poderá incluir o conteúdo do recurso diretamente na página ao passar conteúdo HTML para um gerador de PDF. Você pode exportar o conteúdo dos recursos Vite usando o método `content` oferecido pela interface "Vite":
 
 ```blade
 @use('Illuminate\Support\Facades\Vite')
@@ -218,30 +206,25 @@ With your Vite entry points configured, you may now reference them in a `@vite()
 </head>
 ```
 
-<a name="running-vite"></a>
 ## Executando o Vite
+Há duas maneiras de executar o Vite. O desenvolvedor pode executar o servidor via o comando `dev`, que é útil enquanto ele está trabalhando em seu código localmente. O servidor de desenvolvimento detecta automaticamente alterações nos seus ficheiros e reflete-as imediatamente nas janelas do browser abertas.
 
- Há duas maneiras de executar o Vite. O desenvolvedor pode executar o servidor via o comando `dev`, que é útil enquanto ele está trabalhando em seu código localmente. O servidor de desenvolvimento deteta automaticamente alterações nos seus ficheiros e reflecte-as imediatamente nas janelas do browser abertas.
-
- Ou, ao executar o comando `build`, você versa e integra os recursos da sua aplicação e os prepara para serem enviados à produção:
+Ou, ao executar o comando `build`, você versa e integra os recursos da sua aplicação e os prepara para serem enviados à produção:
 
 ```shell
-# Run the Vite development server...
+# Execute o servidor de desenvolvimento Vite...
 npm run dev
 
-# Build and version the assets for production...
+# Construir e versionar os assets para produção...
 npm run build
 ```
 
- Se você estiver executando o servidor de desenvolvimento em [Sail](/docs/sail) no WSL2, poderá ser necessário algumas opções de configuração adicionais (#Configurando HMR em Sail no WSL2).
+Se você estiver executando o servidor de desenvolvimento em [Sail](/docs/sail) no WSL2, poderá ser necessário algumas opções de [configuração adicionais](#configuring-hmr-in-sail-on-wsl2).
 
-<a name="working-with-scripts"></a>
 ## Trabalhando com JavaScript
 
-<a name="aliases"></a>
 ### Alias
-
- Por padrão, o plug-in do Laravel fornece um alias comum para ajudá-lo a começar seu trabalho e importar os ativos de forma conveniente.
+Por padrão, o plug-in do Laravel fornece um alias comum para ajudá-lo a começar seu trabalho e importar os assets de forma conveniente.
 
 ```js
 {
@@ -267,16 +250,14 @@ export default defineConfig({
 });
 ```
 
-<a name="vue"></a>
 ### Vue
-
- Se você quiser construir seu front-end usando o framework Vue, será necessário instalar também o plug-in `@vitejs/plugin-vue`:
+Se você quiser construir seu front-end usando o framework Vue, será necessário instalar também o plug-in `@vitejs/plugin-vue`:
 
 ```sh
 npm install --save-dev @vitejs/plugin-vue
 ```
 
- Em seguida, você poderá incluir o plug-in em seu arquivo de configuração `vite.config.js`. Existem algumas opções adicionais que serão necessárias ao usar o plug-in do Vue com Laravel:
+Em seguida, você poderá incluir o plug-in em seu arquivo de configuração `vite.config.js`. Existem algumas opções adicionais que serão necessárias ao usar o plug-in do Vue com Laravel:
 
 ```js
 import { defineConfig } from 'vite';
@@ -308,19 +289,18 @@ export default defineConfig({
 });
 ```
 
- > [!ATENÇÃO]
- [Kits de Início](/docs/starter-kits) já incluem a configuração adequada para Laravel, Vue e Vite.
+::: info NOTA
+Os [starter kits](/docs/starter-kits) do Laravel já incluem a configuração adequada do Laravel, Vue e Vite. Confira o [Laravel Breeze](/docs/starter-kits#breeze-and-inertia) para saber a maneira mais rápida de começar a usar com Laravel, Vue e Vite.
+:::
 
-<a name="react"></a>
-### Reação
-
- Se você gostaria de construir o seu frontend usando o framework React (https://reactjs.org/), então será necessário instalar também o plug-in '@vitejs/plugin-react':
+### React
+Se você gostaria de construir o seu frontend usando o framework React (https://reactjs.org/), então será necessário instalar também o plug-in '@vitejs/plugin-react':
 
 ```sh
 npm install --save-dev @vitejs/plugin-react
 ```
 
- Em seguida, você pode incluir o plug-in em seu arquivo de configuração `vite.config.js`:
+Em seguida, você pode incluir o plug-in em seu arquivo de configuração `vite.config.js`:
 
 ```js
 import { defineConfig } from 'vite';
@@ -335,24 +315,23 @@ export default defineConfig({
 });
 ```
 
- Será necessário garantir que qualquer arquivo contendo JSX tenha uma extensão de `.jsx` ou `.tsx`, lembrando-se de atualizar o ponto de entrada, caso seja necessário, como mostrado acima [Configurando Vite].
+Será necessário garantir que qualquer arquivo contendo JSX tenha uma extensão de `.jsx` ou `.tsx`, lembrando-se de atualizar o ponto de entrada, caso seja necessário, como mostrado acima [Configurando Vite](#configurando-o-vite).
 
- Você também precisará incluir a diretiva de Blade adicional `@viteReactRefresh`, ao lado da sua diretiva existente `@vite`.
+Você também precisará incluir a diretiva adicional do Blade `@viteReactRefresh`, ao lado da sua diretiva existente `@vite`.
 
 ```blade
 @viteReactRefresh
 @vite('resources/js/app.jsx')
 ```
 
- A diretiva `@viteReactRefresh` deve ser chamada antes da diretiva `@vite`.
+A diretiva `@viteReactRefresh` deve ser chamada antes da diretiva `@vite`.
 
- > [!NOTA]
- Os kits inicias (/docs/starter-kits) já incluem a configuração adequada do Laravel, React e Vite.
+::: info NOTA
+Os [starter kits](/docs/starter-kits) do Laravel já incluem a configuração adequada do Laravel, React e Vite. Confira o [Laravel Breeze](/docs/starter-kits#breeze-and-inertia) para saber a maneira mais rápida de começar a usar Laravel, React e Vite.
+:::
 
-<a name="inertia"></a>
 ### Inércia
-
- O plug-in Laravel Vite fornece uma conveniente função `resolvePageComponent` para ajudá-lo a resolver os componentes de páginas Inertia. Abaixo, é mostrado um exemplo do utilizador da assistência com Vue 3; no entanto, pode também utiliza-la noutros frameworks como o React:
+O plug-in Laravel Vite fornece uma conveniente função chamada `resolvePageComponent` para ajudá-lo a resolver os componentes de páginas Inertia. Abaixo, é mostrado um exemplo do utilizador do auxiliar com Vue 3; no entanto, você pode também utiliza-la noutros frameworks como o React:
 
 ```js
 import { createApp, h } from 'vue';
@@ -369,17 +348,16 @@ createInertiaApp({
 });
 ```
 
- > [!NOTA]
- Os kits [Iniciante](/docs/starter-kits) já incluem a configuração correta de Laravel, Inertia e Vite.
+::: info NOTA
+Os [starter kits](/docs/starter-kits) do Laravel já incluem a configuração adequada do Laravel, Inertia e Vite. Confira o [Laravel Breeze](/docs/starter-kits#breeze-and-inertia) para saber a maneira mais rápida de começar a usar Laravel, Inertia e Vite.
+:::
 
-<a name="url-processing"></a>
-### Processamento de URL
+### Processando a URL
+Ao usar o Vite e fazer referência a assets no HTML, CSS ou JS da sua aplicação, há alguns pontos a ter em consideração. Primeiro, se você fizer referência a um ativo com um caminho absoluto, o Vite não irá incluir o ativo na compilação; portanto, certifique-se de que o ativo esteja disponível no seu diretório público.
 
- Ao usar o Vite e fazer referência a ativos no HTML, CSS ou JS da sua aplicação, há alguns pontos a ter em consideração. Primeiro, se você fizer referência a um ativo com um caminho absoluto, o Vite não irá incluir o ativo na compilação; portanto, certifique-se de que o ativo esteja disponível no seu diretório público.
+Ao fazer referência a caminhos de assets relativos, você deve ter atenção que os caminhos são relativos ao ficheiro onde estão referenciados. Quaisquer ativos referenciados por meio de um caminho relativo serão re-escritos, versionados e agrupados pelo Vite.
 
- Ao fazer referência a caminhos de ativos relativos, deve ter em atenção que os caminhos são relativos ao ficheiro onde estão referenciados. Quaisquer ativos referenciados por meio de um caminho relativo serão reescritos, versados e agrupados pelo Vite.
-
- Considere a seguinte estrutura de projeto:
+Considere a seguinte estrutura de projeto:
 
 ```
 public/
@@ -392,20 +370,18 @@ resources/
     abigail.png
 ```
 
- O exemplo a seguir demonstra como o Vite tratará as URLs relativas e absolutas:
+O exemplo a seguir demonstra como o Vite tratará as URLs relativas e absolutas:
 
 ```html
-<!-- This asset is not handled by Vite and will not be included in the build -->
+<!-- Este asset não é gerenciado pela Vite e não será incluído na construção -->
 <img src="/taylor.png">
 
-<!-- This asset will be re-written, versioned, and bundled by Vite -->
+<!-- Este asset será re-escrito, versionado e empacotado pela Vite -->
 <img src="../../images/abigail.png">
 ```
 
-<a name="working-with-stylesheets"></a>
 ## Trabalhando com folhas de estilo
-
- Pode saber mais sobre o suporte de CSS do Vite na documentação do [Vite](https://vitejs.dev/guide/features.html#css). Se estiver a utilizar os plug-ins PostCSS como o [Tailwind](https://tailwindcss.com), pode criar um ficheiro `postcss.config.js` na raiz do seu projeto, e o Vite aplica-o automaticamente:
+Você pode saber mais sobre o suporte de CSS do Vite na documentação do [Vite](https://vitejs.dev/guide/features.html#css). Se estiver utilizando os plug-ins PostCSS como o [Tailwind](https://tailwindcss.com), você pode criar um ficheiro `postcss.config.js` na raiz do seu projeto, e o Vite irá aplica-o automaticamente:
 
 ```js
 export default {
@@ -416,18 +392,16 @@ export default {
 };
 ```
 
- > [!ATENÇÃO]
- [Kits iniciais](/docs/starter-kits) já incluem a configuração adequada para o uso do Tailwind, PostCSS e Vite. Ou, se você deseja usar Tailwind e Laravel sem fazer uso de um dos nossos kits inicias, confira
+::: info NOTA
+Os [starter kits](/docs/starter-kits) do Laravel já incluem a configuração adequada do Tailwind, PostCSS e Vite. Ou, se você quiser usar o Tailwind e o Laravel sem usar um de nossos kits iniciais, confira [Guia de instalação do Tailwind para Laravel](https://tailwindcss.com/docs/guides/laravel).
+:::
 
-<a name="working-with-blade-and-routes"></a>
-## Trabalhando com lâminas e rotas
+## Trabalhando com Blade e rotas
 
-<a name="blade-processing-static-assets"></a>
-### Processando ativos estáticos com o Vite
+### Processando assets estáticos com o Vite
+Quando for referenciar seus assets no código JavaScript ou CSS, o Vite os processa e gera versões automaticamente. Além disso, ao criar aplicativos baseados em Blade, o Vite também pode processar e gerar versões de assets estáticos que você referenciou apenas em modelos Blade.
 
- Quando for referenciar ativos em seu código JavaScript ou CSS, o Vite os processa e gera versões automaticamente. Além disso, ao criar aplicativos baseados em Blade, o Vite também pode processar e gerar versões de ativos estáticos que você referenciou apenas em modelos Blade.
-
- No entanto, para conseguir isso, você precisa informar o Vite dos seus ativos ao importá-los no ponto de entrada do aplicativo. Por exemplo, se você quiser processar e fazer a versão de todas as imagens armazenadas em `resources/images` e de todos os fontes armazenados em `resources/fonts`, você deve adicionar o seguinte no ponto de entrada do aplicativo em `resources/js/app.js`:
+No entanto, para conseguir isso, você precisa informar o Vite dos seus ativos ao importá-los no ponto de entrada do aplicativo. Por exemplo, se você quiser processar e fazer a versão de todas as imagens armazenadas em `resources/images` e de todos as fontes armazenadas em `resources/fonts`, você deve adicionar o seguinte no ponto de entrada do aplicativo em `resources/js/app.js`:
 
 ```js
 import.meta.glob([
@@ -436,16 +410,14 @@ import.meta.glob([
 ]);
 ```
 
- Esses recursos serão agora processados pelo Vite ao executar o comando `npm run build`. É possível então referenciá-los em modelos Blade usando o método `Vite::asset`, que retornará o URL com a versão do recurso:
+Esses recursos serão agora processados pelo Vite ao executar o comando `npm run build`. É possível então referenciá-los em modelos Blade usando o método `Vite::asset`, que retornará a URL com a versão do recurso:
 
 ```blade
 <img src="{{ Vite::asset('resources/images/logo.png') }}">
 ```
 
-<a name="blade-refreshing-on-save"></a>
-### Reload no Armazenar
-
- Quando o aplicativo é desenvolvido usando renderização tradicional de servidor com Blade, Vite pode melhorar seu fluxo de trabalho de desenvolvimento atualizando automaticamente o navegador quando você faz alterações nos arquivos de visualizações do aplicativo. Para começar, basta especificar a opção `refresh` como `true`.
+### Atualizando ao salvar
+Quando o aplicativo é desenvolvido usando renderização tradicional de servidor com Blade, o Vite pode melhorar seu fluxo de trabalho de desenvolvimento atualizando automaticamente o navegador quando você faz alterações nos arquivos de visualizações do aplicativo. Para começar, basta especificar a opção `refresh` como `true`.
 
 ```js
 import { defineConfig } from 'vite';
@@ -461,7 +433,7 @@ export default defineConfig({
 });
 ```
 
- Se a opção refresh estiver definida como true, a salvação dos arquivos nas seguintes pastas ativa o browser para refrescar todas as páginas ao ser executado o comando npm run dev:
+Se a opção refresh estiver definida como true, o salvamento dos arquivos nas seguintes pastas ativa o browser para atualizar todas as páginas ao ser executado o comando npm run dev:
 
  - `app/View/Components/**`
  - `lang/**`
@@ -469,9 +441,9 @@ export default defineConfig({
  - `resources/views/**`
  - `routes/**`
 
- Assistir ao diretório `routes/**` é útil se você estiver utilizando o [Ziggy](https://github.com/tighten/ziggy) para gerar links de rota no front-end da sua aplicação.
+Observar o diretório `routes/**` é útil se você estiver utilizando o [Ziggy](https://github.com/tighten/ziggy) para gerar links de rota no front-end da sua aplicação.
 
- Se estes caminhos padrão não atenderem às suas necessidades, pode especificar uma lista de seus próprios caminhos para monitoração:
+Se estes caminhos padrão não atenderem às suas necessidades, você pode especificar uma lista de seus próprios caminhos para monitoração:
 
 ```js
 import { defineConfig } from 'vite';
@@ -487,7 +459,7 @@ export default defineConfig({
 });
 ```
 
- Na área interna, o plugin Laravel Vite utiliza o pacote [`vite-plugin-full-reload`](https://github.com/ElMassimo/vite-plugin-full-reload), que oferece algumas opções de configuração avançadas para otimizar esse comportamento do recarregamento completo. Se você precisa deste nível de personalização, pode fornecer uma definição `config`:
+Na área interna, o plugin Laravel Vite utiliza o pacote [`vite-plugin-full-reload`](https://github.com/ElMassimo/vite-plugin-full-reload), que oferece algumas opções de configuração avançadas para otimizar esse comportamento do recarregamento completo. Se você precisa deste nível de personalização, pode fornecer uma definição `config`:
 
 ```js
 import { defineConfig } from 'vite';
@@ -506,10 +478,8 @@ export default defineConfig({
 });
 ```
 
-<a name="blade-aliases"></a>
 ### Alias
-
- É comum em aplicações JavaScript criar [alias para diretórios referenciados regularmente](#aliases). Mas é também possível criar alias de utilização no Blade, através do método `macro` na classe `Illuminate\Support\Facades\Vite`. Normalmente, os "máscaras" devem ser definidos dentro do método `boot` de um [provedor de serviço](/docs/providers):
+É comum em aplicações JavaScript criar [alias para diretórios referenciados regularmente](#aliases). Mas é também possível criar alias de utilização no Blade, através do método `macro` na classe `Illuminate\Support\Facades\Vite`. Normalmente, os "macros" devem ser definidos dentro do método `boot` de um [provedor de serviço](/docs/providers):
 
 ```php
     /**
@@ -521,52 +491,48 @@ export default defineConfig({
     }
 ```
 
- Uma vez definida uma macro, você poderá invocá-la dentro de seus modelos. Por exemplo, podemos usar a macro `image`, definida acima, para fazer referência a um recurso localizado em `resources/images/logo.png`:
+Uma vez definida um macro, você poderá invocá-la dentro de seus modelos. Por exemplo, podemos usar o macro `image`, definida acima, para fazer referência a um recurso localizado em `resources/images/logo.png`:
 
 ```blade
 <img src="{{ Vite::image('logo.png') }}" alt="Laravel Logo">
 ```
 
-<a name="custom-base-urls"></a>
 ## URLs de base personalizadas
-
- Se os ativos compilados com o Vite estiverem implantados em um domínio diferente da sua aplicação, por exemplo, via CDN, você deve especificar a variável de ambiente `ASSET_URL` no arquivo `.env` do seu aplicativo:
+Se os assets compilados com o Vite estiverem implantados em um domínio diferente da sua aplicação, por exemplo, via CDN, você deve especificar a variável de ambiente `ASSET_URL` no arquivo `.env` do seu aplicativo:
 
 ```
 ASSET_URL=https://cdn.example.com
 ```
 
- Depois de configurar o URL do ativo, todos os novos URLs dos seus ativos terão um prefixo com o valor especificado:
+Depois de configurar o URL do asset, todos os novos URLs dos seus assets terão um prefixo com o valor especificado:
 
 ```
 https://cdn.example.com/build/assets/app.9dce8d17.js
 ```
 
- Lembre-se que [endereços absolutos não são reescritos pelo Vite (# url-processing)], portanto eles não serão pré-fixados.
+Lembre-se que [endereços absolutos não são reescritos pelo Vite](#processando-a-url), portanto eles não serão pré-fixados.
 
-<a name="environment-variables"></a>
+
 ## Variáveis de ambiente
-
- Você pode inserir variáveis de ambiente no seu JavaScript, ao antepor-lhes `VITE_` no arquivo `.env` da aplicação.
+Você pode inserir variáveis de ambiente no seu JavaScript, ao antepor-lhes `VITE_` no arquivo `.env` da aplicação.
 
 ```
 VITE_SENTRY_DSN_PUBLIC=http://example.com
 ```
 
- Pode aceder às variáveis de ambiente injetadas através do objeto `import.meta.env`:
+Você pode acessar às variáveis de ambiente injetadas através do objeto `import.meta.env`:
 
 ```js
 import.meta.env.VITE_SENTRY_DSN_PUBLIC
 ```
 
-<a name="disabling-vite-in-tests"></a>
 ## Desativar o Vite em testes
+A integração com o Vite no Laravel tentará resolver seus assets ao executar seus testes, o que exige que você execute o servidor de desenvolvimento do Vite ou compile seus assets.
 
- A integração com o Vite do Laravel tentará resolver seus ativos ao executar seus testes, o que exige que você execute o servidor de desenvolvimento do Vite ou compilado seus ativos.
+Caso você prefira simular uma falta de dependência do Vite durante os testes, pode chamar o método `withoutVite`, que está disponível para quaisquer testes que tenham as extensões da classe `TestCase` do Laravel:
 
- Caso você prefira simular falta de dependência do Vite durante os testes, pode chamar o método `withoutVite`, que está disponível para quaisquer testes que sejam extensões da classe `TestCase` do Laravel:
-
-```php tab=Pest
+::: code-group
+```php [Pest]
 test('without vite example', function () {
     $this->withoutVite();
 
@@ -574,7 +540,7 @@ test('without vite example', function () {
 });
 ```
 
-```php tab=PHPUnit
+```php [PHPUnit]
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
@@ -587,8 +553,9 @@ class ExampleTest extends TestCase
     }
 }
 ```
+:::
 
- Se você deseja desativar o Vite para todos os testes, pode chamar o método `withoutVite` do método `setUp` na sua classe base `TestCase`:
+Se você deseja desativar o Vite para todos os testes, pode chamar o método `withoutVite` do método `setUp` na sua classe base `TestCase`:
 
 ```php
 <?php
@@ -608,10 +575,8 @@ abstract class TestCase extends BaseTestCase
 }
 ```
 
-<a name="ssr"></a>
 ## Renderização do lado do servidor (SSR)
-
- O plugin Vite do Laravel permite configurar o renderizado no servidor com facilidade. Para começar, crie um ponto de entrada SSR em `resources/js/ssr.js` e especifique o ponto de entrada passando uma opção de configuração ao plugin Laravel:
+O plugin Vite do Laravel permite configurar o renderização no servidor com facilidade. Para começar, crie um ponto de entrada SSR em `resources/js/ssr.js` e especifique o ponto de entrada passando uma opção de configuração ao plugin Laravel:
 
 ```js
 import { defineConfig } from 'vite';
@@ -627,7 +592,7 @@ export default defineConfig({
 });
 ```
 
- Para garantir que você não se esqueça de reconstruir o ponto de entrada do SSR, recomendamos aumentar o script "build" no `package.json` da sua aplicação para criar a compilação de SSR:
+Para garantir que você não se esqueça de reconstruir o ponto de entrada do SSR, recomendamos adicionar uma entrada "build" na seção "script" do `package.json` da sua aplicação para criar a compilação de SSR:
 
 ```json
 "scripts": {
@@ -637,29 +602,27 @@ export default defineConfig({
 }
 ```
 
- Depois, para criar e iniciar o servidor de SSR, você pode executar os seguintes comandos:
+Depois, para criar e iniciar o servidor de SSR, você pode executar os seguintes comandos:
 
 ```sh
 npm run build
 node bootstrap/ssr/ssr.js
 ```
 
- Se você estiver usando o [SSR com Inércia](https://inertiajs.com/server-side-rendering), poderá usar o comando de Artisan `inertia:start-ssr` para iniciar o servidor SSR:
+Se você estiver usando o [SSR com Inércia](https://inertiajs.com/server-side-rendering), poderá usar o comando do Artisan `inertia:start-ssr` para iniciar o servidor SSR:
 
 ```sh
 php artisan inertia:start-ssr
 ```
 
- > [!ATENÇÃO]
- Os [Kits de Iniciação](/docs/starter-kits) já incluem o Laravel, a Inertia SSR e as configurações do Vite adequadas.
+::: info NOTA
+Os [starter kits](/docs/starter-kits) do Laravel já inclui a configuração adequada do Laravel, Inertia SSR e Vite. Confira o [Laravel Breeze](/docs/starter-kits#breeze-and-inertia) para saber a maneira mais rápida de começar a usar o Laravel, Inertia SSR e Vite.
+:::
 
-<a name="script-and-style-attributes"></a>
 ## Atributos do script e tag de estilo
 
-<a name="content-security-policy-csp-nonce"></a>
 ### Política de segurança do conteúdo (CSP) Nonce
-
- Se pretender incluir um atributo [`nonce`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) nos seus marcadores de script e estilo, como parte da sua [política de segurança do conteúdo](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), pode gerar ou especificar um nonce através do método `useCspNonce` num middleware personalizado:
+Se pretender incluir um atributo [`nonce`](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce) nos seus marcadores de script e estilo, como parte da sua [política de segurança do conteúdo](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP), você pode gerar ou especificar um nonce através do método `useCspNonce` num middleware personalizado:
 
 ```php
 <?php
@@ -689,30 +652,28 @@ class AddContentSecurityPolicyHeaders
 }
 ```
 
- Depois de invocar o método `useCspNonce`, o Laravel incluirá automaticamente os atributos `nonce` em todos os scripts e etiquetas estilísticas gerados.
+Depois de invocar o método `useCspNonce`, o Laravel incluirá automaticamente os atributos `nonce` em todos os scripts e tags de estilo gerados.
 
- Se necessitar de especificar o nonce em outro lugar, incluindo a diretiva [Ziggy `@route`] (https://github.com/tighten/ziggy#using-routes-with-a-content-security-policy) incluída nos starter kits do Laravel, pode recuperá-lo utilizando o método `cspNonce`:
+Se necessitar especificar o nonce em outro lugar, incluindo a diretiva [Ziggy `@route`] (https://github.com/tighten/ziggy#using-routes-with-a-content-security-policy) incluída nos starter kits do Laravel, você pode recuperá-lo utilizando o método `cspNonce`:
 
 ```blade
 @routes(nonce: Vite::cspNonce())
 ```
 
- Se você já tem um nonce que gostaria de usar com Laravel, poderá enviar o nonce para o método `useCspNonce`:
+Se você já tem um nonce que gostaria de usar com o Laravel, poderá enviar o nonce para o método `useCspNonce`:
 
 ```php
 Vite::useCspNonce($nonce);
 ```
 
-<a name="subresource-integrity-sri"></a>
 ### Integridade de sub-recursos (SRI)
-
- Se o seu manifesto do Vite incluir hashes de `integridade` para seus ativos, o Laravel adicionará automaticamente o atributo `integrity` em qualquer tag de script e estilo que gerar com a finalidade de impor [a integridade dos recursos subjacentes](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity). O Vite não inclui, por padrão, o hash de `integridade` em seu manifesto. Porém, você pode ativá-lo instalando o plugin do NPM [`vite-plugin-manifest-sri`](https://www.npmjs.com/package/vite-plugin-manifest-sri):
+Se o seu manifesto do Vite incluir hashes de `integridade` para seus ativos, o Laravel adicionará automaticamente o atributo `integrity` em qualquer tag de script e estilo que gerar com a finalidade de impor [a integridade dos recursos subjacentes](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity). O Vite não inclui, por padrão, o hash `integrity` em seu manifesto. Porém, você pode ativá-lo instalando o plugin do NPM [`vite-plugin-manifest-sri`](https://www.npmjs.com/package/vite-plugin-manifest-sri):
 
 ```shell
 npm install --save-dev vite-plugin-manifest-sri
 ```
 
- Você pode então habilitar esse plugin em seu arquivo `vite.config.js`:
+Você pode então habilitar esse plugin em seu arquivo `vite.config.js`:
 
 ```js
 import { defineConfig } from 'vite';
@@ -729,7 +690,7 @@ export default defineConfig({
 });
 ```
 
- Se necessário, você também poderá personalizar a chave do manifesto onde a chave de integridade pode ser encontrada:
+Se necessário, você também poderá personalizar a chave do manifesto onde a chave de integridade pode ser encontrada:
 
 ```php
 use Illuminate\Support\Facades\Vite;
@@ -737,24 +698,22 @@ use Illuminate\Support\Facades\Vite;
 Vite::useIntegrityKey('custom-integrity-key');
 ```
 
- Se você deseja desativar completamente esse rastreamento automático, pode passar `false` ao método `useIntegrityKey`:
+Se você deseja desativar completamente esse rastreamento automático, pode passar `false` ao método `useIntegrityKey`:
 
 ```php
 Vite::useIntegrityKey(false);
 ```
 
-<a name="arbitrary-attributes"></a>
 ### Atributos arbitrários
-
- Se precisar de incluir atributos adicionais nas etiquetas <script> e <style>, tais como o atributo <span>[`data-turbo-track`](https://turbo.hotwired.dev/handbook/drive#reloading-when-assets-change)](https://turbo.hotwired.dev/handbook/drive#reloading-when-assets-change), pode especificá-los através dos métodos <span>useScriptTagAttributes</span> e <span>useStyleTagAttributes</span>. Normalmente, estes métodos devem ser invocados a partir de um <span>fornecedor de serviços</span>/[providers](/docs/providers):
+Se você precisar incluir atributos adicionais nas tags `<script>` e `<style>`, tais como o atributo [`data-turbo-track`](https://turbo.hotwired.dev/handbook/drive#reloading-when-assets-change), pode especificá-los através dos métodos `useScriptTagAttributes` e `useStyleTagAttributes`. Normalmente, estes métodos devem ser invocados a partir de um [provedor de serviços](/docs/providers):
 
 ```php
 use Illuminate\Support\Facades\Vite;
 
 Vite::useScriptTagAttributes([
-    'data-turbo-track' => 'reload', // Specify a value for the attribute...
-    'async' => true, // Specify an attribute without a value...
-    'integrity' => false, // Exclude an attribute that would otherwise be included...
+    'data-turbo-track' => 'reload', // Especifique um valor para o atributo...
+    'async' => true, // Especifique um atributo sem valor...
+    'integrity' => false, // Exclua um atributo que de outra forma seria incluído...
 ]);
 
 Vite::useStyleTagAttributes([
@@ -762,7 +721,7 @@ Vite::useStyleTagAttributes([
 ]);
 ```
 
- Se você precisar adicionar atributos sob condição, poderá passar um callback que receberá o caminho de origem do recurso, seu URL, o fragmento do manifesto e o próprio manifesto completo:
+Se você precisar adicionar atributos sob condição, poderá passar um callback que receberá o caminho de origem do recurso, sua URL, o fragmento do manifesto e o próprio manifesto completo:
 
 ```php
 use Illuminate\Support\Facades\Vite;
@@ -776,13 +735,12 @@ Vite::useStyleTagAttributes(fn (string $src, string $url, array|null $chunk, arr
 ]);
 ```
 
- > [ADVERTÊNCIA]
- > Os argumentos `$chunk` e `$manifest` serão `null` enquanto o servidor de desenvolvimento do Vite estiver em execução.
+::: warning ATENÇÃO
+Os argumentos `$chunk` e `$manifest` serão `null` enquanto o servidor de desenvolvimento Vite estiver em execução.
+:::
 
-<a name="advanced-customization"></a>
 ## Personalização Avançada
-
- De série, o plugin do Laravel para Vite usa convenções inteligentes que funcionam para a maioria dos aplicativos. No entanto, por vezes pode ser necessário personalizar o comportamento de Vite. Para permitir opções adicionais de personalização, oferecemos os seguintes métodos e opções que podem ser usados no lugar da diretiva `@vite` do Blade:
+De série, o plugin do Laravel para Vite usa convenções inteligentes que funcionam para a maioria dos aplicativos. No entanto, por vezes pode ser necessário personalizar o comportamento do Vite. Para permitir opções adicionais de personalização, oferecemos os seguintes métodos e opções que podem ser usados no lugar da diretiva `@vite` do Blade:
 
 ```blade
 <!doctype html>
@@ -790,18 +748,18 @@ Vite::useStyleTagAttributes(fn (string $src, string $url, array|null $chunk, arr
     {{-- ... --}}
 
     {{
-        Vite::useHotFile(storage_path('vite.hot')) // Customize the "hot" file...
-            ->useBuildDirectory('bundle') // Customize the build directory...
-            ->useManifestFilename('assets.json') // Customize the manifest filename...
-            ->withEntryPoints(['resources/js/app.js']) // Specify the entry points...
-            ->createAssetPathsUsing(function (string $path, ?bool $secure) { // Customize the backend path generation for built assets...
+        Vite::useHotFile(storage_path('vite.hot')) // Personalize o arquivo "hot"...
+            ->useBuildDirectory('bundle') // Personalize o diretório de construção...
+            ->useManifestFilename('assets.json') // Personalize o nome do arquivo de manifesto...
+            ->withEntryPoints(['resources/js/app.js']) // Especifique os pontos de entrada...
+            ->createAssetPathsUsing(function (string $path, ?bool $secure) { // Personalize a geração do caminho de back-end para ativos construídos...
                 return "https://cdn.example.com/{$path}";
             })
     }}
 </head>
 ```
 
- Na pasta `vite.config.js`, especifique a mesma configuração:
+Na pasta `vite.config.js`, especifique a mesma configuração:
 
 ```js
 import { defineConfig } from 'vite';
@@ -810,31 +768,29 @@ import laravel from 'laravel-vite-plugin';
 export default defineConfig({
     plugins: [
         laravel({
-            hotFile: 'storage/vite.hot', // Customize the "hot" file...
-            buildDirectory: 'bundle', // Customize the build directory...
-            input: ['resources/js/app.js'], // Specify the entry points...
+            hotFile: 'storage/vite.hot', // Personalize o arquivo "hot"...
+            buildDirectory: 'bundle', // Personalize o diretório de construção...
+            input: ['resources/js/app.js'], // Especifique os pontos de entrada...
         }),
     ],
     build: {
-      manifest: 'assets.json', // Customize the manifest filename...
+      manifest: 'assets.json', // Personalize o nome do arquivo de manifesto...
     },
 });
 ```
 
-<a name="correcting-dev-server-urls"></a>
 ### Corrigindo as URLs do servidor de desenvolvimento
+Alguns plug-ins do ecossistema Vite presumem que as URLs que começam com um ponto e traço irão sempre apontar para o servidor de desenvolvimento Vite. No entanto, devido à natureza da integração do Laravel, não é esse o caso.
 
- Alguns plug-ins do ecossistema Vite presumem que as URLs que começam com um ponto e traço irão sempre apontar para o servidor de desenvolvimento Vite. No entanto, devido à natureza da integração Laravel, não é esse o caso.
-
- Por exemplo, o plug-in `vite-imagetools` exibe URL's como as seguintes enquanto o Vite está servindo seus recursos:
+Por exemplo, o plug-in `vite-imagetools` exibe URL's como as seguintes enquanto o Vite está servindo seus recursos:
 
 ```html
 <img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520">
 ```
 
- O plugin `vite-imagetools` espera que a URL de saída seja interceptada pelo Vite e o plugin pode, então, lidar com todas as URLs que começam por `/@imagetools`. Se você estiver usando plugins que esperam esse comportamento, será necessário corrigir manualmente as URLs. Isso pode ser feito em seu arquivo `vite.config.js`, usando a opção `transformOnServe`.
+O plugin `vite-imagetools` espera que a URL de saída seja interceptada pelo Vite e o plugin pode, então, lidar com todas as URLs que começam por `/@imagetools`. Se você estiver usando plugins que esperam esse comportamento, será necessário corrigir manualmente as URLs. Isso pode ser feito em seu arquivo `vite.config.js`, usando a opção `transformOnServe`.
 
- Neste exemplo específico, preenchemos o caminho para o servidor `dev` a todas as ocorrências de `/@imagetools` no código gerado:
+Neste exemplo específico, preenchemos o caminho para o servidor `dev` a todas as ocorrências de `/@imagetools` no código gerado:
 
 ```js
 import { defineConfig } from 'vite';
@@ -852,7 +808,7 @@ export default defineConfig({
 });
 ```
 
- Agora, enquanto a Vite está servindo ativos, ela irá gerar URLs que apontam para o servidor de desenvolvimento da Vite:
+Agora, enquanto a Vite está servindo ativos, ela irá gerar URLs que apontam para o servidor de desenvolvimento da Vite:
 
 ```html
 - <img src="/@imagetools/f0b2f404b13f052c604e632f2fb60381bf61a520"><!-- [tl! remove] -->
