@@ -27,8 +27,8 @@
     - [Pacote de ativos](/src/docs/vite.md) ✅
     - [URL Generation](/src/docs/urls.md) ✅
     - [Session](/src/docs/session.md) ✅
-    - [Validation](/src/docs/validation.md) ⚙️
-    - [Error Handling](/src/docs/errors.md)
+    - [Validation](/src/docs/validation.md) ✅
+    - [Error Handling](/src/docs/errors.md) ⚙️
     - [Logging](/src/docs/logging.md)
 - ## Indo mais fundo
     - [Artisan Console](/src/docs/artisan.md) ✅
