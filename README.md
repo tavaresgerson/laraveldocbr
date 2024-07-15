@@ -28,11 +28,11 @@
     - [URL Generation](/src/docs/urls.md) ✅
     - [Session](/src/docs/session.md) ✅
     - [Validation](/src/docs/validation.md) ✅
-    - [Error Handling](/src/docs/errors.md) ⚙️
-    - [Logging](/src/docs/logging.md)
+    - [Error Handling](/src/docs/errors.md) ✅
+    - [Logging](/src/docs/logging.md) ✅
 - ## Indo mais fundo
     - [Artisan Console](/src/docs/artisan.md) ✅
-    - [Broadcasting](/src/docs/broadcasting.md)
+    - [Broadcasting](/src/docs/broadcasting.md) ⚙️
     - [Cache](/src/docs/cache.md)
     - [Collections](/src/docs/collections.md)
     - [Context](/src/docs/context.md)
