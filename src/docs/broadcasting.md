@@ -1,15 +1,13 @@
-# Radiodifusão
+# Broadcasting
 
-<a name="introduction"></a>
 ## Introdução
+Em muitas aplicações web modernas, os WebSockets são utilizados para implementar interfaces de usuário em tempo real que se atualizam automaticamente. Normalmente, quando alguns dados são atualizados no servidor, uma mensagem é enviada por meio de uma ligação WebSocket a ser tratada pelo cliente. Os WebSockets proporcionam uma alternativa mais eficiente ao sondar continuamente o servidor da aplicação quanto à alterações dos dados que devem ser refletidas na sua interface gráfica.
 
- Em muitas aplicações web modernas, os WebSockets são utilizados para implementar interfaces de utilizador em tempo real que se atualizam automaticamente. Normalmente, quando alguns dados são atualizados no servidor, uma mensagem é enviada por meio de uma ligação WebSocket a ser tratada pelo cliente. Os WebSockets proporcionam uma alternativa mais eficiente ao sondar continuamente o servidor da aplicação quanto à alterações dos dados que devem ser refletidas na sua interface gráfica.
+Por exemplo, imagine que seu aplicativo seja capaz de exportar os dados do usuário para um arquivo CSV e enviá-lo por email. No entanto, a criação deste arquivo CSV leva vários minutos, então você opta por criar e enviar o CSV dentro de uma [tarefa agendada](/docs/queues). Quando o CSV tiver sido criado e enviado ao usuário, podemos usar a transmissão de eventos para distribuir um evento `App\Events\UserDataExported` que é recebido pelo nosso JavaScript do aplicativo. Uma vez que o evento é recebido, podemos exibir uma mensagem para o usuário informando que seu CSV foi enviado por email sem que seja necessário atualizar a página.
 
- Por exemplo, imagine que seu aplicativo seja capaz de exportar os dados do usuário para um arquivo CSV e enviá-lo por email. No entanto, a criação deste arquivo CSV leva vários minutos, então você opta por criar e enviar o CSV dentro de uma [tarefa agendada](/docs/queues). Quando o CSV tiver sido criado e enviado ao usuário, podemos usar a transmissão de eventos para distribuir um evento `App\Events\UserDataExported` que é recebido pelo nosso JavaScript do aplicativo. Uma vez que o evento é recebido, podemos exibir uma mensagem para o usuário informando que seu CSV foi enviado por email sem que seja necessário atualizar a página.
+Para ajudá-lo a desenvolver esses tipos de recursos, o Laravel facilita a "transmissão" do lado do servidor dos [eventos Laravel](/docs/events). Essa transmissão permite que você compartilhe os mesmos nomes e dados entre seu aplicativo Laravel no lado do servidor e seu aplicativo JavaScript no lado do cliente.
 
- Para ajudá-lo a desenvolver esses tipos de recursos, o Laravel facilita a "transmissão" do lado servidor dos [eventos Laravel](/docs/events). Essa transmissão permite que você compartilhe os mesmos nomes e dados entre seu aplicativo Laravel no lado servidor e seu aplicativo JavaScript no lado cliente.
-
- Os conceitos básicos por trás da transmissão são simples: os clientes se conectam a canais específicos no front-end, enquanto o aplicativo Laravel transmite eventos para esses canais no back-end. Esses eventos podem conter qualquer dado adicional que você deseja disponibilizar ao front-end.
+Os conceitos básicos por trás da transmissão são simples: os clientes se conectam a canais específicos no front-end, enquanto o aplicativo Laravel transmite eventos para esses canais no back-end. Esses eventos podem conter qualquer dado adicional que você deseje disponibilizar ao front-end.
 
 <a name="supported-drivers"></a>
 #### Driver suportados
