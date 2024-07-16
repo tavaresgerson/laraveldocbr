@@ -32,8 +32,8 @@
     - [Logging](/src/docs/logging.md) ✅
 - ## Indo mais fundo
     - [Artisan Console](/src/docs/artisan.md) ✅
-    - [Broadcasting](/src/docs/broadcasting.md) ⚙️
-    - [Cache](/src/docs/cache.md)
+    - [Broadcasting](/src/docs/broadcasting.md) ✅
+    - [Cache](/src/docs/cache.md) ⚙️
     - [Collections](/src/docs/collections.md)
     - [Context](/src/docs/context.md)
     - [Contracts](/src/docs/contracts.md)
