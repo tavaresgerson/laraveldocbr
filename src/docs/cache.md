@@ -2,16 +2,16 @@
 
 ## Introdução
 
- Algumas das tarefas de recuperação ou processamento de dados realizadas pela sua aplicação podem exigir muita CPU ou demorar vários segundos para concluir. Nesse caso, é comum armazenar os dados recuperados em cache por um tempo para que possam ser recuperados rapidamente em solicitações subsequentes pelos mesmos dados. Os dados armazenados em cache geralmente são salvos em um repositório de dados muito rápido, como o Memcached ou o Redis.
+Algumas das tarefas de recuperação ou processamento de dados realizadas pela sua aplicação podem exigir muita CPU ou demorar vários segundos para concluir. Nesse caso, é comum armazenar os dados recuperados em cache por um tempo para que possam ser recuperados rapidamente em solicitações subsequentes pelos mesmos dados. Os dados armazenados em cache geralmente são salvos em um repositório de dados muito rápido, como o Memcached ou o Redis.
 
- A propósito, o Laravel fornece uma API expressiva e uniforme para vários servidores de armazenamento em cache, permitindo que você se beneficie da recuperação rápida de dados deles e acelere seu aplicativo web.
+A propósito, o Laravel fornece uma API expressiva e uniforme para vários servidores de armazenamento em cache, permitindo que você se beneficie da recuperação rápida de dados deles e acelere seu aplicativo web.
 
 <a name="configuration"></a>
 ## Configuração
 
- O arquivo de configuração do cache da aplicação está localizado em `config/cache.php`. Nele, você pode especificar qual armazenamento de cache deseja ser usado por padrão em toda a aplicação. O Laravel suporta backends de caching populares como [Memcached](https://memcached.org), [Redis](https://redis.io), [DynamoDB](https://aws.amazon.com/dynamodb) e bancos de dados relacionais fora da caixa. Além disso, um driver de cache baseado em arquivo está disponível, enquanto os drivers de cache "array" e "null" oferecem backends de cache convenientes para seus testes automáticos.
+O arquivo de configuração do cache da aplicação está localizado em `config/cache.php`. Nele, você pode especificar qual armazenamento de cache deseja ser usado por padrão em toda a aplicação. O Laravel suporta backends de caching populares como [Memcached](https://memcached.org), [Redis](https://redis.io), [DynamoDB](https://aws.amazon.com/dynamodb) e bancos de dados relacionais fora da caixa. Além disso, um driver de cache baseado em arquivo está disponível, enquanto os drivers de cache "array" e "null" oferecem backends de cache convenientes para seus testes automáticos.
 
- O arquivo de configuração do cache também contém uma variedade de outras opções que você pode analisar. Por padrão, o Laravel é configurado para usar o driver de cache "database", que armazena os objetos serializados e encriptados no banco de dados da aplicação.
+O arquivo de configuração do cache também contém uma variedade de outras opções que você pode analisar. Por padrão, o Laravel é configurado para usar o driver de cache "database", que armazena os objetos serializados e encriptados no banco de dados da aplicação.
 
 <a name="driver-prerequisites"></a>
 ### Pré-requisitos do driver
@@ -19,7 +19,7 @@
 <a name="prerequisites-database"></a>
 #### Banco de dados
 
- Para usar o driver de cache "database", você precisa ter uma tabela de banco de dados para conter os dados do cache. Normalmente, isto é incluído na migração padrão `0001_01_01_000001_create_cache_table.php` do Laravel [migração de banco de dados](/docs/migrations); no entanto, se sua aplicação não possuir essa migração, você poderá usar o comando Artisan `make:cache-table` para criá-la:
+Para usar o driver de cache "database", você precisa ter uma tabela de banco de dados para conter os dados do cache. Normalmente, isto é incluído na migração padrão `0001_01_01_000001_create_cache_table.php` do Laravel [migração de banco de dados](/docs/migrations); no entanto, se sua aplicação não possuir essa migração, você poderá usar o comando Artisan `make:cache-table` para criá-la:
 
 ```shell
 php artisan make:cache-table
@@ -28,9 +28,9 @@ php artisan migrate
 ```
 
 <a name="memcached"></a>
-#### O Memcached
+#### Memcached
 
- O uso do driver Memcached requer o [pacote PECL Memcached](https://pecl.php.net/package/memcached) para ser instalado. Você pode listar todos os seus servidores Memcached no arquivo de configuração `config/cache.php`. Esse arquivo já contém uma entrada `memcached.servers` para começar:
+O uso do driver Memcached requer o [pacote PECL Memcached](https://pecl.php.net/package/memcached) para ser instalado. Você pode listar todos os seus servidores Memcached no arquivo de configuração `config/cache.php`. Esse arquivo já contém uma entrada `memcached.servers` para começar:
 
 ```php
     'memcached' => [
@@ -46,7 +46,7 @@ php artisan migrate
     ],
 ```
 
- Se necessário, pode definir uma ligação de comando no caminho do anel "host". Neste caso, a opção "port" deve ser configurada para um valor `0`:
+Se necessário, você pode definir a opção `host` para um caminho de soquete UNIX. Se você fizer isso, a opção `port` deverá ser definida como `0`:
 
 ```php
     'memcached' => [
@@ -65,24 +65,24 @@ php artisan migrate
 <a name="redis"></a>
 #### Redis
 
- Antes de usar um cache Redis com o Laravel, será necessário instalar a extensão PHP PhpRedis através da PECL ou instalar o pacote `predis/predis` (~2.0) através do Composer. [Laravel Sail](/docs/sail) já inclui essa extensão. Além disso, as plataformas de implantação oficiais do Laravel, como o [Laravel Forge](https://forge.laravel.com) e o [Laravel Vapor](https://vapor.laravel.com), têm a extensão PhpRedis instalada por padrão.
+Antes de usar um cache Redis com o Laravel, será necessário instalar a extensão PHP PhpRedis via PECL ou instalar o pacote `predis/predis` (~2.0) através do Composer. [Laravel Sail](/docs/sail) já inclui essa extensão. Além disso, as plataformas de implantação oficiais do Laravel, como o [Laravel Forge](https://forge.laravel.com) e o [Laravel Vapor](https://vapor.laravel.com), têm a extensão PhpRedis instalada por padrão.
 
- Para mais informações sobre como configurar o Redis, consulte a página de documentação do Laravel [Redis](https://laravel.com/docs/5.7/redis#configuration) (em inglês).
+Para mais informações sobre como configurar o Redis, consulte a página de documentação do [Redis no Laravel](/docs/redis#configuration).
 
 <a name="dynamodb"></a>
 #### DynamoDB
 
- Antes de usar o driver de cache [DynamoDB](https://aws.amazon.com/dynamodb), você deve criar uma tabela DynamoDB para armazenar todos os dados do cache. Normalmente, essa tabela deve ser nomeada como `cache`. No entanto, você deve nomear a tabela com base no valor da configuração `stores.dynamodb.table` dentro do arquivo de configuração `cache`. O nome da tabela também pode ser definido pela variável ambiental `DYNAMODB_CACHE_TABLE`.
+Antes de usar o driver de cache [DynamoDB](https://aws.amazon.com/dynamodb), você deve criar uma tabela DynamoDB para armazenar todos os dados do cache. Normalmente, essa tabela deve ser nomeada como `cache`. No entanto, você deve nomear a tabela com base no valor da configuração `stores.dynamodb.table` dentro do arquivo de configuração `cache`. O nome da tabela também pode ser definido pela variável de ambiente `DYNAMODB_CACHE_TABLE`.
 
- Essa tabela também deve possuir uma chave de partição de string com um nome que corresponda ao valor do item de configuração `stores.dynamodb.attributes.key` dentro do arquivo de configuração `cache` da aplicação. Por padrão, a chave de partição deve ser denominada `key`.
+Essa tabela também deve possuir uma chave de partição em string com um nome que corresponda ao valor do item de configuração `stores.dynamodb.attributes.key` dentro do arquivo de configuração `cache` da aplicação. Por padrão, a chave de partição deve ser denominada `key`.
 
- Em seguida, instale o AWS SDK para que seu aplicativo Laravel possa se comunicar com a DynamoDB:
+Em seguida, instale o AWS SDK para que seu aplicativo Laravel possa se comunicar com a DynamoDB:
 
 ```shell
 composer require aws/aws-sdk-php
 ```
 
- Além disso, certifique-se de que os valores são fornecidos para as opções de configuração do armazenamento do cache DynamoDB. Normalmente, essas opções, como `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY`, devem ser definidas no arquivo de configuração `.env da aplicação:
+Além disso, certifique-se de que os valores são fornecidos para as opções de configuração do armazenamento do cache DynamoDB. Normalmente, essas opções, como `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY`, devem ser definidas no arquivo de configuração `.env` da aplicação:
 
 ```php
 'dynamodb' => [
@@ -96,12 +96,12 @@ composer require aws/aws-sdk-php
 ```
 
 <a name="cache-usage"></a>
-## Uso da memória cache
+## Uso do Cache
 
 <a name="obtaining-a-cache-instance"></a>
 ### Obtendo uma instância de cache
 
- Para obter uma instância do armazenamento de cache, é possível usar a façanha "Cache", que será usada ao longo desta documentação. A façanha "Cache" fornece um acesso conveniente e conciso às implementações subjacentes dos contratos de cache da Laravel:
+Para obter uma instância do armazenamento de cache, é possível usar a facade `Cache`, que será usada ao longo desta documentação. A facade `Cache` fornece um acesso conveniente e conciso às implementações subjacentes dos contratos de cache do Laravel:
 
 ```php
     <?php
@@ -113,7 +113,7 @@ composer require aws/aws-sdk-php
     class UserController extends Controller
     {
         /**
-         * Show a list of all users of the application.
+         * Mostre uma lista de todos os usuários do aplicativo.
          */
         public function index(): array
         {
@@ -129,18 +129,18 @@ composer require aws/aws-sdk-php
 <a name="accessing-multiple-cache-stores"></a>
 #### Acessando vários repositórios de cache
 
- Usando a face `Cache`, você pode acessar vários repositórios de cache através do método `store`. A chave passada ao método `store` deve corresponder a um dos repositórios listados na matriz de configuração `stores` em seu arquivo de configuração `cache`:
+Usando a facade `Cache`, você pode acessar vários repositórios de cache através do método `store`. A chave passada ao método `store` deve corresponder a um dos repositórios listados na matriz de configuração `stores` em seu arquivo de configuração `cache`:
 
 ```php
     $value = Cache::store('file')->get('foo');
 
-    Cache::store('redis')->put('bar', 'baz', 600); // 10 Minutes
+    Cache::store('redis')->put('bar', 'baz', 600); // 10 Minutos
 ```
 
 <a name="retrieving-items-from-the-cache"></a>
 ### Recuperar itens do cache
 
- O método `get` da facade `Cache` é utilizado para recuperar itens do cache. Se o item não existir no cache, será retornado `null`. Caso queira, pode passar um segundo argumento ao método `get`, especificando o valor padrão que deseja que seja retornado caso o item não exista:
+O método `get` da facade `Cache` é utilizado para recuperar itens do cache. Se o item não existir no cache, será retornado `null`. Caso queira, pode passar um segundo argumento ao método `get`, especificando o valor padrão que deseja que seja retornado caso o item não exista:
 
 ```php
     $value = Cache::get('key');
@@ -148,7 +148,7 @@ composer require aws/aws-sdk-php
     $value = Cache::get('key', 'default');
 ```
 
- É possível usar um bloqueio como valor padrão. Se o item especificado não existir no cache, o resultado do bloqueio será retornado. Ao passar um bloqueio, você pode adiar a obtenção de valores por defeito de um banco de dados ou outro serviço externo:
+É possível usar um bloqueio como valor padrão. Se o item especificado não existir no cache, o resultado do bloqueio será retornado. Ao passar um bloqueio, você pode adiar a obtenção de valores por padrão de um banco de dados ou outro serviço externo:
 
 ```php
     $value = Cache::get('key', function () {
@@ -157,9 +157,9 @@ composer require aws/aws-sdk-php
 ```
 
 <a name="determining-item-existence"></a>
-#### Determinação da existência de um item
+#### Determinando a existência de um item
 
- O método `has` pode ser utilizado para determinar se um item existe no cache. Se o item existir mas o seu valor for `null`, este método também irá retornar `false`:
+O método `has` pode ser utilizado para determinar se um item existe no cache. Se o item existir mas o seu valor for `null`, este método também irá retornar `false`:
 
 ```php
     if (Cache::has('key')) {
@@ -170,13 +170,13 @@ composer require aws/aws-sdk-php
 <a name="incrementing-decrementing-values"></a>
 #### Aumentar/diminuir valores
 
- Os métodos `increment` e `decrement` podem ser utilizados para ajustar o valor de itens inteiros no cache. Ambos os métodos aceitam um segundo argumento opcional que indica a quantidade em que se deve incrementar ou decrementar o valor do item:
+Os métodos `increment` e `decrement` podem ser utilizados para ajustar o valor de itens inteiros no cache. Ambos os métodos aceitam um segundo argumento opcional que indica a quantidade em que se deve incrementar ou decrementar o valor do item:
 
 ```php
-    // Initialize the value if it does not exist...
+    // Inicialize o valor se ele não existir...
     Cache::add('key', 0, now()->addHours(4));
 
-    // Increment or decrement the value...
+    // Aumentar ou diminuir o valor...
     Cache::increment('key');
     Cache::increment('key', $amount);
     Cache::decrement('key');
@@ -186,7 +186,7 @@ composer require aws/aws-sdk-php
 <a name="retrieve-store"></a>
 #### Recuperar e armazenar
 
- Às vezes pode ser necessário recuperar um item do cache, mas também guardar um valor por defeito caso o item solicitado não exista. Por exemplo, pode ser que seja necessário recuperar todos os utilizadores a partir do cache ou, no caso de eles não existirem, recuperá-los da base de dados e adicioná-los ao cache. Pode fazer isto usando o método `Cache::remember`:
+Às vezes pode ser necessário recuperar um item do cache, mas também guardar um valor por defeito caso o item solicitado não exista. Por exemplo, pode ser que seja necessário recuperar todos os utilizadores a partir do cache ou, no caso de eles não existirem, recuperá-los da base de dados e adicioná-los ao cache. Pode fazer isto usando o método `Cache::remember`:
 
 ```php
     $value = Cache::remember('users', $seconds, function () {
@@ -194,9 +194,9 @@ composer require aws/aws-sdk-php
     });
 ```
 
- Se o elemento não existir na memória cache, será executado o fechamento passado para o método `remember` e seu resultado será colocado na memória cache.
+Se o elemento não existir na memória cache, será executado o closure passado para o método `remember` e seu resultado será colocado na memória cache.
 
- Você pode usar o método `rememberForever` para recuperar um item do cache ou armazená-lo para sempre se ele não existir:
+Você pode usar o método `rememberForever` para recuperar um item do cache ou armazená-lo para sempre se ele não existir:
 
 ```php
     $value = Cache::rememberForever('users', function () {
@@ -207,7 +207,7 @@ composer require aws/aws-sdk-php
 <a name="retrieve-delete"></a>
 #### Recuperar e excluir
 
- Se você precisar recuperar um elemento do cache e depois excluí-lo, poderá usar o método `pull`. Assim como no caso do método `get`, será retornado `null` se o item não existir no cache:
+Se você precisar recuperar um elemento do cache e depois excluí-lo, poderá usar o método `pull`. Assim como no caso do método `get`, será retornado `null` se o item não existir no cache:
 
 ```php
     $value = Cache::pull('key');
@@ -218,19 +218,19 @@ composer require aws/aws-sdk-php
 <a name="storing-items-in-the-cache"></a>
 ### Armazenar itens no cache
 
- Pode utilizar o método `put` na faceta do `Cache` para armazenar itens no cache:
+Você pode utilizar o método `put` na faceta do `Cache` para armazenar itens no cache:
 
 ```php
     Cache::put('key', 'value', $seconds = 10);
 ```
 
- Se o tempo de armazenamento não for passado à função `put`, o item será armazenado indefinidamente:
+Se o tempo de armazenamento não for passado à função `put`, o item será armazenado indefinidamente:
 
 ```php
     Cache::put('key', 'value');
 ```
 
- Em vez de passar o número de segundos como um inteiro, você também pode passar uma instância `DateTime` que representa o tempo de validade desejado do itens armazenados no cache:
+Em vez de passar o número de segundos como um inteiro, você também pode passar uma instância `DateTime` que representa o tempo de validade desejado dos itens armazenados no cache:
 
 ```php
     Cache::put('key', 'value', now()->addMinutes(10));
@@ -239,7 +239,7 @@ composer require aws/aws-sdk-php
 <a name="store-if-not-present"></a>
 #### Armazenar se não estiver presente
 
- O método `add` somente adiciona o item ao cache se ele ainda não existir no armazenamento de cache. Se o item tiver sido adicionado, o método retorna `true`. Caso contrário, o método retorna `false`. O método `add` é uma operação atômica:
+O método `add` somente adiciona o item ao cache se ele ainda não existir no armazenamento de cache. Se o item tiver sido adicionado, o método retorna `true`. Caso contrário, o método retorna `false`. O método `add` é uma operação atômica:
 
 ```php
     Cache::add('key', 'value', $seconds);
@@ -248,25 +248,26 @@ composer require aws/aws-sdk-php
 <a name="storing-items-forever"></a>
 #### Armazenar itens para sempre
 
- O método `forever` pode ser usado para armazenar permanentemente um item no cache. Uma vez que esses itens não têm data de validade, eles devem ser removidos do cache manualmente com o uso do método `forget`:
+O método `forever` pode ser usado para armazenar permanentemente um item no cache. Uma vez que esses itens não têm data de validade, eles devem ser removidos do cache manualmente com o uso do método `forget`:
 
 ```php
     Cache::forever('key', 'value');
 ```
 
- > [!ATENÇÃO]
- > Se estiver a utilizar o driver Memcached, os itens que são armazenados "para sempre" podem ser eliminados quando o limite do tamanho de cache for atingido.
+::: info NOTA
+Se você estiver utilizando o driver Memcached, os itens que são armazenados "para sempre" podem ser eliminados quando o limite do tamanho de cache for atingido.
+:::
 
 <a name="removing-items-from-the-cache"></a>
 ### Remoção de itens do cache
 
- Você pode remover itens do cache usando o método `forget`:
+Você pode remover itens do cache usando o método `forget`:
 
 ```php
     Cache::forget('key');
 ```
 
- Também é possível remover itens fornecendo um número de validade negativo ou zero:
+Também é possível remover itens fornecendo um número de validade negativo ou zero:
 
 ```php
     Cache::put('key', 'value', 0);
@@ -274,25 +275,26 @@ composer require aws/aws-sdk-php
     Cache::put('key', 'value', -5);
 ```
 
- Você pode limpar o cache inteiro usando o método `flush`:
+Você pode limpar o cache inteiro usando o método `flush`:
 
 ```php
     Cache::flush();
 ```
 
- > [AVISO]
- > Ao eliminar o cache, ele ignora seu "prefixo" de cache configurado e exclui todas as entradas do cache. Antecipe esta ação com cuidado ao limpar um cache compartilhado por outras aplicações.
+::: warning ATENÇÃO
+Ao eliminar o cache, ele ignora seu "prefixo" de cache configurado e exclui todas as entradas do cache. Antecipe esta ação com cuidado ao limpar um cache compartilhado por outras aplicações.
+:::
 
 <a name="the-cache-helper"></a>
-### O Auxiliar de Arquivo Transitório
+### O auxiliar cache
 
- Além do uso da interface `Cache`, é possível também usar a função global `cache` para recuperar e armazenar dados através do cache. Quando a função `cache` for chamada com um único argumento de tipo string, ela retornará o valor da chave indicada:
+Além do uso da interface `Cache`, é possível também usar a função global `cache` para recuperar e armazenar dados através do cache. Quando a função `cache` for chamada com um único argumento do tipo string, ela retornará o valor da chave indicada:
 
 ```php
     $value = cache('key');
 ```
 
- Se você fornecer uma matriz de pares chave/valor e um tempo de validade para a função, ela armazenará os valores no cache por um período especificado:
+Se você fornecer uma matriz de pares chave/valor e um tempo de validade para a função, ela armazenará os valores no cache por um período especificado:
 
 ```php
     cache(['key' => 'value'], $seconds);
@@ -300,7 +302,7 @@ composer require aws/aws-sdk-php
     cache(['key' => 'value'], now()->addMinutes(10));
 ```
 
- Quando a função `cache` é chamada sem nenhum argumento, ela retorna uma instância da implementação de `Illuminate\Contracts\Cache\Factory`, permitindo que você chame outros métodos de armazenamento em cache:
+Quando a função `cache` é chamada sem nenhum argumento, ela retorna uma instância da implementação de `Illuminate\Contracts\Cache\Factory`, permitindo que você chame outros métodos de armazenamento em cache:
 
 ```php
     cache()->remember('users', $seconds, function () {
@@ -308,19 +310,21 @@ composer require aws/aws-sdk-php
     });
 ```
 
- > [!NOTA]
- [ testando a fachada](/docs/{{ version }}/mocking#mocking-facades)
+::: info NOTA
+Ao testar a chamada para a função global `cache`, você pode usar o método `Cache::shouldReceive` como se estivesse [testando a facade](/docs/mocking#mocking-facades).
+:::
 
 <a name="atomic-locks"></a>
 ## Bloqueios Atómicos
 
- > [AVISO]
- > Para utilizar este recurso, a aplicação deve usar o motor de memória caché `memcached`, `redis`, `dynamodb`, `database`, `file` ou `array`. Além disso, todos os servidores devem comunicar com o mesmo servidor central de cache.
+::: warning ATENÇÃO
+Para utilizar este recurso, a aplicação deve usar o motor de memória `memcached`, `redis`, `dynamodb`, `database`, `file` ou `array`. Além disso, todos os servidores devem comunicar com o mesmo servidor central de cache.
+:::
 
 <a name="managing-locks"></a>
-### Gerenciar fechaduras
+### Gerenciar bloqueios
 
- Os bloqueios atómicos permitem a manipulação de bloqueios distribuídos sem se preocupar com condições de corrida. Por exemplo, o [Laravel Forge](https://forge.laravel.com) usa bloqueios atómicos para garantir que apenas uma tarefa remota é executada num servidor a cada vez. Pode criar e gerir os seus bloqueios utilizando o método `Cache::lock`:
+Os bloqueios atômicos permitem a manipulação de bloqueios distribuídos sem se preocupar com condições de corrida. Por exemplo, o [Laravel Forge](https://forge.laravel.com) usa bloqueios atômicos para garantir que apenas uma tarefa remota seja executada num servidor a cada vez. Você pode criar e gerir os seus bloqueios utilizando o método `Cache::lock`:
 
 ```php
     use Illuminate\Support\Facades\Cache;
@@ -328,21 +332,21 @@ composer require aws/aws-sdk-php
     $lock = Cache::lock('foo', 10);
 
     if ($lock->get()) {
-        // Lock acquired for 10 seconds...
+        // Bloqueio adquirido por 10 segundos...
 
         $lock->release();
     }
 ```
 
- O método `get` também aceita um bloqueio. Depois que o bloqueio for executado, o Laravel libera o bloqueio automaticamente:
+O método `get` também aceita um bloqueio. Depois que o bloqueio for executado, o Laravel libera o bloqueio automaticamente:
 
 ```php
     Cache::lock('foo', 10)->get(function () {
-        // Lock acquired for 10 seconds and automatically released...
+        // Bloqueio adquirido por 10 segundos e liberado automaticamente...
     });
 ```
 
- Se o bloqueio não estiver disponível no momento em que solicitado, você pode instruir o Laravel para esperar por um número especificado de segundos. Se o lock não puder ser adquirido dentro do limite de tempo especificado, uma `Illuminate\Contracts\Cache\LockTimeoutException` será lançada:
+Se o bloqueio não estiver disponível no momento em que foi solicitado, você pode instruir o Laravel para esperar por um número especificado de segundos. Se o lock não puder ser adquirido dentro do limite de tempo especificado, uma `Illuminate\Contracts\Cache\LockTimeoutException` será lançada:
 
 ```php
     use Illuminate\Contracts\Cache\LockTimeoutException;
@@ -352,28 +356,28 @@ composer require aws/aws-sdk-php
     try {
         $lock->block(5);
 
-        // Lock acquired after waiting a maximum of 5 seconds...
+        // Bloqueio adquirido após esperar no máximo 5 segundos...
     } catch (LockTimeoutException $e) {
-        // Unable to acquire lock...
+        // Não foi possível adquirir o bloqueio...
     } finally {
         $lock?->release();
     }
 ```
 
- O exemplo acima pode ser simplificado passando um fechamento para o método `block`. Quando um fechamento é passado para este método, Laravel tentará adquirir o bloqueio por um número específico de segundos e liberá-lo automaticamente assim que o fechamento tiver sido executado:
+O exemplo acima pode ser simplificado passando um closure para o método `block`. Quando um closure é passado para este método, O Laravel tentará adquirir o bloqueio por um número específico de segundos e liberá-lo automaticamente assim que o closure tiver sido executado:
 
 ```php
     Cache::lock('foo', 10)->block(5, function () {
-        // Lock acquired after waiting a maximum of 5 seconds...
+        // Bloqueio adquirido após esperar no máximo 5 segundos...
     });
 ```
 
 <a name="managing-locks-across-processes"></a>
 ### Gerir bloqueios em processos diferentes
 
- Às vezes, pode pretender adquirir um bloqueio num processo e libertá-lo noutro processo. Por exemplo, pode adquirir um bloqueio durante uma solicitação Web e desejar libertar o bloqueio no final de um trabalho agendado que é acionado por essa solicitação. Neste cenário, deve passar o "token do proprietário" associado ao bloqueio ao trabalho agendado para que este possa recriar o bloqueio utilizando o token fornecido.
+Às vezes, você pode pretender adquirir um bloqueio num processo e liberá-lo noutro. Por exemplo, você pode adquirir um bloqueio durante uma solicitação Web e desejar liberar o bloqueio no final de um trabalho agendado que é acionado por essa solicitação. Neste cenário, se deve passar o "token do proprietário" associado ao bloqueio ao trabalho agendado para que este possa recriar o bloqueio utilizando o token fornecido.
 
- No exemplo abaixo, será enviada uma tarefa aguardando o envio caso um bloqueio seja adquirido com sucesso. Além disso, passamos o token do proprietário do bloqueio para a tarefa aguardando através do método `owner` do bloqueio:
+No exemplo abaixo, será enviada uma tarefa aguardando o envio caso um bloqueio seja adquirido com sucesso. Além disso, passamos o token do proprietário do bloqueio para a tarefa aguardando através do método `owner` do bloqueio:
 
 ```php
     $podcast = Podcast::find($id);
@@ -385,13 +389,13 @@ composer require aws/aws-sdk-php
     }
 ```
 
- Na tarefa do nosso aplicativo "ProcessPodcast", podemos restaurar e liberar o bloqueio usando o token do proprietário.
+Na tarefa do nosso aplicativo `ProcessPodcast`, podemos restaurar e liberar o bloqueio usando o token do proprietário.
 
 ```php
     Cache::restoreLock('processing', $this->owner)->release();
 ```
 
- Se você quiser liberar um bloqueio sem respeitar o atual proprietário, poderá usar o método `forceRelease`:
+Se você quiser liberar um bloqueio sem respeitar o atual proprietário, poderá usar o método `forceRelease`:
 
 ```php
     Cache::lock('processing')->forceRelease();
@@ -403,7 +407,7 @@ composer require aws/aws-sdk-php
 <a name="writing-the-driver"></a>
 ### Escrevendo o driver
 
- Para criar nosso motor de cache personalizado, primeiro precisamos implementar o contrato `Illuminate\Contracts\Cache\Store`. Por isso, a implementação do cache do MongoDB pode parecer algo assim:
+Para criar nosso motor de cache personalizado, primeiro precisamos implementar o contrato `Illuminate\Contracts\Cache\Store`. Por isso, a implementação do cache do MongoDB pode parecer algo assim:
 
 ```php
     <?php
@@ -427,7 +431,7 @@ composer require aws/aws-sdk-php
     }
 ```
 
- Basta implementar cada um destes métodos usando uma conexão MongoDB. Para saber como implementar cada um destes métodos, consulte o `Illuminate\Cache\MemcachedStore` no código-fonte do [framework Laravel](https://github.com/laravel/framework). Depois de terminarmos a nossa implementação, podemos concluir o registo do nosso driver personalizado chamando o método `extend` da facade `Cache`:
+Basta implementar cada um destes métodos usando uma conexão MongoDB. Para saber como implementar cada um destes métodos, consulte o `Illuminate\Cache\MemcachedStore` no código-fonte do [framework Laravel](https://github.com/laravel/framework). Depois de terminarmos a nossa implementação, podemos concluir o registo do nosso driver personalizado chamando o método `extend` da facade `Cache`:
 
 ```php
     Cache::extend('mongo', function (Application $app) {
@@ -435,13 +439,14 @@ composer require aws/aws-sdk-php
     });
 ```
 
- > [!ATENÇÃO]
- > Se você se pergunta onde colocar o seu código de driver de cache personalizado, poderá criar um namespace `Extensions` dentro do diretório `app`. No entanto, tenha em mente que o Laravel não tem uma estrutura rígida da aplicação e você é livre para organizar sua aplicação conforme suas preferências.
+::: info NOTA
+Se você se pergunta onde colocar o seu código de driver de cache personalizado, poderá criar um namespace `Extensions` dentro do diretório `app`. No entanto, tenha em mente que o Laravel não tem uma estrutura rígida da aplicação e você é livre para organizar sua aplicação conforme suas preferências.
+:::
 
 <a name="registering-the-driver"></a>
-### Registo do condutor
+### Registrando o driver
 
- Para registrar o driver de cache personalizado com Laravel, usaremos a metodologia `extend` da faca `Cache`. Uma vez que outros provedores de serviços podem tentar ler os valores armazenados em cache no seu método `boot`, iremos registrar nosso driver personalizado dentro do um callback de `booting`. Usando o callback de `booting`, podemos garantir que o driver custom seja registrado imediatamente antes da chamada ao método `boot` dos provedores de serviços da aplicação, mas depois da chamada ao método `register` para todos os provedores de serviços. Iremos registrar nosso callback de `booting` dentro do método `register` do App\Providers\AppServiceProvider da nossa aplicação:
+Para registrar o driver de cache personalizado com Laravel, usaremos o método `extend` da facade `Cache`. Uma vez que outros provedores de serviços podem tentar ler os valores armazenados em cache no seu método `boot`, iremos registrar nosso driver personalizado dentro do um callback de `booting`. Usando o callback de `booting`, podemos garantir que o driver customizado seja registrado imediatamente antes da chamada ao método `boot` dos provedores de serviços da aplicação, mas depois da chamada ao método `register` para todos os provedores de serviços. Iremos registrar nosso callback de `booting` dentro do método `register` do `App\Providers\AppServiceProvider` da nossa aplicação:
 
 ```php
     <?php
@@ -456,7 +461,7 @@ composer require aws/aws-sdk-php
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register any application services.
+         * Registre quaisquer serviços de aplicativo.
          */
         public function register(): void
         {
@@ -468,7 +473,7 @@ composer require aws/aws-sdk-php
         }
 
         /**
-         * Bootstrap any application services.
+         * Inicialize qualquer serviço de aplicativo.
          */
         public function boot(): void
         {
@@ -477,23 +482,23 @@ composer require aws/aws-sdk-php
     }
 ```
 
- O primeiro argumento passado para o método `extend` é o nome do driver. Isso corresponde à opção `driver` no arquivo de configuração `config/cache.php`. O segundo argumento é um fechamento que deve retornar uma instância da classe `Illuminate\Cache\Repository`. O fechamento recebe como parâmetro a instância `$app`, que é uma instância do [conjunto de serviços](/docs/container).
+O primeiro argumento passado para o método `extend` é o nome do driver. Isso corresponde à opção `driver` no arquivo de configuração `config/cache.php`. O segundo argumento é um fechamento que deve retornar uma instância da classe `Illuminate\Cache\Repository`. O fechamento recebe como parâmetro a instância `$app`, que é uma instância do [conjunto de serviços](/docs/container).
 
- Depois de seu extensão ser registrada, atualize a variável ambiente `CACHE_STORE` ou a opção `default` dentro do arquivo de configuração da aplicação, `config/cache.php`, com o nome da sua extensão.
+Depois de sua extensão ser registrada, atualize a variável de ambiente `CACHE_STORE` ou a opção `default` dentro do arquivo de configuração da aplicação, `config/cache.php`, com o nome da sua extensão.
 
 <a name="events"></a>
 ## Eventos
 
- Para executar o código em todas as operações de memória transparente, você pode ouvir vários eventos [disponíveis](/docs/events), que são enviados pela memória transparente:
+Para executar o código em todas as operações de memória transparente, você pode ouvir vários eventos [disponíveis](/docs/events), que são enviados pela memória transparente:
 
-|  Nome do evento |
+|  Nome do evento                         |
 |-----------------------------------------|
-|  `Illuminate\Cache\Events\CacheHit` |
-|  `Illuminate\Cache\Events\CacheMissed` |
-|  `Iluminar\Cachê\Eventos\ChaveEsquecida` |
-|  `Illuminate\Cache\Events\ChaveEscrita` |
+| `Illuminate\Cache\Events\CacheHit`      |
+| `Illuminate\Cache\Events\CacheMissed`   |
+| `Illuminate\Cache\Events\KeyForgotten`  |
+| `Illuminate\Cache\Events\KeyWritten`    |
 
- Para aumentar o desempenho, você pode desativar eventos de cache definindo a opção de configuração `events` para `false` para um determinado armazenamento de cache no arquivo de configuração do seu aplicativo `config/cache.php`:
+Para aumentar o desempenho, você pode desativar eventos de cache definindo a opção de configuração `events` para `false` para um determinado armazenamento de cache no arquivo de configuração do seu aplicativo `config/cache.php`:
 
 ```php
 'database' => [

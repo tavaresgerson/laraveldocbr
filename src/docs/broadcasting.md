@@ -729,7 +729,7 @@ axios.post('/task', task)
 No entanto, lembre-se de que transmitimos também a criação da tarefa. Se o seu aplicativo JavaScript está atento a esse evento para adicionar tarefas à lista de tarefas, você terá tarefas duplicadas na sua lista: uma do ponto final e outra da transmissão. Você pode resolver isso usando o método `toOthers` para instruir o transmisor a não transmitir o evento ao usuário atual.
 
 ::: warning ATENÇÃO
-Seu evento deve usar a característica `Illuminate\Broadcasting\InteractsWithSockets` para chamar o método `toOthers`.
+Seu evento deve usar a trait `Illuminate\Broadcasting\InteractsWithSockets` para chamar o método `toOthers`.
 :::
 
 <a name="only-to-others-configuration"></a>
@@ -935,9 +935,9 @@ Os dados retornados pelo recurso de chamada de autorização estarão disponíve
 ```
 
 <a name="joining-presence-channels"></a>
-### Participar em canais da presença
+### Participar nos canais da presença
 
- Para se juntar a um canal de presença, você pode usar o método `join` do Echo. O método `join` retornará uma implementação de `PresenceChannel`. Com essa implementação, além do método `listen`, você poderá subscrever os eventos `here`, `joining` e `leaving`.
+Para se juntar a um canal de presença, você pode usar o método `join` do Echo. O método `join` retornará uma implementação de `PresenceChannel`. Com essa implementação, além do método `listen`, você poderá subscrever os eventos `here`, `joining` e `leaving`.
 
 ```js
 Echo.join(`chat.${roomId}`)
@@ -955,16 +955,16 @@ Echo.join(`chat.${roomId}`)
     });
 ```
 
- O retorno de chamada `here` será executado imediatamente uma vez que o canal é aderido com sucesso, e receberá um array contendo informações do usuário para todos os outros usuários atualmente inscritos no canal. O método `joining` será executado quando um novo usuário adere a um canal, enquanto o método `leaving` será executado quando um usuário sai do canal. O método `error` será executado quando o ponto final de autenticação retorna um código de status HTTP que não seja 200 ou caso haja problemas para analisar a informação JSON retornada.
+O retorno de chamada `here` será executado imediatamente uma vez que o canal é aderido com sucesso, e receberá um array contendo informações do usuário para todos os outros usuários atualmente inscritos no canal. O método `joining` será executado quando um novo usuário adere a um canal, enquanto o método `leaving` será executado quando um usuário sai do canal. O método `error` será executado quando o end-point de autenticação retorna um código de status HTTP que não seja 200 ou caso haja problemas para analisar a informação JSON retornada.
 
 <a name="broadcasting-to-presence-channels"></a>
 ### Transmissão para canais de presença
 
- Os canais de presença podem receber eventos como os públicos ou privados. Usando um exemplo de uma sala de chat, poderemos querer transmitir eventos `NewMessage` para o canal de presença da sala. Para isso, iremos devolver uma instância do método `broadcastOn` do evento:
+Os canais de presença podem receber eventos como os públicos ou privados. Usando um exemplo de uma sala de chat, poderemos querer transmitir eventos `NewMessage` para o canal de presença da sala. Para isso, iremos devolver uma instância do método `broadcastOn` do evento:
 
 ```php
     /**
-     * Get the channels the event should broadcast on.
+     * Obtenha os canais em que o evento deve ser transmitido.
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
@@ -976,7 +976,7 @@ Echo.join(`chat.${roomId}`)
     }
 ```
 
- Como acontece com outros eventos, você pode usar o atalho `broadcast` e o método `toOthers` para excluir o usuário atual de receber o envio:
+Como acontece com outros eventos, você pode usar o atalho `broadcast` e o método `toOthers` para excluir o usuário atual de receber o envio:
 
 ```php
     broadcast(new NewMessage($message));
@@ -984,7 +984,7 @@ Echo.join(`chat.${roomId}`)
     broadcast(new NewMessage($message))->toOthers();
 ```
 
- Como é típico de outros tipos de evento, você pode escutar eventos enviados para canais de presença usando o método `listen` do Echo:
+Como é típico de outros tipos de evento, você pode escutar eventos enviados para canais de presença usando o método `listen` do Echo:
 
 ```js
 Echo.join(`chat.${roomId}`)
@@ -999,14 +999,15 @@ Echo.join(`chat.${roomId}`)
 <a name="model-broadcasting"></a>
 ## Modelo de transmissão
 
- > [AVERTISSEMENT]
- > Antes de ler a documentação abaixo sobre transmissão de modelo, recomendamos que você conheça os conceitos gerais dos serviços de transmissão de modelos do Laravel e como criar manualmente e ouvir eventos de transmissão.
+::: warning ATENÇÃO
+Antes de ler a documentação a seguir sobre transmissão de modelo, recomendamos que você se familiarize com os conceitos gerais dos serviços de transmissão de modelo do Laravel, bem como como criar e ouvir manualmente eventos de transmissão.
+:::
 
- É comum transmitir eventos quando os [modelos Eloquent] (/docs/eloquent) do aplicativo são criados, atualizados ou excluídos. Claro que isso pode ser feito facilmente definindo manualmente [eventos personalizados para alterações de estado de modelos Eloquent] (/docs/eloquent#events) e marcando esses eventos com a interface `ShouldBroadcast`.
+É comum transmitir eventos quando os [modelos Eloquent](/docs/eloquent) do aplicativo são criados, atualizados ou excluídos. Claro que isso pode ser feito facilmente definindo manualmente [eventos personalizados para alterações de estado de modelos Eloquent](/docs/eloquent#events) e marcando esses eventos com a interface `ShouldBroadcast`.
 
- No entanto, se você não estiver usando esses eventos para outros propósitos em sua aplicação, poderá ser cansativo criar classes de evento apenas com o intuito de transmiti-los. Para sanar isso, o Laravel permite que você indique que um modelo Eloquent deve transmitir automaticamente suas mudanças no estado.
+No entanto, se você não estiver usando esses eventos para outros propósitos em sua aplicação, poderá ser cansativo criar classes de evento apenas com o intuito de transmiti-los. Para sanar isso, o Laravel permite que você indique que um modelo Eloquent deve transmitir automaticamente suas mudanças de estado.
 
- Para começar, seu modelo Eloquent deve usar o traço `Illuminate\Database\Eloquent\BroadcastsEvents`. Além disso, o modelo deve definir um método `broadcastOn`, que retornará um array de canais nos quais os eventos do modelo serão transmitidos:
+Para começar, seu modelo Eloquent deve usar o trait `Illuminate\Database\Eloquent\BroadcastsEvents`. Além disso, o modelo deve definir um método `broadcastOn`, que retornará um array de canais nos quais os eventos do modelo serão transmitidos:
 
 ```php
 <?php
@@ -1025,7 +1026,7 @@ class Post extends Model
     use BroadcastsEvents, HasFactory;
 
     /**
-     * Get the user that the post belongs to.
+     * Obtenha o usuário ao qual a postagem pertence.
      */
     public function user(): BelongsTo
     {
@@ -1033,7 +1034,7 @@ class Post extends Model
     }
 
     /**
-     * Get the channels that model events should broadcast on.
+     * Obtenha os canais nos quais os eventos de modelo devem ser transmitidos.
      *
      * @return array<int, \Illuminate\Broadcasting\Channel|\Illuminate\Database\Eloquent\Model>
      */
@@ -1044,13 +1045,13 @@ class Post extends Model
 }
 ```
 
- Após incluir essa característica e definir os canais de transmissão do modelo, esse começará a transmitir automaticamente eventos quando uma instância do modelo for criada, atualizada ou apagada.
+Após incluir essa trait e definir os canais de transmissão do modelo, esse começará a transmitir automaticamente eventos quando uma instância do modelo for criada, atualizada ou apagada.
 
- Além disso, talvez tenha reparado que o método `broadcastOn` recebe um argumento de string `$event`. Este argumento contém o tipo de evento que ocorreu no modelo e tem um valor entre `created`, `updated`, `deleted`, `trashed` ou `restored`. Pode determinar, através da varridação deste valor, quais os canais (se houver) aos quais o modelo deve emitir o evento:
+Além disso, você deve ter notado que o método `broadcastOn` recebe um argumento de string `$event`. Este argumento contém o tipo de evento que ocorreu no modelo e terá um valor de `created`, `updated`, `deleted`, `trashed` ou `restored`. Ao inspecionar o valor desta variável, você pode determinar para quais canais (se houver) o modelo deve transmitir para um evento específico:
 
 ```php
 /**
- * Get the channels that model events should broadcast on.
+ * Obtenha os canais nos quais os eventos de modelo devem ser transmitidos.
  *
  * @return array<string, array<int, \Illuminate\Broadcasting\Channel|\Illuminate\Database\Eloquent\Model>>
  */
@@ -1066,13 +1067,13 @@ public function broadcastOn(string $event): array
 <a name="customizing-model-broadcasting-event-creation"></a>
 #### Personalização do modelo de criação de eventos de transmissão
 
- Por vezes, poderá querer personalizar a forma como Laravel cria o evento de transmissão do modelo subjacente. Pode fazer isto definindo um método `newBroadcastableEvent` no seu modelo Eloquent. Este método deve retornar uma instância de `Illuminate\Database\Eloquent\BroadcastableModelEventOccurred`:
+Por vezes, você poderá querer personalizar a forma como o Laravel cria o evento de transmissão do modelo subjacente. Você pode fazer isto definindo um método `newBroadcastableEvent` no seu modelo Eloquent. Este método deve retornar uma instância de `Illuminate\Database\Eloquent\BroadcastableModelEventOccurred`:
 
 ```php
 use Illuminate\Database\Eloquent\BroadcastableModelEventOccurred;
 
 /**
- * Create a new broadcastable model event for the model.
+ * Crie um novo evento de modelo transmitível para o modelo.
  */
 protected function newBroadcastableEvent(string $event): BroadcastableModelEventOccurred
 {
@@ -1088,15 +1089,15 @@ protected function newBroadcastableEvent(string $event): BroadcastableModelEvent
 <a name="model-broadcasting-channel-conventions"></a>
 #### Convenções do canal
 
- Como você deve ter notado, o método `broadcastOn` do exemplo de modelo acima não retornou instâncias de `Channel`. Em vez disso, foram retornadas diretamente instâncias dos modelos Eloquent. Se uma instância de modelo Eloquent for retornada pelo método `broadcastOn` do seu modelo (ou estiver contida em um array retornado pelo método), o Laravel irá automaticamente instanciar uma instância privada do canal usando o nome do modelo e o identificador primário como o nome do canal.
+Como você deve ter notado, o método `broadcastOn` do exemplo de modelo acima não retornou instâncias de `Channel`. Em vez disso, foram retornadas diretamente instâncias dos modelos Eloquent. Se uma instância de modelo Eloquent for retornada pelo método `broadcastOn` do seu modelo (ou estiver contido em um array retornado pelo método), o Laravel irá automaticamente instanciar uma instância privada do canal usando o nome do modelo e o identificador primário como o nome do canal.
 
- Portanto, um modelo `App\Models\User` com um `id` de `1` seria convertido em uma instância do tipo `Illuminate\Broadcasting\PrivateChannel`, cujo nome é `App.Models.User.1`. É claro que, para além da devolução das instâncias dos modelos `Eloquent` na sua método `broadcastOn`, pode retornar as instâncias completas do tipo `Channel`, assim poderá controlar todos os nomes do canal:
+Portanto, um modelo `App\Models\User` com um `id` de `1` seria convertido em uma instância do tipo `Illuminate\Broadcasting\PrivateChannel`, cujo nome é `App.Models.User.1`. É claro que, para além da devolução das instâncias dos modelos `Eloquent` no seu método `broadcastOn`, pode retornar as instâncias completas do tipo `Channel`, assim você poderá controlar todos os nomes do canal:
 
 ```php
 use Illuminate\Broadcasting\PrivateChannel;
 
 /**
- * Get the channels that model events should broadcast on.
+ * Obtenha os canais nos quais os eventos de modelo devem ser transmitidos.
  *
  * @return array<int, \Illuminate\Broadcasting\Channel>
  */
@@ -1108,13 +1109,13 @@ public function broadcastOn(string $event): array
 }
 ```
 
- Se pretende devolver uma instância de canal explicitamente através da metodologia `broadcastOn` do seu modelo, pode passar uma instância de modelo Eloquent para o construtor do canal. Quando o fizer, Laravel utilizará as convenções de canal em modelos discutidas anteriormente para converter o modelo Eloquent numa string com o nome do canal:
+Se você pretende devolver uma instância de canal explicitamente através do método `broadcastOn` do seu modelo, você pode passar uma instância de modelo Eloquent para o construtor do canal. Quando o fizer, o Laravel utilizará as convenções de canal em modelos discutidos anteriormente para converter o modelo Eloquent numa string com o nome do canal:
 
 ```php
 return [new Channel($this->user)];
 ```
 
- Se você precisar determinar o nome do canal de um modelo, poderá chamar o método `broadcastChannel` em qualquer instância de modelo. Por exemplo, este método retorna a string `'App.Models.User.1'` para um modelo `App\Models\User` com um `id` igual a 1:
+Se você precisar determinar o nome do canal de um modelo, poderá chamar o método `broadcastChannel` em qualquer instância de modelo. Por exemplo, este método retorna a string `'App.Models.User.1'` para um modelo `App\Models\User` com um `id` igual a 1:
 
 ```php
 $user->broadcastChannel()
@@ -1123,9 +1124,9 @@ $user->broadcastChannel()
 <a name="model-broadcasting-event-conventions"></a>
 #### Convenções de eventos
 
- Como os eventos de transmissão de modelo não estão associados a um evento "real" no diretório `App\Events` do aplicativo, eles recebem um nome e uma carga útil baseadas em convenções. A convenção do Laravel é transmitir o evento usando o nome da classe do modelo (não incluindo o namespace) e o nome do evento do modelo que acionou a transmissão.
+Como os eventos de transmissão de modelo não estão associados a um evento "real" no diretório `App\Events` do aplicativo, eles recebem um nome e uma carga útil baseadas em convenções. A convenção do Laravel é transmitir o evento usando o nome da classe do modelo (não incluindo o namespace) e o nome do evento do modelo que acionou a transmissão.
 
- Então, por exemplo, uma atualização do modelo `App\Models\Post` transmitiria um evento para o seu aplicativo de lado do cliente como `PostUpdated`, com o seguinte pagamento:
+Então, por exemplo, uma atualização do modelo `App\Models\Post` transmitiria um evento para o seu aplicativo de lado do cliente como `PostUpdated`, com o seguinte pagamento:
 
 ```json
 {
@@ -1139,13 +1140,13 @@ $user->broadcastChannel()
 }
 ```
 
- A exclusão do modelo `App\Models\User` difundiria um evento chamado `UserDeleted`.
+A exclusão do modelo `App\Models\User` difundiria um evento chamado `UserDeleted`.
 
- Se pretender, pode definir um nome e carga útil personalizados de transmissão adicionando os métodos `broadcastAs` e `broadcastWith` ao modelo. Estes métodos recebem o nome do evento/operação do modelo que está a ocorrer, permitindo-lhe personalizar o nome e a carga útil do evento para cada operação de modelo. Se o valor retornado pelo método `broadcastAs` for `null`, Laravel utilizará as convenções de nome da transmissão de eventos do modelo discutidas acima na transmissão dos eventos:
+Se você desejar, poderá definir um nome e carga útil personalizados de transmissão adicionando os métodos `broadcastAs` e `broadcastWith` ao modelo. Estes métodos recebem o nome do evento/operação do modelo que está a ocorrer, permitindo-lhe personalizar o nome e a carga útil do evento para cada operação de modelo. Se o valor retornado pelo método `broadcastAs` for `null`, Laravel utilizará as convenções de nome da transmissão de eventos do modelo discutidas acima na transmissão dos eventos:
 
 ```php
 /**
- * The model event's broadcast name.
+ * O nome de transmissão do evento modelo.
  */
 public function broadcastAs(string $event): string|null
 {
@@ -1156,7 +1157,7 @@ public function broadcastAs(string $event): string|null
 }
 
 /**
- * Get the data to broadcast for the model.
+ * Obtenha os dados para transmitir para o modelo.
  *
  * @return array<string, mixed>
  */
@@ -1172,11 +1173,11 @@ public function broadcastWith(string $event): array
 <a name="listening-for-model-broadcasts"></a>
 ### Escutar transmissões modelo
 
- Depois de ter adicionado a característica `BroadcastsEvents` ao seu modelo e definido o método `broadcastOn` do modelo, está pronto para começar a ouvir os eventos do modelo na aplicação do lado do cliente. Antes de continuar, recomendamos consultar toda a documentação sobre [ouvir eventos] (#listening-for-events).
+Depois de ter adicionado a trait `BroadcastsEvents` ao seu modelo e definido o método `broadcastOn` do modelo, está pronto para começar a ouvir os eventos do modelo na aplicação do lado do cliente. Antes de continuar, recomendamos consultar toda a documentação sobre [ouvir eventos](#listening-for-events).
 
- Primeiro, use o método `private` para recuperar uma instância de um canal. Em seguida, chame o método `listen` para ouvir um evento especificado. Geralmente, o nome do canal passado ao método `private` deve corresponder às convenções de transmissão de modelos de Laravel (ver Convenções de transmissão de modelos).
+Primeiro, use o método `private` para recuperar uma instância de um canal e, em seguida, chame o método `listen` para ouvir um evento especificado. Normalmente, o nome do canal dado ao método `private` deve corresponder ao [modelo de convenções de transmissão](#model-broadcasting-conventions) do Laravel.
 
- Depois de obter uma instância de canal, você pode usar o método `listen` para escutar um determinado evento. Como os eventos do modelo não estão associados a um "evento real" no diretório `App\Events` de sua aplicação, o nome do evento (#convenções de eventos de broadcasting) deve ser prefixado com um `.` para indicar que ele não pertence a um namespace específico. Cada evento de broadcasting de modelo tem uma propriedade `model` que contém todas as propriedades transmissíveis do modelo:
+Depois de obter uma instância de canal, você pode usar o método `listen` para ouvir um evento específico. Como os eventos de transmissão do modelo não estão associados a um evento "real" no diretório `App\Events` do seu aplicativo, o [nome do evento](#model-broadcasting-event-conventions) deve ser prefixado com um `.` para indicar que sim não pertencem a um namespace específico. Cada evento de transmissão do modelo possui uma propriedade `model` que contém todas as propriedades transmitíveis do modelo:
 
 ```js
 Echo.private(`App.Models.User.${this.user.id}`)
@@ -1188,12 +1189,13 @@ Echo.private(`App.Models.User.${this.user.id}`)
 <a name="client-events"></a>
 ## Eventos para clientes
 
- > [!NOTA]
- No Pusher [Channels](https://pusher.com/channels), você deve ativar a opção "Eventos do Cliente" na seção "Configurações da App" de seu
+::: info NOTA
+Ao usar [Canais Pusher](https://pusher.com/channels), você deve ativar a opção "Client Events" (Eventos do cliente) na seção "Configurações do aplicativo" do seu [painel do aplicativo](https://dashboard.pusher.com/) para enviar eventos do cliente.
+:::
 
- Por vezes poderá pretender transmitir um evento para outros clientes conectados sem ter de ligar à aplicação Laravel. Isto pode ser especialmente útil para notificações "tipo", ou seja, quando deseja alertar os utilizadores da sua aplicação para o facto de outro utilizador estiver a digitar uma mensagem num determinado ecrã.
+Por vezes, você poderá pretender transmitir um evento para outros clientes conectados sem ter de ligar à aplicação Laravel. Isto pode ser especialmente útil para notificações "escrevendo", ou seja, quando deseja alertar os utilizadores da sua aplicação para o facto de outro utilizador estiver a digitar uma mensagem num determinado ecrã.
 
- Para transmitir eventos do cliente, você pode usar o método `whisper` da Echo:
+Para transmitir eventos do cliente, você pode usar o método `whisper` da Echo:
 
 ```js
 Echo.private(`chat.${roomId}`)
@@ -1202,7 +1204,7 @@ Echo.private(`chat.${roomId}`)
     });
 ```
 
- Para se manter atualizado com os eventos do cliente você pode usar o método `listenForWhisper`:
+Para se manter atualizado com os eventos do cliente você pode usar o método `listenForWhisper`:
 
 ```js
 Echo.private(`chat.${roomId}`)
@@ -1214,9 +1216,9 @@ Echo.private(`chat.${roomId}`)
 <a name="notifications"></a>
 ## Notificações
 
- Ao combinar a transmissão de eventos com as notificações ([notificações](/docs/notificações)), sua aplicação JavaScript pode receber novas notificações ao ocorrerem sem necessitar de recarregar a página. Antes de começar, leia a documentação sobre como usar o [canal de notificação de transmissão](/docs/notificações#broadcast-notifications).
+Ao combinar a transmissão de eventos com as [notificações](/docs/notifications), sua aplicação JavaScript pode receber novas notificações ao ocorrerem sem necessitar de recarregar a página. Antes de começar, leia a documentação sobre como usar o [canal de notificação de transmissão](/docs/notifications#broadcast-notifications).
 
- Depois de configurar uma notificação para usar o canal de transmissão, você poderá ouvir os eventos de transmissão usando o método `notification` do Echo. Lembre-se de que o nome do canal deve combinar com a classe da entidade que recebe as notificações:
+Depois de configurar uma notificação para usar o canal de transmissão, você poderá ouvir os eventos de transmissão usando o método `notification` do Echo. Lembre-se de que o nome do canal deve combinar com a classe da entidade que recebe as notificações:
 
 ```js
 Echo.private(`App.Models.User.${userId}`)
@@ -1225,4 +1227,4 @@ Echo.private(`App.Models.User.${userId}`)
     });
 ```
 
- Neste exemplo, todas as notificações enviadas para as instâncias do `App\Models\User` através do canal de transmissão seriam recebidas pelo callback. Um callback de autorização de canal para o canal `App.Models.User.{id}` está incluído no arquivo de rotas/canais da aplicação.
+Neste exemplo, todas as notificações enviadas para as instâncias do `App\Models\User` através do canal de transmissão seriam recebidas pelo callback. Um callback de autorização de canal para o canal `App.Models.User.{id}` está incluído no arquivo `routes/channels.php` da aplicação.
