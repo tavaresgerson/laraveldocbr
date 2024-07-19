@@ -1543,7 +1543,7 @@ class ExampleTest extends TestCase
     Notification::assertSentOnDemand(OrderShipped::class);
 ```
 
- Ao passar um fechamento como o segundo argumento para o método `assertSentOnDemand`, você pode determinar se uma notificação sob demanda foi enviada ao endereço correto da "rota":
+ Ao passar um closure como o segundo argumento para o método `assertSentOnDemand`, você pode determinar se uma notificação sob demanda foi enviada ao endereço correto da "rota":
 
 ```php
     Notification::assertSentOnDemand(

@@ -528,7 +528,7 @@ php artisan scout:flush "App\Models\Post"
 ```
 
  > [!NOTA]
- > O método `searchable` pode ser considerado uma operação "upsert". Em outras palavras, se o registo do modelo já estiver no índice, ele será atualizado. Se não existir no índice de pesquisa, será adicionado.
+ > O método `searchable` pode ser considerado uma operação "upsert". Em outras palavras, se o registro do modelo já estiver no índice, ele será atualizado. Se não existir no índice de pesquisa, será adicionado.
 
 <a name="updating-records"></a>
 ### Atualização de registros
@@ -593,7 +593,7 @@ php artisan scout:flush "App\Models\Post"
     $order->delete();
 ```
 
- Caso não queira recuperar o modelo antes de excluir o registo, pode utilizar a metodologia `unsearchable` numa instância da consulta Eloquent:
+ Caso não queira recuperar o modelo antes de excluir o registro, pode utilizar a metodologia `unsearchable` numa instância da consulta Eloquent:
 
 ```php
     Order::where('price', '>', 100)->unsearchable();
@@ -773,7 +773,7 @@ php artisan scout:flush "App\Models\Post"
     'soft_delete' => true,
 ```
 
- Quando esta opção estiver definida como `true`, o Scout não removerá modelos suavemente apagados do índice de pesquisa. Em vez disso, ele configurará um atributo escondido `__soft_deleted` no registo indexado. Assim, pode utilizar os métodos `withTrashed` ou `onlyTrashed` para recuperar os registos apagados suavemente na pesquisa:
+ Quando esta opção estiver definida como `true`, o Scout não removerá modelos suavemente apagados do índice de pesquisa. Em vez disso, ele configurará um atributo escondido `__soft_deleted` no registro indexado. Assim, pode utilizar os métodos `withTrashed` ou `onlyTrashed` para recuperar os registos apagados suavemente na pesquisa:
 
 ```php
     use App\Models\Order;
@@ -813,7 +813,7 @@ php artisan scout:flush "App\Models\Post"
 <a name="customizing-the-eloquent-results-query"></a>
 #### Personalizar a consulta de resultados do Eloquent
 
- Após Scout recuperar uma lista de modelos Eloquent correspondentes do mecanismo de busca da sua aplicação, você pode usar o Eloquent para recuperar todos os modelos correspondentes por meio das chaves primárias. Você pode personalizar esta consulta convocando a metodologia `query`. A metodologia `query` aceita um fechamento que recebe como argumento uma instância do construtor de consultas Eloquent:
+ Após Scout recuperar uma lista de modelos Eloquent correspondentes do mecanismo de busca da sua aplicação, você pode usar o Eloquent para recuperar todos os modelos correspondentes por meio das chaves primárias. Você pode personalizar esta consulta convocando a metodologia `query`. A metodologia `query` aceita um closure que recebe como argumento uma instância do construtor de consultas Eloquent:
 
 ```php
 use App\Models\Order;

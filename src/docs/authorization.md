@@ -53,7 +53,7 @@
 
 ### Autorização de ações
 
- Para autorizar uma ação usando portões, você deve usar os métodos `allows` ou `denies` fornecidos pela fachada `Gate`. Note que não é obrigatório passar o usuário atualmente autenticado para esses métodos. O Laravel cuidará automaticamente do envio do usuário ao fechamento do portão. É típico chamar os métodos de autorização do portão dentro dos controladores da sua aplicação antes de executar uma ação que exija autorização:
+ Para autorizar uma ação usando portões, você deve usar os métodos `allows` ou `denies` fornecidos pela fachada `Gate`. Note que não é obrigatório passar o usuário atualmente autenticado para esses métodos. O Laravel cuidará automaticamente do envio do usuário ao closure do portão. É típico chamar os métodos de autorização do portão dentro dos controladores da sua aplicação antes de executar uma ação que exija autorização:
 
 ```php
     <?php

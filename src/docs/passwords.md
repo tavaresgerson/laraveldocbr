@@ -79,7 +79,7 @@
  > [!OBSERVAÇÃO]
  > Por padrão, o esqueleto do aplicativo Laravel não inclui a pasta `lang`. Se você deseja personalizar os arquivos de idioma do Laravel, pode publicá-los pelo comando `lang:publish` do Artisan.
 
- Pode estar a perguntar-se como o Laravel sabe recolher o registo do utilizador no banco de dados da aplicação quando chama o método `sendResetLink` da facade `Password`. O agente de senhas do Laravel utiliza os "fornecedores de usuários" do sistema de autenticação para recuperar os registos do banco de dados. O fornecedor de usuário utilizado pelo agente de senhas é configurado no array de configurações `passwords` do seu ficheiro de configuração `config/auth.php`. Para saber mais sobre como escrever fornecedores de usuários personalizados, consulte a [documentação de autenticação] (/docs/autenticação#adicionar-fornecedores-de-usuário-personalizados).
+ Pode estar a perguntar-se como o Laravel sabe recolher o registro do utilizador no banco de dados da aplicação quando chama o método `sendResetLink` da facade `Password`. O agente de senhas do Laravel utiliza os "fornecedores de usuários" do sistema de autenticação para recuperar os registos do banco de dados. O fornecedor de usuário utilizado pelo agente de senhas é configurado no array de configurações `passwords` do seu ficheiro de configuração `config/auth.php`. Para saber mais sobre como escrever fornecedores de usuários personalizados, consulte a [documentação de autenticação] (/docs/autenticação#adicionar-fornecedores-de-usuário-personalizados).
 
  > [!ATENÇÃO]
  [Kits de inicialização para aplicações Laravel](/)

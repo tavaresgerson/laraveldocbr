@@ -568,7 +568,7 @@ php artisan make:mail OrderShipped
 <a name="raw-data-attachments"></a>
 #### Anexos de dados brutos
 
- O método de anexo `fromData` pode ser usado para anexar uma sequência de bytes sem formatação como um anexo. Por exemplo, você poderá usar esse método se gerou um PDF na memória e deseja anexá-lo ao e-mail sem salvar o arquivo no disco rígido. O método `fromData` aceita um bloco de fechamento que resolve os bytes brutos do dado, assim como o nome que deve ser atribuído ao anexo:
+ O método de anexo `fromData` pode ser usado para anexar uma sequência de bytes sem formatação como um anexo. Por exemplo, você poderá usar esse método se gerou um PDF na memória e deseja anexá-lo ao e-mail sem salvar o arquivo no disco rígido. O método `fromData` aceita um bloco de closure que resolve os bytes brutos do dado, assim como o nome que deve ser atribuído ao anexo:
 
 ```php
     /**
@@ -666,7 +666,7 @@ php artisan make:mail OrderShipped
     return Attachment::fromStorageDisk('backblaze', $this->path);
 ```
 
- Além disso, você pode criar instâncias de anexos através dos dados que estão em memória. Para isso, forneça um fechamento para o método `fromData`. O fechamento deve retornar os dados brutos que representam a anexo:
+ Além disso, você pode criar instâncias de anexos através dos dados que estão em memória. Para isso, forneça um closure para o método `fromData`. O closure deve retornar os dados brutos que representam a anexo:
 
 ```php
     return Attachment::fromData(fn () => $this->content, 'Photo Name');
@@ -737,7 +737,7 @@ php artisan make:mail OrderShipped
 <a name="customizing-the-symfony-message"></a>
 ### Personalizando a mensagem do Symfony
 
- As funcionalidades de envio de e-mails do Laravel são fornecidas pelo Symfony Mailer. O Laravel permite o registo de callbacks personalizados que serão acionados com a instância Message do Symfony antes de enviar a mensagem. Isso oferece a possibilidade de personalizar profundamente a mensagem antes dela ser enviada. Para fazer isto, defina um parâmetro `using` na sua definição de `Envelope`:
+ As funcionalidades de envio de e-mails do Laravel são fornecidas pelo Symfony Mailer. O Laravel permite o registro de callbacks personalizados que serão acionados com a instância Message do Symfony antes de enviar a mensagem. Isso oferece a possibilidade de personalizar profundamente a mensagem antes dela ser enviada. Para fazer isto, defina um parâmetro `using` na sua definição de `Envelope`:
 
 ```php
     use Illuminate\Mail\Mailables\Envelope;
@@ -1268,7 +1268,7 @@ class ExampleTest extends TestCase
     });
 ```
 
- Ao chamar os métodos de declaração da facade `Mail`, a instância enviável aceita pelo fechamento fornecido expõe métodos úteis para analisar o envio de mensagens:
+ Ao chamar os métodos de declaração da facade `Mail`, a instância enviável aceita pelo closure fornecido expõe métodos úteis para analisar o envio de mensagens:
 
 ```php
     Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($user) {
@@ -1453,7 +1453,7 @@ class ExampleTest extends TestCase
 <a name="additional-symfony-transports"></a>
 ### Transporte adicional em Symfony
 
- O Laravel inclui suporte a alguns serviços de correio eletrónico mantidos pelo Symfony, como o Mailgun e o Postmark. No entanto, poderá pretender estender o suporte do Laravel a outros serviços de correio eletrónico mantidos pelo Symfony. Pode fazê-lo através da requisição do necessário servidor de correio eletrónico Symfony através de Composer e registo no Laravel. Por exemplo, poderá instalar e registar o "Brevo" (anteriormente "Sendinblue") como serviço de correio eletrónico Symfony:
+ O Laravel inclui suporte a alguns serviços de correio eletrónico mantidos pelo Symfony, como o Mailgun e o Postmark. No entanto, poderá pretender estender o suporte do Laravel a outros serviços de correio eletrónico mantidos pelo Symfony. Pode fazê-lo através da requisição do necessário servidor de correio eletrónico Symfony através de Composer e registro no Laravel. Por exemplo, poderá instalar e registrar o "Brevo" (anteriormente "Sendinblue") como serviço de correio eletrónico Symfony:
 
 ```
 composer require symfony/brevo-mailer symfony/http-client

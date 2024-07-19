@@ -431,7 +431,7 @@ Para criar nosso motor de cache personalizado, primeiro precisamos implementar o
     }
 ```
 
-Basta implementar cada um destes métodos usando uma conexão MongoDB. Para saber como implementar cada um destes métodos, consulte o `Illuminate\Cache\MemcachedStore` no código-fonte do [framework Laravel](https://github.com/laravel/framework). Depois de terminarmos a nossa implementação, podemos concluir o registo do nosso driver personalizado chamando o método `extend` da facade `Cache`:
+Basta implementar cada um destes métodos usando uma conexão MongoDB. Para saber como implementar cada um destes métodos, consulte o `Illuminate\Cache\MemcachedStore` no código-fonte do [framework Laravel](https://github.com/laravel/framework). Depois de terminarmos a nossa implementação, podemos concluir o registro do nosso driver personalizado chamando o método `extend` da facade `Cache`:
 
 ```php
     Cache::extend('mongo', function (Application $app) {
@@ -482,7 +482,7 @@ Para registrar o driver de cache personalizado com Laravel, usaremos o método `
     }
 ```
 
-O primeiro argumento passado para o método `extend` é o nome do driver. Isso corresponde à opção `driver` no arquivo de configuração `config/cache.php`. O segundo argumento é um fechamento que deve retornar uma instância da classe `Illuminate\Cache\Repository`. O fechamento recebe como parâmetro a instância `$app`, que é uma instância do [conjunto de serviços](/docs/container).
+O primeiro argumento passado para o método `extend` é o nome do driver. Isso corresponde à opção `driver` no arquivo de configuração `config/cache.php`. O segundo argumento é um closure que deve retornar uma instância da classe `Illuminate\Cache\Repository`. O closure recebe como parâmetro a instância `$app`, que é uma instância do [conjunto de serviços](/docs/container).
 
 Depois de sua extensão ser registrada, atualize a variável de ambiente `CACHE_STORE` ou a opção `default` dentro do arquivo de configuração da aplicação, `config/cache.php`, com o nome da sua extensão.
 

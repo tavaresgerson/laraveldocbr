@@ -32,7 +32,7 @@ php artisan make:listener
 <a name="event-discovery"></a>
 ### Descoberta de eventos
 
- Por padrão, o Laravel irá encontrar e registar os seus eventos ouscutadores automaticamente analisando a sua aplicação na pasta "Listeners". Quando o Laravel encontra uma qualquer método de escuta que comece com "handle" ou "__invoke", o Laravel irá registar esses métodos como escutas para o evento especificado no tipo do sinalizador do método:
+ Por padrão, o Laravel irá encontrar e registrar os seus eventos ouscutadores automaticamente analisando a sua aplicação na pasta "Listeners". Quando o Laravel encontra uma qualquer método de escuta que comece com "handle" ou "__invoke", o Laravel irá registrar esses métodos como escutas para o evento especificado no tipo do sinalizador do método:
 
 ```php
     use App\Events\PodcastProcessed;
@@ -97,7 +97,7 @@ php artisan event:list
 ```
 
 <a name="closure-listeners"></a>
-### Ouvidores de fechamento
+### Ouvidores de closure
 
  Normalmente, os eventos são definidos como classes; contudo, você pode também registrar manualmente eventos baseados em closures no método `boot` do `AppServiceProvider` do aplicativo:
 
@@ -119,7 +119,7 @@ php artisan event:list
 <a name="queuable-anonymous-event-listeners"></a>
 #### Escutadores de eventos anónimos com fila
 
- Ao registrar um ouvinte de eventos baseados em fechamento, você pode envolver o encerramento do ouvinte dentro da função `Illuminate\Events\queueable` para instruir o Laravel a executar o ouvinte usando [filas](/docs/queues):
+ Ao registrar um ouvinte de eventos baseados em closure, você pode envolver o encerramento do ouvinte dentro da função `Illuminate\Events\queueable` para instruir o Laravel a executar o ouvinte usando [filas](/docs/queues):
 
 ```php
     use App\Events\PodcastProcessed;
@@ -163,7 +163,7 @@ php artisan event:list
 <a name="wildcard-event-listeners"></a>
 #### Escutadores de eventos com caractere wildcard
 
- É também possível registar ouvinte usando o caractere `*` como parâmetro de substituição, permitindo que recebam vários eventos no mesmo ouvinte. Os ouvintes de substituição recebem o nome do evento como primeiro argumento e todo o array de dados do evento como segundo argumento:
+ É também possível registrar ouvinte usando o caractere `*` como parâmetro de substituição, permitindo que recebam vários eventos no mesmo ouvinte. Os ouvintes de substituição recebem o nome do evento como primeiro argumento e todo o array de dados do evento como segundo argumento:
 
 ```php
     Event::listen('event.*', function (string $eventName, array $data) {

@@ -204,7 +204,7 @@ CASHIER_LOGGER=stack
 
 #### Fornecer metadados ao Stripe Checkout
 
- Ao vender produtos, é comum manter um registo dos pedidos concluídos e produtos comprados através de modelos `Carrinho` e `Encomenda`, definidos na sua própria aplicação. Ao redirecionar os clientes para o Stripe Checkout para concluírem uma compra, pode ser necessário fornecer um identificador de encomenda existente para poder associar a compra concluída com a correspondente encomenda quando o cliente é redirecionado novamente para a sua aplicação.
+ Ao vender produtos, é comum manter um registro dos pedidos concluídos e produtos comprados através de modelos `Carrinho` e `Encomenda`, definidos na sua própria aplicação. Ao redirecionar os clientes para o Stripe Checkout para concluírem uma compra, pode ser necessário fornecer um identificador de encomenda existente para poder associar a compra concluída com a correspondente encomenda quando o cliente é redirecionado novamente para a sua aplicação.
 
  Para fazer isso, você pode fornecer uma matriz de "metadados" para o método `checkout`. Imaginemos que um pedido pendente seja criado na nossa aplicação quando o usuário iniciar o processo de checkout. Lembrando que os modelos `Cart` e `Order` neste exemplo são ilustrativos e não estão disponíveis pelo "Cashier". Você pode implementar esses conceitos com base nas necessidades da sua própria aplicação:
 
@@ -1467,7 +1467,7 @@ cardButton.addEventListener('click', async (e) => {
     $usageRecords = $user->subscription('default')->usageRecordsFor('price_metered');
 ```
 
- As méthodes `usageRecords` e `usageRecordsFor` retornam uma instância da coleção contendo um registo associativo de registos de utilização. Pode iterar por este registo para exibir a utilização total do cliente:
+ As méthodes `usageRecords` e `usageRecordsFor` retornam uma instância da coleção contendo um registro associativo de registos de utilização. Pode iterar por este registro para exibir a utilização total do cliente:
 
 ```php
     @foreach ($usageRecords as $usageRecord)
@@ -1642,7 +1642,7 @@ cardButton.addEventListener('click', async (e) => {
     });
 ```
 
- Este método definirá a data de término do período de teste no registo de assinatura da base de dados e ordenará ao Stripe que não comece a faturar o cliente até depois desta data. Quando for utilizado o método `trialDays`, a Cashier substituirá o período de teste por padrão definido para o preço no Stripe.
+ Este método definirá a data de término do período de teste no registro de assinatura da base de dados e ordenará ao Stripe que não comece a faturar o cliente até depois desta data. Quando for utilizado o método `trialDays`, a Cashier substituirá o período de teste por padrão definido para o preço no Stripe.
 
  > [!AVISO]
  Se o assinante não cancelar sua assinatura antes da data de término do período experimental, ele será cobrado assim que a fase experimental terminar. Portanto, você deve certifique-se de notificar seus usuários sobre essa data.
@@ -1693,7 +1693,7 @@ cardButton.addEventListener('click', async (e) => {
 
 ### Sem método de pagamento prévio
 
- Se desejar disponibilizar períodos de avaliação sem recolher as informações dos meios de pagamento do utilizador imediatamente, pode definir a coluna `trial_ends_at` no registo do utilizador para a data de término da sua avaliação. Isso é normalmente feito durante o processo de registo de utilizadores:
+ Se desejar disponibilizar períodos de avaliação sem recolher as informações dos meios de pagamento do utilizador imediatamente, pode definir a coluna `trial_ends_at` no registro do utilizador para a data de término da sua avaliação. Isso é normalmente feito durante o processo de registro de utilizadores:
 
 ```php
     use App\Models\User;
@@ -1825,7 +1825,7 @@ php artisan cashier:webhook --disabled
  - `Laravel\Cashier\Events\WebhookReceived`
  `- Laravel\Cashier\Events\WebhookHandled
 
- Ambos os eventos contêm o conteúdo completo do webhook Stripe. Por exemplo, se desejar tratar o webhook `invoice.payment_succeeded`, poderá registar um [ouvinte](/docs/events#defining-listeners) que irá gerir o evento:
+ Ambos os eventos contêm o conteúdo completo do webhook Stripe. Por exemplo, se desejar tratar o webhook `invoice.payment_succeeded`, poderá registrar um [ouvinte](/docs/events#defining-listeners) que irá gerir o evento:
 
 ```php
     <?php

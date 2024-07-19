@@ -197,7 +197,7 @@ php artisan lang:publish
 
  Se você tentar fornecer um objeto como lugar-tenode tradução, o método `__toString` do objeto será invocado. O método [`__toString`](https://www.php.net/manual/en/language.oop5.magic.php#object.tostring) é uma das "mágicas" métodos incorporadas do PHP. Porém, às vezes você pode não ter controle sobre o método `__toString` de uma determinada classe, como por exemplo quando a classe que está interagindo pertence a uma biblioteca de terceiros.
 
- Nestes casos, o Laravel permite que você registre um handler de formatação personalizado para esse tipo particular de objeto. Para fazer isso, você deve invocar a metodologia `stringable` do translator. A metodologia `stringable` aceita um fechamento, que deve indicar o tipo de objeto responsável pelo formato. Normalmente, a metodologia `stringable` deve ser invocada dentro da metodologia `boot`, na classe `AppServiceProvider` do seu aplicativo:
+ Nestes casos, o Laravel permite que você registre um handler de formatação personalizado para esse tipo particular de objeto. Para fazer isso, você deve invocar a metodologia `stringable` do translator. A metodologia `stringable` aceita um closure, que deve indicar o tipo de objeto responsável pelo formato. Normalmente, a metodologia `stringable` deve ser invocada dentro da metodologia `boot`, na classe `AppServiceProvider` do seu aplicativo:
 
 ```php
     use Illuminate\Support\Facades\Lang;

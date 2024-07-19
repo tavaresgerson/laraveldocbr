@@ -54,7 +54,7 @@
     }
 ```
 
- O primeiro argumento passado à método `hasOne` é o nome da classe do modelo relacionado. Uma vez definido o relacionamento, pode ser possível recuperar o registo associado utilizando propriedades dinâmicas de Eloquent. As propriedades dinâmicas permitem aceder aos métodos de relação como se fossem propriedades definidas no modelo:
+ O primeiro argumento passado à método `hasOne` é o nome da classe do modelo relacionado. Uma vez definido o relacionamento, pode ser possível recuperar o registro associado utilizando propriedades dinâmicas de Eloquent. As propriedades dinâmicas permitem aceder aos métodos de relação como se fossem propriedades definidas no modelo:
 
 ```php
     $phone = User::find(1)->phone;
@@ -66,7 +66,7 @@
     return $this->hasOne(Phone::class, 'foreign_key');
 ```
 
- Além disso, o Eloquent pressupõe que a chave estrangeira deve possuir um valor correspondente à coluna de chave primária do pai. Em outras palavras, o Eloquent irá procurar pelo valor da coluna `id` no registo do `Phone`. Se pretender que a relação utilize outro valor de chave primária em vez do `id` ou da propriedade `$primaryKey` do modelo, pode passar um terceiro argumento à função `hasOne`:
+ Além disso, o Eloquent pressupõe que a chave estrangeira deve possuir um valor correspondente à coluna de chave primária do pai. Em outras palavras, o Eloquent irá procurar pelo valor da coluna `id` no registro do `Phone`. Se pretender que a relação utilize outro valor de chave primária em vez do `id` ou da propriedade `$primaryKey` do modelo, pode passar um terceiro argumento à função `hasOne`:
 
 ```php
     return $this->hasOne(Phone::class, 'foreign_key', 'local_key');
@@ -2195,7 +2195,7 @@ Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation)
     $user->roles()->attach($roleId, ['expires' => $expires]);
 ```
 
- Às vezes poderá ser necessário remover uma função de um utilizador. Para remover os registos da relação muitodominio-a-múltiplos, utilize o método `detach`. O método `detach` irá eliminar o registo correspondente na tabela intermediária; no entanto, ambos os modelos permanecerão na base de dados:
+ Às vezes poderá ser necessário remover uma função de um utilizador. Para remover os registos da relação muitodominio-a-múltiplos, utilize o método `detach`. O método `detach` irá eliminar o registro correspondente na tabela intermediária; no entanto, ambos os modelos permanecerão na base de dados:
 
 ```php
     // Detach a single role from the user...
@@ -2264,7 +2264,7 @@ Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation)
 ```
 
 <a name="updating-a-record-on-the-intermediate-table"></a>
-#### Atualizar um registo na tabela intermédia
+#### Atualizar um registro na tabela intermédia
 
  Se você precisar atualizar uma linha existente na tabela intermediária de seu relacionamento, poderá usar o método `updateExistingPivot`. Este método aceita o chave estrangeira do registro intermediário e um array de atributos a serem atualizados:
 

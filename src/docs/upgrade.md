@@ -371,7 +371,7 @@ public function scalar($query, $bindings = [], $useReadPdo = true);
 
 **Probabilidade de impacto: média**
 
-O Laravel 11 suporta a biblioteca de manipulação de datas Carbon 2 e Carbon 3. O Carbon é uma biblioteca de manipulação de data utilizada extensivamente pelo Laravel e por pacotes em todo o ecossistema. Se você atualizar para a Carbon 3, tenha cuidado com os métodos `diffIn*`, que agora retornam números flutuantes e podem retornar valores negativos para indicar o sentido de tempo, o que é uma mudança significativa em relação à Carbon 2. Revise o [registo de alterações](https://github.com/briannesbitt/Carbon/releases/tag/3.0.0) dp Carbon para obter informações detalhadas sobre como lidar com essas e outras mudanças.
+O Laravel 11 suporta a biblioteca de manipulação de datas Carbon 2 e Carbon 3. O Carbon é uma biblioteca de manipulação de data utilizada extensivamente pelo Laravel e por pacotes em todo o ecossistema. Se você atualizar para a Carbon 3, tenha cuidado com os métodos `diffIn*`, que agora retornam números flutuantes e podem retornar valores negativos para indicar o sentido de tempo, o que é uma mudança significativa em relação à Carbon 2. Revise o [registro de alterações](https://github.com/briannesbitt/Carbon/releases/tag/3.0.0) dp Carbon para obter informações detalhadas sobre como lidar com essas e outras mudanças.
 
 ### E-mail
 

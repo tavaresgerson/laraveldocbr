@@ -72,7 +72,7 @@ $name = text(
 <a name="text-validation"></a>
 #### Validação adicional
 
- Finalmente, se você quiser executar uma lógica de validação adicional, poderá passar um fechamento para o argumento `validade`:
+ Finalmente, se você quiser executar uma lógica de validação adicional, poderá passar um closure para o argumento `validade`:
 
 ```php
 $name = text(
@@ -154,7 +154,7 @@ $story = textarea(
 );
 ```
 
- O fechamento receberá o valor que foi inserido e poderá retornar uma mensagem de erro ou `null` se a validação tiver sido bem-sucedida.
+ O closure receberá o valor que foi inserido e poderá retornar uma mensagem de erro ou `null` se a validação tiver sido bem-sucedida.
 
  Como alternativa, você pode usar o poder da validação de Laravel. Para fazer isso, forneça um array contendo o nome do atributo e as regras de validação desejadas para o parâmetro `validate`:
 
@@ -514,7 +514,7 @@ $name = suggest(
 <a name="suggest-validation"></a>
 #### Validação adicional
 
- Finalmente, se quiser executar uma lógica de validação adicional, poderá passar um fechamento para o argumento `validate`:
+ Finalmente, se quiser executar uma lógica de validação adicional, poderá passar um closure para o argumento `validate`:
 
 ```php
 $name = suggest(
@@ -556,7 +556,7 @@ $id = search(
 );
 ```
 
- O método de fechamento recebe o texto que foi digitado pelo usuário até então e deve retornar um array de opções. Se você retornar um array associavó, o nome do item selecionado será retornado; caso contrário, seu valor será retornado.
+ O método de closure recebe o texto que foi digitado pelo usuário até então e deve retornar um array de opções. Se você retornar um array associavó, o nome do item selecionado será retornado; caso contrário, seu valor será retornado.
 
  Também é possível incluir texto de substituição e uma dica informativa:
 
@@ -586,7 +586,7 @@ $id = search(
 <a name="search-validation"></a>
 #### Validação
 
- Se desejar executar uma lógica de validação adicional, você pode passar um fechamento para o argumento `validate`:
+ Se desejar executar uma lógica de validação adicional, você pode passar um closure para o argumento `validate`:
 
 ```php
 $id = search(
@@ -622,7 +622,7 @@ $ids = multisearch(
 );
 ```
 
- O método de fechamento recebe o texto que foi digitado pelo usuário até então e deve retornar um array de opções. Se ele retornar um array associativo, as chaves das opções selecionadas serão retornadas; caso contrário, seus valores serão retornados.
+ O método de closure recebe o texto que foi digitado pelo usuário até então e deve retornar um array de opções. Se ele retornar um array associativo, as chaves das opções selecionadas serão retornadas; caso contrário, seus valores serão retornados.
 
  Também é possível incluir um texto de substituição e uma dica de informação:
 
@@ -679,7 +679,7 @@ $ids = multisearch(
 <a name="multisearch-validation"></a>
 #### Validação
 
- Se você deseja executar uma lógica de validação adicional, pode passar um fechamento para o argumento `validate`:
+ Se você deseja executar uma lógica de validação adicional, pode passar um closure para o argumento `validate`:
 
 ```php
 $ids = multisearch(
@@ -697,7 +697,7 @@ $ids = multisearch(
 );
 ```
 
- Se a chave de retorno do fechamento `options` for um mapeamento associativo, o fechamento receberá as chaves selecionadas; caso contrário, ele receberá os valores selecionados. O fechamento pode retornar uma mensagem de erro ou nulo se a validação der certo.
+ Se a chave de retorno do closure `options` for um mapeamento associativo, o closure receberá as chaves selecionadas; caso contrário, ele receberá os valores selecionados. O closure pode retornar uma mensagem de erro ou nulo se a validação der certo.
 
 <a name="pause"></a>
 ### Pausa
@@ -928,4 +928,4 @@ TextPrompt::fallbackUsing(function (TextPrompt $prompt) use ($input, $output) {
 });
 ```
 
- Os fallback devem ser configurados individualmente para cada classe de prompt. O fechamento receberá uma instância da classe de prompt e deve retornar um tipo apropriado para o prompt.
+ Os fallback devem ser configurados individualmente para cada classe de prompt. O closure receberá uma instância da classe de prompt e deve retornar um tipo apropriado para o prompt.

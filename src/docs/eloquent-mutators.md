@@ -147,7 +147,7 @@ protected function address(): Attribute
     }
 ```
 
- O fechamento do mutator receberá o valor que está sendo definido no atributo, permitindo a manipulação desse valor. Para usar nosso mutator, só precisamos definir o atributo `first_name` em um modelo Eloquent:
+ O closure do mutator receberá o valor que está sendo definido no atributo, permitindo a manipulação desse valor. Para usar nosso mutator, só precisamos definir o atributo `first_name` em um modelo Eloquent:
 
 ```php
     use App\Models\User;
@@ -162,7 +162,7 @@ protected function address(): Attribute
 <a name="mutating-multiple-attributes"></a>
 #### Mutação de vários atributos
 
- Às vezes, o seu mutator pode precisar definir vários atributos no modelo subjacente. Para isso, você pode retornar um array a partir do fechamento `set`. Cada chave no array deve corresponder com um atributo subjacente / coluna de banco de dados associado ao modelo:
+ Às vezes, o seu mutator pode precisar definir vários atributos no modelo subjacente. Para isso, você pode retornar um array a partir do closure `set`. Cada chave no array deve corresponder com um atributo subjacente / coluna de banco de dados associado ao modelo:
 
 ```php
 use App\Support\Address;

@@ -395,7 +395,7 @@ public function register(): void
 
  Nesse exemplo, se a instância do serviço tiver sido resolvida durante o processo de inicialização da aplicação, um contêiner será inserido na instância e esse mesmo contêiner permanecerá conectado às instâncias posteriores. Isso não é necessariamente um problema para a sua aplicação específica; no entanto, isto pode gerar uma falta inesperada de ligações que tenham sido adicionadas posteriormente ao processo de inicialização ou por meio de uma requisição subsequente.
 
- Uma solução alternativa pode ser para você deixar de registrar o binding como um singleton ou injetar uma chave de fechamento do contêiner no serviço que irá sempre resolver a instância atual do contêiner:
+ Uma solução alternativa pode ser para você deixar de registrar o binding como um singleton ou injetar uma chave de closure do contêiner no serviço que irá sempre resolver a instância atual do contêiner:
 
 ```php
 use App\Service;
@@ -481,7 +481,7 @@ public function register(): void
 
  Neste exemplo, se os valores da configuração mudarem entre requisições, esse serviço não terá acesso aos novos valores porque ele depende da instância do repositório original.
 
- Como uma solução alternativa, você pode parar de registrar o vinculo como um singleton ou injetar um fechamento do resolvedor de repositório de configuração para a classe:
+ Como uma solução alternativa, você pode parar de registrar o vinculo como um singleton ou injetar um closure do resolvedor de repositório de configuração para a classe:
 
 ```php
 use App\Service;
@@ -559,7 +559,7 @@ php artisan octane:start --workers=4 --task-workers=6
 
  Ao usar o Swoole, você pode registrar operações "tick" que serão executadas a cada número especificado de segundos. Você pode registrar callbacks de "ticks" através do método `tick`. O primeiro argumento fornecido ao método `tick` deve ser uma string que represente o nome do ticker. O segundo argumento deve ser um objeto chamável que será invocado no intervalo especificado.
 
- Neste exemplo, iremos registar uma função que será chamada a cada 10 segundos. Normalmente, a metodologia `tick` deve ser invocada na metodologia `boot` de um dos prestadores de serviços da aplicação:
+ Neste exemplo, iremos registrar uma função que será chamada a cada 10 segundos. Normalmente, a metodologia `tick` deve ser invocada na metodologia `boot` de um dos prestadores de serviços da aplicação:
 
 ```php
 Octane::tick('simple-ticker', fn () => ray('Ticking...'))

@@ -867,4 +867,4 @@ composer require spatie/flysystem-dropbox
 
  O primeiro argumento do método `extend` é o nome do driver, e o segundo um closurável que recebe as variáveis `$app` e `$config`. Esse closurável deve retornar uma instância de `Illuminate\Filesystem\FilesystemAdapter`. A variável `$config` contém os valores definidos em `config/filesystems.php` para o disco especificado.
 
- Após a criação e registo do prestador de serviços da extensão, pode utilizar o controlador `dropbox` no seu arquivo de configuração `config/filesystems.php`.
+ Após a criação e registro do prestador de serviços da extensão, pode utilizar o controlador `dropbox` no seu arquivo de configuração `config/filesystems.php`.

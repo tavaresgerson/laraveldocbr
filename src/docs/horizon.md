@@ -169,7 +169,7 @@ php artisan horizon:install
 <a name="alternative-authentication-strategies"></a>
 #### Estratégias alternativas de autenticação
 
- Lembre-se de que o Laravel injeta automaticamente o usuário autenticado no fechamento do gate. Se a aplicação estiver fornecendo segurança para Horizon por meio de outro método, como restrições de IP, pode não ser necessária uma "entrada" dos seus usuários. Sendo assim, você precisará alterar a assinatura do fechamento acima de `function (User $user)` para `function (User $user = null)`, para forçar o Laravel a não solicitar autenticação.
+ Lembre-se de que o Laravel injeta automaticamente o usuário autenticado no closure do gate. Se a aplicação estiver fornecendo segurança para Horizon por meio de outro método, como restrições de IP, pode não ser necessária uma "entrada" dos seus usuários. Sendo assim, você precisará alterar a assinatura do closure acima de `function (User $user)` para `function (User $user = null)`, para forçar o Laravel a não solicitar autenticação.
 
 <a name="silenced-jobs"></a>
 ### Empregos silenciados

@@ -573,7 +573,7 @@ Para criar um componente baseado em classes, você pode utilizar a linha de coma
 php artisan make:component Alert
 ```
 
-O comando `make:component` também criará um modelo de visualização para o componente. A visualização será colocada na pasta `resources/views/components`. Para os componentes da sua própria aplicação, normalmente não é necessário proceder com qualquer tipo de registo do mesmo, uma vez que os mesmos são automaticamente descobertos nas pastas `app/View/Components` e `resources/views/components`.
+O comando `make:component` também criará um modelo de visualização para o componente. A visualização será colocada na pasta `resources/views/components`. Para os componentes da sua própria aplicação, normalmente não é necessário proceder com qualquer tipo de registro do mesmo, uma vez que os mesmos são automaticamente descobertos nas pastas `app/View/Components` e `resources/views/components`.
 
 Você também pode criar componentes dentro de subdiretórios:
 

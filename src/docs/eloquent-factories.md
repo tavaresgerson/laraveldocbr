@@ -115,7 +115,7 @@ php artisan make:factory PostFactory
 
  Os métodos de manipulação de estado permitem definir alterações discritas que podem ser aplicadas às fábricas de modelo em qualquer combinação. Por exemplo, sua `Database\Factories\UserFactory` fábrica poderia conter um método de estado `suspended` que modifica um dos seus valores de atributos padrão.
 
- Os métodos de transformação do estado geralmente chamam o método "state" fornecido pela classe de fábrica base do Laravel. O método "state" aceita um fechamento que receberá a matriz de atributos brutos definida para o fabricante e deve retornar uma matriz de atributos para modificação:
+ Os métodos de transformação do estado geralmente chamam o método "state" fornecido pela classe de fábrica base do Laravel. O método "state" aceita um closure que receberá a matriz de atributos brutos definida para o fabricante e deve retornar uma matriz de atributos para modificação:
 
 ```php
     use Illuminate\Database\Eloquent\Factories\Factory;
@@ -312,7 +312,7 @@ php artisan make:factory PostFactory
                     ->create();
 ```
 
- Para conveniência, as seqüências também podem ser aplicadas usando o método `sequence`, que simplesmente chama o método `state`. O método `sequence` aceita um fechamento ou uma matriz de atributos sequenciados:
+ Para conveniência, as seqüências também podem ser aplicadas usando o método `sequence`, que simplesmente chama o método `state`. O método `sequence` aceita um closure ou uma matriz de atributos sequenciados:
 
 ```php
     $users = User::factory()
@@ -384,7 +384,7 @@ php artisan make:factory PostFactory
                 ->create();
 ```
 
- Você pode fornecer uma transformação de estado com fechamento se sua mudança no estado exigir o acesso ao modelo pai:
+ Você pode fornecer uma transformação de estado com closure se sua mudança no estado exigir o acesso ao modelo pai:
 
 ```php
     $user = User::factory()

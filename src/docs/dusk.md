@@ -473,7 +473,7 @@ class ExampleTest extends DuskTestCase
     }
 ```
 
- A função `macro` aceita um nome como primeiro argumento e uma chave de fechamento como segundo. O bloco da macro será executado ao chamarmos a macro como método em uma instância do `Browser`:
+ A função `macro` aceita um nome como primeiro argumento e uma chave de closure como segundo. O bloco da macro será executado ao chamarmos a macro como método em uma instância do `Browser`:
 
 ```php
     $this->browse(function (Browser $browser) use ($user) {
@@ -1022,7 +1022,7 @@ class ExampleTest extends DuskTestCase
 <a name="scoping-selectors"></a>
 ### Selecionando o escopo
 
- Às vezes, você pode querer executar várias operações enquanto aplicá-las ao seletor fornecido. Por exemplo, você talvez queira garantir que algum texto existe apenas dentro de uma tabela e depois clicar em um botão dentro dessa tabela. Para isso, utilize o método `with`. Todas as operações realizadas no fechamento fornecido ao método `with` serão aplicáveis ao seletor original:
+ Às vezes, você pode querer executar várias operações enquanto aplicá-las ao seletor fornecido. Por exemplo, você talvez queira garantir que algum texto existe apenas dentro de uma tabela e depois clicar em um botão dentro dessa tabela. Para isso, utilize o método `with`. Todas as operações realizadas no closure fornecido ao método `with` serão aplicáveis ao seletor original:
 
 ```php
     $browser->with('.table', function (Browser $table) {

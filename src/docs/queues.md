@@ -654,7 +654,7 @@ class ProviderIsUp
     }
 ```
 
- Por padrão, esse middleware irá reduzir a velocidade de execução de todas as exceções. É possível modificar esse comportamento ao invocar o método `when` quando você anexa o middleware ao seu trabalho. A exceção será reduzida apenas se o fechamento for retornado como verdade pela chamada a um método:
+ Por padrão, esse middleware irá reduzir a velocidade de execução de todas as exceções. É possível modificar esse comportamento ao invocar o método `when` quando você anexa o middleware ao seu trabalho. A exceção será reduzida apenas se o closure for retornado como verdade pela chamada a um método:
 
 ```php
     use Illuminate\Http\Client\HttpClientException;
@@ -673,7 +673,7 @@ class ProviderIsUp
     }
 ```
 
- Se você quiser que as exceções com restrição sejam relatadas ao gerenciador de exceções do seu aplicativo, pode fazer isso convocando o método `report` ao anexar o middleware ao trabalho. Opcionalmente, você pode fornecer um fechamento para o método `report`, e a exceção será relatada somente se o fechamento retornar `true`:
+ Se você quiser que as exceções com restrição sejam relatadas ao gerenciador de exceções do seu aplicativo, pode fazer isso convocando o método `report` ao anexar o middleware ao trabalho. Opcionalmente, você pode fornecer um closure para o método `report`, e a exceção será relatada somente se o closure retornar `true`:
 
 ```php
     use Illuminate\Http\Client\HttpClientException;
@@ -942,7 +942,7 @@ public function handle(): void
 <a name="chain-failures"></a>
 #### Falhas na cadeia
 
- Ao concatenar tarefas, você pode usar o método `catch` para especificar um fechamento que deve ser acionado se uma tarefa da cadeia falhar. O callback receberá a instância `Throwable` que causou o fracasso na tarefa:
+ Ao concatenar tarefas, você pode usar o método `catch` para especificar um closure que deve ser acionado se uma tarefa da cadeia falhar. O callback receberá a instância `Throwable` que causou o fracasso na tarefa:
 
 ```php
     use Illuminate\Support\Facades\Bus;
@@ -1715,7 +1715,7 @@ composer require aws/aws-sdk-php
 <a name="queueing-closures"></a>
 ## Fechamento de filas
 
- Em vez de despachar uma classe de tarefas para a fila, você também poderá despachar um fechamento. Isso é muito útil para tarefas simples e rápidas que necessitem ser executadas fora do ciclo de solicitação atual. Quando se despacham fechamentos para a fila, seu conteúdo é assinado cifrando-se o código, evitando assim que ele possa ser modificado em trânsito:
+ Em vez de despachar uma classe de tarefas para a fila, você também poderá despachar um closure. Isso é muito útil para tarefas simples e rápidas que necessitem ser executadas fora do ciclo de solicitação atual. Quando se despacham fechamentos para a fila, seu conteúdo é assinado cifrando-se o código, evitando assim que ele possa ser modificado em trânsito:
 
 ```php
     $podcast = App\Podcast::find(1);
@@ -2492,7 +2492,7 @@ $job->assertDoesntHaveChain();
 <a name="testing-job-batches"></a>
 ### Teste de lotes de emprego
 
- O método `assertBatched` da facade `Bus` permite garantir que um lote de tarefas foi enviado. O fechamento fornecido ao método `assertBatched` recebe uma instância do `Illuminate\Bus\PendingBatch`, que pode ser usada para inspecionar as tarefas dentro do lote:
+ O método `assertBatched` da facade `Bus` permite garantir que um lote de tarefas foi enviado. O closure fornecido ao método `assertBatched` recebe uma instância do `Illuminate\Bus\PendingBatch`, que pode ser usada para inspecionar as tarefas dentro do lote:
 
 ```php
     use Illuminate\Bus\PendingBatch;

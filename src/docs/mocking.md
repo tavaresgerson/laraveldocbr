@@ -237,7 +237,7 @@ public function test_time_can_be_manipulated(): void
 }
 ```
 
- Você também pode fornecer um fechamento aos vários métodos de viagem no tempo. O fechamento será invocado com o tempo congelado na hora especificada. Depois que o fechamento tiver sido executado, o tempo retornará ao normal:
+ Você também pode fornecer um closure aos vários métodos de viagem no tempo. O closure será invocado com o tempo congelado na hora especificada. Depois que o closure tiver sido executado, o tempo retornará ao normal:
 
 ```php
     $this->travel(5)->days(function () {

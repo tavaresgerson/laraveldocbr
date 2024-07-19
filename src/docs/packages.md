@@ -172,7 +172,7 @@
     echo trans('courier::messages.welcome');
 ```
 
- É possível registar ficheiros de tradução em formato JSON para o seu pacote através do método `loadJsonTranslationsFrom`. Este método aceita como parâmetro o caminho ao diretório que contém os ficheiros de tradução JSON do seu pacote:
+ É possível registrar ficheiros de tradução em formato JSON para o seu pacote através do método `loadJsonTranslationsFrom`. Este método aceita como parâmetro o caminho ao diretório que contém os ficheiros de tradução JSON do seu pacote:
 
 ```php
 /**

@@ -193,7 +193,7 @@ $result = Process::pipe(function (Pipe $pipe) {
 });
 ```
 
- O Laravel também permite que você atribua chaves de string para cada processo dentro de um pipeline via o método `as`. Essa chave também será passada ao fechamento do resultado fornecido ao método `pipe`, permitindo determinar a qual processo o output pertence:
+ O Laravel também permite que você atribua chaves de string para cada processo dentro de um pipeline via o método `as`. Essa chave também será passada ao closure do resultado fornecido ao método `pipe`, permitindo determinar a qual processo o output pertence:
 
 ```php
 $result = Process::pipe(function (Pipe $pipe) {
@@ -277,7 +277,7 @@ $result = $process->wait();
 
  O Laravel também facilita o gerenciamento de um pool de processos assíncronos concorrentes, permitindo que você execute muitas tarefas simultaneamente. Para começar, invoque o método `pool`, que aceita um closure que recebe uma instância do `Illuminate\Process\Pool`.
 
- Dentro deste fechamento, você pode definir os processos que pertencem à rede. Uma vez que um grupo de processo seja iniciado através do método `start`, você poderá acessar a coleção de processos em execução via o método `running`:
+ Dentro deste closure, você pode definir os processos que pertencem à rede. Uma vez que um grupo de processo seja iniciado através do método `start`, você poderá acessar a coleção de processos em execução via o método `running`:
 
 ```php
 use Illuminate\Process\Pool;

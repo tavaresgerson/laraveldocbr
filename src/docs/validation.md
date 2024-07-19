@@ -968,7 +968,7 @@ O campo em validação deve ser definido como `"yes"`, `"on"`, `1`, `"1"` ou `tr
 
 <a name="rule-active-url"></a>
 #### active_url
-O campo em fase de validação deve possuir um registo válido A ou AAAA, de acordo com a função `dns_get_record` do PHP. O nome host da URL fornecida é extraído através da função `parse_url` antes de ser passado para a `dns_get_record`.
+O campo em fase de validação deve possuir um registro válido A ou AAAA, de acordo com a função `dns_get_record` do PHP. O nome host da URL fornecida é extraído através da função `parse_url` antes de ser passado para a `dns_get_record`.
 
 <a name="rule-after"></a>
 #### after:_date_
@@ -1303,7 +1303,7 @@ O campo em validação deve existir numa determinada tabela de base de dados.
     'state' => 'exists:states'
 ```
 
-Se não for especificado o nome de campo, será utilizada a opção `column`. Assim, neste caso, a regra irá validar se existe um registo na tabela da base de dados `states`, com um valor do campo correspondente ao valor do atributo `state` no pedido.
+Se não for especificado o nome de campo, será utilizada a opção `column`. Assim, neste caso, a regra irá validar se existe um registro na tabela da base de dados `states`, com um valor do campo correspondente ao valor do atributo `state` no pedido.
 
 <a name="specifying-a-custom-column-name"></a>
 #### Especificando um Nome de Coluna Personalizado
@@ -2266,7 +2266,7 @@ Definida uma regra, pode ser associada a um validador, através de uma instânci
 ```
 
 #### Traduzindo Mensagens de Validação
-Em vez de fornecer uma mensagem de erro literal para o fechamento `$fail`, você também pode fornecer um [chave de strings para tradução](/docs/localization) e instruir o Laravel a traduzir a mensagem de erro:
+Em vez de fornecer uma mensagem de erro literal para o closure `$fail`, você também pode fornecer um [chave de strings para tradução](/docs/localization) e instruir o Laravel a traduzir a mensagem de erro:
 
 ```php
     if (strtoupper($value) !== $value) {

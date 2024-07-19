@@ -13,7 +13,7 @@ Durante o desenvolvimento local, você deve definir a variável de ambiente `APP
 ## Manuseando exceções
 
 ### Relatório de exceções
-No Laravel, o relato de exceções é utilizado para registar exceções ou enviá-las a um serviço externo [Sentry](https://github.com/getsentry/sentry-laravel) ou [Flare](https://flareapp.io). Por padrão, as exceções serão registradas com base na sua configuração de [registo](/docs/logging). No entanto, você pode registar exceções da forma que pretender.
+No Laravel, o relato de exceções é utilizado para registrar exceções ou enviá-las a um serviço externo [Sentry](https://github.com/getsentry/sentry-laravel) ou [Flare](https://flareapp.io). Por padrão, as exceções serão registradas com base na sua configuração de [registro](/docs/logging). No entanto, você pode registrar exceções da forma que pretender.
 
 Se você precisar reportar tipos diferentes de exceções de maneiras distintas, você poderá usar o método `report` da exceção em seu aplicativo `bootstrap/app.php`, para registrar um closure que deve ser executado quando uma exceção do tipo especificado for reportada. O Laravel definirá o tipo de exceção que o closure irá reportar, examinando a indicação do tipo no próprio closure:
 
@@ -166,7 +166,7 @@ Internamente, o Laravel ignora alguns tipos de erros automaticamente, como as ex
 <a name="rendering-exceptions"></a>
 ### Exceções de renderização
 
-Por padrão, o manipulador de exceções do Laravel converterá as exceções em uma resposta HTTP para você. No entanto, você pode registrar um fechamento de renderização personalizado para exceções de um determinado tipo. Você pode fazer isso usando o método de exceção `render` no arquivo `bootstrap/app.php` da sua aplicação.
+Por padrão, o manipulador de exceções do Laravel converterá as exceções em uma resposta HTTP para você. No entanto, você pode registrar um closure de renderização personalizado para exceções de um determinado tipo. Você pode fazer isso usando o método de exceção `render` no arquivo `bootstrap/app.php` da sua aplicação.
 
 O closure passado para o método `render` deve retornar uma instância de `Illuminate\Http\Response`, que pode ser gerada através da função auxiliar `response`. A plataforma Laravel determinará que tipo de exceção o closure irá renderizar ao analisar a indicação do tipo fornecido:
 

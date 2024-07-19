@@ -3,7 +3,7 @@
 <a name="introduction"></a>
 ## Introdução
 
- [Laravel Fortify](https://github.com/laravel/fortify) é uma implementação de backend para autenticação independente do frontend para Laravel. O Fortify regista as rotas e controladores necessários para implementar todos os recursos de autenticação do Laravel, incluindo login, registo, recuperação da senha, verificação por email e muito mais. Após instalar o Fortify, pode executar a ordem `route:list` no comando Artisan para ver as rotas que o Fortify tem registrado.
+ [Laravel Fortify](https://github.com/laravel/fortify) é uma implementação de backend para autenticação independente do frontend para Laravel. O Fortify regista as rotas e controladores necessários para implementar todos os recursos de autenticação do Laravel, incluindo login, registro, recuperação da senha, verificação por email e muito mais. Após instalar o Fortify, pode executar a ordem `route:list` no comando Artisan para ver as rotas que o Fortify tem registrado.
 
  Como a Fortify não fornece sua própria interface de usuário, ela deve ser emparelhada com sua própria interface de usuário que faz solicitações aos roteadores que registra. Vamos discutir exatamente como fazer solicitações a esses roteiros no restante desta documentação
 
@@ -13,7 +13,7 @@
 <a name="what-is-fortify"></a>
 ### O que é o Fortify?
 
- Como mencionado anteriormente, o Laravel Fortify é uma execução de autenticação front-end independente para o Laravel. O Fortify registra os rotas e controladores necessários para implementar todas as funcionalidades de autenticação do Laravel, incluindo login, registo, reinicialização da senha, verificação de e-mail e muito mais.
+ Como mencionado anteriormente, o Laravel Fortify é uma execução de autenticação front-end independente para o Laravel. O Fortify registra os rotas e controladores necessários para implementar todas as funcionalidades de autenticação do Laravel, incluindo login, registro, reinicialização da senha, verificação de e-mail e muito mais.
 
  **Não é obrigatório o uso do Fortify para utilizar os recursos de autenticação do Laravel.** Você pode sempre interagir manualmente com os serviços de autenticação do Laravel, seguindo a documentação disponível nas seções [autenticação](/docs/authentication), [reset de senha](/docs/passwords) e [verificação por email](/docs/verification).
 
@@ -80,7 +80,7 @@ php artisan migrate
 <a name="disabling-views"></a>
 ### Desativando visualizações
 
- Por padrão, Fortify define rotas que visam o retorno de vistas, como uma tela de login ou uma tela de registo. No entanto, se estiver a desenvolver um aplicativo single-page ativo em JavaScript, poderá não precisar destas rotas. Para esse efeito, poderá desativar totalmente estas rotas, definindo o valor da configuração `views` na sua aplicação no arquivo de configuração `config/fortify.php` para `false`:
+ Por padrão, Fortify define rotas que visam o retorno de vistas, como uma tela de login ou uma tela de registro. No entanto, se estiver a desenvolver um aplicativo single-page ativo em JavaScript, poderá não precisar destas rotas. Para esse efeito, poderá desativar totalmente estas rotas, definindo o valor da configuração `views` na sua aplicação no arquivo de configuração `config/fortify.php` para `false`:
 
 ```php
 'views' => false,
@@ -161,7 +161,7 @@ public function boot(): void
 
  O Laravel Fortify autentica solicitações de login através de uma cadeia de classes invocáveis. Se pretender, pode definir uma cadeia personalizada de classes que as solicitações de login devem passar por cada classe deve ter um método `__invoke` que recebe a instância `Illuminate\Http\Request` inalante e, como [médias filas](/docs/middleware), uma variável `$next` que é invocada para passar a solicitação à próxima classe da cadeia.
 
- Para definir o pipeline personalizado, você pode usar o método `Fortify::authenticateThrough`. Este método aceita um fechamento que deve retornar a matriz de classes para a qual o pedido de login será encaminhado. Normalmente, esse método é chamado do método `boot` da classe `App\Providers\FortifyServiceProvider`.
+ Para definir o pipeline personalizado, você pode usar o método `Fortify::authenticateThrough`. Este método aceita um closure que deve retornar a matriz de classes para a qual o pedido de login será encaminhado. Normalmente, esse método é chamado do método `boot` da classe `App\Providers\FortifyServiceProvider`.
 
  O exemplo abaixo contém a definição da canalização por padrão que você pode usar como ponto de partida ao fazer suas próprias modificações:
 
@@ -332,7 +332,7 @@ public function boot(): void
 <a name="registration"></a>
 ## Cadastro
 
- Para começar a implementação da funcionalidade de registo do nosso aplicativo, temos que informar o Fortify sobre como retornar nossa vista "register". Lembre-se, o Fortify é uma biblioteca autenticadora sem interface gráfica. Se você deseja uma implementação frontal das características de autenticação do Laravel e precisa que esteja pronta para uso, deve usar um [kit inicial da aplicação](/docs/starter-kits).
+ Para começar a implementação da funcionalidade de registro do nosso aplicativo, temos que informar o Fortify sobre como retornar nossa vista "register". Lembre-se, o Fortify é uma biblioteca autenticadora sem interface gráfica. Se você deseja uma implementação frontal das características de autenticação do Laravel e precisa que esteja pronta para uso, deve usar um [kit inicial da aplicação](/docs/starter-kits).
 
  Todas as lógicas de renderização do visual da Fortify podem ser customizadas usando os métodos apropriados disponíveis através da classe `Laravel\Fortify\Fortify`. Normalmente, você deve chamar esse método a partir da metoda `boot` da sua classe `App\Providers\FortifyServiceProvider`:
 
@@ -356,12 +356,12 @@ public function boot(): void
 
  O ponto final `/register` espera os campos de string `name`, endereço de e-mail/nome de usuário, senha e `password_confirmation`. O nome do campo de e-mail/nome de usuário deve corresponder ao valor da configuração `username` definido no arquivo de configuração `fortify` do seu aplicativo.
 
- Se o registo for bem-sucedido, Fortify redireciona o utilizador para a URI configurada através da opção de configuração `home`, na ligação ao ficheiro de configuração `fortify` da aplicação. Caso a solicitação tenha sido uma solicitação XHR, é enviado um resposta HTTP 201.
+ Se o registro for bem-sucedido, Fortify redireciona o utilizador para a URI configurada através da opção de configuração `home`, na ligação ao ficheiro de configuração `fortify` da aplicação. Caso a solicitação tenha sido uma solicitação XHR, é enviado um resposta HTTP 201.
 
- Se o pedido não for bem-sucedido, o usuário será redirecionado de volta para a tela de registo e os erros de validação estarão disponíveis através da variável do modelo Blade `$errors`. Caso tenha sido um pedido XHR, os erros de validação serão retornados com uma resposta HTTP 422.
+ Se o pedido não for bem-sucedido, o usuário será redirecionado de volta para a tela de registro e os erros de validação estarão disponíveis através da variável do modelo Blade `$errors`. Caso tenha sido um pedido XHR, os erros de validação serão retornados com uma resposta HTTP 422.
 
 <a name="customizing-registration"></a>
-### Personalizar registo
+### Personalizar registro
 
  O processo de validação e criação do usuário pode ser personalizado modificando a ação `App\Actions\Fortify\CreateNewUser`, que foi gerada quando você instalou o Laravel Fortify.
 

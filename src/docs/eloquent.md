@@ -628,9 +628,9 @@ foreach ($users as $user) {
 <a name="retrieving-or-creating-models"></a>
 ### Recuperar ou criar modelos
 
- O método `firstOrCreate` tentará localizar um registo de banco de dados com base nas colunas e valores especificadas. Se o modelo não for encontrado no banco de dados, um registo será inserido com os atributos resultantes da fusão do primeiro argumento de matriz com o segundo argumento de matriz opcional:
+ O método `firstOrCreate` tentará localizar um registro de banco de dados com base nas colunas e valores especificadas. Se o modelo não for encontrado no banco de dados, um registro será inserido com os atributos resultantes da fusão do primeiro argumento de matriz com o segundo argumento de matriz opcional:
 
- A função `firstOrNew`, assim como `firstOrCreate`, tenta encontrar um registo na base de dados com os atributos indicados. No entanto, se não conseguir localizar o modelo, é retornada uma nova instância do mesmo. Note que o modelo retornado por `firstOrNew` ainda não está salvo na base de dados. Deve chamar manualmente a função `save`, para o fazer:
+ A função `firstOrNew`, assim como `firstOrCreate`, tenta encontrar um registro na base de dados com os atributos indicados. No entanto, se não conseguir localizar o modelo, é retornada uma nova instância do mesmo. Note que o modelo retornado por `firstOrNew` ainda não está salvo na base de dados. Deve chamar manualmente a função `save`, para o fazer:
 
 ```php
     use App\Models\Flight;
@@ -707,7 +707,7 @@ foreach ($users as $user) {
     }
 ```
 
- Neste exemplo, atribuímos o campo `name` da solicitação HTTP recebida ao atributo `name` da instância do modelo de voo `App\Models\Flight`. Ao invocarmos o método `save`, um registo será inserido na base de dados. Os marcadores temporais `created_at` e `updated_at` do modelo são definidos automaticamente quando chamamos o método `save`, pelo que não é necessário definir manualmente essas marcações temporais.
+ Neste exemplo, atribuímos o campo `name` da solicitação HTTP recebida ao atributo `name` da instância do modelo de voo `App\Models\Flight`. Ao invocarmos o método `save`, um registro será inserido na base de dados. Os marcadores temporais `created_at` e `updated_at` do modelo são definidos automaticamente quando chamamos o método `save`, pelo que não é necessário definir manualmente essas marcações temporais.
 
  Em alternativa, você pode usar o método `create` para "salvar" um novo modelo usando uma única instrução PHP. A instância do modelo inserida será retornada pelo método `create`:
 
@@ -1031,7 +1031,7 @@ foreach ($users as $user) {
     });
 ```
 
- Agora, ao chamar o método `delete` do modelo, a coluna `deleted_at` será definida como a data e hora atuais. No entanto, o registo de banco de dados do modelo permanecerá na tabela. Ao consultar um modelo que use eliminações temporárias, os modelos eliminados temporariamente serão excluídos automaticamente de todos os resultados da query.
+ Agora, ao chamar o método `delete` do modelo, a coluna `deleted_at` será definida como a data e hora atuais. No entanto, o registro de banco de dados do modelo permanecerá na tabela. Ao consultar um modelo que use eliminações temporárias, os modelos eliminados temporariamente serão excluídos automaticamente de todos os resultados da query.
 
  Para determinar se uma dada instância de modelo foi excluída silenciosamente, você pode usar o método `trashed`:
 
@@ -1658,7 +1658,7 @@ php artisan make:observer UserObserver --model=User
     }
 ```
 
- Para registar um observador, pode colocar o atributo `ObservedBy` no modelo correspondente:
+ Para registrar um observador, pode colocar o atributo `ObservedBy` no modelo correspondente:
 
 ```php
     use App\Observers\UserObserver;

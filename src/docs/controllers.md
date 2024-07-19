@@ -393,7 +393,7 @@ Lembre-se de manter seus controladores focados. Se você sentir que normalmente 
 :::
 
 ### Controladores de recursos do tipo Singleton
-Por vezes, o seu aplicativo tem recursos que podem apenas ter uma única instância. Por exemplo, um "perfil" de utilizador pode ser editado ou atualizado, mas um utilizador não pode ter mais do que um "perfil". Do mesmo modo, uma imagem pode ter uma única "miniatura". Estes recursos são chamados de "recursos singleton", o que significa que apenas existe uma e única instância do recurso. Nestas situações, poderá registar um controlador de recurso singleton:
+Por vezes, o seu aplicativo tem recursos que podem apenas ter uma única instância. Por exemplo, um "perfil" de utilizador pode ser editado ou atualizado, mas um utilizador não pode ter mais do que um "perfil". Do mesmo modo, uma imagem pode ter uma única "miniatura". Estes recursos são chamados de "recursos singleton", o que significa que apenas existe uma e única instância do recurso. Nestas situações, poderá registrar um controlador de recurso singleton:
 
 ```php
 use App\Http\Controllers\ProfileController;

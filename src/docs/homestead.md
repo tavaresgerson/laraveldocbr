@@ -681,7 +681,7 @@ features:
 share homestead.test
 ```
 
- Após executar o comando, você verá um ecrã do Ngrok que contém o registo de atividades e os URL públicos para o site compartilhado. Se pretender especificar uma região personalizada, um subdomínio ou outra opção de execução do Ngrok, poderá adicioná-los ao seu comando `share`:
+ Após executar o comando, você verá um ecrã do Ngrok que contém o registro de atividades e os URL públicos para o site compartilhado. Se pretender especificar uma região personalizada, um subdomínio ou outra opção de execução do Ngrok, poderá adicioná-los ao seu comando `share`:
 
 ```shell
 share homestead.test -region=eu -subdomain=laravel

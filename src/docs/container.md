@@ -84,7 +84,7 @@ Primeiro, se você escreve uma classe que implementa uma interface e deseja digi
 
 Quase todos os binding de contêineres de serviço serão registrados no [provedores de serviços](/docs/providers). A maioria dos exemplos demonstrará o uso do contêiner nesse contexto.
 
-Dentro de um provedor de serviços, você sempre pode acessar o container através da propriedade `$this->app`. Podemos registrar uma vinculação usando o método `bind`, passando o nome da classe ou interface que deseja registrar junto com um fechamento que retorne uma instância da classe:
+Dentro de um provedor de serviços, você sempre pode acessar o container através da propriedade `$this->app`. Podemos registrar uma vinculação usando o método `bind`, passando o nome da classe ou interface que deseja registrar junto com um closure que retorne uma instância da classe:
 
 ```php
     use App\Services\Transistor;
@@ -110,7 +110,7 @@ Como mencionado, normalmente você interagirá com o contêiner no âmbito de pr
     });
 ```
 
-Você pode utilizar o método `bindIf`, para registar uma ligação de contêiner, apenas se já não tiver sido efetuado um registo para o tipo indicado:
+Você pode utilizar o método `bindIf`, para registrar uma ligação de contêiner, apenas se já não tiver sido efetuado um registro para o tipo indicado:
 
 ```php
 $this->app->bindIf(Transistor::class, function (Application $app) {
@@ -316,7 +316,7 @@ Para mais praticidade, você também poderá apenas fornecer uma matriz de nomes
 
 ### Tagging
 
-Ocasionalmente, seja necessário resolver todos os tipos de um determinada "categoria" de ligação. Por exemplo, talvez você esteja a criar um analisador de relatórios que recebe uma matriz de várias implementações do interface `Report`. Após registar as implementações em `Report`, você pode atribuir-lhes uma etiqueta utilizando o método `tag`:
+Ocasionalmente, seja necessário resolver todos os tipos de um determinada "categoria" de ligação. Por exemplo, talvez você esteja a criar um analisador de relatórios que recebe uma matriz de várias implementações do interface `Report`. Após registrar as implementações em `Report`, você pode atribuir-lhes uma etiqueta utilizando o método `tag`:
 
 ```php
     $this->app->bind(CpuReport::class, function () {

@@ -162,7 +162,7 @@ driver://username:password@host:port/database?options
 <a name="selecting-scalar-values"></a>
 #### Selecionando valores escalares
 
- Por vezes, a consulta de uma base de dados pode resultar num valor único escalar. Em vez de ser necessário recuperar o resultado escalar da consulta de um objeto registo, Laravel permite que seja possível recuperar este valor diretamente através do método `scalar`:
+ Por vezes, a consulta de uma base de dados pode resultar num valor único escalar. Em vez de ser necessário recuperar o resultado escalar da consulta de um objeto registro, Laravel permite que seja possível recuperar este valor diretamente através do método `scalar`:
 
 ```php
     $burgers = DB::scalar(
@@ -276,7 +276,7 @@ driver://username:password@host:port/database?options
 <a name="listening-for-query-events"></a>
 ### Ouvindo eventos de consulta
 
- Se você deseja especificar uma função de fechamento que é invocada para cada consulta SQL executada pelo seu aplicativo, você pode usar o método `listen` da faca `DB`. Este método pode ser útil para registrar consultas ou fazer debug. Você pode registrar sua função de fechamento na consulta no método `boot` de um [fornecedor de serviços](/docs/providers):
+ Se você deseja especificar uma função de closure que é invocada para cada consulta SQL executada pelo seu aplicativo, você pode usar o método `listen` da faca `DB`. Este método pode ser útil para registrar consultas ou fazer debug. Você pode registrar sua função de closure na consulta no método `boot` de um [fornecedor de serviços](/docs/providers):
 
 ```php
     <?php
@@ -351,7 +351,7 @@ driver://username:password@host:port/database?options
 <a name="database-transactions"></a>
 ## Transações de banco de dados
 
- Você pode usar o método `transaction`, oferecido pela facade `DB`, para executar um conjunto de operações dentro de uma transação do banco de dados. Se for lançada uma exceção dentro da finalização da transação, esta será automaticamente revertida e a exceção será novamente lançada. Se o fechamento tiver sucesso, a transação será automaticamente comunicada:
+ Você pode usar o método `transaction`, oferecido pela facade `DB`, para executar um conjunto de operações dentro de uma transação do banco de dados. Se for lançada uma exceção dentro da finalização da transação, esta será automaticamente revertida e a exceção será novamente lançada. Se o closure tiver sucesso, a transação será automaticamente comunicada:
 
 ```php
     use Illuminate\Support\Facades\DB;

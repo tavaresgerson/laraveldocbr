@@ -38,7 +38,7 @@ php artisan migrate
 
  Para definir um traço, pode utilizar o método `define`, proporcionado pela faca `Feature`. Terá de prever um nome para o traço e um fecho que será invocado para resolver o valor inicial do traço.
 
- Normalmente, as funcionalidades são definidas num serviço utilizando o fechamento `Feature`. A função recebe o escopo para verificação de funcionalidade. Em geral, esse escopo é o utilizador atualmente autenticado. Neste exemplo, iremos definir uma funcionalidade para a introdução gradual de uma nova API para os utilizadores da nossa aplicação:
+ Normalmente, as funcionalidades são definidas num serviço utilizando o closure `Feature`. A função recebe o escopo para verificação de funcionalidade. Em geral, esse escopo é o utilizador atualmente autenticado. Neste exemplo, iremos definir uma funcionalidade para a introdução gradual de uma nova API para os utilizadores da nossa aplicação:
 
 ```php
 <?php
@@ -72,9 +72,9 @@ class AppServiceProvider extends ServiceProvider
  - Não deve ser utilizada pelos clientes de elevado tráfego a nova API.
  - Caso contrário, o recurso deve ser atribuído aleatoriamente aos usuários com uma probabilidade de 1 em 100 de estar ativo.
 
- A primeira vez que o recurso `new-api` for verificado para um determinado usuário, o resultado do fechamento será armazenado pelo driver de armazenamento. Na próxima vez em que o recurso for verificado contra o mesmo usuário, o valor será recuperado do armazenamento e o fechamento não será invocado.
+ A primeira vez que o recurso `new-api` for verificado para um determinado usuário, o resultado do closure será armazenado pelo driver de armazenamento. Na próxima vez em que o recurso for verificado contra o mesmo usuário, o valor será recuperado do armazenamento e o closure não será invocado.
 
- Por conveniência, se uma definição de função retornar apenas uma loteria, você pode ignorar totalmente o fechamento:
+ Por conveniência, se uma definição de função retornar apenas uma loteria, você pode ignorar totalmente o closure:
 
 ```php
     Feature::define('site-redesign', Lottery::odds(1, 1000));
@@ -83,7 +83,7 @@ class AppServiceProvider extends ServiceProvider
 <a name="class-based-features"></a>
 ### Características baseadas em classe
 
- O Pennant permite-lhe também definir recursos baseados em classes. Em contrapartida à definição de recursos baseados em fechamentos, não é necessário registar um recurso baseado numa classe num serviço provider. Para criar um recurso baseado numa classe pode utilizar o comando `pennant:feature` da ferramenta Artisan. Por defeito, a classe de recursos é armazenada no diretório `app/Features` do aplicativo:
+ O Pennant permite-lhe também definir recursos baseados em classes. Em contrapartida à definição de recursos baseados em fechamentos, não é necessário registrar um recurso baseado numa classe num serviço provider. Para criar um recurso baseado numa classe pode utilizar o comando `pennant:feature` da ferramenta Artisan. Por defeito, a classe de recursos é armazenada no diretório `app/Features` do aplicativo:
 
 ```shell
 php artisan pennant:feature NewApi
@@ -232,7 +232,7 @@ class PodcastController
 <a name="conditional-execution"></a>
 ### Execução condicional
 
- O método `when` pode ser usado para executar fluentemente um fechamento dado se o recurso estiver ativo. Além disso, é possível fornecer um segundo fechamento que será executado caso o recurso esteja inativo:
+ O método `when` pode ser usado para executar fluentemente um closure dado se o recurso estiver ativo. Além disso, é possível fornecer um segundo closure que será executado caso o recurso esteja inativo:
 
 ```php
     <?php
@@ -595,7 +595,7 @@ $color = Feature::value('purchase-button');
     );
 ```
 
- Do mesmo modo, quando se chama o método `unless`, será fornecido um valor rico da característica ao segundo fechamento opcional:
+ Do mesmo modo, quando se chama o método `unless`, será fornecido um valor rico da característica ao segundo closure opcional:
 
 ```php
     Feature::unless('purchase-button',
@@ -656,7 +656,7 @@ Feature::all();
     }
 ```
 
- O método `discover` irá registar todas as classes de características na pasta `app/Features` do seu aplicativo. Agora, o método `all` incluirá essas classes nos resultados, independentemente de terem sido verificadas durante o pedido atual:
+ O método `discover` irá registrar todas as classes de características na pasta `app/Features` do seu aplicativo. Agora, o método `all` incluirá essas classes nos resultados, independentemente de terem sido verificadas durante o pedido atual:
 
 ```php
 Feature::all();

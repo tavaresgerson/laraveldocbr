@@ -182,7 +182,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )->create();
 ```
 
-No entanto, às vezes poderá ser necessário definir um ficheiro novo para conter um subconjunto dos percursos da aplicação. Para conseguir isto, pode fornecer um fecho `then` ao método `withRouting`. Nessa closure, você pode registar quaisquer outros percursos que sejam necessários à aplicação:
+No entanto, às vezes poderá ser necessário definir um ficheiro novo para conter um subconjunto dos percursos da aplicação. Para conseguir isto, pode fornecer um fecho `then` ao método `withRouting`. Nessa closure, você pode registrar quaisquer outros percursos que sejam necessários à aplicação:
 
 ```php
 use Illuminate\Support\Facades\Route;

@@ -57,7 +57,7 @@ Esse provedor de serviços define somente um método `register`, que em seguida 
 
 #### As propriedades `bindings` e `singletons`
 
-Se o seu provedor de serviços estiver registrando muitas ligações simples, poderá usar as propriedades `bindings` e `singletons`, em vez de ter de registar manualmente cada ligação do contêiner. O seu provedor de serviços é carregado pelo framework e verifica automaticamente essas propriedades e registra as suas ligações:
+Se o seu provedor de serviços estiver registrando muitas ligações simples, poderá usar as propriedades `bindings` e `singletons`, em vez de ter de registrar manualmente cada ligação do contêiner. O seu provedor de serviços é carregado pelo framework e verifica automaticamente essas propriedades e registra as suas ligações:
 
 ```php
 <?php
@@ -163,7 +163,7 @@ Quando você chama o comando do Artisan `make:provider`, o Laravel adicionará a
 
 ## Provedores diferidos
 
-Se o seu provedor está registrando **apenas** os vínculos no [conjunto de serviços](/docs/container), você pode optar por adiar o registo do mesmo até que um dos vínculos registrados seja realmente necessário. A postergação da carga desse fornecedor irá melhorar a performance da sua aplicação, uma vez que não é carregado no sistema de arquivos em cada requisição.
+Se o seu provedor está registrando **apenas** os vínculos no [conjunto de serviços](/docs/container), você pode optar por adiar o registro do mesmo até que um dos vínculos registrados seja realmente necessário. A postergação da carga desse fornecedor irá melhorar a performance da sua aplicação, uma vez que não é carregado no sistema de arquivos em cada requisição.
 
 O Laravel compila e armazena uma lista de todos os serviços fornecidos pelos provedores de serviço diferidos, juntamente com o nome da sua classe provedora de serviço. Portanto, só quando você tentar resolver um desses serviços, é que o Laravel carregará o provedor de serviço.
 

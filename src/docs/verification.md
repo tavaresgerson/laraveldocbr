@@ -48,7 +48,7 @@
 <a name="verification-routing"></a>
 ## Encaminhamento
 
- Para implementar corretamente a verificação por e-mail, serão necessárias três rotas. Primeiro, é necessário criar uma rota para exibir um aviso ao usuário informando que ele deverá clicar no link de verificação do e-mail na mensagem de verificação enviada pelo Laravel após o registo.
+ Para implementar corretamente a verificação por e-mail, serão necessárias três rotas. Primeiro, é necessário criar uma rota para exibir um aviso ao usuário informando que ele deverá clicar no link de verificação do e-mail na mensagem de verificação enviada pelo Laravel após o registro.
 
  Em segundo lugar, será necessário definir um caminho para processar os pedidos gerados quando o usuário clica no link de verificação do endereço eletrónico disponibilizado pelo e-mail.
 

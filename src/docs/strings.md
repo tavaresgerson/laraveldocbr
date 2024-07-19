@@ -2609,7 +2609,7 @@ $repeated = Str::of('a')->repeat(5);
     // '15015551000'
 ```
 
- O método replaceMatches também aceita um fechamento que é invocado com cada parte da string correspondente ao padrão fornecido, permitindo a execução da lógica de substituição dentro do fechamento e o retorno do valor substituído:
+ O método replaceMatches também aceita um closure que é invocado com cada parte da string correspondente ao padrão fornecido, permitindo a execução da lógica de substituição dentro do closure e o retorno do valor substituído:
 
 ```php
     use Illuminate\Support\Str;
@@ -3042,7 +3042,7 @@ The `slug` method generates a URL friendly "slug" from the given string:
     // 'Taylor Otwell'
 ```
 
- Se necessário, você pode passar outro fechamento como o terceiro parâmetro do método `quando`. Esse fechamento será executado se o parâmetro condição avaliar como `falso`
+ Se necessário, você pode passar outro closure como o terceiro parâmetro do método `quando`. Esse closure será executado se o parâmetro condição avaliar como `falso`
 
 <a name="method-fluent-str-when-contains"></a>
 #### ``quandoContém'' {. método da coleção}
@@ -3099,7 +3099,7 @@ The `slug` method generates a URL friendly "slug" from the given string:
 <a name="method-fluent-str-when-empty"></a>
 #### whenEmpty {.collection-method}
 
- O método `whenEmpty` chama o fechamento especificado se a string estiver vazia. Se o fechamento retornar um valor, esse valor será também retornado pelo método `whenEmpty`. Se o fechamento não retornar um valor, será retornada uma instância de cadeia de texto fluent:
+ O método `whenEmpty` chama o closure especificado se a string estiver vazia. Se o closure retornar um valor, esse valor será também retornado pelo método `whenEmpty`. Se o closure não retornar um valor, será retornada uma instância de cadeia de texto fluent:
 
 ```php
     use Illuminate\Support\Str;
@@ -3131,7 +3131,7 @@ The `slug` method generates a URL friendly "slug" from the given string:
 <a name="method-fluent-str-when-starts-with"></a>
 #### `whenStartsWith` {.collection-method}
 
- O método `whenStartsWith` chama o fechamento fornecido se a string começar com a substring fornecida. O fechamento recebe a instância de string fluente:
+ O método `whenStartsWith` chama o closure fornecido se a string começar com a substring fornecida. O closure recebe a instância de string fluente:
 
 ```php
     use Illuminate\Support\Str;
@@ -3179,7 +3179,7 @@ The `slug` method generates a URL friendly "slug" from the given string:
 <a name="method-fluent-str-when-not-exactly"></a>
 #### `quandoNãoExatamente` {.collection-method}
 
- O método `whenNotExactly` é chamado ao se deparar com uma string que não coincide exatamente com a string fornecida, sendo o fechamento recebido como parâmetro:
+ O método `whenNotExactly` é chamado ao se deparar com uma string que não coincide exatamente com a string fornecida, sendo o closure recebido como parâmetro:
 
 ```php
     use Illuminate\Support\Str;
@@ -3195,7 +3195,7 @@ The `slug` method generates a URL friendly "slug" from the given string:
 <a name="method-fluent-str-when-is"></a>
 #### `whenIs` {.collection-method}
 
- O método whenIs chama o fechamento especificado se a string corresponder ao padrão indicado. Os asteriscos podem ser usados como valores de marcador. O fechamento receberá uma instância da string fluente:
+ O método whenIs chama o closure especificado se a string corresponder ao padrão indicado. Os asteriscos podem ser usados como valores de marcador. O closure receberá uma instância da string fluente:
 
 ```php
     use Illuminate\Support\Str;
@@ -3211,7 +3211,7 @@ The `slug` method generates a URL friendly "slug" from the given string:
 <a name="method-fluent-str-when-is-ascii"></a>
 #### `whenIsAscii` {.collection-method}
 
- O método `whenIsAscii` executa o fechamento indicado se a string for ASCII de 7 bits. O fechamento recebe uma instância da string fluente:
+ O método `whenIsAscii` executa o closure indicado se a string for ASCII de 7 bits. O closure recebe uma instância da string fluente:
 
 ```php
     use Illuminate\Support\Str;

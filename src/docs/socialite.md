@@ -67,7 +67,7 @@ composer require laravel/socialite
 <a name="authentication-and-storage"></a>
 ### Autenticação e armazenamento
 
- Uma vez que o usuário tenha sido obtido do provedor de OAuth, pode determinar se o utilizador existe na base de dados da aplicação e [autenticar o utilizador](/docs/en/{{ version }}/authentication#authenticate-a-user-instance). Se o utilizador não existir na base de dados da aplicação, normalmente irá criar um novo registo para representar o utilizador:
+ Uma vez que o usuário tenha sido obtido do provedor de OAuth, pode determinar se o utilizador existe na base de dados da aplicação e [autenticar o utilizador](/docs/en/{{ version }}/authentication#authenticate-a-user-instance). Se o utilizador não existir na base de dados da aplicação, normalmente irá criar um novo registro para representar o utilizador:
 
 ```php
     use App\Models\User;

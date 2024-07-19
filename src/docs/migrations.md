@@ -361,7 +361,7 @@ php artisan migrate:fresh --database=admin
 <a name="creating-columns"></a>
 ### Criando colunas
 
- É possível utilizar o método `table` da facade `Schema` para efetuar a atualização de tabelas existentes. Assim como o método `create`, o método `table` aceita dois argumentos: o nome da tabela e um fechamento que recebe uma instância `Illuminate\Database\Schema\Blueprint`, utilizada para adicionar colunas na tabela:
+ É possível utilizar o método `table` da facade `Schema` para efetuar a atualização de tabelas existentes. Assim como o método `create`, o método `table` aceita dois argumentos: o nome da tabela e um closure que recebe uma instância `Illuminate\Database\Schema\Blueprint`, utilizada para adicionar colunas na tabela:
 
 ```php
     use Illuminate\Database\Schema\Blueprint;

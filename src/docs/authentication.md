@@ -72,7 +72,7 @@ Em suma, se o seu aplicativo for acessado por meio de um navegador e estiver des
 
 Em seguida, se o seu aplicativo oferecer uma API que será consumida por terceiros, escolha entre [Passport](/docs/passport) ou [Sanctum](/docs/sanctum) para fornecer autenticação de tokens de API para o seu aplicativo. Em geral, recomendamos o Sanctum quando possível, uma vez que é uma solução completa simples para autenticação de API, SPA e mobile, incluindo suporte para "escopos" ou "habilidades".
 
-Se você estiver criando um aplicativo de uma página que será alimentado por um backend do Laravel, deve usar o [Laravel Sanctum](/docs/sanctum). Ao usar o Sanctum, será necessário implementar manualmente as próprias rotas de autenticação do backend ([autentificação de usuários](https://laravel.com/docs/sanctum#authenticating-users)) ou utilizar [Laravel Fortify](https://laravel.com/docs/fortify) como um serviço de autenticação sem cabeçalho que fornece rotas e controladores para recursos, tais como registo, redefinição de senha, verificação de email e outros.
+Se você estiver criando um aplicativo de uma página que será alimentado por um backend do Laravel, deve usar o [Laravel Sanctum](/docs/sanctum). Ao usar o Sanctum, será necessário implementar manualmente as próprias rotas de autenticação do backend ([autentificação de usuários](https://laravel.com/docs/sanctum#authenticating-users)) ou utilizar [Laravel Fortify](https://laravel.com/docs/fortify) como um serviço de autenticação sem cabeçalho que fornece rotas e controladores para recursos, tais como registro, redefinição de senha, verificação de email e outros.
 
 É possível escolher o tipo de autenticação passo a passo quando o aplicativo exige todas as funcionalidades fornecidas pela especificação OAuth2.
 
@@ -342,7 +342,7 @@ Auth::guard('admin')->login($user);
 
 #### Autentique um usuário por identificação
 
-Para autenticar um usuário utilizando o identificador primário do seu registo de base de dados, você pode utilizar a metodologia `loginUsingId`. Esta metodologia aceita o identificador primário do usuário que pretende ser autenticado:
+Para autenticar um usuário utilizando o identificador primário do seu registro de base de dados, você pode utilizar a metodologia `loginUsingId`. Esta metodologia aceita o identificador primário do usuário que pretende ser autenticado:
 
 ```php
 Auth::loginUsingId(1);
@@ -726,7 +726,7 @@ interface Authenticatable
 }
 ```
 
-Essa interface é simples. O método `getAuthIdentifierName` deve retornar o nome da coluna "chave primária" do usuário e o método `getAuthIdentifier` deve retornar a "chave primária" do usuário. Quando se utiliza um servidor de banco de dados MySQL, provavelmente seria o identificador autogerado atribuído ao registo do usuário. O método `getAuthPasswordName` deve retornar o nome da coluna de senha do usuário. O método `getAuthPassword` deve retornar a senha criptografada do usuário.
+Essa interface é simples. O método `getAuthIdentifierName` deve retornar o nome da coluna "chave primária" do usuário e o método `getAuthIdentifier` deve retornar a "chave primária" do usuário. Quando se utiliza um servidor de banco de dados MySQL, provavelmente seria o identificador autogerado atribuído ao registro do usuário. O método `getAuthPasswordName` deve retornar o nome da coluna de senha do usuário. O método `getAuthPassword` deve retornar a senha criptografada do usuário.
 
 Essa interface permite que o sistema de autenticação trabalhe com qualquer classe "user", independentemente da abstração de armazenamento ou ORM que você esteja usando. Por padrão, o Laravel inclui uma classe `App\Models\User` no diretório `app/Models`, a qual implementa essa interface.
 

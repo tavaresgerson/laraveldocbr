@@ -50,7 +50,7 @@ O arquivo `channels.php` é onde você pode registrar todos os canais de transmi
 
 #### O diretório de Armazenamento
 
-O diretório storage contém os registos, templates Blade compilados, sessões baseadas em ficheiros, caches de ficheiros e outros ficheiros gerados pelo framework. Este diretório está agrupado nos diretórios `app`, `framework` e `logs`. Pode ser utilizado o diretório app para armazenar quaisquer ficheiros gerados pela aplicação. O diretório `framework` é utilizado para armazenar os ficheiros gerados pelo framework e caches. Por último, o diretório `logs` contém os ficheiros de registo da aplicação.
+O diretório storage contém os registos, templates Blade compilados, sessões baseadas em ficheiros, caches de ficheiros e outros ficheiros gerados pelo framework. Este diretório está agrupado nos diretórios `app`, `framework` e `logs`. Pode ser utilizado o diretório app para armazenar quaisquer ficheiros gerados pela aplicação. O diretório `framework` é utilizado para armazenar os ficheiros gerados pelo framework e caches. Por último, o diretório `logs` contém os ficheiros de registro da aplicação.
 
 O diretório `storage/app/public` poderá ser utilizado para armazenar arquivos gerados pelo usuário, como avatares de perfil, que devem ser acessíveis publicamente. Crie um link simbólico no diretório `public/storage`, que aponta para este diretório. Você pode criar o link utilizando o comando Artisan `php artisan storage:link`.
 

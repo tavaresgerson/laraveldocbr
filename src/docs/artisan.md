@@ -161,7 +161,7 @@ Depois de gerar seu comando, você deve definir valores apropriados para as prop
 <a name="closure-commands"></a>
 ###  Comandos de encerramento
 
- Os comandos baseados em fechamento fornecem uma alternativa para a definição de comandos do console como classes. Da mesma forma que os fechamentos de rotas são uma alternativa aos controladores, pense nos fechamentos de comando como uma alternativa às classes de comando.
+ Os comandos baseados em closure fornecem uma alternativa para a definição de comandos do console como classes. Da mesma forma que os fechamentos de rotas são uma alternativa aos controladores, pense nos fechamentos de comando como uma alternativa às classes de comando.
 
  Ainda que o arquivo `routes/console.php` não defina rotas HTTP, ele define pontos de entrada baseados em console na sua aplicação. Nesse arquivo, você pode definir todos os seus comandos de console com base em closures usando o método `Artisan::command`. O método `command` aceita dois argumentos: a assinatura do comando e um closure que recebe os argumentos e as opções do comando:
 
@@ -190,7 +190,7 @@ Depois de gerar seu comando, você deve definir valores apropriados para as prop
 <a name="closure-command-descriptions"></a>
 ####  Descrições do comando de fecho
 
- Ao definir um comando baseado em fechamento é possível usar o método `purpose` para adicionar uma descrição ao comando. Essa descrição será exibida quando você executar os comandos `php artisan list` ou `php artisan help`:
+ Ao definir um comando baseado em closure é possível usar o método `purpose` para adicionar uma descrição ao comando. Essa descrição será exibida quando você executar os comandos `php artisan list` ou `php artisan help`:
 
 ```php
     Artisan::command('mail:send {user}', function (string $user) {
@@ -457,7 +457,7 @@ php artisan mail:send --id=1 --id=2
     ];
 ```
 
- Se você desejar ter controle total sobre o prompt, poderá fornecer um fechamento que deverá solicitar ao usuário uma resposta e retornar o valor dela:
+ Se você desejar ter controle total sobre o prompt, poderá fornecer um closure que deverá solicitar ao usuário uma resposta e retornar o valor dela:
 
 ```php
     use App\Models\User;
@@ -727,7 +727,7 @@ Por padrão, o Laravel registra automaticamente todos os comandos na pasta `app/
     ])
 ```
 
-Se necessário, também poderá registar comandos manualmente fornecendo o nome da classe do comando ao método `withCommands`:
+Se necessário, também poderá registrar comandos manualmente fornecendo o nome da classe do comando ao método `withCommands`:
 
 ```php
     use App\Domain\Orders\Commands\SendEmails;

@@ -29,7 +29,7 @@
     Schedule::call(new DeleteRecentUsers)->daily();
 ```
 
- Se você preferir reservar o arquivo `routes/console.php` para definições de comandos somente, poderá usar o método `withSchedule` no arquivo `bootstrap/app.php` da sua aplicação para definir as tarefas agendadas. Esse método aceita um fechamento que recebe uma instância do programador:
+ Se você preferir reservar o arquivo `routes/console.php` para definições de comandos somente, poderá usar o método `withSchedule` no arquivo `bootstrap/app.php` da sua aplicação para definir as tarefas agendadas. Esse método aceita um closure que recebe uma instância do programador:
 
 ```php
     use Illuminate\Console\Scheduling\Schedule;
@@ -62,7 +62,7 @@ php artisan schedule:list
 ```
 
 <a name="scheduling-artisan-closure-commands"></a>
-#### Programar comandos de fechamento do artesão
+#### Programar comandos de closure do artesão
 
  Se você quiser agendar um comando do tipo "Artisan" definido por meio de uma chave, poderá utilizar os métodos relacionados à programação após a definição do comando:
 
@@ -72,7 +72,7 @@ php artisan schedule:list
     })->purpose('Delete recent users')->daily();
 ```
 
- Se você precisar passar argumentos ao comando de fechamento, poderá fornec-los para o método `schedule`:
+ Se você precisar passar argumentos ao comando de closure, poderá fornec-los para o método `schedule`:
 
 ```php
     Artisan::command('emails:send {user} {--force}', function ($user) {
@@ -250,7 +250,7 @@ php artisan schedule:list
 <a name="truth-test-constraints"></a>
 #### Restrições do teste de veracidade
 
- O método `when` pode ser usado para limitar a execução de uma tarefa com base no resultado de um determinado teste lógico. Em outras palavras, se o fechamento for retornar `true`, a tarefa será executada apenas se nenhuma outra condição limitante impedir que ela seja executada:
+ O método `when` pode ser usado para limitar a execução de uma tarefa com base no resultado de um determinado teste lógico. Em outras palavras, se o closure for retornar `true`, a tarefa será executada apenas se nenhuma outra condição limitante impedir que ela seja executada:
 
 ```php
     Schedule::command('emails:send')->daily()->when(function () {
@@ -522,7 +522,7 @@ php artisan schedule:work
              });
 ```
 
- Se houver saída disponível a partir de seu comando, você poderá acessá-la em seus loops `after`, `onSuccess` ou `onFailure` tipando uma instância `Illuminate\Support\Stringable` como o argumento `$output` da definição do fechamento do seu loop:
+ Se houver saída disponível a partir de seu comando, você poderá acessá-la em seus loops `after`, `onSuccess` ou `onFailure` tipando uma instância `Illuminate\Support\Stringable` como o argumento `$output` da definição do closure do seu loop:
 
 ```php
     use Illuminate\Support\Stringable;

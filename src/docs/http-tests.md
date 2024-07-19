@@ -406,7 +406,7 @@ Exceptions::assertNothingReported();
     $response = $this->withoutDeprecationHandling()->get('/');
 ```
 
- O método `assertThrows` pode ser usado para garantir que o código dentro de um determinado fechamento provoque uma exceção do tipo especificado:
+ O método `assertThrows` pode ser usado para garantir que o código dentro de um determinado closure provoque uma exceção do tipo especificado:
 
 ```php
 $this->assertThrows(
@@ -566,7 +566,7 @@ class ExampleTest extends TestCase
 <a name="fluent-json-testing"></a>
 ### Teste de fluência do JSON
 
- O Laravel também fornece uma forma simples de testar as respostas do aplicativo em formato JSON. Para começar, defina um fechamento para o método `assertJson`. Este fechamento será chamado com uma instância de `Illuminate\Testing\Fluent\AssertableJson` que pode ser utilizada para fazer assertões contra o JSON retornado pelo seu aplicativo. O método `where` pode ser usado para fazer assertões contra um atributo em particular do JSON, enquanto o método `missing` pode ser utilizado para asserir que um determinado atributo está ausente na resposta:
+ O Laravel também fornece uma forma simples de testar as respostas do aplicativo em formato JSON. Para começar, defina um closure para o método `assertJson`. Este closure será chamado com uma instância de `Illuminate\Testing\Fluent\AssertableJson` que pode ser utilizada para fazer assertões contra o JSON retornado pelo seu aplicativo. O método `where` pode ser usado para fazer assertões contra um atributo em particular do JSON, enquanto o método `missing` pode ser utilizado para asserir que um determinado atributo está ausente na resposta:
 
 ```php tab=Pest
 use Illuminate\Testing\Fluent\AssertableJson;
@@ -1589,7 +1589,7 @@ class ExampleTest extends TestCase
     $response->assertSessionHas($key, $value = null);
 ```
 
- Se necessário, um fechamento pode ser fornecido como o segundo argumento ao método `assertSessionHas`. A afirmação terá sucesso se o fechamento retornar `true`:
+ Se necessário, um closure pode ser fornecido como o segundo argumento ao método `assertSessionHas`. A afirmação terá sucesso se o closure retornar `true`:
 
 ```php
     $response->assertSessionHas($key, function (User $value) {
@@ -1795,7 +1795,7 @@ class ExampleTest extends TestCase
     $response->assertViewHas($key, $value = null);
 ```
 
- Usar um fechamento como o segundo argumento do método `assertViewHas` permite que você faça inspeções e afirmações contra um determinado pedaço de dados de uma visão:
+ Usar um closure como o segundo argumento do método `assertViewHas` permite que você faça inspeções e afirmações contra um determinado pedaço de dados de uma visão:
 
 ```php
     $response->assertViewHas('user', function (User $user) {

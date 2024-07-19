@@ -34,9 +34,9 @@
     - [Artisan Console](/src/docs/artisan.md) ✅
     - [Broadcasting](/src/docs/broadcasting.md) ✅
     - [Cache](/src/docs/cache.md) ✅
-    - [Collections](/src/docs/collections.md) ⚙️
-    - [Context](/src/docs/context.md)
-    - [Contracts](/src/docs/contracts.md)
+    - [Collections](/src/docs/collections.md) ✅
+    - [Context](/src/docs/context.md) ✅
+    - [Contracts](/src/docs/contracts.md) ⚙️
     - [Events](/src/docs/events.md)
     - [File Storage](/src/docs/filesystem.md)
     - [Helpers](/src/docs/helpers.md)

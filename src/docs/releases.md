@@ -60,7 +60,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
 Em vez da estrutura de aplicativo Laravel padrão que contém cinco provedores de serviços, o Laravel 11 inclui apenas um único `AppServiceProvider`. A funcionalidade dos provedores de serviço anteriores foi incorporada ao `bootstrap/app.php`, é tratada automaticamente pelo framework ou pode ser colocada no `AppServiceProvider` do seu aplicativo.
 
-Por exemplo, o descobrimento de eventos agora é ativado por padrão, eliminando em grande parte a necessidade do registo manual de eventos e seus escutadores. No entanto, se você precisar registrar manuamente eventos, poderá fazer isso facilmente no `AppServiceProvider`. Do mesmo modo, os vínculos de modelos de rota ou portas de autorização que tenham sido previamente registradas no `AuthServiceProvider` podem ser registradas no `AppServiceProvider`.
+Por exemplo, o descobrimento de eventos agora é ativado por padrão, eliminando em grande parte a necessidade do registro manual de eventos e seus escutadores. No entanto, se você precisar registrar manuamente eventos, poderá fazer isso facilmente no `AppServiceProvider`. Do mesmo modo, os vínculos de modelos de rota ou portas de autorização que tenham sido previamente registradas no `AuthServiceProvider` podem ser registradas no `AppServiceProvider`.
 
 #### API de aceitação e roteamento de broadcast
 

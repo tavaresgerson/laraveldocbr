@@ -116,7 +116,7 @@ By default, the `<x-pulse>` component will create a 12 column grid, but you may 
 
  Você pode personalizar os campos e o avatar chamando o método `Pulse::user` na classe `App\Providers\AppServiceProvider` de sua aplicação.
 
- O método `user` aceita um fechamento que receberá o modelo `Authenticatable` a ser exibido e deverá retornar uma matriz contendo informações do nome, extra e avatar para o usuário.
+ O método `user` aceita um closure que receberá o modelo `Authenticatable` a ser exibido e deverá retornar uma matriz contendo informações do nome, extra e avatar para o usuário.
 
 ```php
 use Laravel\Pulse\Facades\Pulse;
@@ -211,7 +211,7 @@ The `<livewire:pulse.slow-queries />` card shows the database queries in your ap
 
 The `<livewire:pulse.slow-outgoing-requests />` card shows outgoing requests made using Laravel's [HTTP client](/docs/http-client) that exceed the configured threshold, which is 1,000ms by default.
 
- Por padrão, as entradas serão agrupadas pela URL completa. No entanto, poderá pretender normalizar ou agrupar solicitações de saída semelhantes utilizando expressões regulares. Consulte a documentação [registo de solicitações de saída lentas] (https://kubernetes.io/docs/reference/access-modes/http/#slow-outgoing-requests-recorder) para mais informações.
+ Por padrão, as entradas serão agrupadas pela URL completa. No entanto, poderá pretender normalizar ou agrupar solicitações de saída semelhantes utilizando expressões regulares. Consulte a documentação [registro de solicitações de saída lentas] (https://kubernetes.io/docs/reference/access-modes/http/#slow-outgoing-requests-recorder) para mais informações.
 
 <a name="cache-card"></a>
 #### Cachecor

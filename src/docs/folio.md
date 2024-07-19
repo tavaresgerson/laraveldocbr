@@ -208,7 +208,7 @@ withTrashed();
 
  Por padrão, o Folio devolve o conteúdo do modelo do Blade da página como resposta ao pedido recebido. No entanto, você pode personalizar a resposta, invocando a função `render` dentro do modelo da página.
 
- A função render aceita uma chave de fechamento que receberá a instância View sendo renderizada pelo Folio, permitindo-lhe adicionar dados adicionais na visualização ou personalizar a resposta inteira. Além de receber a instância View, quaisquer parâmetros de rota adicionais ou ligações de modelo também serão fornecidos à chave de fechamento render:
+ A função render aceita uma chave de closure que receberá a instância View sendo renderizada pelo Folio, permitindo-lhe adicionar dados adicionais na visualização ou personalizar a resposta inteira. Além de receber a instância View, quaisquer parâmetros de rota adicionais ou ligações de modelo também serão fornecidos à chave de closure render:
 
 ```php
 <?php
@@ -299,7 +299,7 @@ Folio::path(resource_path('views/pages'))->middleware([
 ]);
 ```
 
- Você pode incluir ações de fechamento em um array de middlewares para definir o middleware anónimo e on-line:
+ Você pode incluir ações de closure em um array de middlewares para definir o middleware anónimo e on-line:
 
 ```php
 use Closure;

@@ -896,7 +896,7 @@
     // ['Table', 'Desk', 'Chair']
 ```
 
- Você também pode ordenar um array pelos resultados de um determinado fechamento (closure, em inglês):
+ Você também pode ordenar um array pelos resultados de um determinado closure (closure, em inglês):
 
 ```php
     use Illuminate\Support\Arr;
@@ -1531,7 +1531,7 @@ The `data_set` function sets a value within a nested array or object using "dot"
 <a name="method-number-with-locale"></a>
 #### `Número::comLocalizador()` {.collection-method}
 
- O método `Number::withLocale` executa o fechamento especificado usando a locação indicada e, em seguida, restaura a locação original após o invocador da função ter sido executado.
+ O método `Number::withLocale` executa o closure especificado usando a locação indicada e, em seguida, restaura a locação original após o invocador da função ter sido executado.
 
 ```php
     use Illuminate\Support\Number;
@@ -2114,7 +2114,7 @@ The `data_set` function sets a value within a nested array or object using "dot"
 <a name="method-info"></a>
 #### `info()` {.collection-method}
 
- A função `info` irá escrever informações no registo da sua aplicação [Logging] (/docs/logging):
+ A função `info` irá escrever informações no registro da sua aplicação [Logging] (/docs/logging):
 
 ```php
     info('Some helpful information!');
@@ -2255,7 +2255,7 @@ $secondService->all(); // (cached result)
     {!! old('name', optional($user)->name) !!}
 ```
 
- A função `opcional` também aceita um fechamento como segundo argumento, que será invocado se o valor fornecido como primeiro argumento não for nulo:
+ A função `opcional` também aceita um closure como segundo argumento, que será invocado se o valor fornecido como primeiro argumento não for nulo:
 
 ```php
     return optional(User::find($id), function (User $user) {
@@ -2399,7 +2399,7 @@ $secondService->all(); // (cached result)
     }, 100);
 ```
 
- Se você preferir calcular manualmente o número de milésimos de segundo para esperar entre os tentaços, poderá passar um fechamento como terceiro argumento à função `retry`:
+ Se você preferir calcular manualmente o número de milésimos de segundo para esperar entre os tentaços, poderá passar um closure como terceiro argumento à função `retry`:
 
 ```php
     use Exception;
@@ -2419,7 +2419,7 @@ $secondService->all(); // (cached result)
     });
 ```
 
- Para só ser feito um novo tentativa sob condições específicas, é possível passar um fechamento como o quarto argumento da função `retry`:
+ Para só ser feito um novo tentativa sob condições específicas, é possível passar um closure como o quarto argumento da função `retry`:
 
 ```php
     use Exception;
@@ -2547,7 +2547,7 @@ $secondService->all(); // (cached result)
     // 10
 ```
 
- Um valor padrão ou uma chave de fechamento podem ser passados como o terceiro argumento para a função. Esse valor será retornado se o valor for em branco:
+ Um valor padrão ou uma chave de closure podem ser passados como o terceiro argumento para a função. Esse valor será retornado se o valor for em branco:
 
 ```php
     $result = transform(null, $callback, 'The value is blank');
@@ -2752,7 +2752,7 @@ $user = Pipeline::send($user)
 
  Como pode verificar, cada classe ou fecho invocável na canalização recebe o input e um fecho `$next`. A invocação de um fecho `$next` inicia a próxima chamada possível na canalização. Como deve ter reparado, isto é muito semelhante ao [middleware](/docs/middleware).
 
- Quando o último chamável na lista chamar o fechamento de `$next`, o chamável fornecido ao método `then` será invocado. Normalmente, esse chamável retorna simplesmente a entrada especificada.
+ Quando o último chamável na lista chamar o closure de `$next`, o chamável fornecido ao método `then` será invocado. Normalmente, esse chamável retorna simplesmente a entrada especificada.
 
  Claro, como discutido anteriormente, você não está limitado a apenas fornecer closures para sua pipeline. Também é possível fornecer classes com métodos de invocação. Se um nome da classe for fornecido, ela será instanciada por meio do [conjunto de serviços](/docs/container) de Laravel, permitindo que dependências sejam injetadas na classe invocável:
 

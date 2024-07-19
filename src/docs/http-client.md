@@ -622,7 +622,7 @@ $response = Http::github()->get('/');
 <a name="fake-callback"></a>
 #### Retorno Falso
 
- Se você precisar de uma lógica mais complexa para determinar quais respostas retornar em determinados pontos finais, poderá passar um fechamento à metodologia `fake`. Este fechamento receberá uma instância do `Illuminate\Http\Client\Request` e deverá retornar uma instância de resposta. No seu fechamento, você pode executar qualquer lógica necessária para determinar que tipo de resposta retornar:
+ Se você precisar de uma lógica mais complexa para determinar quais respostas retornar em determinados pontos finais, poderá passar um closure à metodologia `fake`. Este closure receberá uma instância do `Illuminate\Http\Client\Request` e deverá retornar uma instância de resposta. No seu closure, você pode executar qualquer lógica necessária para determinar que tipo de resposta retornar:
 
 ```php
     use Illuminate\Http\Client\Request;
@@ -658,7 +658,7 @@ $response = Http::github()->get('/');
 
  Para forjar respostas, você pode desejar inspecionar os pedidos que o client recebe ocasionalmente para se certificar de que seu aplicativo está enviando os dados ou as cabeçalhas corretos. Isso pode ser feito chamando o método `Http::assertSent` após chamar o `Http::fake`.
 
- O método `assertSent` aceita um fechamento (closure) que recebe uma instância de `Illuminate\Http\Client\Request` e deve retornar um valor boolean indicando se o pedido corresponde às suas expectativas. Para que a verificação passe, pelo menos um pedido deve ter sido emitido correspondendo às expectativas dadas:
+ O método `assertSent` aceita um closure (closure) que recebe uma instância de `Illuminate\Http\Client\Request` e deve retornar um valor boolean indicando se o pedido corresponde às suas expectativas. Para que a verificação passe, pelo menos um pedido deve ter sido emitido correspondendo às expectativas dadas:
 
 ```php
     use Illuminate\Http\Client\Request;
@@ -734,7 +734,7 @@ $recorded = Http::recorded();
 [$request, $response] = $recorded[0];
 ```
 
- Além disso, o método `recorded` aceita um fechamento que recebe uma instância de `Illuminate\Http\Client\Request` e `Illuminate\Http\Client\Response`, e pode ser utilizado para filtrar pares de solicitação/resposta com base nas suas expectativas:
+ Além disso, o método `recorded` aceita um closure que recebe uma instância de `Illuminate\Http\Client\Request` e `Illuminate\Http\Client\Response`, e pode ser utilizado para filtrar pares de solicitação/resposta com base nas suas expectativas:
 
 ```php
 use Illuminate\Http\Client\Request;

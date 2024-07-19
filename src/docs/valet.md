@@ -464,7 +464,7 @@ valet proxies
 |  `diagnosticar o mecânico` |  Diagnósticos de saída para ajudar no depurador do Valet. |
 |  `diretório de listagem de valet` |  Defina o comportamento da listagem de diretórios. Padrão é "desligado", que exibe uma página 404 para pastas. |
 |  "valet esqueceu" |  Execute este comando a partir de um diretório "estacionado" para o remover da lista de arquivos "estacionados". |
-|  "registo de valet" |  Veja uma lista de registros que são escritos pelos serviços do Valet. |
+|  "registro de valet" |  Veja uma lista de registros que são escritos pelos serviços do Valet. |
 |  "caminhos de valet" |  Visualize todos os caminhos estacionados. |
 |  "reiniciar valet" |  Reinicie os demónios do Serviço de Estacionamento. |
 |  "iniciar serviço de estacionamento" |  Inicia os servidores de valet. |

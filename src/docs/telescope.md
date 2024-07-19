@@ -39,7 +39,7 @@ php artisan telescope:install
 php artisan migrate
 ```
 
- Depois de executar o comando `telescope:install`, deve remover o registo do serviço "TelescopeServiceProvider" no arquivo de configuração da aplicação, `bootstrap/providers.php`. Registe manualmente os fornecedores do Telescope na função `register` da classe `App\Providers\AppServiceProvider`. Garantimos que o ambiente atual é "local" antes de registrar os fornecedores:
+ Depois de executar o comando `telescope:install`, deve remover o registro do serviço "TelescopeServiceProvider" no arquivo de configuração da aplicação, `bootstrap/providers.php`. Registe manualmente os fornecedores do Telescope na função `register` da classe `App\Providers\AppServiceProvider`. Garantimos que o ambiente atual é "local" antes de registrar os fornecedores:
 
 ```php
     /**
@@ -181,7 +181,7 @@ php artisan telescope:publish
 <a name="filtering-batches"></a>
 ### Lotes
 
- Ao passo que o fecho `filter` filtra os dados para entradas individuais, é possível utilizar o método `filterBatch` para registar um fecho de script que filtre todos os dados relacionados com uma determinada solicitação ou comando do console. Se o fecho retornar `true`, todas as entradas serão gravadas pelo Telescope:
+ Ao passo que o fecho `filter` filtra os dados para entradas individuais, é possível utilizar o método `filterBatch` para registrar um fecho de script que filtre todos os dados relacionados com uma determinada solicitação ou comando do console. Se o fecho retornar `true`, todas as entradas serão gravadas pelo Telescope:
 
 ```php
     use Illuminate\Support\Collection;
@@ -214,7 +214,7 @@ php artisan telescope:publish
 <a name="tagging"></a>
 ## Marcação
 
- O telescópio permite pesquisar entradas por "etiqueta". Muitas vezes as etiquetas são nomes de classes do modelo Eloquent ou IDs de usuários autenticados, que o telescópio adiciona automaticamente às entradas. Ocasionalmente, pode ser necessário associar suas próprias etiquetas personalizadas a uma entrada. Para fazer isso, você deve usar o método `Telescope::tag`. O método `tag` aceita um fechamento que deverá retornar uma matriz de etiquetas. As etiquetas retornadas pelo fechamento serão mescladas com quaisquer etiquetas automaticamente adicionadas ao registro pelo telescópio. Normalmente, você deve chamar o método `tag` dentro da ordem de serviços do seu serviço `App\Providers\TelescopeServiceProvider`:
+ O telescópio permite pesquisar entradas por "etiqueta". Muitas vezes as etiquetas são nomes de classes do modelo Eloquent ou IDs de usuários autenticados, que o telescópio adiciona automaticamente às entradas. Ocasionalmente, pode ser necessário associar suas próprias etiquetas personalizadas a uma entrada. Para fazer isso, você deve usar o método `Telescope::tag`. O método `tag` aceita um closure que deverá retornar uma matriz de etiquetas. As etiquetas retornadas pelo closure serão mescladas com quaisquer etiquetas automaticamente adicionadas ao registro pelo telescópio. Normalmente, você deve chamar o método `tag` dentro da ordem de serviços do seu serviço `App\Providers\TelescopeServiceProvider`:
 
 ```php
     use Laravel\Telescope\IncomingEntry;
@@ -303,7 +303,7 @@ php artisan telescope:publish
 <a name="gate-watcher"></a>
 ### Vigia de Portão
 
- O gate watcher regista os dados e o resultado das verificações de [portas e políticas](/docs/authorization) da sua aplicação. Se pretender excluir certas capacidades do registo pelo watcher, pode especificar essas capacidades na opção `ignore_abilities` no seu ficheiro `config/telescope.php`:
+ O gate watcher regista os dados e o resultado das verificações de [portas e políticas](/docs/authorization) da sua aplicação. Se pretender excluir certas capacidades do registro pelo watcher, pode especificar essas capacidades na opção `ignore_abilities` no seu ficheiro `config/telescope.php`:
 
 ```php
     'watchers' => [
@@ -326,7 +326,7 @@ php artisan telescope:publish
  O assistente de tarefas regista os dados e o estado de todas as [tarefas](/docs/queues) enviadas pela sua aplicação.
 
 <a name="log-watcher"></a>
-### Assistente de registo
+### Assistente de registro
 
  O espião de log registra os dados de [logs](/docs/logging) de quaisquer logs gerados pelo seu aplicativo.
 

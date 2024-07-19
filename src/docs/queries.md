@@ -119,7 +119,7 @@
     });
 ```
 
- É possível interromper o processamento de novas porções retornando `false` do fechamento:
+ É possível interromper o processamento de novas porções retornando `false` do closure:
 
 ```php
     DB::table('users')->orderBy('id')->chunk(100, function (Collection $users) {
@@ -129,7 +129,7 @@
     });
 ```
 
- Se estiver a atualizar registos de base de dados ao mesmo tempo que efetua o chunking dos resultados, os resultados do chunk podem mudar de maneira inesperada. Se planeia atualizar os registos recuperados enquanto efetua o chunking, é sempre melhor utilizar a método `chunkById`. Este método paginará automaticamente os resultados com base na chave primária do registo:
+ Se estiver a atualizar registos de base de dados ao mesmo tempo que efetua o chunking dos resultados, os resultados do chunk podem mudar de maneira inesperada. Se planeia atualizar os registos recuperados enquanto efetua o chunking, é sempre melhor utilizar a método `chunkById`. Este método paginará automaticamente os resultados com base na chave primária do registro:
 
 ```php
     DB::table('users')->where('active', false)
@@ -388,7 +388,7 @@ DB::table('users')->where('active', false)
 <a name="subquery-joins"></a>
 #### Uniões de subconjunto
 
- Você pode usar os métodos `joinSub`, `leftJoinSub`, e `rightJoinSub` para unir uma consulta a uma sub-consulta. Cada um destes métodos recebe três argumentos: a sub-consulta, o alias da tabela relacionada, e um fechamento que define as colunas relacionadas. Neste exemplo, vamos obter uma coleção de usuários onde cada registro do usuário também contém a data e hora `created_at` (timestamp) do post mais recente do blog desse usuário:
+ Você pode usar os métodos `joinSub`, `leftJoinSub`, e `rightJoinSub` para unir uma consulta a uma sub-consulta. Cada um destes métodos recebe três argumentos: a sub-consulta, o alias da tabela relacionada, e um closure que define as colunas relacionadas. Neste exemplo, vamos obter uma coleção de usuários onde cada registro do usuário também contém a data e hora `created_at` (timestamp) do post mais recente do blog desse usuário:
 
 ```php
     $latestPosts = DB::table('posts')
@@ -506,7 +506,7 @@ DB::table('users')->where('active', false)
                         ->get();
 ```
 
- Se você precisa agrupar uma condição de "ou" entre parênteses, pode passar um fechamento como primeiro argumento para o método `orWhere`:
+ Se você precisa agrupar uma condição de "ou" entre parênteses, pode passar um closure como primeiro argumento para o método `orWhere`:
 
 ```php
     $users = DB::table('users')
@@ -804,7 +804,7 @@ select * from comments where user_id in (
 <a name="logical-grouping"></a>
 ### Agrupamento lógico
 
- Às vezes você pode precisar agrupar várias cláusulas "onde" entre parênteses para conseguir o agrupamento lógico desejado em sua consulta. Na verdade, geralmente é sempre necessário agrupar os chamados para o método `orWhere` entre parêntesis para evitar comportamentos inesperados da consulta. Para isso, você pode passar um fechamento ao método `where`:
+ Às vezes você pode precisar agrupar várias cláusulas "onde" entre parênteses para conseguir o agrupamento lógico desejado em sua consulta. Na verdade, geralmente é sempre necessário agrupar os chamados para o método `orWhere` entre parêntesis para evitar comportamentos inesperados da consulta. Para isso, você pode passar um closure ao método `where`:
 
 ```php
     $users = DB::table('users')
@@ -816,7 +816,7 @@ select * from comments where user_id in (
                ->get();
 ```
 
- Como você pode ver, o passar de uma construção de função para o método `where` indica ao construtor de consultas que irá iniciar um grupo de restrições. O fechamento receberá uma instância do construtor de consulta que poderá ser usada para definir as restrições que devem estar contidas no parênteses do grupo. O exemplo acima produz o seguinte SQL:
+ Como você pode ver, o passar de uma construção de função para o método `where` indica ao construtor de consultas que irá iniciar um grupo de restrições. O closure receberá uma instância do construtor de consulta que poderá ser usada para definir as restrições que devem estar contidas no parênteses do grupo. O exemplo acima produz o seguinte SQL:
 
 ```sql
 select * from users where name = 'John' and (votes > 100 or title = 'Admin')
@@ -884,7 +884,7 @@ where exists (
     }, 'Pro')->get();
 ```
 
- Talvez seja necessário construir uma cláusula "WHERE" que compare uma coluna com os resultados de uma sub-consulta. Isso pode ser feito passando uma coluna, operador e um fechamento ao método `where`. Por exemplo, a seguinte consulta recuperará todos os registos de receitas em que o valor é menor do que a média;
+ Talvez seja necessário construir uma cláusula "WHERE" que compare uma coluna com os resultados de uma sub-consulta. Isso pode ser feito passando uma coluna, operador e um closure ao método `where`. Por exemplo, a seguinte consulta recuperará todos os registos de receitas em que o valor é menor do que a média;
 
 ```php
     use App\Models\Income;
@@ -1076,7 +1076,7 @@ The query builder also provides an `insert` method that may be used to insert re
     ]);
 ```
 
- Pode inserir vários registos de uma só vez, utilizando um array de arrays. Cada array representa um registo a inserir na tabela:
+ Pode inserir vários registos de uma só vez, utilizando um array de arrays. Cada array representa um registro a inserir na tabela:
 
 ```php
     DB::table('users')->insert([
@@ -1085,7 +1085,7 @@ The query builder also provides an `insert` method that may be used to insert re
     ]);
 ```
 
- O método `insertOrIgnore` ignorará erros durante a inserção de registos na base de dados. Quando utiliza este método, deve ter em atenção que erros por duplicação de registo serão ignorados e outros tipos de erro podem também ser ignorados consoante o motor da base de dados. Por exemplo, o `insertOrIgnore` irá [ignorar modo estrito do MySQL](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution):
+ O método `insertOrIgnore` ignorará erros durante a inserção de registos na base de dados. Quando utiliza este método, deve ter em atenção que erros por duplicação de registro serão ignorados e outros tipos de erro podem também ser ignorados consoante o motor da base de dados. Por exemplo, o `insertOrIgnore` irá [ignorar modo estrito do MySQL](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution):
 
 ```php
     DB::table('users')->insertOrIgnore([
@@ -1107,7 +1107,7 @@ The query builder also provides an `insert` method that may be used to insert re
 <a name="auto-incrementing-ids"></a>
 #### IDs com inicio automático
 
- Se o campo for um identificador com incremento automático, utilize o método `insertGetId` para inserir um registo e obter depois o código do ID:
+ Se o campo for um identificador com incremento automático, utilize o método `insertGetId` para inserir um registro e obter depois o código do ID:
 
 ```php
     $id = DB::table('users')->insertGetId(
@@ -1121,7 +1121,7 @@ The query builder also provides an `insert` method that may be used to insert re
 <a name="upserts"></a>
 ### Upserts
 
- O método `upsert` insere registos que não existem e atualiza os registos já existentes com novos valores especificados pelo utilizador. O primeiro argumento do método consiste nos valores a inserir ou atualizar, enquanto o segundo argumento lista as colunas que identificam exclusivamente um registo na tabela associada. O terceiro e último argumento é uma matriz de colunas que devem ser atualizadas se já existir correspondência entre os dados no banco de dados:
+ O método `upsert` insere registos que não existem e atualiza os registos já existentes com novos valores especificados pelo utilizador. O primeiro argumento do método consiste nos valores a inserir ou atualizar, enquanto o segundo argumento lista as colunas que identificam exclusivamente um registro na tabela associada. O terceiro e último argumento é uma matriz de colunas que devem ser atualizadas se já existir correspondência entre os dados no banco de dados:
 
 ```php
     DB::table('flights')->upsert(
@@ -1134,7 +1134,7 @@ The query builder also provides an `insert` method that may be used to insert re
     );
 ```
 
- No exemplo acima, o Laravel tentará inserir dois registos. Se existir um registo com os mesmos valores de coluna `departure` e `destination`, o Laravel atualizará a coluna `price` desse registo.
+ No exemplo acima, o Laravel tentará inserir dois registos. Se existir um registro com os mesmos valores de coluna `departure` e `destination`, o Laravel atualizará a coluna `price` desse registro.
 
  > [AVISO]
  > Todos os bancos de dados exceto SQL Server exigem que as colunas do segundo argumento da função `upsert` tenham um índice "primário" ou "único". Além disso, o driver de banco de dados MySQL ignora o segundo argumento da função `upsert` e sempre usa os índices "primários" e "únicos" da tabela para detectar registos existentes.
@@ -1153,9 +1153,9 @@ The query builder also provides an `insert` method that may be used to insert re
 <a name="update-or-insert"></a>
 #### Atualizar ou Inserir
 
- Às vezes poderá desejar atualizar um registo existente na base de dados ou criar-lhe um novo se não existir nenhum registo correspondente. Neste cenário, o método `updateOrInsert` poderá ser utilizado. O método `updateOrInsert` aceita dois argumentos: um array de condições para encontrar o registo e um array de pares de coluna e valor que indicam as colunas a atualizar.
+ Às vezes poderá desejar atualizar um registro existente na base de dados ou criar-lhe um novo se não existir nenhum registro correspondente. Neste cenário, o método `updateOrInsert` poderá ser utilizado. O método `updateOrInsert` aceita dois argumentos: um array de condições para encontrar o registro e um array de pares de coluna e valor que indicam as colunas a atualizar.
 
- O método `updateOrInsert` tenta encontrar o registo de dados do banco de dados com base nos pares coluna/valor no primeiro argumento. Se o registo existir, será atualizado com os valores do segundo argumento. Se o registo não puder ser encontrado, será inserido um novo registo com os atributos combinados dos dois argumentos:
+ O método `updateOrInsert` tenta encontrar o registro de dados do banco de dados com base nos pares coluna/valor no primeiro argumento. Se o registro existir, será atualizado com os valores do segundo argumento. Se o registro não puder ser encontrado, será inserido um novo registro com os atributos combinados dos dois argumentos:
 
 ```php
     DB::table('users')
@@ -1165,7 +1165,7 @@ The query builder also provides an `insert` method that may be used to insert re
         );
 ```
 
- É possível fornecer um fechamento à método `updateOrInsert` para personalizar os atributos que serão atualizados ou inseridos no banco de dados com base na existência de um registo correspondente:
+ É possível fornecer um closure à método `updateOrInsert` para personalizar os atributos que serão atualizados ou inseridos no banco de dados com base na existência de um registro correspondente:
 
 ```php
 DB::table('users')->updateOrInsert(

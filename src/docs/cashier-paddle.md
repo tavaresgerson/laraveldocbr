@@ -179,7 +179,7 @@ CASHIER_CURRENCY_LOCALE=nl_BE
 
  Como você pode ver no exemplo acima, utilizaremos o método fornecido por Cashier `checkout` para criar um objeto de checkout para apresentar ao cliente a "camada Paddle Checkout" para um determinado "identificador de preço". Ao usar o Paddle, os "preços" se referem aos [preços definidos para produtos específicos](https://developer.paddle.com/build/products/create-products-prices).
 
- Se necessário, o método `checkout` irá automaticamente criar um cliente no Paddle e vincular esse registo de clientes ao utilizador correspondente no banco de dados da sua aplicação. Após concluir a sessão de checkout, o cliente será redirecionado para uma página específica de sucesso onde poderá mostrar uma mensagem informativa ao cliente.
+ Se necessário, o método `checkout` irá automaticamente criar um cliente no Paddle e vincular esse registro de clientes ao utilizador correspondente no banco de dados da sua aplicação. Após concluir a sessão de checkout, o cliente será redirecionado para uma página específica de sucesso onde poderá mostrar uma mensagem informativa ao cliente.
 
  Na visualização "comprar", incluiremos um botão para exibir o overlays de check-out. O componente Blade `paddle-button` está incluído no Cashier Paddle; contudo, você pode também [renderizar manualmente uma checkout de overlays](manually-rendering-an-overlay-checkout):
 
@@ -386,7 +386,7 @@ CASHIER_CURRENCY_LOCALE=nl_BE
  Agora o seu abono será cancelado no final do período de faturamento.
 
  > [!ATENÇÃO]
- > Desde que tenha configurado o processamento de webhooks do Cashier, este manterá automaticamente sincronizado os respetivos registos na base de dados da sua aplicação com a Paddle, através da análise dos webhooks recebidos. Assim, por exemplo, quando cancelar uma subscrição de um cliente através do painel de controlo da Paddle, o Cashier receberá o respetivo webhook e marcará a subscrição como "cancelada" no registo da sua aplicação.
+ > Desde que tenha configurado o processamento de webhooks do Cashier, este manterá automaticamente sincronizado os respetivos registos na base de dados da sua aplicação com a Paddle, através da análise dos webhooks recebidos. Assim, por exemplo, quando cancelar uma subscrição de um cliente através do painel de controlo da Paddle, o Cashier receberá o respetivo webhook e marcará a subscrição como "cancelada" no registro da sua aplicação.
 
 <a name="checkout-sessions"></a>
 ## Sessões de check-out
@@ -1179,7 +1179,7 @@ $options['settings']['frameInitialHeight'] = 366;
     });
 ```
 
- Quando o seu aplicativo receber a mensagem `subscription_created`, a Cashier definirá a data de finalização do período experimental no registo da subscrição na base de dados do seu aplicativo e envia instruções à Paddle para não iniciar as faturas ao cliente antes dessa data.
+ Quando o seu aplicativo receber a mensagem `subscription_created`, a Cashier definirá a data de finalização do período experimental no registro da subscrição na base de dados do seu aplicativo e envia instruções à Paddle para não iniciar as faturas ao cliente antes dessa data.
 
  > [!AVISO]
  > Se a assinatura do cliente não for cancelada antes da data de término do teste, será cobrado assim que o período de teste terminar, por isso você deve comunicar aos seus usuários a data de término do teste.
@@ -1223,7 +1223,7 @@ $options['settings']['frameInitialHeight'] = 366;
 <a name="without-payment-method-up-front"></a>
 ### Sem método de pagamento na frente
 
- Se pretender oferecer períodos de avaliação sem recolher antecipadamente informações sobre o método de pagamento do utilizador, pode definir a coluna `trial_ends_at` do registo do cliente associado ao seu utilizador com a data desejada para terminar a avaliação. Normalmente, isto é feito durante o registo do utilizador:
+ Se pretender oferecer períodos de avaliação sem recolher antecipadamente informações sobre o método de pagamento do utilizador, pode definir a coluna `trial_ends_at` do registro do cliente associado ao seu utilizador com a data desejada para terminar a avaliação. Normalmente, isto é feito durante o registro do utilizador:
 
 ```php
     use App\Models\User;
