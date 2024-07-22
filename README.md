@@ -36,8 +36,8 @@
     - [Cache](/src/docs/cache.md) ✅
     - [Collections](/src/docs/collections.md) ✅
     - [Context](/src/docs/context.md) ✅
-    - [Contracts](/src/docs/contracts.md) ⚙️
-    - [Events](/src/docs/events.md)
+    - [Contracts](/src/docs/contracts.md) ✅
+    - [Events](/src/docs/events.md) ⚙️
     - [File Storage](/src/docs/filesystem.md)
     - [Helpers](/src/docs/helpers.md)
     - [HTTP Client](/src/docs/http-client.md)
