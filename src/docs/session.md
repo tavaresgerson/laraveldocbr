@@ -1,4 +1,4 @@
-# Sessão de HTTP
+# Sessões
 
 ## Introdução
 Uma vez que as aplicações baseadas em HTTP não conservam o estado das informações do utilizador, as sessões permitem armazenar informações sobre o utilizador entre requisições de forma a poderem ser acessadas em pedidos subsequentes.

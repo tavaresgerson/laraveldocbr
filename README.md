@@ -26,20 +26,20 @@
     - [Templates Blade](/src/docs/blade.md) ✅
     - [Pacote de ativos](/src/docs/vite.md) ✅
     - [URL Generation](/src/docs/urls.md) ✅
-    - [Session](/src/docs/session.md) ✅
-    - [Validation](/src/docs/validation.md) ✅
+    - [Sessões](/src/docs/session.md) ✅
+    - [Validação](/src/docs/validation.md) ✅
     - [Error Handling](/src/docs/errors.md) ✅
     - [Logging](/src/docs/logging.md) ✅
 - ## Indo mais fundo
     - [Artisan Console](/src/docs/artisan.md) ✅
     - [Broadcasting](/src/docs/broadcasting.md) ✅
     - [Cache](/src/docs/cache.md) ✅
-    - [Collections](/src/docs/collections.md) ✅
-    - [Context](/src/docs/context.md) ✅
-    - [Contracts](/src/docs/contracts.md) ✅
-    - [Events](/src/docs/events.md) ⚙️
-    - [File Storage](/src/docs/filesystem.md)
-    - [Helpers](/src/docs/helpers.md)
+    - [Coleções](/src/docs/collections.md) ✅
+    - [Contexto](/src/docs/context.md) ✅
+    - [Contratos](/src/docs/contracts.md) ✅
+    - [Eventos](/src/docs/events.md) ✅
+    - [Armazenamento de arquivos](/src/docs/filesystem.md) ✅
+    - [Helpers](/src/docs/helpers.md) ⚙️
     - [HTTP Client](/src/docs/http-client.md)
     - [Localization](/src/docs/localization.md)
     - [Mail](/src/docs/mail.md)
