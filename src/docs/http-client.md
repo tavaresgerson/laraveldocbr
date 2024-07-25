@@ -3,12 +3,12 @@
 <a name="introduction"></a>
 ## Introdução
 
- O Laravel fornece uma API expressiva e mínima em torno do cliente [HTTP Guzzle](http://docs.guzzlephp.org/en/stable/), permitindo que você faça requisições HTTP indo para a comunicação com outros aplicativos da Web de maneira rápida. O invólucro do Laravel em torno do Guzzle está focado nos casos de uso mais comuns e uma experiência maravilhosa ao desenvolvedor.
+O Laravel fornece uma API expressiva e mínima em torno do cliente [HTTP Guzzle](http://docs.guzzlephp.org/en/stable/), permitindo que você faça requisições HTTP para a comunicação com outros aplicativos da Web de maneira rápida. O invólucro do Laravel em torno do Guzzle está focado nos casos de uso mais comuns e uma experiência maravilhosa ao desenvolvedor.
 
 <a name="making-requests"></a>
-## Fazendo Pedidos
+## Fazendo requisições
 
- Para fazer solicitações, é possível utilizar os métodos `head`, `get`, `post`, `put`, `patch` e `delete`, fornecidos pela faca `Http`. Primeiro, examinaremos como realizar uma solicitação básica de `GET` para outra URL:
+Para fazer solicitações, é possível utilizar os métodos `head`, `get`, `post`, `put`, `patch` e `delete`, fornecidos pela facade `Http`. Primeiro, examinaremos como realizar uma solicitação básica de `GET` para outra URL:
 
 ```php
     use Illuminate\Support\Facades\Http;
@@ -16,7 +16,7 @@
     $response = Http::get('http://example.com');
 ```
 
- O método get retorna uma instância de Illuminate\Http\Client\Response, que disponibiliza vários métodos para inspeção da resposta.
+O método `get` retorna uma instância de `Illuminate\Http\Client\Response`, que disponibiliza vários métodos para inspeção da resposta.
 
 ```php
     $response->body() : string;
@@ -32,13 +32,13 @@
     $response->headers() : array;
 ```
 
- O objeto `Illuminate\Http\Client\Response` também implementa a interface PHP `ArrayAccess`, que permite o acesso direto aos dados da resposta JSON na resposta:
+O objeto `Illuminate\Http\Client\Response` também implementa a interface PHP `ArrayAccess`, que permite o acesso direto aos dados da resposta JSON na resposta:
 
 ```php
     return Http::get('http://example.com/users/1')['name'];
 ```
 
- Além dos métodos de resposta acima listados, os seguintes métodos podem ser utilizados para determinar se uma resposta tem um determinado código de estado:
+Além dos métodos de resposta acima listados, os seguintes métodos podem ser utilizados para determinar se uma resposta tem um determinado código de estado:
 
 ```php
     $response->ok() : bool;                  // 200 OK
@@ -62,7 +62,7 @@
 <a name="uri-templates"></a>
 #### Modelos de URI
 
- Com o cliente HTTP, também é possível construir URLs de solicitação usando a especificação [de modelo de URL da URI](https://www.rfc-editor.org/rfc/rfc6570). Para definir os parâmetros de URL que podem ser expandidos pelo modelo de URL, você pode usar o método `withUrlParameters`:
+Com o cliente HTTP, também é possível construir URLs de solicitação usando a especificação [de modelo de URL](https://www.rfc-editor.org/rfc/rfc6570). Para definir os parâmetros de URL que podem ser expandidos pelo modelo de URL, você pode usar o método `withUrlParameters`:
 
 ```php
 Http::withUrlParameters([
@@ -76,16 +76,16 @@ Http::withUrlParameters([
 <a name="dumping-requests"></a>
 #### Pedidos de dumping
 
- Se você deseja descartar a instância de requisição em trânsito antes que ela seja enviada e terminar a execução do script, é possível adicionar o método `dd` para o início da definição de sua requisição:
+Se você deseja descartar a instância de requisição em trânsito antes que ela seja enviada e terminar a execução do script, é possível adicionar o método `dd` para o início da definição de sua requisição:
 
 ```php
     return Http::dd()->get('http://example.com');
 ```
 
 <a name="request-data"></a>
-### Pedido de dados
+### Dados da requisição
 
- É comum enviar dados adicionais em requisições `POST`, `PUT` e `PATCH`. Por isso, estas funcionalidades permitem que você utilize uma matriz de dados como segundo argumento. Os dados serão enviados com o tipo de conteúdo `application/json`:
+É comum enviar dados adicionais em requisições `POST`, `PUT` e `PATCH`. Por isso, estas funcionalidades permitem que você utilize uma matriz de dados como segundo argumento. Os dados serão enviados com o tipo de conteúdo `application/json`:
 
 ```php
     use Illuminate\Support\Facades\Http;
@@ -99,7 +99,7 @@ Http::withUrlParameters([
 <a name="get-request-query-parameters"></a>
 #### Parâmetros de consulta de solicitação GET
 
- Ao fazer solicitações "GET", pode anexar uma string de consulta à URL diretamente ou enviar um array de pares chave/valor como segundo argumento para a metodologia `get`:
+Ao fazer solicitações "GET", você pode anexar uma string de consulta à URL diretamente ou enviar um array de pares chave/valor como segundo argumento para o método `get`:
 
 ```php
     $response = Http::get('http://example.com/users', [
@@ -107,7 +107,7 @@ Http::withUrlParameters([
         'page' => 1,
     ]);
 ```
- Em alternativa, pode ser utilizada a método `withQueryParameters`:
+Em alternativa, pode ser utilizada a método `withQueryParameters`:
 
 ```php
     Http::retry(3, 100)->withQueryParameters([
@@ -119,7 +119,7 @@ Http::withUrlParameters([
 <a name="sending-form-url-encoded-requests"></a>
 #### Enviar solicitações codificadas de URL do formulário
 
- Se pretender enviar dados com o tipo de conteúdo `application/x-www-form-urlencoded`, deve chamar a função `asForm` antes de realizar o pedido:
+Se você pretender enviar dados com o tipo de conteúdo `application/x-www-form-urlencoded`, você deve chamar a função `asForm` antes de realizar o pedido:
 
 ```php
     $response = Http::asForm()->post('http://example.com/users', [
@@ -131,7 +131,7 @@ Http::withUrlParameters([
 <a name="sending-a-raw-request-body"></a>
 #### Enviando um corpo de pedido bruto
 
- É possível usar o método `withBody` se pretender fornecer um corpo de solicitação bruto ao efetuar uma solicitação. O tipo de conteúdo pode ser definido como um segundo argumento no método:
+É possível usar o método `withBody` se você pretender fornecer um corpo de solicitação bruto ao efetuar uma solicitação. O tipo de conteúdo pode ser definido como um segundo argumento no método:
 
 ```php
     $response = Http::withBody(
@@ -140,9 +140,9 @@ Http::withUrlParameters([
 ```
 
 <a name="multi-part-requests"></a>
-#### Pedidos com várias partes
+#### Pedidos com multipart
 
- Se pretender enviar arquivos como pedidos com partes múltiplas, deverá chamar o método `attach` antes de efetuar seu pedido. Esse método aceita o nome do arquivo e seu conteúdo. Se necessário, poderá fornecer um terceiro argumento que será considerado como o nome do arquivo, enquanto um quarto argumento pode ser usado para fornecer cabeçalhos associados ao arquivo:
+Se você pretender enviar arquivos como requisição com partes múltiplas, deverá chamar o método `attach` antes de efetuar seu requisição. Esse método aceita o nome do arquivo e seu conteúdo. Se necessário, poderá fornecer um terceiro argumento que será considerado como o nome do arquivo, enquanto um quarto argumento pode ser usado para fornecer cabeçalhos associados ao arquivo:
 
 ```php
     $response = Http::attach(
@@ -150,7 +150,7 @@ Http::withUrlParameters([
     )->post('http://example.com/attachments');
 ```
 
- Em vez de passar o conteúdo bruto de um arquivo, você pode passar um recurso de fluxo:
+Em vez de passar o conteúdo bruto de um arquivo, você pode passar um stream:
 
 ```php
     $photo = fopen('photo.jpg', 'r');
@@ -163,7 +163,7 @@ Http::withUrlParameters([
 <a name="headers"></a>
 ### Headers
 
- É possível adicionar headers aos pedidos usando o método `withHeaders`. Este método aceita um array de pares chave/valor:
+É possível adicionar cabeçalhos aos pedidos usando o método `withHeaders`. Este método aceita um array de pares chave/valor:
 
 ```php
     $response = Http::withHeaders([
@@ -174,19 +174,19 @@ Http::withUrlParameters([
     ]);
 ```
 
- Você pode usar o método `accept` para especificar o tipo de conteúdo que a sua aplicação está esperando em resposta ao seu pedido:
+Você pode usar o método `accept` para especificar o tipo de conteúdo que a sua aplicação está esperando em resposta ao seu pedido:
 
 ```php
     $response = Http::accept('application/json')->get('http://example.com/users');
 ```
 
- Para conveniência, você pode usar o método `acceptJson` para especificar rapidamente que seu aplicativo espera o tipo de conteúdo `application/json` em resposta ao seu pedido:
+Para conveniência, você pode usar o método `acceptJson` para especificar rapidamente que seu aplicativo espera o tipo de conteúdo `application/json` em resposta a sua requisição:
 
 ```php
     $response = Http::acceptJson()->get('http://example.com/users');
 ```
 
- O método `withHeaders` combina novas cabeçalhos ao conjunto de cabeçalhos existentes na requisição. Se necessário, podem substituir totalmente todos os cabeçalhos utilizando o método `replaceHeaders`:
+O método `withHeaders` combina novas cabeçalhos ao conjunto de cabeçalhos existentes na requisição. Se necessário, é possível substituir totalmente todos os cabeçalhos utilizando o método `replaceHeaders`:
 
 ```php
 $response = Http::withHeaders([
@@ -201,7 +201,7 @@ $response = Http::withHeaders([
 <a name="authentication"></a>
 ### Autenticação
 
- Você pode especificar credenciais de autenticação básicas e por comprovação usando os métodos `withBasicAuth` e `withDigestAuth`, respectivamente:
+Você pode especificar credenciais de autenticação básicas e por comprovação usando os métodos `withBasicAuth` e `withDigestAuth`, respectivamente:
 
 ```php
     // Basic authentication...
@@ -212,9 +212,9 @@ $response = Http::withHeaders([
 ```
 
 <a name="bearer-tokens"></a>
-#### Tokens de Transferência
+#### Bearer Tokens
 
- Se você deseja adicionar rapidamente um token de transporte à seção `Authorization` do pedido, poderá usar o método `withToken`:
+Se você deseja adicionar rapidamente um token à seção `Authorization` do pedido, poderá usar o método `withToken`:
 
 ```php
     $response = Http::withToken('token')->post(/* ... */);
@@ -223,30 +223,30 @@ $response = Http::withHeaders([
 <a name="timeout"></a>
 ### Tempo de espera
 
- O método `timeout` permite especificar o número máximo de segundos para espera por uma resposta. Por padrão, o cliente de HTTP tem um tempo limite de 30 segundos:
+O método `timeout` permite especificar o número máximo de segundos para espera por uma resposta. Por padrão, o cliente HTTP tem um tempo limite de 30 segundos:
 
 ```php
     $response = Http::timeout(3)->get(/* ... */);
 ```
 
- Se o tempo de espera for excedido, uma instância do `Illuminate\Http\Client\ConnectionException` será lançada.
+Se o tempo de espera for excedido, uma instância do `Illuminate\Http\Client\ConnectionException` será lançada.
 
- Você pode especificar o número máximo de segundos para aguardar durante a tentativa de conexão ao servidor usando o método `connectTimeout`:
+Você pode especificar o número máximo de segundos para aguardar durante a tentativa de conexão ao servidor usando o método `connectTimeout`:
 
 ```php
     $response = Http::connectTimeout(3)->get(/* ... */);
 ```
 
 <a name="retries"></a>
-### Repedições
+### Tentativas
 
- Se você preferir que o HTTP client retenha automaticamente a requisição se um erro do cliente ou servidor ocorrer, poderá utilizar o método `retry`. O `retry` aceita o número máximo de vezes que será tentada a requisição e o número de milésimos de segundo que o Laravel esperará entre cada uma delas:
+Se você preferir que o HTTP client repita automaticamente a requisição se um erro do cliente ou servidor ocorrer, poderá utilizar o método `retry`. O `retry` aceita o número máximo de vezes que será tentada a requisição e o número de milésimos de segundo que o Laravel esperará entre cada uma delas:
 
 ```php
     $response = Http::retry(3, 100)->post(/* ... */);
 ```
 
- Se pretender calcular manualmente o número de milésimos de segundo para o período de pausa entre tentativas, poderá enviar um fecho como segundo argumento ao método `retry`:
+Se pretender calcular manualmente o número de milésimos de segundo para o período de pausa entre tentativas, poderá enviar um closure como segundo argumento ao método `retry`:
 
 ```php
     use Exception;
@@ -256,13 +256,13 @@ $response = Http::withHeaders([
     })->post(/* ... */);
 ```
 
- Para conveniência, é possível fornecer um array como o primeiro argumento do método `retry`. Este array será usado para determinar quantos milésimos de segundo aguardar entre tentativas sucessivas:
+Por conveniência, é possível fornecer um array como o primeiro argumento do método `retry`. Este array será usado para determinar quantos milésimos de segundo aguardar entre tentativas sucessivas:
 
 ```php
     $response = Http::retry([100, 200])->post(/* ... */);
 ```
 
- Se necessário, você pode passar um terceiro argumento para o método `retry`. O terceiro argumento deve ser uma função que determine se os tentativas de retransmissão devem realmente ser executadas. Por exemplo, você poderá querer fazer a transação somente quando ocorrer um erro no banco de dados:
+Se necessário, você pode passar um terceiro argumento para o método `retry`. O terceiro argumento deve ser uma função que determine se os tentativas de retransmissão devem realmente ser executadas. Por exemplo, você poderá querer fazer a transação somente quando ocorrer um erro no banco de dados:
 
 ```php
     use Exception;
@@ -273,7 +273,7 @@ $response = Http::withHeaders([
     })->post(/* ... */);
 ```
 
- Se o pedido falhar, talvez seja conveniente fazer uma alteração no pedido antes de um novo tentativa ser realizada. Isto pode ser feito modificando os argumentos do pedido fornecidos à chamável que foi enviada para a função `retry`. Por exemplo, se pretender voltar a fazer o pedido com um novo token de autorização caso o primeiro tenha dado erro de autenticação:
+Se uma tentativa de solicitação falhar, você poderá fazer uma alteração na solicitação antes de uma nova tentativa ser feita. Você pode conseguir isso modificando o argumento de solicitação fornecido para o callable no método `retry`. Por exemplo, talvez você queira tentar novamente a solicitação com um novo token de autorização se a primeira tentativa retornar um erro de autenticação:
 
 ```php
     use Exception;
@@ -291,80 +291,81 @@ $response = Http::withHeaders([
     })->post(/* ... */);
 ```
 
- Se todas as solicitações falharem, será lançada uma instância de `Illuminate\Http\Client\RequestException`. Caso você deseje desativar esse comportamento, pode fornecer um argumento de `throw` com o valor `false`. Quando desativado, a última resposta recebida pelo cliente será retornada depois que todas as tentativas de retry foram realizadas:
+Se todas as solicitações falharem, será lançada uma instância de `Illuminate\Http\Client\RequestException`. Caso você deseje desativar esse comportamento, forneça um argumento de `throw` com o valor `false`. Quando desativado, a última resposta recebida pelo cliente será retornada depois que todas as tentativas forem realizadas:
 
 ```php
     $response = Http::retry(3, 100, throw: false)->post(/* ... */);
 ```
 
- > [ATENÇÃO]
- > Se todos os pedidos falharem devido a um problema de conexão, uma `Illuminate\Http\Client\ConnectionException` será lançada mesmo quando o argumento `throw` estiver definido como `false`.
+::: warning ATENÇÃO
+Se todos os pedidos falharem devido a um problema de conexão, uma `Illuminate\Http\Client\ConnectionException` será lançada mesmo quando o argumento `throw` estiver definido como `false`.
+:::
 
 <a name="error-handling"></a>
-### Lidar com erros
+### Lidando com erros
 
- Ao contrário do comportamento padrão de Guzzle, o wrapper de cliente HTTP do Laravel não lança exceções em casos de erros no cliente ou servidor (`respostas com nível 400 e 500` dos servidores). Você pode determinar se um desses erros foi retornado usando os métodos `successful`, `clientError`, ou `serverError`:
+Ao contrário do comportamento padrão do Guzzle, o wrapper de cliente HTTP do Laravel não lança exceções em casos de erros no cliente ou servidor (`respostas com nível 400 e 500` dos servidores). Você pode determinar se um desses erros foi retornado usando os métodos `successful`, `clientError`, ou `serverError`:
 
 ```php
-    // Determine if the status code is >= 200 and < 300...
+    // Determine se o código de status é >= 200 e < 300...
     $response->successful();
 
-    // Determine if the status code is >= 400...
+    // Determine se o código de status é >= 400...
     $response->failed();
 
-    // Determine if the response has a 400 level status code...
+    // Determine se a resposta tem um código de status de nível 400...
     $response->clientError();
 
-    // Determine if the response has a 500 level status code...
+    // Determine se a resposta tem um código de status de nível 500...
     $response->serverError();
 
-    // Immediately execute the given callback if there was a client or server error...
+    // Execute imediatamente o retorno de chamada fornecido se houver um erro no cliente ou no servidor...
     $response->onError(callable $callback);
 ```
 
 <a name="throwing-exceptions"></a>
 #### Lançando exceções
 
- Se você tiver uma instância de resposta e desejar gerar uma exceção `Illuminate\Http\Client\RequestException` se o código do status da resposta indicar um erro no cliente ou servidor, poderá usar as funções `throw` ou `throwIf`:
+Se você tiver uma instância de resposta e desejar gerar uma exceção `Illuminate\Http\Client\RequestException` se o código do status da resposta indicar um erro no cliente ou servidor, poderá usar as funções `throw` ou `throwIf`:
 
 ```php
     use Illuminate\Http\Client\Response;
 
     $response = Http::post(/* ... */);
 
-    // Throw an exception if a client or server error occurred...
+    // Lançar uma exceção se ocorrer um erro de cliente ou servidor...
     $response->throw();
 
-    // Throw an exception if an error occurred and the given condition is true...
+    // Lança uma exceção se ocorreu um erro e a condição fornecida for verdadeira...
     $response->throwIf($condition);
 
-    // Throw an exception if an error occurred and the given closure resolves to true...
+    // Lançar uma exceção se ocorreu um erro e o fechamento fornecido for verdadeiro...
     $response->throwIf(fn (Response $response) => true);
 
-    // Throw an exception if an error occurred and the given condition is false...
+    // Lançar uma exceção se ocorreu um erro e a condição fornecida for falsa...
     $response->throwUnless($condition);
 
-    // Throw an exception if an error occurred and the given closure resolves to false...
+    // Lança uma exceção se ocorreu um erro e o closure fornecido resolve para falso...
     $response->throwUnless(fn (Response $response) => false);
 
-    // Throw an exception if the response has a specific status code...
+    // Lançar uma exceção se a resposta tiver um código de status específico...
     $response->throwIfStatus(403);
 
-    // Throw an exception unless the response has a specific status code...
+    // Lançar uma exceção, a menos que a resposta tenha um código de status específico...
     $response->throwUnlessStatus(200);
 
     return $response['user']['id'];
 ```
 
- A instância de `Illuminate\Http\Client\RequestException` possui uma propriedade pública `$response`, que permite inspecionar a resposta retornada.
+A instância de `Illuminate\Http\Client\RequestException` possui uma propriedade pública `$response`, que permite inspecionar a resposta retornada.
 
- O método `throw` retorna a instância de resposta se não ocorreu nenhum erro, permitindo que você faça uma série de operações com o método `throw`:
+O método `throw` retorna a instância de resposta se não ocorreu nenhum erro, permitindo que você faça uma série de operações com o método `throw`:
 
 ```php
     return Http::post(/* ... */)->throw()->json();
 ```
 
- Se desejar executar alguma lógica adicional antes da exceção ser lançada, pode passar um bloco de closures para o método `throw`. A exceção é automaticamente lançada após o invólucro for invocado. Não será necessário re-lançar a exceção a partir do bloco de closures:
+Se desejar executar alguma lógica adicional antes da exceção ser lançada, você pode passar um bloco de closures para o método `throw`. A exceção é automaticamente lançada após o wrapper for invocado. Não será necessário re-lançar a exceção a partir do bloco de closures:
 
 ```php
     use Illuminate\Http\Client\Response;
@@ -378,7 +379,7 @@ $response = Http::withHeaders([
 <a name="guzzle-middleware"></a>
 ### Middleware do Guzzle
 
- Como o cliente HTTP do Laravel é gerenciado pelo Guzzle, você pode aproveitar os [médios de Guzzle](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) para manipular a requisição que sai ou inspecionar a resposta recebida. Para manipular a requisição, registre um médio de Guzzle através do método `withRequestMiddleware`:
+Como o cliente HTTP do Laravel é gerenciado pelo Guzzle, você pode aproveitar os [médios de Guzzle](https://docs.guzzlephp.org/en/stable/handlers-and-middleware.html) para manipular a requisição que sai ou inspecionar a resposta recebida. Para manipular a requisição, registre um middleware do Guzzle através do método `withRequestMiddleware`:
 
 ```php
     use Illuminate\Support\Facades\Http;
@@ -391,7 +392,7 @@ $response = Http::withHeaders([
     )->get('http://example.com');
 ```
 
- Da mesma forma, você pode inspecionar a resposta HTTP recebida ao registrar um middleware através do método `withResponseMiddleware`:
+Da mesma forma, você pode inspecionar a resposta HTTP recebida ao registrar um middleware através do método `withResponseMiddleware`:
 
 ```php
     use Illuminate\Support\Facades\Http;
@@ -411,7 +412,7 @@ $response = Http::withHeaders([
 <a name="global-middleware"></a>
 #### Middleware global
 
- Às vezes, você pode desejar registrar um middleware que se aplica a todas as solicitações e respostas. Para fazer isso, pode usar os métodos `globalRequestMiddleware` e `globalResponseMiddleware`. Normalmente, esses métodos devem ser invocados no método `boot` do `AppServiceProvider` da sua aplicação:
+Às vezes, você pode desejar registrar um middleware que se aplica a todas as solicitações e respostas. Para fazer isso, você pode usar os métodos `globalRequestMiddleware` e `globalResponseMiddleware`. Normalmente, esses métodos devem ser invocados no método `boot` do `AppServiceProvider` da sua aplicação:
 
 ```php
 use Illuminate\Support\Facades\Http;
@@ -428,7 +429,7 @@ Http::globalResponseMiddleware(fn ($response) => $response->withHeader(
 <a name="guzzle-options"></a>
 ### Opções do Guzzle
 
- Você pode especificar opções de solicitação adicionais [do Guzzle](http://docs.guzzlephp.org/en/stable/request-options.html) para uma solicitação remetente usando o método `withOptions`. O método `withOptions` aceita um array de pares de chave / valor:
+Você pode especificar [opções de solicitação do Guzzle](http://docs.guzzlephp.org/en/stable/request-options.html) adicionais para uma solicitação de saída usando o método `withOptions`. O método `withOptions` aceita uma matriz de pares chave/valor:
 
 ```php
     $response = Http::withOptions([
@@ -439,13 +440,13 @@ Http::globalResponseMiddleware(fn ($response) => $response->withHeader(
 <a name="global-options"></a>
 #### Opções Globais
 
- Para configurar opções padrão para cada solicitação de saída, você pode utilizar o método `globalOptions`. Normalmente, esse método deve ser invocado a partir do método `boot` do provedor de serviço `AppService`:
+Para configurar opções padrão para cada solicitação de saída, você pode utilizar o método `globalOptions`. Normalmente, esse método deve ser invocado a partir do método `boot` do provedor de serviço `AppService`:
 
 ```php
 use Illuminate\Support\Facades\Http;
 
 /**
- * Bootstrap any application services.
+ * Inicialize qualquer serviço de aplicativo.
  */
 public function boot(): void
 {
@@ -456,11 +457,11 @@ public function boot(): void
 ```
 
 <a name="concurrent-requests"></a>
-## Pedidos em Sessão Conjunta
+## Solicitações Simultâneas
 
- Às vezes você pode querer fazer várias requisições de HTTP simultaneamente. Ou seja, gostaria que vários pedidos fossem enviados ao mesmo tempo em vez de emitir os pedidos sequencialmente. Isso pode levar a melhorias substanciais no desempenho ao interagir com APIs lentas do protocolo HTTP.
+Às vezes você pode querer fazer várias requisições HTTP simultaneamente. Ou seja, gostaria que vários pedidos fossem enviados ao mesmo tempo em vez de emitir os pedidos sequencialmente. Isso pode levar a melhorias substanciais no desempenho ao interagir com APIs lentas do protocolo HTTP.
 
- Felizmente, você pode fazer isso usando o método `pool`. O método `pool` aceita um closure que recebe uma instância de `Illuminate\Http\Client\Pool`, permitindo que você adicione facilmente pedidos ao pool de solicitações para distribuição:
+Felizmente, você pode fazer isso usando o método `pool`. O método `pool` aceita um closure que recebe uma instância de `Illuminate\Http\Client\Pool`, permitindo que você adicione facilmente pedidos ao pool de solicitações para distribuição:
 
 ```php
     use Illuminate\Http\Client\Pool;
@@ -477,7 +478,7 @@ public function boot(): void
            $responses[2]->ok();
 ```
 
- Como você pode ver, cada instância de resposta é acessada com base na ordem em que foi adicionada ao pool. Se desejar, você pode nomear as solicitações usando o método `as`, o que permite acessar as correspondentes respostas pelo nome:
+Como você pode ver, cada instância de resposta é acessada com base na ordem em que foi adicionada ao pool. Se desejar, você pode nomear as solicitações usando o método `as`, o que permite acessar as correspondentes respostas pelo nome:
 
 ```php
     use Illuminate\Http\Client\Pool;
@@ -495,7 +496,7 @@ public function boot(): void
 <a name="customizing-concurrent-requests"></a>
 #### Personalizar requisições em modo concorrente
 
- O método `pool` não pode ser concatenado com outros métodos de clientes HTTP como o `withHeaders` ou `middleware`. Se você quiser aplicar cabeçalhos personalizados ou middlewares para requisições compartilhadas, você deve configurar essas opções em cada requisição do pool:
+O método `pool` não pode ser concatenado com outros métodos de clientes HTTP como o `withHeaders` ou `middleware`. Se você quiser aplicar cabeçalhos personalizados ou middlewares para requisições compartilhadas, você deve configurar essas opções em cada requisição do `pool`:
 
 ```php
 use Illuminate\Http\Client\Pool;
@@ -515,13 +516,13 @@ $responses = Http::pool(fn (Pool $pool) => [
 <a name="macros"></a>
 ## Macros
 
- O cliente HTTP do Laravel permite definir "máscaras", que podem servir como um mecanismo expressivo e fluente para configurar caminhos de solicitação comuns e cabeçalhos ao interagir com serviços em toda a sua aplicação. Para começar, você deve definir a máscara dentro do método `boot` da classe `App\Providers\AppServiceProvider` da sua aplicação:
+O cliente HTTP do Laravel permite definir "macros", que podem servir como um mecanismo expressivo e fluente para configurar caminhos de solicitação comuns e cabeçalhos ao interagir com serviços em toda a sua aplicação. Para começar, você deve definir a máscara dentro do método `boot` da classe `App\Providers\AppServiceProvider` da sua aplicação:
 
 ```php
 use Illuminate\Support\Facades\Http;
 
 /**
- * Bootstrap any application services.
+ * Inicialize qualquer serviço de aplicativo.
  */
 public function boot(): void
 {
@@ -533,7 +534,7 @@ public function boot(): void
 }
 ```
 
- Depois que sua macro tiver sido configurada, você poderá invocá-la de qualquer lugar em sua aplicação para criar um pedido pendente com o tipo e as configurações especificados:
+Depois que sua macro for configurada, você poderá invocá-la de qualquer lugar em sua aplicação para criar uma requisição pendente com o tipo e as configurações especificadas:
 
 ```php
 $response = Http::github()->get('/');
@@ -542,12 +543,12 @@ $response = Http::github()->get('/');
 <a name="testing"></a>
 ## Teste
 
- Muitos serviços de Laravel fornecem funcionalidade para ajudar a escrever testes com facilidade e expressividade, e o cliente HTTP do Laravel não é exceção. O método `fake` da facade `Http` permite instruir o cliente HTTP para retornar respostas ficcionadas quando são feitas solicitações.
+Muitos serviços do Laravel fornecem funcionalidades para ajudar a escrever testes com facilidade e expressividade, e o cliente HTTP do Laravel não é exceção. O método `fake` da facade `Http` permite instruir o cliente HTTP para retornar respostas ficcionadas quando são feitas solicitações.
 
 <a name="faking-responses"></a>
 ### Falsificando respostas
 
- Por exemplo, para instruir o cliente de HTTP a retornar respostas com um código de estado vazio e `200`, você pode chamar o método `fake` sem nenhum argumento:
+Por exemplo, para instruir o cliente de HTTP a retornar respostas com um código de estado vazio e `200`, você pode chamar o método `fake` sem nenhum argumento:
 
 ```php
     use Illuminate\Support\Facades\Http;
@@ -560,38 +561,38 @@ $response = Http::github()->get('/');
 <a name="faking-specific-urls"></a>
 #### Falsificando endereços de URL específicos
 
- Como alternativa, você pode passar um array para o método `fake`. As chaves do array representam os padrões de URL que você deseja falsificar e suas respostas associadas. O caractere `*` pode ser utilizado como caracter de substituição. Todos os pedidos feitos a URLs que não foram falsificadas serão realmente executados. Você pode usar o método `response` da faca do `Http` para construir respostas fictícias/falsificadas para esses endpoints:
+Como alternativa, você pode passar um array para o método `fake`. As chaves do array representam os padrões de URL que você deseja falsificar e suas respostas associadas. O caractere `*` pode ser utilizado como caracter de substituição. Todos os pedidos feitos a URLs que não foram falsificadas serão realmente executados. Você pode usar o método `response` da facade do `Http` para construir respostas fictícias/falsificadas para esses endpoints:
 
 ```php
     Http::fake([
-        // Stub a JSON response for GitHub endpoints...
+        // Stub uma resposta JSON para endpoints do GitHub...
         'github.com/*' => Http::response(['foo' => 'bar'], 200, $headers),
 
-        // Stub a string response for Google endpoints...
+        // Stub uma resposta de string para endpoints do Google...
         'google.com/*' => Http::response('Hello World', 200, $headers),
     ]);
 ```
 
- Se você deseja especificar um padrão de URL de retorno que redirecione todos os endereços não correspondidos, poderá utilizar um único caractere `* `:
+Se você deseja especificar um padrão de URL de retorno que redirecione todos os endereços não correspondidos, poderá utilizar um único caractere `* `:
 
 ```php
     Http::fake([
-        // Stub a JSON response for GitHub endpoints...
+        // Stub uma resposta JSON para endpoints do GitHub...
         'github.com/*' => Http::response(['foo' => 'bar'], 200, ['Headers']),
 
-        // Stub a string response for all other endpoints...
+        // Stub uma resposta de string para todos os outros endpoints...
         '*' => Http::response('Hello World', 200, ['Headers']),
     ]);
 ```
 
 <a name="faking-response-sequences"></a>
-#### Fingindo sequências de resposta
+#### Falsificando sequências de resposta
 
- Às vezes, você pode precisar especificar que uma única URL deverá retornar uma série de respostas falsas em um determinado ordem. Você poderá fazer isso usando o método `Http::sequence` para construir as respostas:
+Às vezes, você pode precisar especificar que uma única URL deverá retornar uma série de respostas falsas em um determinado ordem. Você poderá fazer isso usando o método `Http::sequence` para construir as respostas:
 
 ```php
     Http::fake([
-        // Stub a series of responses for GitHub endpoints...
+        // Stub uma série de respostas para endpoints do GitHub...
         'github.com/*' => Http::sequence()
                                 ->push('Hello World', 200)
                                 ->push(['foo' => 'bar'], 200)
@@ -599,11 +600,11 @@ $response = Http::github()->get('/');
     ]);
 ```
 
- Quando todas as respostas de uma sequência de resposta forem consumidas, quaisquer pedidos adicionais farão com que a sequência de respostas gere uma exceção. Se pretender especificar uma resposta por defeito a ser retornada quando a sequência estiver vazia, poderá utilizar o método `whenEmpty`:
+Quando todas as respostas de uma sequência de resposta forem consumidas, quaisquer pedidos adicionais farão com que a sequência de respostas gere uma exceção. Se pretender especificar uma resposta por defeito a ser retornada quando a sequência estiver vazia, poderá utilizar o método `whenEmpty`:
 
 ```php
     Http::fake([
-        // Stub a series of responses for GitHub endpoints...
+        // Stub uma série de respostas para endpoints do GitHub...
         'github.com/*' => Http::sequence()
                                 ->push('Hello World', 200)
                                 ->push(['foo' => 'bar'], 200)
@@ -611,7 +612,7 @@ $response = Http::github()->get('/');
     ]);
 ```
 
- Se você deseja fingir uma seqüência de respostas, mas não precisa especificar um padrão de URL específico que deve ser enganado, pode usar o método `Http::fakeSequence`:
+Se você quiser falsificar uma sequência de respostas, mas não precisa especificar um padrão de URL específico que deva ser falsificado, você pode usar o método `Http::fakeSequence`:
 
 ```php
     Http::fakeSequence()
@@ -622,7 +623,7 @@ $response = Http::github()->get('/');
 <a name="fake-callback"></a>
 #### Retorno Falso
 
- Se você precisar de uma lógica mais complexa para determinar quais respostas retornar em determinados pontos finais, poderá passar um closure à metodologia `fake`. Este closure receberá uma instância do `Illuminate\Http\Client\Request` e deverá retornar uma instância de resposta. No seu closure, você pode executar qualquer lógica necessária para determinar que tipo de resposta retornar:
+Se você precisar de uma lógica mais complexa para determinar quais respostas retornar em determinados pontos finais, poderá passar um closure ao método `fake`. Este closure receberá uma instância do `Illuminate\Http\Client\Request` e deverá retornar uma instância de resposta. No seu closure, você pode executar qualquer lógica necessária para determinar que tipo de resposta retornar:
 
 ```php
     use Illuminate\Http\Client\Request;
@@ -633,9 +634,9 @@ $response = Http::github()->get('/');
 ```
 
 <a name="preventing-stray-requests"></a>
-### Evitar solicitações perdidas
+### Prevenindo solicitações perdidas
 
- Se pretender garantir que todas as solicitações enviadas através de um cliente HTTP tenham sido falsificados durante o seu teste individual ou na totalidade do conjunto de testes, pode chamar a função `preventStrayRequests`. Após a chamada desta função, qualquer solicitação que não possua uma resposta correspondente fará levantar uma exceção em vez de realizar a solicitação HTTP real:
+Se pretender garantir que todas as solicitações enviadas através de um cliente HTTP tenham sido falsificados durante o seu teste individual ou na totalidade do conjunto de testes, pode chamar a função `preventStrayRequests`. Após a chamada desta função, qualquer solicitação que não possua uma resposta correspondente fará levantar uma exceção em vez de realizar a solicitação HTTP real:
 
 ```php
     use Illuminate\Support\Facades\Http;
@@ -646,19 +647,19 @@ $response = Http::github()->get('/');
         'github.com/*' => Http::response('ok'),
     ]);
 
-    // An "ok" response is returned...
+    // Uma resposta "ok" é retornada...
     Http::get('https://github.com/laravel/framework');
 
-    // An exception is thrown...
+    // Uma exceção é lançada...
     Http::get('https://laravel.com');
 ```
 
 <a name="inspecting-requests"></a>
 ### Inspeção de pedidos
 
- Para forjar respostas, você pode desejar inspecionar os pedidos que o client recebe ocasionalmente para se certificar de que seu aplicativo está enviando os dados ou as cabeçalhas corretos. Isso pode ser feito chamando o método `Http::assertSent` após chamar o `Http::fake`.
+Para forjar respostas, você pode inspecionar os pedidos que o _client_ recebe ocasionalmente para se certificar de que seu aplicativo está enviando os dados ou as cabeçalhas corretos. Isso pode ser feito chamando o método `Http::assertSent` após chamar o `Http::fake`.
 
- O método `assertSent` aceita um closure (closure) que recebe uma instância de `Illuminate\Http\Client\Request` e deve retornar um valor boolean indicando se o pedido corresponde às suas expectativas. Para que a verificação passe, pelo menos um pedido deve ter sido emitido correspondendo às expectativas dadas:
+O método `assertSent` aceita um closure que recebe uma instância de `Illuminate\Http\Client\Request` e deve retornar um valor boolean indicando se o pedido corresponde às suas expectativas. Para que a verificação passe, pelo menos um pedido deve ter sido emitido correspondendo às expectativas dadas:
 
 ```php
     use Illuminate\Http\Client\Request;
@@ -681,7 +682,7 @@ $response = Http::github()->get('/');
     });
 ```
 
- Se necessário, pode afirmar que não foi enviado um pedido específico usando o método `assertNotSent`:
+Se necessário, você pode afirmar que não foi enviado um pedido específico usando o método `assertNotSent`:
 
 ```php
     use Illuminate\Http\Client\Request;
@@ -699,7 +700,7 @@ $response = Http::github()->get('/');
     });
 ```
 
- Você pode usar o método `assertSentCount` para afirmar quantas solicitações foram "enviadas" durante o teste:
+Você pode usar o método `assertSentCount` para afirmar quantas solicitações foram "enviadas" durante o teste:
 
 ```php
     Http::fake();
@@ -707,7 +708,7 @@ $response = Http::github()->get('/');
     Http::assertSentCount(5);
 ```
 
- Ou você pode usar o método `assertNothingSent` para garantir que nenhum pedido foi enviado durante o teste.
+Ou você pode usar o método `assertNothingSent` para garantir que nenhum pedido foi enviado durante o teste.
 
 ```php
     Http::fake();
@@ -716,9 +717,9 @@ $response = Http::github()->get('/');
 ```
 
 <a name="recording-requests-and-responses"></a>
-#### Pedidos de gravação/Respostas
+#### Gravando Solicitações/Respostas
 
- Você pode usar o método `recorded` para coletar todas as requisições e suas respostas correspondentes. O método `recorded` retorna uma coleção de arrays que contém instâncias do `Illuminate\Http\Client\Request` e `Illuminate\Http\Client\Response`:
+Você pode usar o método `recorded` para coletar todas as requisições e suas respostas correspondentes. O método `recorded` retorna uma coleção de arrays que contém instâncias do `Illuminate\Http\Client\Request` e `Illuminate\Http\Client\Response`:
 
 ```php
 Http::fake([
@@ -734,7 +735,7 @@ $recorded = Http::recorded();
 [$request, $response] = $recorded[0];
 ```
 
- Além disso, o método `recorded` aceita um closure que recebe uma instância de `Illuminate\Http\Client\Request` e `Illuminate\Http\Client\Response`, e pode ser utilizado para filtrar pares de solicitação/resposta com base nas suas expectativas:
+Além disso, o método `recorded` aceita um closure que recebe uma instância de `Illuminate\Http\Client\Request` e `Illuminate\Http\Client\Response`, e pode ser utilizado para filtrar pares de solicitação/resposta com base nas suas expectativas:
 
 ```php
 use Illuminate\Http\Client\Request;
@@ -757,9 +758,9 @@ $recorded = Http::recorded(function (Request $request, Response $response) {
 <a name="events"></a>
 ## Eventos
 
- O Laravel dispara três eventos durante o processo de envio de solicitações HTTP. O evento `RequestSending` é disparado antes do envio da solicitação, enquanto que o evento `ResponseReceived` é disparado depois que uma resposta for recebida para a solicitação correspondente. O evento `ConnectionFailed` é disparado se não tiver sido recebida qualquer resposta para a solicitação correspondente.
+O Laravel dispara três eventos durante o processo de envio de solicitações HTTP. O evento `RequestSending` é disparado antes do envio da solicitação, enquanto que o evento `ResponseReceived` é disparado depois que uma resposta for recebida para a solicitação correspondente. O evento `ConnectionFailed` é disparado se não tiver sido recebida qualquer resposta para a solicitação correspondente.
 
- Os eventos `RequestSending` e `ConnectionFailed` contêm uma propriedade pública `$request`, que você pode usar para inspecionar a instância de `Illuminate\Http\Client\Request`. Do mesmo modo, o evento `ResponseReceived` contém as propriedades `$request` e `$response`, que podem ser usadas para inspeção da instância de `Illuminate\Http\Client\Response`. Você pode criar [ouvintes de eventos](/docs/events) para estes eventos na sua aplicação:
+Os eventos `RequestSending` e `ConnectionFailed` contêm uma propriedade pública `$request`, que você pode usar para inspecionar a instância de `Illuminate\Http\Client\Request`. Do mesmo modo, o evento `ResponseReceived` contém as propriedades `$request` e `$response`, que podem ser usadas para inspeção da instância de `Illuminate\Http\Client\Response`. Você pode criar [ouvintes de eventos](/docs/events) para estes eventos na sua aplicação:
 
 ```php
     use Illuminate\Http\Client\Events\RequestSending;
@@ -767,7 +768,7 @@ $recorded = Http::recorded(function (Request $request, Response $response) {
     class LogRequest
     {
         /**
-         * Handle the given event.
+         * Lidar com o evento determinado.
          */
         public function handle(RequestSending $event): void
         {
