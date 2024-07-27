@@ -41,8 +41,8 @@
     - [Armazenamento de arquivos](/src/docs/filesystem.md) ✅
     - [Auxiliares](/src/docs/helpers.md) ✅
     - [HTTP Client](/src/docs/http-client.md) ✅
-    - [Localization](/src/docs/localization.md) ⚙️
-    - [Mail](/src/docs/mail.md)
+    - [Localização](/src/docs/localization.md) ✅
+    - [E-Mail](/src/docs/mail.md) ⚙️
     - [Notifications](/src/docs/notifications.md)
     - [Package Development](/src/docs/packages.md)
     - [Processes](/src/docs/processes.md)
