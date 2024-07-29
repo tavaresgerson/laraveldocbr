@@ -1497,7 +1497,7 @@ Depois, você pode usar o método `extend` da facade `Mail` para registrar o tra
     }
 ```
 
-Depois de registrar seu transporte, você pode criar uma definição de remetente na pasta de configurações do aplicativo, `config/mail.php`, que use o novo transporte:
+Depois de registrar seu transporte, você pode criar uma definição de remetente na pasta de configurações do aplicativo `config/mail.php` para que use o novo transporte:
 
 ```php
     'brevo' => [

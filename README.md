@@ -42,9 +42,9 @@
     - [Auxiliares](/src/docs/helpers.md) ✅
     - [HTTP Client](/src/docs/http-client.md) ✅
     - [Localização](/src/docs/localization.md) ✅
-    - [E-Mail](/src/docs/mail.md) ⚙️
-    - [Notifications](/src/docs/notifications.md)
-    - [Package Development](/src/docs/packages.md)
+    - [E-Mail](/src/docs/mail.md) ✅
+    - [Notifications](/src/docs/notifications.md) ✅
+    - [Package Development](/src/docs/packages.md) ⚙️
     - [Processes](/src/docs/processes.md)
     - [Queues](/src/docs/queues.md)
     - [Rate Limiting](/src/docs/rate-limiting.md)
