@@ -3,16 +3,16 @@
 <a name="introduction"></a>
 ## Introdução
 
- Os pacotes são o principal meio de adição de funcionalidade à Laravel. Esses pacotes podem ser qualquer coisa, desde uma excelente forma de trabalhar com datas como [Carbon](https://github.com/briannesbitt/Carbon) até um pacote que permite associar arquivos a modelos Eloquent como o Spatie's [Laravel Media Library](https://github.com/spatie/laravel-medialibrary).
+Os pacotes são o principal meio de adição de funcionalidade à Laravel. Esses pacotes podem ser qualquer coisa, desde uma excelente forma de trabalhar com datas como [Carbon](https://github.com/briannesbitt/Carbon) até um pacote que permite associar arquivos a modelos Eloquent como o Spatie's [Laravel Media Library](https://github.com/spatie/laravel-medialibrary).
 
- Existem vários tipos de pacotes. Há pacotes autónomos, que funcionam com qualquer estrutura PHP. O Carbon e o Pest são exemplos de pacotes autónomos. Qualquer um destes pacotes pode ser utilizado com Laravel exigindo-o no arquivo `composer.json`.
+Existem vários tipos de pacotes. Há pacotes autônomos, que funcionam com qualquer estrutura PHP. O Carbon e o Pest são exemplos de pacotes autônomos. Qualquer um destes pacotes pode ser utilizado com o Laravel exigindo-o no arquivo `composer.json`.
 
- Por outro lado, outros pacotes são destinados especificamente ao uso com Laravel. Esses pacotes podem incluir roteamento, controladores, visualizações e configuração voltadas especificamente para melhorar a aplicação do Laravel. Este guia aborda principalmente o desenvolvimento de pacotes que são específicos para o Laravel.
+Por outro lado, outros pacotes são destinados especificamente ao uso com Laravel. Esses pacotes podem incluir roteamento, controladores, visualizações e configurações voltadas especificamente para melhorar a aplicação do Laravel. Este guia aborda principalmente o desenvolvimento de pacotes que são específicos para o Laravel.
 
 <a name="a-note-on-facades"></a>
-### Uma nota sobre fachadas
+### Uma nota sobre facades
 
- Quando você está escrevendo um aplicativo do Laravel geralmente não importa se você usa contratos ou facetas, pois ambos fornecem níveis essencialmente iguais de capacidade de teste. No entanto, ao escrever pacotes, seu pacote normalmente não terá acesso a todas as ajudas de testes do Laravel. Se você gostaria de poder escrever seus testes em um pacote como se o pacote estivesse instalado dentro de um aplicativo típico do Laravel, você pode usar o pacote [Orchestral Testbench](https://github.com/orchestral/testbench).
+Quando você está escrevendo um aplicativo do Laravel geralmente não importa se você usa contratos ou facades, pois ambos fornecem níveis essencialmente iguais de capacidade de teste. No entanto, ao escrever pacotes, seu pacote normalmente não terá acesso a todas as ajudas de testes do Laravel. Se você gostaria de poder escrever seus testes em um pacote como se o pacote estivesse instalado dentro de um aplicativo típico do Laravel, você pode usar o pacote [Orchestral Testbench](https://github.com/orchestral/testbench).
 
 <a name="package-discovery"></a>
 ## Descoberta de pacotes
