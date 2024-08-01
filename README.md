@@ -45,8 +45,8 @@
     - [E-Mail](/src/docs/mail.md) ✅
     - [Notifications](/src/docs/notifications.md) ✅
     - [Package Development](/src/docs/packages.md) ✅
-    - [Processes](/src/docs/processes.md) ⚙️
-    - [Queues](/src/docs/queues.md)
+    - [Processes](/src/docs/processes.md) ✅
+    - [Queues](/src/docs/queues.md) ⚙️
     - [Rate Limiting](/src/docs/rate-limiting.md)
     - [Strings](/src/docs/strings.md)
     - [Task Scheduling](/src/docs/scheduling.md)

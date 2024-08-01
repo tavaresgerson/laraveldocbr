@@ -3,45 +3,46 @@
 <a name="introduction"></a>
 ## Introdução
 
- Ao construir sua aplicação da Web, pode ocorrer de haver tarefas que levam muito tempo para serem concluídas durante uma solicitação Web normal, como analisar e armazenar um arquivo CSV enviado. No entanto, Laravel permite criar facilmente tarefas agendadas, que podem ser processadas em segundo plano. Ao mover tarefas intensivas de tempo para a fila de espera, sua aplicação responderá às solicitações com velocidade incrível e fornecerá uma melhor experiência aos seus clientes.
+Ao construir sua aplicação da Web, pode ocorrer de haver tarefas que levam muito tempo para serem concluídas durante uma solicitação Web normal, como analisar e armazenar um arquivo CSV enviado. No entanto, o Laravel permite criar facilmente tarefas agendadas, que podem ser processadas em segundo plano. Ao mover tarefas intensivas de tempo para a fila de espera, a sua aplicação responderá às solicitações com velocidade incrível e fornecerá uma melhor experiência aos seus clientes.
 
- Os agendadores Laravel fornecem uma API unificada para listas de espera em vários backends de lista de espera, tais como o [Amazon SQS](https://aws.amazon.com/sqs/), o [Redis](https://redis.io), ou até mesmo um banco de dados relacional
+As filas do Laravel fornecem uma API de enfileiramento unificada em uma variedade de backends de filas diferentes, como [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io) ou até mesmo um banco de dados relacional.
 
- As opções de configuração da fila do Laravel são armazenadas no arquivo de configuração `config/queue.php` de sua aplicação. Neste arquivo, você encontrará as configurações de conexão para cada um dos drivers de filas incluídos no framework, incluindo os drivers de banco de dados, [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io), e [Beanstalkd](https://beanstalkd.github.io/), bem como um driver síncrono que executará os trabalhos imediatamente (para uso durante o desenvolvimento local). Um driver de fila `null` também é incluído, que descarta os trabalhos em filas.
+As opções de configuração da fila do Laravel são armazenadas no arquivo de configuração `config/queue.php` de sua aplicação. Neste arquivo, você encontrará as configurações de conexão para cada um dos drivers de filas incluídos no framework, incluindo os drivers de banco de dados, [Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io), e [Beanstalkd](https://beanstalkd.github.io/), bem como um driver síncrono que executará os trabalhos imediatamente (para uso durante o desenvolvimento local). Um driver de fila `null` também é incluído, que descarta os trabalhos em filas.
 
- > [!OBSERVAÇÃO]
- [Documentação do Horizon](/docs/horizon) para mais informações.
+::: info NOTA
+O Laravel agora oferece o Horizon, um lindo painel e sistema de configuração para suas filas alimentadas pelo Redis. Confira a [documentação completa do Horizon](/docs/horizon) para mais informações.
+:::
 
 <a name="connections-vs-queues"></a>
-### Ligações versus filas
+### Conexões vs. filas
 
- Antes de começar com os lances do Laravel, é importante entender a distinção entre "conexões" e "lances". No arquivo de configuração `config/queue.php`, existe um array de configuração chamado `connections`. Esta opção define as conexões para serviços de filas de fundo, como o Amazon SQS, Beanstalk ou Redis. Contudo, qualquer conexão da fila pode ter várias "filas", que podem ser pensadas como pilhas diferentes de tarefas agendadas.
+Antes de começar com as filas do Laravel, é importante entender a distinção entre "conexões" e "filas". No arquivo de configuração `config/queue.php`, existe um array de configuração chamado `connections`. Esta opção define as conexões para serviços de filas de fundo, como o Amazon SQS, Beanstalk ou Redis. Contudo, qualquer conexão da fila pode ter várias "filas", que podem ser pensadas como pilhas diferentes de tarefas agendadas.
 
- Observe que cada exemplo de configuração de conexão no arquivo de configuração `queue` contém um atributo `queue`. Essa é a fila padrão à qual os trabalhos serão enviados quando forem enviados para uma determinada conexão. Em outras palavras, se você enviar um trabalho sem definir explicitamente em que fila ele deve ser enviado, o trabalho será colocado na fila definida no atributo `queue` da configuração de conexão:
+Observe que cada exemplo de configuração de conexão no arquivo de configuração `queue` contém um atributo `queue`. Essa é a fila padrão à qual os trabalhos serão enviados quando forem adicionados para uma determinada conexão. Em outras palavras, se você enviar um trabalho sem definir explicitamente em que fila ele deve ser enviado, o trabalho será colocado na fila definida no atributo `queue` da configuração de conexão:
 
 ```php
     use App\Jobs\ProcessPodcast;
 
-    // This job is sent to the default connection's default queue...
+    // Este trabalho é enviado para a fila padrão da conexão padrão...
     ProcessPodcast::dispatch();
 
-    // This job is sent to the default connection's "emails" queue...
+    // Este trabalho é enviado para a fila de "e-mails" da conexão padrão...
     ProcessPodcast::dispatch()->onQueue('emails');
 ```
 
- Algumas aplicações podem não precisar de submeter tarefas para várias filas, preferindo ter uma fila simples. No entanto, submeter tarefas para várias filas pode ser especialmente útil para aplicações que desejam priorizar ou segmentar a forma como as tarefas são processadas, uma vez que o trabalhador de filas do Laravel permite especificar quais filas devem ser processadas por ordem de prioridade. Por exemplo, se submeter tarefas para uma `high` fila, poderá executar um trabalhador com maior prioridade de processamento:
+Algumas aplicações podem não precisar submeter tarefas para várias filas, preferindo ter uma fila simples. No entanto, submeter tarefas para várias filas pode ser especialmente útil para aplicações que desejam priorizar ou segmentar a forma como as tarefas são processadas, uma vez que o _worker_ de filas do Laravel permite especificar quais filas devem ser processadas por ordem de prioridade. Por exemplo, submeter tarefas para uma `high` fila, poderá executar um _worker_ com maior prioridade de processamento:
 
 ```shell
 php artisan queue:work --queue=high,default
 ```
 
 <a name="driver-prerequisites"></a>
-### Anotações do driver e pré-requisitos
+### Notas do driver e pré-requisitos
 
 <a name="database"></a>
 #### Base de dados
 
- Para usar o driver de fila `database`, você precisará de uma tabela de banco de dados para conter os trabalhos. Normalmente, esta está incluída na migração padrão de Laravel chamada `0001_01_01_000002_create_jobs_table.php` [migração de banco de dados](/docs/migrations); no entanto, se seu aplicativo não contiver esta migração, você poderá criá-la usando o comando `make:queue-table`:
+Para usar o driver de fila `database`, você precisará de uma tabela de banco de dados para conter os trabalhos. Normalmente, isso estará incluído na migração padrão do Laravel chamado `0001_01_01_000002_create_jobs_table.php` através da [_migration_](/docs/migrations); no entanto, se seu aplicativo não contiver esta migração, você poderá criá-la usando o comando `make:queue-table`:
 
 ```shell
 php artisan make:queue-table
@@ -52,14 +53,14 @@ php artisan migrate
 <a name="redis"></a>
 #### O Redis
 
- Para utilizar o driver de fila `redis`, você deve configurar uma conexão ao banco de dados Redis em seu arquivo de configuração `config/database.php`.
+Para utilizar o driver de fila `redis`, você deve configurar uma conexão ao banco de dados Redis em seu arquivo de configuração `config/database.php`.
 
  > [AVISO]
- > As opções de Redis `serializer` e `compression` não são suportadas pelo driver de fila `redis`.
+ > As opções do Redis: `serializer` e `compression` não são suportadas pelo driver de fila `redis`.
 
  **Cluster Redis
 
- Se sua conexão de fila do Redis usar um Redis Cluster, seus nomes de filas devem conter uma [tag de hash de chave](https://redis.io/docs/reference/cluster-spec/#hash-tags). Isso é necessário para garantir que todas as chaves do Redis de uma determinada fila sejam colocadas na mesma posição no slot hash:
+Se sua conexão de fila do Redis usar um Redis Cluster, seus nomes de filas devem conter uma [tag de hash de chave](https://redis.io/docs/reference/cluster-spec/#hash-tags). Isso é necessário para garantir que todas as chaves do Redis de uma determinada fila sejam colocadas na mesma posição no slot hash:
 
 ```php
     'redis' => [
@@ -72,11 +73,11 @@ php artisan migrate
     ],
 ```
 
- **Bloqueio**
+**Bloqueio**
 
- Ao usar a fila do Redis, você pode utilizar a opção de configuração `block_for` para especificar quanto tempo o driver deve aguardar que um trabalho seja disponibilizado antes de percorrer novamente o loop de trabalhadores e realizar uma nova consulta na base de dados do Redis.
+Ao usar a fila do Redis, você pode utilizar a opção de configuração `block_for` para especificar quanto tempo o driver deve aguardar que um trabalho seja disponibilizado antes de percorrer novamente o loop de trabalhadores e realizar uma nova consulta na base de dados do Redis.
 
- Ajustar este valor com base na carga da fila pode ser mais eficiente do que continuamente pesquisar no banco de dados Redis para novos trabalhos. Por exemplo, você pode definir o valor como `5` para indicar que o driver deve ficar bloqueado por cinco segundos aguardando a disponibilidade de um trabalho:
+Ajustar este valor com base na carga da fila pode ser mais eficiente do que continuamente pesquisar no banco de dados Redis para novos trabalhos. Por exemplo, você pode definir o valor como `5` para indicar que o driver deve ficar bloqueado por cinco segundos aguardando a disponibilidade de um novo trabalho:
 
 ```php
     'redis' => [
@@ -89,43 +90,41 @@ php artisan migrate
     ],
 ```
 
- > [AVERTISSEMENT]
- > Ao definir `block_for` para `0`, os processos de fila bloqueiam indefinidamente até que haja um trabalho disponível. Isso também impedirá que sinais como o `SIGTERM` sejam executados até o próximo trabalho ser processado.
+::: warning ATENÇÃO
+Ao definir `block_for` para `0`, os processos de fila bloqueiam indefinidamente até que haja um trabalho disponível. Isso também impedirá que sinais como o `SIGTERM` sejam executados até o próximo trabalho ser processado.
+:::
 
 <a name="other-driver-prerequisites"></a>
 #### Outros pré-requisitos do driver
 
- As dependências a seguir são necessárias para os drivers de filas listados abaixo. Essas dependências podem ser instaladas pelo gerenciador de pacotes do Composer:
-
-<div class="content-list" markdown="1">
+As dependências a seguir são necessárias para os drivers de filas listados abaixo. Essas dependências podem ser instaladas pelo gerenciador de pacotes do Composer:
 
  - Amazon SQS: `aws/aws-sdk-php ~3.0`
  - Beanstalkd: `pda/pheanstalk ~5.0`
  - Redis: 'predis/predis ~2.0' ou extensão PHP phpredis
 
-</div>
-
 <a name="creating-jobs"></a>
-## Criação de postos de trabalho
+## Criação de trabalhos
 
 <a name="generating-job-classes"></a>
 ### Gerando classes de trabalho
 
- Por padrão, todos os trabalhos agendáveis da sua aplicação são armazenados no diretório `app/Jobs`. Se o diretório `app/Jobs` não existir, será criado quando executar o comando Artisan `make:job`:
+Por padrão, todos os trabalhos agendáveis da sua aplicação são armazenados no diretório `app/Jobs`. Se o diretório `app/Jobs` não existir, será criado quando executar o comando Artisan `make:job`:
 
 ```shell
 php artisan make:job ProcessPodcast
 ```
 
- A classe gerada irá implementar a interface Illuminate\Contracts\Queue\ShouldQueue, indicando ao Laravel que o trabalho deve ser adicionado à fila para ser executado de maneira assíncrona.
+A classe gerada irá implementar a interface `Illuminate\Contracts\Queue\ShouldQueue`, indicando ao Laravel que o trabalho deve ser adicionado à fila para ser executado de maneira assíncrona.
 
- > [!AVISO]
- [ Publicação de stubs](/docs/artisan#stub-customization).
+::: info NOTA
+Os stubs de trabalho podem ser personalizados usando a [publicação de stubs](/docs/artisan#stub-customization).
+:::
 
 <a name="class-structure"></a>
 ### Estrutura da Classe
 
- As classes de tarefas são muito simples e normalmente contêm apenas um método `handle`, que é invocado quando a tarefa é processada pela fila. Para começar, vamos dar uma olhada em uma classe de tarefa de exemplo. Neste exemplo, suponhamos que gerenciemos um serviço de publicação de podcasts e precisarmos processar arquivos de podcasts carregados antes que eles sejam publicados:
+As classes de tarefas são muito simples e normalmente contêm apenas um método `handle`, que é invocado quando a tarefa é processada pela fila. Para começar, vamos dar uma olhada em uma classe de tarefa de exemplo. Neste exemplo, suponhamos que gerenciemos um serviço de publicação de podcasts e precisarmos processar arquivos de podcasts carregados antes que eles sejam publicados:
 
 ```php
     <?php
@@ -145,32 +144,32 @@ php artisan make:job ProcessPodcast
         use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
         /**
-         * Create a new job instance.
+         * Crie uma nova instância de trabalho.
          */
         public function __construct(
             public Podcast $podcast,
         ) {}
 
         /**
-         * Execute the job.
+         * Execute o trabalho.
          */
         public function handle(AudioProcessor $processor): void
         {
-            // Process uploaded podcast...
+            // Processar podcast carregado...
         }
     }
 ```
 
- Neste exemplo, observe que pudemos passar um modelo [Eloquent](/docs/eloquent) diretamente para o construtor do trabalho em fila de espera. Em razão da traço `SerializesModels` que o trabalho está usando, os modelos Eloquent e suas relações carregadas serão serializados e desserializados com gentileza quando o trabalho estiver processando.
+Neste exemplo, observe que passamos um modelo [Eloquent](/docs/eloquent) diretamente para o construtor do trabalho em fila de espera. Em razão da _trait_ `SerializesModels` que o trabalho está usando, os modelos Eloquent e suas relações carregadas serão serializados e desserializados quando o trabalho estiver processando.
 
- Se o trabalho em fila aceitar um modelo Eloquent no construtor, apenas o identificador do modelo será serializado na fila. Quando o trabalho for realmente tratado, o sistema de filas irá re-recuperar automaticamente a instância completa de modelos e suas relações carregadas da base de dados. Este método para a serialização de modelos permite que os pacotes de trabalhos enviados ao seu driver da fila sejam muito menores.
+Se o trabalho em fila aceitar um modelo Eloquent no construtor, apenas o identificador do modelo será serializado na fila. Quando o trabalho for realmente tratado, o sistema de filas irá recuperar automaticamente a instância completa de modelos e seus relacionamentos da base de dados. Este método para a serialização de modelos permite que os pacotes de trabalhos enviados ao seu driver da fila sejam muito menores.
 
 <a name="handle-method-dependency-injection"></a>
-#### "handle" Método de injeção de dependência
+#### Injeção de dependência do método `handle`
 
- O método `handle` é invocado quando o trabalho é processado na fila. Note que podemos indicar dependências para o método `handle` do trabalho. O Laravel [conjunto de serviços](/docs/container) injeta essas dependências automaticamente.
+O método `handle` é invocado quando o trabalho é processado na fila. Note que podemos indicar dependências para o método `handle` do _worker_. O [conjunto de serviços](/docs/container) do Laravel injeta essas dependências automaticamente.
 
- Se você deseja ter total controle sobre como o container injeta dependências na méthode `handle`, poderá utilizar a méthode `bindMethod` do container. A méthode `bindMethod` aceita uma callback que recebe o job e o container. Dentro dessa callback, você pode invocar a méthode `handle` da maneira que quiser. Geralmente, é possível chamar essa méthode a partir da méthode `boot` do seu `App\Providers\AppServiceProvider` [fornecedor de serviços](/docs/providers):
+Se deseja ter total controle sobre como o container injeta dependências no método `handle`, você poderá utilizar a método `bindMethod` do container. O método `bindMethod` aceita uma _callback_ que recebe o _job_ e o container. Dentro desse _callback_, você poderá invocar a método `handle` da maneira que quiser. Geralmente, é possível chamar essa método a partir do método `boot` do seu [fornecedor de serviços](/docs/providers) `App\Providers\AppServiceProvider`:
 
 ```php
     use App\Jobs\ProcessPodcast;
@@ -194,7 +193,7 @@ php artisan make:job ProcessPodcast
 
 ```php
     /**
-     * Create a new job instance.
+     * Crie uma nova instância de trabalho.
      */
     public function __construct(Podcast $podcast)
     {
@@ -208,7 +207,7 @@ php artisan make:job ProcessPodcast
     use Illuminate\Queue\Attributes\WithoutRelations;
 
     /**
-     * Create a new job instance.
+     * Crie uma nova instância de trabalho.
      */
     public function __construct(
         #[WithoutRelations]
@@ -351,7 +350,7 @@ php artisan make:job ProcessPodcast
     use Illuminate\Support\Facades\Redis;
 
     /**
-     * Execute the job.
+     * Execute o trabalho.
      */
     public function handle(): void
     {
@@ -742,7 +741,7 @@ class ProviderIsUp
 <a name="delayed-dispatching"></a>
 ### Despedimento atrasado
 
- Se desejar especificar que um trabalho não deve estar imediatamente disponível para processamento por um trabalhador de fila, você pode usar o método `delay` ao distribuir o trabalho. Por exemplo, vamos especificar que um trabalho só estará disponível para processamento 10 minutos após a sua distribuição:
+ Se desejar especificar que um trabalho não deve estar imediatamente disponível para processamento por um _worker_ de fila, você pode usar o método `delay` ao distribuir o trabalho. Por exemplo, vamos especificar que um trabalho só estará disponível para processamento 10 minutos após a sua distribuição:
 
 ```php
     <?php
@@ -836,7 +835,7 @@ class ProviderIsUp
 <a name="jobs-and-database-transactions"></a>
 ### Empregos e transações de banco de dados
 
- Ao invés de enviar tarefas dentro das transações do banco de dados, certifique-se que sua tarefa será executada com sucesso. Ao enviar uma tarefa dentro de uma transação, é possível que a tarefa seja processada por um trabalhador antes que a transação principal seja confirmada. Nesse caso, as atualizações feitas em modelos ou registros do banco de dados durante a(s) transação(ões) podem não ser refletidas no banco de dados ainda. Além disso, quaisquer modelos ou registros do banco de dados criado dentro da transação(ões) podem ainda não existir no banco de dados.
+ Ao invés de enviar tarefas dentro das transações do banco de dados, certifique-se que sua tarefa será executada com sucesso. Ao enviar uma tarefa dentro de uma transação, é possível que a tarefa seja processada por um _worker_ antes que a transação principal seja confirmada. Nesse caso, as atualizações feitas em modelos ou registros do banco de dados durante a(s) transação(ões) podem não ser refletidas no banco de dados ainda. Além disso, quaisquer modelos ou registros do banco de dados criado dentro da transação(ões) podem ainda não existir no banco de dados.
 
  Felizmente, o Laravel fornece várias formas de contornar este problema. Primeiro, é possível definir a opção de conexão `after_commit` no array de configurações da conexão da fila:
 
@@ -925,7 +924,7 @@ class ProviderIsUp
 
 ```php
 /**
- * Execute the job.
+ * Execute o trabalho.
  */
 public function handle(): void
 {
@@ -1015,7 +1014,7 @@ public function handle(): void
         use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
         /**
-         * Create a new job instance.
+         * Crie uma nova instância de trabalho.
          */
         public function __construct()
         {
@@ -1084,7 +1083,7 @@ public function handle(): void
         use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
         /**
-         * Create a new job instance.
+         * Crie uma nova instância de trabalho.
          */
         public function __construct()
         {
@@ -1188,7 +1187,7 @@ php artisan queue:work --tries=3
         public $maxExceptions = 3;
 
         /**
-         * Execute the job.
+         * Execute o trabalho.
          */
         public function handle(): void
         {
@@ -1207,7 +1206,7 @@ php artisan queue:work --tries=3
 <a name="timeout"></a>
 #### Tempo de espera
 
- Muitas vezes, sabe aproximadamente por quanto tempo espera que os seus trabalhos aguardados demorem. Por este motivo, o Laravel permite especificar um valor de "tempo limite". Por padrão, o valor do tempo limite é de 60 segundos. Se um trabalho estiver em processo por mais tempo do que o número de segundos especificado pelo valor do tempo limite, o trabalhador que está a tratar do mesmo sairá com um erro. Normalmente, o trabalhador será reiniciado automaticamente através de [gerenciamento de processo configurado no seu servidor] (/#supervisor-configuration).
+ Muitas vezes, sabe aproximadamente por quanto tempo espera que os seus trabalhos aguardados demorem. Por este motivo, o Laravel permite especificar um valor de "tempo limite". Por padrão, o valor do tempo limite é de 60 segundos. Se um trabalho estiver em processo por mais tempo do que o número de segundos especificado pelo valor do tempo limite, o _worker_ que está a tratar do mesmo sairá com um erro. Normalmente, o _worker_ será reiniciado automaticamente através de [gerenciamento de processo configurado no seu servidor] (/#supervisor-configuration).
 
  O número máximo de segundos em que os trabalhos podem ser executados pode ser especificado usando a opção `--timeout` na linha de comando do Artisan:
 
@@ -1257,7 +1256,7 @@ public $failOnTimeout = true;
 <a name="error-handling"></a>
 ### Manuseamento de erros
 
- Se uma exceção for lançada enquanto o trabalho está sendo processado, o trabalho será automaticamente liberado e poderá ser tentado novamente. O trabalho continuará a ser liberado até que tenham sido feitas as tentativas máximas permitidas pelo seu aplicativo. O número máximo de tentativas é definido pela opção `--tries` no comando `queue:work`. Pode também ser definido o número máximo de tentativas na própria classe do trabalho. Para mais informações sobre como executar o trabalhador da fila, consulte [embaixo](#running-the-queue-worker).
+ Se uma exceção for lançada enquanto o trabalho está sendo processado, o trabalho será automaticamente liberado e poderá ser tentado novamente. O trabalho continuará a ser liberado até que tenham sido feitas as tentativas máximas permitidas pelo seu aplicativo. O número máximo de tentativas é definido pela opção `--tries` no comando `queue:work`. Pode também ser definido o número máximo de tentativas na própria classe do trabalho. Para mais informações sobre como executar o _worker_ da fila, consulte [embaixo](#running-the-queue-worker).
 
 <a name="manually-releasing-a-job"></a>
 #### Liberação manual de um trabalho
@@ -1266,7 +1265,7 @@ public $failOnTimeout = true;
 
 ```php
     /**
-     * Execute the job.
+     * Execute o trabalho.
      */
     public function handle(): void
     {
@@ -1291,7 +1290,7 @@ public $failOnTimeout = true;
 
 ```php
     /**
-     * Execute the job.
+     * Execute o trabalho.
      */
     public function handle(): void
     {
@@ -1345,7 +1344,7 @@ php artisan migrate
         use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
         /**
-         * Execute the job.
+         * Execute o trabalho.
          */
         public function handle(): void
         {
@@ -1491,7 +1490,7 @@ php artisan migrate
     use Illuminate\Support\Collection;
 
     /**
-     * Execute the job.
+     * Execute o trabalho.
      */
     public function handle(): void
     {
@@ -1568,7 +1567,7 @@ php artisan migrate
 
 ```php
     /**
-     * Execute the job.
+     * Execute o trabalho.
      */
     public function handle(): void
     {
@@ -1746,14 +1745,14 @@ composer require aws/aws-sdk-php
 <a name="the-queue-work-command"></a>
 ### O Comando `queue:work`
 
- O Laravel inclui um comando "artesan" que inicia o trabalhador de fila e processa os novos empregos quando são colocados na fila. Você pode executar o trabalhador usando o comando "queue:work". Note que, uma vez iniciado o comando "queue:work", ele continuará a ser executado até ser interrompido manualmente ou você fechar seu terminal:
+ O Laravel inclui um comando "artesan" que inicia o _worker_ de fila e processa os novos empregos quando são colocados na fila. Você pode executar o _worker_ usando o comando "queue:work". Note que, uma vez iniciado o comando "queue:work", ele continuará a ser executado até ser interrompido manualmente ou você fechar seu terminal:
 
 ```shell
 php artisan queue:work
 ```
 
  > [!OBSERVAÇÃO]
- Use o separador [ Supervisor (Configuração do supervisor)](/supervisor-configuration) para garantir que o trabalhador de filas não pare de rodar.
+ Use o separador [ Supervisor (Configuração do supervisor)](/supervisor-configuration) para garantir que o _worker_ de filas não pare de rodar.
 
  Você pode incluir a marca de opção `-v` ao invocar o comando `queue:work` se desejar que os IDs dos trabalhos processados sejam incluídos no output do comando:
 
@@ -1763,7 +1762,7 @@ php artisan queue:work -v
 
  Lembre que os agentes de fila são processos que duram muito tempo e armazenam o estado da aplicação inicializada em memória. Consequentemente, não percebem alterações na sua base de código depois de terem começado. Assim, no decorrer do processo de implantação, certifique-se de reiniciar os agentes de fila (ver Reinicializar agentes de fila e implantação). Além disso, tenha em atenção que qualquer estado estático criado ou modificado pela sua aplicação não é automaticamente redefinido entre tarefas.
 
- Como alternativa, você pode executar o comando `queue:listen`. Ao usar este comando, você não precisa reiniciar manualmente o trabalhador quando quiser recarregar seu código atualizado ou redefinir o estado da aplicação. No entanto, esse comando é significativamente menos eficiente que o comando `queue:work`:
+ Como alternativa, você pode executar o comando `queue:listen`. Ao usar este comando, você não precisa reiniciar manualmente o _worker_ quando quiser recarregar seu código atualizado ou redefinir o estado da aplicação. No entanto, esse comando é significativamente menos eficiente que o comando `queue:work`:
 
 ```shell
 php artisan queue:listen
@@ -1777,7 +1776,7 @@ php artisan queue:listen
 <a name="specifying-the-connection-queue"></a>
 #### Especificando a conexão e a fila
 
- Você também pode especificar qual conexão de fila o trabalhador deve utilizar. O nome da conexão passado ao comando `work` deve corresponder a uma das conexões definidas em seu arquivo de configuração `config/queue.php`:
+ Você também pode especificar qual conexão de fila o _worker_ deve utilizar. O nome da conexão passado ao comando `work` deve corresponder a uma das conexões definidas em seu arquivo de configuração `config/queue.php`:
 
 ```shell
 php artisan queue:work redis
@@ -1792,7 +1791,7 @@ php artisan queue:work redis --queue=emails
 <a name="processing-a-specified-number-of-jobs"></a>
 #### Processamento de um número especificado de tarefas
 
- A opção `--once` pode ser utilizada para indicar ao trabalhador que só processará um único trabalho na fila:
+ A opção `--once` pode ser utilizada para indicar ao _worker_ que só processará um único trabalho na fila:
 
 ```shell
 php artisan queue:work --once
@@ -1807,7 +1806,7 @@ php artisan queue:work --max-jobs=1000
 <a name="processing-all-queued-jobs-then-exiting"></a>
 #### Processar todas as tarefas agendadas e, em seguida, sair
 
- A opção `--stop-when-empty` pode ser utilizada para instruir o trabalhador para processar todos os trabalhos e, em seguida, sair de forma graciosa. Esta opção é útil ao processar filas Laravel dentro de um container Docker se você deseja fechar o contenedor depois que a fila estiver vazia:
+ A opção `--stop-when-empty` pode ser utilizada para instruir o _worker_ para processar todos os trabalhos e, em seguida, sair de forma graciosa. Esta opção é útil ao processar filas Laravel dentro de um container Docker se você deseja fechar o contenedor depois que a fila estiver vazia:
 
 ```shell
 php artisan queue:work --stop-when-empty
@@ -1816,7 +1815,7 @@ php artisan queue:work --stop-when-empty
 <a name="processing-jobs-for-a-given-number-of-seconds"></a>
 #### Tarefas de processamento por um determinado número de segundos
 
- A opção `--max-time` pode ser usada para instruir o trabalhador a processar tarefas pelo número de segundos especificado e então sair. Essa opção é útil quando combinada com [Supervisor (supervisor-configuration)](#supervisor-configuration), pois permite que os trabalhadores sejam reiniciados automaticamente depois do processamento de tarefas por um determinado período, liberando qualquer memória que possam ter acumulado:
+ A opção `--max-time` pode ser usada para instruir o _worker_ a processar tarefas pelo número de segundos especificado e então sair. Essa opção é útil quando combinada com [Supervisor (supervisor-configuration)](#supervisor-configuration), pois permite que os trabalhadores sejam reiniciados automaticamente depois do processamento de tarefas por um determinado período, liberando qualquer memória que possam ter acumulado:
 
 ```shell
 # Process jobs for one hour and then exit...
@@ -1826,7 +1825,7 @@ php artisan queue:work --max-time=3600
 <a name="worker-sleep-duration"></a>
 #### Duracão do sono dos trabalhadores
 
- Se houver tarefas disponíveis na fila, o trabalhador continuará processando as tarefas sem nenhum atraso entre elas. No entanto, a opção `sleep` determina quantos segundos o trabalhador ficará "dormindo" se não houver tarefas disponíveis. Claro, enquanto estiver dormindo, o trabalhador não processará novas tarefas:
+ Se houver tarefas disponíveis na fila, o _worker_ continuará processando as tarefas sem nenhum atraso entre elas. No entanto, a opção `sleep` determina quantos segundos o _worker_ ficará "dormindo" se não houver tarefas disponíveis. Claro, enquanto estiver dormindo, o _worker_ não processará novas tarefas:
 
 ```shell
 php artisan queue:work --sleep=3
@@ -1857,7 +1856,7 @@ php artisan queue:work --force
     dispatch((new Job)->onQueue('high'));
 ```
 
- Para iniciar um trabalhador que verifique se todos os empregos da fila "high" têm sido processados antes de continuar com qualquer outro na fila "low", digite uma lista delimitada por vírgula de nomes de filas ao utilizar o comando `work`:
+ Para iniciar um _worker_ que verifique se todos os empregos da fila "high" têm sido processados antes de continuar com qualquer outro na fila "low", digite uma lista delimitada por vírgula de nomes de filas ao utilizar o comando `work`:
 
 ```shell
 php artisan queue:work --queue=high,low
@@ -1889,7 +1888,7 @@ php artisan queue:restart
  Existe um tempo padrão de visibilidade (Standard Visibility Timeout), que é administrado na consola da AWS.
 
 <a name="worker-timeouts"></a>
-#### Tempo de espera do trabalhador
+#### Tempo de espera do _worker_
 
  O comando Artesão `queue:work` apresenta uma opção `--timeout`. Por padrão, o valor do --timeout é de 60 segundos. Se um trabalho estiver sendo processado por mais tempo que o número de segundos especificados pelo valor do timeout, o processo de trabalho será interrompido com um erro. Tipicamente, o processo será reiniciado automaticamente por um [gerenciador de processos configurado em seu servidor](#supervisor-configuration):
 
@@ -1900,7 +1899,7 @@ php artisan queue:work --timeout=60
  As opções de configuração `retry_after` e a opção da linha de comando (`--timeout`) são diferentes, mas trabalham em conjunto para garantir que os trabalhos não sejam perdidos e que eles só sejam processados com sucesso uma vez.
 
  > Aviso
- > O valor do argumento `--timeout` deve ser sempre, no mínimo, vários segundos menor que o valor da configuração de `retry_after`. Isto garante que um trabalhador que esteja a processar um trabalho congelado seja sempre interrompido antes do trabalho ser novamente tentado. Se o valor do argumento `--timeout` for superior ao valor da configuração `retry_after`, os trabalhos podem ser processados duas vezes.
+ > O valor do argumento `--timeout` deve ser sempre, no mínimo, vários segundos menor que o valor da configuração de `retry_after`. Isto garante que um _worker_ que esteja a processar um trabalho congelado seja sempre interrompido antes do trabalho ser novamente tentado. Se o valor do argumento `--timeout` for superior ao valor da configuração `retry_after`, os trabalhos podem ser processados duas vezes.
 
 <a name="supervisor-configuration"></a>
 ## Configuração do Supervisor
@@ -1974,7 +1973,7 @@ php artisan make:queue-failed-table
 php artisan migrate
 ```
 
- Ao executar um processo [de trabalhador da fila (queue worker)], você pode especificar o número máximo de vezes que uma tarefa deve ser tentada, usando a opção `--tries` no comando `queue:work`. Se você não especificar um valor para a opção `--tries`, as tarefas somente serão executadas uma única vez ou quantas vezes indicado pela propriedade `$tries` da classe de tarefa:
+ Ao executar um processo [de _worker_ da fila (queue worker)], você pode especificar o número máximo de vezes que uma tarefa deve ser tentada, usando a opção `--tries` no comando `queue:work`. Se você não especificar um valor para a opção `--tries`, as tarefas somente serão executadas uma única vez ou quantas vezes indicado pela propriedade `$tries` da classe de tarefa:
 
 ```shell
 php artisan queue:work redis --tries=3
@@ -2046,18 +2045,18 @@ php artisan queue:work redis --tries=3 --backoff=3
         use InteractsWithQueue, Queueable, SerializesModels;
 
         /**
-         * Create a new job instance.
+         * Crie uma nova instância de trabalho.
          */
         public function __construct(
             public Podcast $podcast,
         ) {}
 
         /**
-         * Execute the job.
+         * Execute o trabalho.
          */
         public function handle(AudioProcessor $processor): void
         {
-            // Process uploaded podcast...
+            // Processar podcast carregado...
         }
 
         /**
@@ -2124,7 +2123,7 @@ php artisan queue:flush
 <a name="ignoring-missing-models"></a>
 ### Ignorando Modelos ausentes
 
- Ao injetar um modelo Eloquent em uma tarefa, o modelo é automaticamente serializado antes de ser colocado na fila e recuperado novamente do banco de dados quando a tarefa for processada. No entanto, se o modelo foi excluído enquanto a tarefa estava esperando para ser processada por um trabalhador, a tarefa pode falhar com uma `ModelNotFoundException`.
+ Ao injetar um modelo Eloquent em uma tarefa, o modelo é automaticamente serializado antes de ser colocado na fila e recuperado novamente do banco de dados quando a tarefa for processada. No entanto, se o modelo foi excluído enquanto a tarefa estava esperando para ser processada por um _worker_, a tarefa pode falhar com uma `ModelNotFoundException`.
 
  Para maior conveniência, você pode optar por excluir automaticamente tarefas com modelos faltantes ao definir a propriedade `deleteWhenMissingModels` da sua tarefa como `true`. Quando esta propriedade é definida como `true`, Laravel descarta silenciosamente a tarefa sem levantar uma exceção:
 
@@ -2598,7 +2597,7 @@ $job->assertFailed();
     }
 ```
 
- Usando o método `looping` do [facade da interface `Queue`](/docs/facades), você pode especificar os callbacks que serão executados antes de o trabalhador tentar obter um trabalho da fila. Por exemplo, você pode registrar uma chave fechada para fazer o rollback das transações que foram deixadas abertas por um trabalho com falha anterior:
+ Usando o método `looping` do [facade da interface `Queue`](/docs/facades), você pode especificar os callbacks que serão executados antes de o _worker_ tentar obter um trabalho da fila. Por exemplo, você pode registrar uma chave fechada para fazer o rollback das transações que foram deixadas abertas por um trabalho com falha anterior:
 
 ```php
     use Illuminate\Support\Facades\DB;
