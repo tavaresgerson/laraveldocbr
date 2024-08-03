@@ -46,9 +46,9 @@
     - [Notifications](/src/docs/notifications.md) ✅
     - [Package Development](/src/docs/packages.md) ✅
     - [Processes](/src/docs/processes.md) ✅
-    - [Queues](/src/docs/queues.md) ⚙️
-    - [Rate Limiting](/src/docs/rate-limiting.md)
-    - [Strings](/src/docs/strings.md)
+    - [Queues](/src/docs/queues.md) ✅
+    - [Rate Limiting](/src/docs/rate-limiting.md) ✅
+    - [Strings](/src/docs/strings.md) ⚙️
     - [Task Scheduling](/src/docs/scheduling.md)
 - ## Segurança
     - [Autenticação](/src/docs/authentication.md) ✅
