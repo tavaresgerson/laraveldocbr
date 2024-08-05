@@ -2,22 +2,23 @@
 
 ## Introdução
 
- Além de fornecer serviços de [autenticação](/docs/{{ version }}/authentication) integrados, o Laravel também oferece uma forma simples de autorizar ações dos usuários em um determinado recurso. Por exemplo, mesmo que um usuário esteja autenticado, ele pode não ser autorizado para atualizar ou excluir certos modelos Eloquent ou registros do banco de dados gerenciados por sua aplicação. O Laravel fornece recursos de autorização para facilitar e organizar esses tipos de verificações.
+Além de fornecer serviços de [autenticação](/docs/authentication), o Laravel também fornece um modo simples de autorizar ações do usuário em relação a um determinado recurso. Por exemplo, mesmo que um usuário esteja autenticado, ele pode não estar autorizado a atualizar ou excluir determinados modelos Eloquent ou registros de banco de dados gerenciados por sua aplicação. As funcionalidades de autorização do Laravel fornecem uma maneira fácil e organizada de gerenciar esses tipos de verificações de autorização.
 
- O Laravel fornece dois métodos principais para autorizar ações: [portas](#gates) e [políticas](#creating-policies). Imagine portas e políticas como rota e controladores. As portas oferecem uma abordagem simples de autenticação, com base em funções fechadas (closure), enquanto as políticas, assim como os controladores, agrupam a lógica em torno de um modelo ou recurso específico. Nesta documentação, exploraremos portas primeiro e, em seguida, analisaremos políticas.
+O Laravel fornece duas maneiras principais de autorizar ações: [_gates_](#gates) e [políticas](#creating-policies). Pense em _gates_ e políticas como rotas e controladores. Os _gates_ fornecem uma abordagem simples baseada em closures para autorização, enquanto as políticas, como os controladores, agrupam a lógica em torno de um modelo ou recurso específico. Nesta documentação, exploraremos primeiro os _gates_ e então examinaremos as políticas.
 
- Não é necessário escolher entre usar exclusivamente portas ou políticas ao construir um aplicativo. É mais provável que a maioria dos aplicativos contenha uma mistura de portas e políticas, o que é perfeitamente correto! As portas são mais úteis para ações que não estão relacionadas com nenhum modelo ou recurso, como verificar um painel do administrador. Por outro lado, as políticas devem ser usadas quando você deseja autorizar uma ação para um determinado modelo ou recurso.
+Você não precisa escolher entre usar apenas _gates_ ou políticas quando estiver construindo um aplicativo. A maioria dos aplicativos provavelmente conterá uma mistura de _gates_ e políticas, e isso está ok! Os _gates_ são mais aplicáveis para ações que não estão relacionadas com nenhum modelo ou recurso, como visualizar um painel de administrador. Em contraste, as políticas devem ser usadas quando você deseja autorizar uma ação para um modelo ou recurso específico.
 
-## Portões
+## _Gates_
 
-### Porta-guarda-chuvas de escritório
+### Escrevendo _gates_
 
- > [AVISO]
- Use as opções [ Políticas](#criando-politicas) para organizar suas regras de autorização.
+::: warning ATENÇÃO
+_Gates_ são uma ótima maneira de aprender os fundamentos das funcionalidades de autorização do Laravel; no entanto, ao construir aplicações robustas do Laravel você deve considerar o uso de [políticas](#creating-policies) para organizar suas regras de autorização.
+:::
 
- Os gateways são, simplesmente, fechamentos que determinam se um usuário está autorizado a realizar uma ação específica. Normalmente, os gateways são definidos na ordem de inicialização do método `boot` da classe `App\Providers\AppServiceProvider`, utilizando a faca `Gate`. Os gateways recebem sempre como primeiro argumento uma instância de usuário e, opcionalmente, podem receber outros argumentos, tais como um modelo Eloquent relevante.
+_Gates_ são simplesmente closures que determinam se um usuário é autorizado para executar uma ação específica. Normalmente, os _gates_ são definidos dentro do método `boot` da classe `App\Providers\AppServiceProvider` usando a _facade_ `Gate`. Os _gates_ sempre recebem uma instância de usuário como seu primeiro argumento e podem opcionalmente receber argumentos adicionais, como um modelo Eloquent relevante.
 
- Neste exemplo, definiremos um gatilho para determinar se um usuário pode atualizar um modelo de `App\Models\Post`. O gate realizará essa comparação comparando o ID do usuário com o `user_id` do usuário que criou o post:
+Neste exemplo, vamos definir um _gate_ para determinar se um usuário pode atualizar um determinado modelo `App/Models/Post`. O _gate_ vai realizar isso comparando o ID do usuário com o ID do usuário que criou o post:
 
 ```php
     use App\Models\Post;
@@ -25,7 +26,7 @@
     use Illuminate\Support\Facades\Gate;
 
     /**
-     * Bootstrap any application services.
+     * Inicialize qualquer serviço de aplicativo.
      */
     public function boot(): void
     {
@@ -35,14 +36,14 @@
     }
 ```
 
- Do mesmo modo que os controladores, as portas também podem ser definidas com um array de funções de chamada de classe:
+Assim como controladores, os _gates_ também podem ser definidos usando uma matriz de retorno de chamada de classe:
 
 ```php
     use App\Policies\PostPolicy;
     use Illuminate\Support\Facades\Gate;
 
     /**
-     * Bootstrap any application services.
+     * Inicialize qualquer serviço de aplicativo.
      */
     public function boot(): void
     {
@@ -51,9 +52,9 @@
 ```
 
 
-### Autorização de ações
+### Ações Autorizadas
 
- Para autorizar uma ação usando portões, você deve usar os métodos `allows` ou `denies` fornecidos pela fachada `Gate`. Note que não é obrigatório passar o usuário atualmente autenticado para esses métodos. O Laravel cuidará automaticamente do envio do usuário ao closure do portão. É típico chamar os métodos de autorização do portão dentro dos controladores da sua aplicação antes de executar uma ação que exija autorização:
+Para autorizar uma ação usando _gates_, você deve usar os métodos "_allow_" ou "_deny_" fornecidos pela _facade_ `Gate`. Observe que você não precisa passar o usuário atualmente autenticado para esses métodos. O Laravel cuidará automaticamente de passar o usuário no closure do _gate_. É típico chamar os métodos de autorização do _gate_ dentro dos controladores do seu aplicativo antes de executar uma ação que requer autorização:
 
 ```php
     <?php
@@ -69,7 +70,7 @@
     class PostController extends Controller
     {
         /**
-         * Update the given post.
+         * Atualize a postagem fornecida.
          */
         public function update(Request $request, Post $post): RedirectResponse
         {
@@ -77,50 +78,50 @@
                 abort(403);
             }
 
-            // Update the post...
+            // Atualize o post...
 
             return redirect('/posts');
         }
     }
 ```
 
- Se você quiser determinar se um usuário diferente do que o atualmente autenticado é autorizado a executar uma ação, você pode usar o método `forUser` no módulo de interface "Gate":
+Se você gostaria de determinar se um usuário diferente do usuário atualmente autenticado é autorizado para executar uma ação, você pode usar o método `forUser` da _facade_ `Gate`:
 
 ```php
     if (Gate::forUser($user)->allows('update-post', $post)) {
-        // The user can update the post...
+        // O usuário pode atualizar a postagem...
     }
 
     if (Gate::forUser($user)->denies('update-post', $post)) {
-        // The user can't update the post...
+        // O usuário não pode atualizar a postagem...
     }
 ```
 
- É possível autorizar várias ações de uma só vez usando os métodos `any` ou `none`:
+Você pode autorizar várias ações de uma vez usando o método 'any' ou 'none':
 
 ```php
     if (Gate::any(['update-post', 'delete-post'], $post)) {
-        // The user can update or delete the post...
+        // O usuário pode atualizar ou excluir a postagem...
     }
 
     if (Gate::none(['update-post', 'delete-post'], $post)) {
-        // The user can't update or delete the post...
+        // O usuário não pode atualizar ou excluir a postagem...
     }
 ```
 
-#### Autorização ou lançamento de exceções
+#### Autorizar ou Lançar Exceções
 
- Se você deseja tentar autorizar uma ação e automaticamente lançar um `Illuminate\Auth\Access\AuthorizationException`, se o usuário não tiver permissão para executar essa ação, pode utilizar o método `authorize` da facade `Gate`. Instâncias de `AuthorizationException` são convertidas automaticamente em uma resposta HTTP 403 pelo Laravel:
+Se você gostaria de tentar autorizar uma ação e lançar automaticamente um `Illuminate\Auth\Access\AuthorizationException` se o usuário não for permitido para executar a ação dada, você pode usar o método `authorize` da _facade_ `Gate`. Instâncias de `AuthorizationException` são automaticamente convertidas em uma resposta HTTP 403 por Laravel:
 
 ```php
     Gate::authorize('update-post', $post);
 
-    // The action is authorized...
+    // A ação é autorizada...
 ```
 
-#### Fornecendo contexto adicional
+#### Fornecer contexto adicional
 
- Os métodos de portas para autorização de capacidades ( `permite`, `não permite`, `verifica`, `qualquer`, `nenhum`), e as diretivas de autorização [Blade directives (Diretrizes Blade)] (`@can`, `@cannot`, `@canany`) podem receber um array como seu segundo argumento. Estes elementos do array são passados como parâmetros para o bloqueio de portas e podem ser utilizados em contextos adicionais ao tomar decisões de autorização:
+Os métodos do _gate_ para autorizar (`allows`, `denies`, `check`, `any`, `none`, `authorize`, `can`, `cannot`) e a autorização nas [Diretivas do Blade](#via-blade-templates) (`@can`, `@cannot`, `@canany`) podem receber um array como seu segundo argumento. Esses elementos do array são passados como parâmetros para o closure do _gate_, e podem ser usados ​​para contexto adicional ao tomar decisões de autorização:
 
 ```php
     use App\Models\Category;
@@ -138,13 +139,13 @@
     });
 
     if (Gate::check('create-post', [$category, $pinned])) {
-        // The user can create the post...
+        // O usuário pode criar a postagem...
     }
 ```
 
-### Respostas de portão
+### Respostas do Portal
 
- Até agora, analisamos apenas portas que retornam valores booleanos simples. No entanto, às vezes você pode querer retornar uma resposta mais detalhada, incluindo uma mensagem de erro. Para fazer isso, é possível retornar um `Illuminate\Auth\Access\Response` da sua porta:
+Até agora, examinamos apenas os _gates_ que retornam valores booleanos simples. No entanto, às vezes você pode querer retornar uma resposta mais detalhada, incluindo uma mensagem de erro. Para isso, você pode retornar um `Illuminate\Auth\Access\Response` do seu _gate_:
 
 ```php
     use App\Models\User;
@@ -158,29 +159,29 @@
     });
 ```
 
- Mesmo ao retornar uma resposta de autorização do seu gate, o método `Gate::allows` continuará retornando um valor boolean simples. No entanto, você poderá usar o método `Gate::inspect` para obter a resposta completa da autorização retornada pelo gate:
+Mesmo quando você retorna uma resposta de autorização do seu _gate_, o método `Gate::allows` ainda retornará um valor booleano simples; no entanto, você pode usar o método `Gate::inspect` para obter a resposta de autorização completa retornada pelo _gate_.
 
 ```php
     $response = Gate::inspect('edit-settings');
 
     if ($response->allowed()) {
-        // The action is authorized...
+        // A ação é autorizada...
     } else {
         echo $response->message();
     }
 ```
 
- Quando se utiliza o método Gate::authorize, que arroja uma exceção AuthorizationException se a ação não estiver autorizada, a mensagem de erro fornecida pela resposta de autorização será propagada para a resposta HTTP:
+Ao usar o método `Gate::authorize`, que lança uma exceção de `AuthorizationException` caso a ação não seja autorizada, a mensagem de erro fornecida pela resposta de autorização será propagada para a resposta do HTTP.
 
 ```php
     Gate::authorize('edit-settings');
 
-    // The action is authorized...
+    // A ação é autorizada...
 ```
 
-#### Personalizando o Estado da Resposta HTTP
+#### Personalizando o código de status do http response
 
- Quando uma ação é negada através de um Gate, é retornado o código de resposta HTTP `403`. No entanto, às vezes pode ser útil retornar um código de resposta HTTP alternativo. É possível personalizar o código de resposta HTTP retornado para uma verificação de autorização negada usando a construtora estática `denyWithStatus` na classe `Illuminate\Auth\Access\Response`:
+Quando uma ação é negada via um Gate, a resposta `403` é retornada; mas às vezes pode ser útil retornar um código de status HTTP alternativo. Você pode personalizar o código de status HTTP retornado para um check de autorização com falha usando o construtor estático 'denyWithStatus' da classe `Illuminate\Auth\Access\Response`:
 
 ```php
     use App\Models\User;
@@ -194,7 +195,7 @@
     });
 ```
 
- Como esconder recursos através de uma resposta `404` é um padrão comum para aplicações da Web, o método `denyAsNotFound` é oferecido como uma conveniência:
+Como ocultar recursos por meio de uma resposta `404` é um padrão comum para aplicativos da web, o método `denyAsNotFound` é oferecido por conveniência:
 
 ```php
     use App\Models\User;
@@ -208,9 +209,9 @@
     });
 ```
 
-### Detetar verificações de portões
+### Interceptando verificações do _gate_
 
- Às vezes, você pode querer conceder todas as capacidades para um usuário específico. Você pode usar o método `before` para definir uma instrução que é executada antes de todas as outras verificações de autorização:
+Às vezes, você pode querer conceder todos os poderes a um usuário específico. Você pode usar o método antes para definir uma função de retorno que é executada antes de todas as outras verificações de autorização:
 
 ```php
     use App\Models\User;
@@ -223,9 +224,9 @@
     });
 ```
 
- Se o fecho `before` retornar um valor nulo, esse resultado será considerado como resultado da verificação de autorização.
+Se o `before` de closure retorna um resultado não nulo, esse resultado será considerado como o resultado do teste de autorização.
 
- Pode utilizar o método `after` para definir um fecho que irá ser executado depois de todas as outras verificações de autorização:
+Você pode usar o método `after` para definir um closure para ser executado após todos os outros verificações de autorização:
 
 ```php
     use App\Models\User;
@@ -237,11 +238,11 @@
     });
 ```
 
- Assim como ocorre com o método `before`, se o fecho do método `after` retornar um resultado não nulo, esse resultado será considerado o resultado da verificação de autorização.
+Semelhante ao método `before`, se o closure no `after` retornar um resultado não nulo esse resultado será considerado como o resultado da verificação de autorização.
 
-### Autorização em linha
+### Autorização _inline_
 
- Ocasionalmente, você pode desejar determinar se o usuário atualmente autenticado tem autorização para realizar uma determinada ação sem escrever um portão dedicado que corresponda à ação. O Laravel permite fazer este tipo de verificação de autorização "in-line" por meio dos métodos `Gate::allowIf` e `Gate::denyIf`. A autorização in-line não executa nenhum loop de verificação de autorização definido (["antes" ou "depois"]):
+Em alguns casos, você pode estar interessado em verificar se o usuário atualmente autenticado tem permissão para executar uma ação específica sem escrever um "gate" dedicado que corresponda à ação. O Laravel permite realizar esses tipos de verificações de autorização "_inline_" através dos métodos `Gate::allowIf` e `Gate::denyIf`. A autorização "_inline_" não executa nenhum [gancho de autorização "antes" ou "depois"](#intercepting-gate-checks):
 
 ```php
 use App\Models\User;
@@ -252,45 +253,45 @@ Gate::allowIf(fn (User $user) => $user->isAdministrator());
 Gate::denyIf(fn (User $user) => $user->banned());
 ```
 
- Se a ação não for autorizada ou se atualmente nenhum usuário estiver autenticado, o Laravel lançará automaticamente uma exceção `Illuminate\Auth\Access\AuthorizationException`. As instâncias da `AuthorizationException` são convertidas automaticamente em resposta HTTP 403 pelo gestor de exceções do Laravel.
+Se a ação não for autorizada ou se nenhum usuário estiver autenticado, o Laravel lançará automaticamente uma exceção de `Illuminate\Auth\Access\AuthorizationException`. Instâncias da `AuthorizationException` são automaticamente convertidas em uma resposta HTTP 403 pelo manipulador de exceções do Laravel.
 
-## Criação de políticas
+## Criando Políticas
 
-### Gerando políticas
+### Geração de Políticas
 
- As políticas são classes que organizam a lógica de autorização em torno de um modelo ou recurso específico. Por exemplo, se sua aplicação for um blog, você pode ter um modelo `App\Models\Post` e uma política correspondente `App\Policies\PostPolicy` para autorizar ações do usuário, como criar ou atualizar postagens.
+Políticas são classes que organizam a lógica de autorização em torno de um modelo ou recurso específico. Por exemplo, se o seu aplicativo é um blog, você pode ter um modelo `App/Models/Post` e uma política correspondente `App/Policies/PostPolicy` para autorizar ações do usuário, tais como criar ou atualizar postagens.
 
- Pode gerar uma política utilizando o comando do artesão `make:policy`. A política gerada será armazenada no diretório `app/Policies`. Se este diretório não existir na sua aplicação, Laravel irá criá-lo para si:
+Você pode gerar uma política usando o comando Artisan `make:policy`. A política gerada será colocada no diretório app/Policies. Se este diretório não existir em sua aplicação, Laravel a criará para você:
 
 ```shell
 php artisan make:policy PostPolicy
 ```
 
- O comando `make:policy` irá gerar uma classe de política vazia. Se quiser gerar uma classe com exemplos de métodos de política relacionados à visualização, criação, atualização e exclusão do recurso, é possível fornecer a opção `--model` ao executar o comando:
+O comando `make:policy` gerará uma classe de política vazia. Se você gostaria de gerar uma classe com métodos de exemplo relacionados à visualização, criação, atualização e exclusão do recurso, você pode fornecer uma opção `--model` ao executar o comando:
 
 ```shell
 php artisan make:policy PostPolicy --model=Post
 ```
 
-### Registo de políticas
+### Registro de políticas
 
 #### Descoberta de políticas
 
- Por padrão, o Laravel descoberta automaticamente políticas desde que o modelo e a política sigam as convenções de nomes do Laravel. Especificamente, as políticas devem estar em uma pasta "Policies" ou acima da pasta que contém seus modelos. Então, por exemplo, os modelos podem ficar na pasta `app/Models`, enquanto a política deve ficar na pasta `app/Policies`. Neste caso, o Laravel verifica as políticas em `app/Models/Policies` e então em `app/Policies`. Além disso, o nome da política deve coincidir com o nome do modelo e ter um sufixo de "Policy". Assim, o modelo "User" corresponde à classe de política "UserPolicy".
+Por padrão o Laravel automaticamente descobre políticas desde que o modelo e a política sigam convenções de nomenclatura padrão do Laravel. Específicamente, as políticas devem estar em um diretório no `Policies` ou acima do diretório que contém seus modelos. Assim, por exemplo, os modelos podem ser colocados no diretório `app/Models`, enquanto as políticas podem ser colocadas no diretório `app/Policies`. Neste caso o Laravel vai verificar se existem políticas nos diretórios `app/Models/Policies` e `app/Policies`. Além disso, o nome da política deve corresponder ao nome do modelo e ter um sufixo `Policy`. Então uma classe de modelo `User` corresponde a uma classe de política `UserPolicy`.
 
- Se desejar definir sua própria lógica de descobrimento de políticas, pode registrar um retorno personalizado de descobrimento de política usando o método `Gate::guessPolicyNamesUsing`. Normalmente, esse método deve ser chamado do método `boot` do seu aplicativo `AppServiceProvider`:
+Se você gostaria de definir sua própria lógica de descoberta de política, você pode registrar um retorno de chamada personalizado de descoberta de política usando o método `Gate::guessPolicyNamesUsing`. Normalmente, este método deve ser chamado no método `boot` de seu provedor de serviços de aplicativos.
 
 ```php
     use Illuminate\Support\Facades\Gate;
 
     Gate::guessPolicyNamesUsing(function (string $modelClass) {
-        // Return the name of the policy class for the given model...
+        // Retorna o nome da classe de política para o modelo fornecido...
     });
 ```
 
-#### Registo de políticas manualmente
+#### Registro manual de políticas
 
- Usando a interface de linha de comando `Gate`, você pode registrar manualmente políticas e os modelos correspondentes dentro do método `boot` do `AppServiceProvider` da sua aplicação.
+Usando a _facade_ `Gate`, você pode registrar manualmente suas políticas e modelos correspondentes dentro do método `boot` de seu provedor de serviço de aplicativos `AppServiceProvider`:
 
 ```php
     use App\Models\Order;
@@ -298,7 +299,7 @@ php artisan make:policy PostPolicy --model=Post
     use Illuminate\Support\Facades\Gate;
 
     /**
-     * Bootstrap any application services.
+     * Inicialize qualquer serviço de aplicativo.
      */
     public function boot(): void
     {
@@ -306,13 +307,13 @@ php artisan make:policy PostPolicy --model=Post
     }
 ```
 
-## Redigindo políticas
+## Políticas de redação
 
 ### Métodos de Política
 
- Assim que o tipo de política tiver sido registrado, você poderá adicionar métodos para cada ação autorizada. Por exemplo, vamos definir um método `update` em nossa `PostPolicy`, que determina se um determinado usuário `App\Models\User` pode atualizar uma determinada instância de postagem `App\Models\Post`.
+Uma vez que a classe de política foi registrada, você pode adicionar métodos para cada ação que ele autoriza. Por exemplo, vamos definir um método `update` em nossa classe `PostPolicy`, o qual determina se um usuário `App\Models\User` é capaz de atualizar uma determinada instância do post `App\Models\Post`.
 
- O método `update` receberá um objeto `User` e uma instância de `Post` como argumentos. Deve retornar `true` ou `false` indicando se o usuário é autorizado a atualizar o post especificado. Então, neste exemplo, verificaremos se o `id` do usuário combina com o `user_id` no post:
+O método `update` receberá uma instância de `User` e `Post` como argumentos, e deve retornar `true` ou `false` indicando se o usuário está autorizado a atualizar o dado `Post`. Então, neste exemplo, verificaremos que o `id` do usuário corresponde ao `user_id` no post.
 
 ```php
     <?php
@@ -325,7 +326,7 @@ php artisan make:policy PostPolicy --model=Post
     class PostPolicy
     {
         /**
-         * Determine if the given post can be updated by the user.
+         * Determine se a postagem fornecida pode ser atualizada pelo usuário.
          */
         public function update(User $user, Post $post): bool
         {
@@ -334,16 +335,17 @@ php artisan make:policy PostPolicy --model=Post
     }
 ```
 
- Você pode continuar definindo métodos adicionais na política conforme necessário para as várias ações que ela autoriza. Por exemplo, você poderá definir os métodos `view` ou `delete` para autorizar várias ações relacionadas com o campo `Post`, mas lembre-se de que você é livre para dar nomes conforme preferir a essas funções da política.
+Você pode continuar a definir métodos adicionais na política conforme necessário para as várias ações que ela autoriza. Por exemplo, você pode definir os métodos `view` ou `delete` para autorizar várias ações relacionadas com `Post`, mas lembre-se de que você é livre para dar qualquer nome aos seus métodos da política.
 
- Se você tiver usado a opção `--model` ao gerar seu policy através da consola Artisan, ele já conterá métodos para as ações "viewAny", "view", "create", "update", "delete", "restore" e "forceDelete".
+Se você usou a opção `--model` ao gerar sua política via console Artisan, já conterá os métodos para as ações `viewAny`, `view`, `create`, `update`, `delete`, `restore` e `forceDelete`.
 
- > [!ATENÇÃO]
- Existe um [conjunto de serviços] (container), que permite referenciar, através da especificação do tipo de dependência no construtor da estratégia de segurança, a dependência necessária para a sua injeção automática.
+::: info NOTA
+Todas as políticas são resolvidas via o [container de serviço](/docs/container) do Laravel, permitindo que você indique qualquer dependência necessária no construtor da política para ter a injeção automática.
+:::
 
-### Respostas de política
+### Respostas de Políticas
 
- Até agora, nós analisamos apenas métodos de políticas que retornam valores booleanos simples. No entanto, algumas vezes você pode desejar retornar uma resposta mais detalhada, incluindo uma mensagem de erro. Para isso, você poderá retornar uma instância `Illuminate\Auth\Access\Response` a partir do método da política:
+Até agora, examinamos somente os métodos de política que retornam valores booleanos simples. No entanto, às vezes você pode querer retornar uma resposta mais detalhada, incluindo uma mensagem de erro. Para fazer isso, você pode retornar um objeto `Illuminate\Auth\Access\Response` do método da sua política:
 
 ```php
     use App\Models\Post;
@@ -351,7 +353,7 @@ php artisan make:policy PostPolicy --model=Post
     use Illuminate\Auth\Access\Response;
 
     /**
-     * Determine if the given post can be updated by the user.
+     * Determine se a postagem fornecida pode ser atualizada pelo usuário.
      */
     public function update(User $user, Post $post): Response
     {
@@ -361,7 +363,7 @@ php artisan make:policy PostPolicy --model=Post
     }
 ```
 
- Quando retornar uma resposta de autorização da política, o método `Gate::allows` ainda retorna um valor boolean simples; no entanto, pode utilizar o método `Gate::inspect` para obter a resposta de autorização completa retornada pelo gate:
+Quando você retorna uma resposta de permissão do seu arquivo de política, o método `Gate::allows` ainda retornará um valor booleano simples, mas você pode usar o método `Gate::inspect` para obter a resposta completa de permissão retornada pelo _gate_.
 
 ```php
     use Illuminate\Support\Facades\Gate;
@@ -369,23 +371,23 @@ php artisan make:policy PostPolicy --model=Post
     $response = Gate::inspect('update', $post);
 
     if ($response->allowed()) {
-        // The action is authorized...
+        // A ação é autorizada...
     } else {
         echo $response->message();
     }
 ```
 
- Ao usar o método `Gate::authorize`, que arrota uma `AuthorizationException` se a ação não estiver autorizada, a mensagem de erro fornecida pela resposta de autorização será propagada para a resposta HTTP:
+Quando usando o método `Gate::authorize`, que lança uma exceção `AuthorizationException` se a ação não estiver autorizada, a mensagem de erro fornecida pela resposta de autorização será propagada para a resposta HTTP.
 
 ```php
     Gate::authorize('update', $post);
 
-    // The action is authorized...
+    // A ação é autorizada...
 ```
 
-#### Personalizando o status de resposta do HTTP
+#### Personalizando o Status da Resposta HTTP
 
- Quando uma ação é negada por meio de um método de política, é retornado um código de resposta HTTP de "403". No entanto, às vezes, pode ser útil o retorno de um status code alternativo. Você pode personalizar o status code HTTP retornado para uma checagem de autorização com sucesso usando a construtora estática `denyWithStatus` na classe `Illuminate\Auth\Access\Response`:
+Quando uma ação é negada via um método de política, retorna-se uma '403' HTTP response; porém, pode ser útil retornar um código de status HTTP alternativo. Você pode personalizar o código de status HTTP retornado em uma verificação de autorização malsucedida usando o construtor estático `denyWithStatus` na classe `Illuminate\Auth\Access\Response`:
 
 ```php
     use App\Models\Post;
@@ -393,7 +395,7 @@ php artisan make:policy PostPolicy --model=Post
     use Illuminate\Auth\Access\Response;
 
     /**
-     * Determine if the given post can be updated by the user.
+     * Determine se a postagem fornecida pode ser atualizada pelo usuário.
      */
     public function update(User $user, Post $post): Response
     {
@@ -403,7 +405,7 @@ php artisan make:policy PostPolicy --model=Post
     }
 ```
 
- Como o esconder de recursos através de uma resposta `404` é um padrão tão comum para aplicações web, foi oferecida a função `denyAsNotFound` por conveniência:
+Como ocultar recursos através de uma resposta `404` é um padrão tão comum para aplicações web, o método `denyAsNotFound` é oferecido por conveniência.
 
 ```php
     use App\Models\Post;
@@ -411,7 +413,7 @@ php artisan make:policy PostPolicy --model=Post
     use Illuminate\Auth\Access\Response;
 
     /**
-     * Determine if the given post can be updated by the user.
+     * Determine se a postagem fornecida pode ser atualizada pelo usuário.
      */
     public function update(User $user, Post $post): Response
     {
@@ -423,11 +425,11 @@ php artisan make:policy PostPolicy --model=Post
 
 ### Métodos sem Modelos
 
- Existem métodos de políticas que recebem somente uma instância do usuário autenticado no momento. Esta situação é mais comum ao autorizar ações `create`. Por exemplo, se você estiver criando um blog, pode desejar determinar se o usuário está autorizado a publicar posts de alguma forma. Nestas situações, seu método de política só deve receber uma instância do usuário:
+Algumas políticas de método apenas recebem uma instância do usuário atualmente autenticado. Esta situação é mais comum quando autorizando ações `create`. Por exemplo, se você estiver criando um blog, você pode querer determinar se um usuário está autorizado a criar qualquer postagem em tudo. Em tais situações, o seu método de política deve esperar apenas receber uma instância do usuário:
 
 ```php
     /**
-     * Determine if the given user can create posts.
+     * Determine se o usuário fornecido pode criar postagens.
      */
     public function create(User $user): bool
     {
@@ -437,7 +439,7 @@ php artisan make:policy PostPolicy --model=Post
 
 ### Usuários convidados
 
- Por padrão, todas as portas e políticas retornam automaticamente `false` se o pedido HTTP não tiver sido iniciado por um usuário autenticado. No entanto, você pode permitir que esses checamentos de autorização passem para suas portas e políticas declarando uma sugestão de tipo "opcional" ou fornecendo um valor padrão `null` para a definição do argumento usuário:
+Por padrão, todos os _gates_ e políticas automaticamente retornam `false` se o pedido HTTP não foi iniciado por um usuário autenticado. No entanto, você pode permitir esses verificações de autorização para passar através dos seus _gates_ e políticas ao declarar uma "opcional" _type-hint_ ou fornecendo um valor padrão `null` para a definição do argumento do usuário:
 
 ```php
     <?php
@@ -450,7 +452,7 @@ php artisan make:policy PostPolicy --model=Post
     class PostPolicy
     {
         /**
-         * Determine if the given post can be updated by the user.
+         * Determine se a postagem fornecida pode ser atualizada pelo usuário.
          */
         public function update(?User $user, Post $post): bool
         {
@@ -459,15 +461,15 @@ php artisan make:policy PostPolicy --model=Post
     }
 ```
 
-### Filtros de política
+### Filtros de Política
 
- Pode ser que pretenda autorizar todas as ações num determinado domínio. Para o efeito, defina um método `before` no domínio. O método `before` é executado antes de todos os outros métodos do domínio, o que lhe permite autorizar a ação antes da chamada ao método pretendido:
+Para alguns usuários, você pode autorizar todas as ações dentro de uma política dada. Para fazer isso, defina um método `before` na política. O método 'antes' será executado antes que qualquer outro método da política, dando-lhe uma oportunidade de autorizar a ação antes que o método de política pretendido seja realmente chamado. Esta característica é mais comumente usada para autorizar os administradores de aplicativos para executar qualquer ação:
 
 ```php
     use App\Models\User;
 
     /**
-     * Perform pre-authorization checks.
+     * Realizar verificações de pré-autorização.
      */
     public function before(User $user, string $ability): bool|null
     {
@@ -479,16 +481,17 @@ php artisan make:policy PostPolicy --model=Post
     }
 ```
 
- Se pretender recusar todos os controlos de autorização para um tipo específico de utilizador, pode indicar `false` na metodologia `before`. Caso seja indicado `null`, o controlo de autorização será efetuado pela metodologia da política.
+Se você quiser negar todos os verificações de autorização para um determinado tipo de usuário, então você pode retornar `false` do método `before`. Se o `null` é retornado, a verificação de autorização irá cair para o método de política.
 
- > [ATENÇÃO]
- > O método `before` de uma classe de política não será chamado se a classe não conter um método com um nome que corresponda ao nome da habilidade que está sendo verificada.
+::: warning ATENÇÃO
+O método `before` de uma classe política não será chamado se a classe não possuir um método com um nome igual ao da habilidade que está sendo verificada.
+:::
 
-## Autorizar ações utilizando políticas
+## Autorizando ações usando políticas
 
-### Por meio do Modelo de Usuário
+### Através do Modelo de Usuário
 
- O modelo `App\Models\User`, incluído no seu aplicativo Laravel, inclui dois úteis métodos para autorizar ações: `can` e `cannot`. Os métodos `can` e `cannot` recebem o nome da ação que pretende autorizar e o modelo relevante. Por exemplo, digite-se determinar se um utilizador está autorizado a atualizar um modelo de conteúdo (post) do tipo `App\Models\Post`. Normalmente, isto é feito num método de controlo:
+O modelo `App\Models\User` que está incluído com sua aplicação Laravel inclui dois métodos úteis para autorização de ações: `can` e `cannot`. Os métodos `can` e `cannot` recebem o nome da ação que você deseja autorizar e o modelo relevante. Por exemplo, vamos determinar se um usuário é autorizado a atualizar um determinado modelo `App\Models\Post`. Normalmente isso será feito dentro de um método do controlador:
 
 ```php
     <?php
@@ -503,7 +506,7 @@ php artisan make:policy PostPolicy --model=Post
     class PostController extends Controller
     {
         /**
-         * Update the given post.
+         * Atualize a postagem fornecida.
          */
         public function update(Request $request, Post $post): RedirectResponse
         {
@@ -511,18 +514,18 @@ php artisan make:policy PostPolicy --model=Post
                 abort(403);
             }
 
-            // Update the post...
+            // Atualize o post...
 
             return redirect('/posts');
         }
     }
 ```
 
- Se um [policy estiver registrado](#registrando-policies) para o modelo indicado, o método `can` chamará automaticamente o policy apropriado e retornará o resultado boolean. Caso não exista nenhum policy registrado para o modelo, o método `can` tentará chamada o Gate com base em função que corresponda ao nome da ação indicada.
+Se uma [política é registrada](#registering-policies) para o modelo dado, o método `can` chamará automaticamente a política apropriada e retornará o resultado booleano. Se nenhuma política for registrada para o modelo, o método `can` tentará chamar um closure baseado no _Gate_ que se encaixa no nome da ação dada.
 
-#### Ações que não requerem modelos
+#### Ações que não exigem modelos
 
- Lembre-se de que algumas ações podem corresponder a métodos de políticas como "create" (criar), que não requerem uma instância do modelo. Nessas situações, é possível passar o nome da classe para o método `can`. O nome da classe será usado para determinar qual política usar ao autorizar a ação:
+Lembre-se de que algumas ações podem corresponder ao métodos de política como `create` que não exigem uma instância de modelo. Nestes casos, você pode passar um nome de classe para o método `can`. O nome da classe será usado para determinar qual a política usar quando autorizando a ação:
 
 ```php
     <?php
@@ -537,7 +540,7 @@ php artisan make:policy PostPolicy --model=Post
     class PostController extends Controller
     {
         /**
-         * Create a post.
+         * Crie uma postagem.
          */
         public function store(Request $request): RedirectResponse
         {
@@ -545,18 +548,18 @@ php artisan make:policy PostPolicy --model=Post
                 abort(403);
             }
 
-            // Create the post...
+            // Crie a postagem...
 
             return redirect('/posts');
         }
     }
 ```
 
-### Por meio da fachada do "Portão"
+### Através da _facade_ do `Gate`
 
- Além dos métodos úteis fornecidos para o modelo `App\Models\User`, você pode sempre autorizar ações através do método `autorize` da façana `Gate`.
+Além dos métodos úteis fornecidos ao modelo `App\Models\User`, você sempre pode autorizar ações através do método `authorize` da _facade_ `Gate`.
 
- Como o método `can`, esse método aceita o nome da ação que você deseja autorizar e seu modelo respectivo. Se a ação não for autorizada, o método `authorize` irá arremessar uma exceção `Illuminate\Auth\Access\AuthorizationException` que o gerenciador de exceções do Laravel converterá automaticamente para uma resposta HTTP com um código de estado 403:
+Assim como o método `can`, este método aceita o nome da ação que você deseja autorizar e o modelo relevante. Se a ação não for autorizada, o método `authorize` lançará uma exceção `Illuminate\Auth\Access\AuthorizationException`, que será automaticamente convertida em uma resposta HTTP com um status de 403 pelo manipulador de exceções do Laravel:
 
 ```php
     <?php
@@ -572,7 +575,7 @@ php artisan make:policy PostPolicy --model=Post
     class PostController extends Controller
     {
         /**
-         * Update the given blog post.
+         * Atualize a postagem do blog fornecida.
          *
          * @throws \Illuminate\Auth\Access\AuthorizationException
          */
@@ -580,16 +583,16 @@ php artisan make:policy PostPolicy --model=Post
         {
             Gate::authorize('update', $post);
 
-            // The current user can update the blog post...
+            // O usuário atual pode atualizar a postagem do blog...
 
             return redirect('/posts');
         }
     }
 ```
 
-#### Ações que não requerem modelos
+#### Ações que não exigem modelos
 
- Como discutido anteriormente, alguns métodos de política como `create` não requerem uma instância da modelo. Nestas situações, você deve passar o nome da classe ao método `authorize`. O nome da classe será utilizado para determinar qual política usar ao autorizar a ação:
+Como já discutido anteriormente, alguns métodos de política, como o método `create`, não requerem uma instância do modelo. Nestas situações, você deve passar um nome da classe para o método `authorize`. O nome da classe será usado para determinar qual política a utilizar ao autorizar a ação:
 
 ```php
     use App\Models\Post;
@@ -598,7 +601,7 @@ php artisan make:policy PostPolicy --model=Post
     use Illuminate\Support\Facades\Gate;
 
     /**
-     * Create a new blog post.
+     * Crie uma nova postagem no blog.
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
@@ -606,119 +609,119 @@ php artisan make:policy PostPolicy --model=Post
     {
         Gate::authorize('create', Post::class);
 
-        // The current user can create blog posts...
+        // O usuário atual pode criar postagens de blog...
 
         return redirect('/posts');
     }
 ```
 
-### Por meio do middleware
+### Via Middleware
 
- O Laravel inclui um middleware que pode autorizar ações antes mesmo de o pedido receber os seus rotas ou controladores. Por padrão, o middleware `Illuminate\Auth\Middleware\Authorize` poderá ser associado a uma rota usando o [alias de middleware](/docs/middleware#middleware-alias), que é automaticamente registrado pelo Laravel. Vamos explorar um exemplo do uso do middleware `can` para autorizar que um utilizador possa atualizar um post:
+Laravel inclui um middleware que pode autorizar ações antes mesmo que a requisição chegue às rotas ou controladores. Por padrão, o middleware `Illuminate\Auth\Middleware\Authorize` pode ser anexado à uma rota usando o `can` [alias de middleware]("/docs/middleware#middleware-alias"), que é automaticamente registrado pelo Laravel. Vamos explorar um exemplo do uso do middleware `can` para autorizar que um usuário pode atualizar uma postagem:
 
 ```php
     use App\Models\Post;
 
     Route::put('/post/{post}', function (Post $post) {
-        // The current user may update the post...
+        // O usuário atual pode atualizar a postagem...
     })->middleware('can:update,post');
 ```
 
- Neste exemplo, o middleware `can` está recebendo dois argumentos. O primeiro é o nome da ação que pretendemos autorizar e o segundo é o parâmetro de rota que pretendemos passar à método do modelo. No caso, como estamos usando o [enlaçamento implícito](/docs/routing#implicit-binding), um modelo `App\Models\Post` será passado para a metodologia de política. Se o utilizador não estiver autorizado a executar a ação dada, o middleware irá retornar uma resposta HTTP com um código de status 403.
+Neste exemplo, estamos passando dois argumentos para o middleware `can`. O primeiro é o nome da ação que queremos autorizar e o segundo é o parâmetro de rota que queremos passar para o método de política. Neste caso, uma vez que estamos usando [vinculação implícita do modelo](/docs/routing#implicit-binding), um modelo `App\Models\Post` será passado para o método da política. Se o usuário não estiver autorizado a executar a ação dada, uma resposta HTTP com um código de status 403 será retornada pelo middleware.
 
- Para mais conveniência, você pode também anexar o middleware `can` à sua rota usando o método `can`:
+Para conveniência, você também pode anexar o `can` middleware à sua rota usando o método `can`:
 
 ```php
     use App\Models\Post;
 
     Route::put('/post/{post}', function (Post $post) {
-        // The current user may update the post...
+        // O usuário atual pode atualizar a postagem...
     })->can('update', 'post');
 ```
 
-#### Ações que não requerem modelos
+#### Ações que não exigem modelos
 
- Novamente, alguns métodos de política como `create` não requerem uma instância do modelo. Nestas situações, você pode passar um nome da classe para o middleware. O nome da classe será usado para determinar qual política usar ao autorizar a ação:
+Novamente, algumas políticas métodos como `create` não requerem uma instância do modelo. Nessas situações, você pode passar um nome de classe para o middleware. O nome da classe será usado para determinar qual política usar quando esta autorizando a ação:
 
 ```php
     Route::post('/post', function () {
-        // The current user may create posts...
+        // O usuário atual pode criar postagens...
     })->middleware('can:create,App\Models\Post');
 ```
 
- É possível que especificar o nome da classe inteira dentro de uma definição do middleware de string seja muito demorado. Por esse motivo, você poderá optar por anexar o middleware `can` à sua rota usando o método `can`:
+Especificar o nome de uma classe inteira dentro da definição de middleware pode se tornar um incômodo. Por esse motivo, você pode optar por anexar o middleware `can` à sua rota usando o método `can`:
 
 ```php
     use App\Models\Post;
 
     Route::post('/post', function () {
-        // The current user may create posts...
+        // O usuário atual pode criar postagens...
     })->can('create', Post::class);
 ```
 
-### Por meio de modelos de lâminas
+### Via templates Blade
 
- Ao escrever templates do Blade, é possível exibir uma parte da página apenas se o usuário estiver autorizado a executar determinada ação. Por exemplo, você pode mostrar um formulário de atualização para um post de blog somente se o usuário realmente tiver permissão para fazer essa atualização. Nesta situação, é possível usar as diretivas `@can` e `@cannot`:
+Ao criar modelos de Blade, você pode querer exibir apenas uma parte da página se o usuário estiver autorizado para realizar uma determinada ação. Por exemplo, você pode querer mostrar um formulário de atualização do post do blog apenas se o usuário puder realmente atualizar a postagem. Neste caso, você pode usar as diretivas `@can` e `@cannot`:
 
 ```blade
 @can('update', $post)
-    <!-- The current user can update the post... -->
+    <!-- O usuário atual pode atualizar a postagem... -->
 @elsecan('create', App\Models\Post::class)
-    <!-- The current user can create new posts... -->
+    <!-- O usuário atual pode criar novas postagens... -->
 @else
     <!-- ... -->
 @endcan
 
 @cannot('update', $post)
-    <!-- The current user cannot update the post... -->
+    <!-- O usuário atual não pode atualizar a postagem... -->
 @elsecannot('create', App\Models\Post::class)
-    <!-- The current user cannot create new posts... -->
+    <!-- O usuário atual não pode criar novas postagens... -->
 @endcannot
 ```
 
- Estas diretivas são atalhos convenientes para escrever declarações `@if` e `@unless`. As declarações `@can` e `@cannot` acima são equivalentes às seguintes declarações:
+Estas diretivas são atalhos convenientes para escrever as instruções `@if` e `@unless`. As instruções `@can` e `@cannot` acima são equivalentes às seguintes instruções:
 
 ```blade
 @if (Auth::user()->can('update', $post))
-    <!-- The current user can update the post... -->
+    <!-- O usuário atual pode atualizar a postagem... -->
 @endif
 
 @unless (Auth::user()->can('update', $post))
-    <!-- The current user cannot update the post... -->
+    <!-- O usuário atual não pode atualizar a postagem... -->
 @endunless
 ```
 
- Você também pode determinar se um usuário está autorizado a realizar uma determinada ação em uma matriz de ações específica. Para isso, utilize a diretiva `@canany`:
+Você também pode determinar se um usuário é autorizado a executar qualquer ação de uma matriz dada de ações. Para fazer isso, use a diretiva `@canany`:
 
 ```blade
 @canany(['update', 'view', 'delete'], $post)
-    <!-- The current user can update, view, or delete the post... -->
+    <!-- O usuário atual pode atualizar, visualizar ou excluir a postagem... -->
 @elsecanany(['create'], \App\Models\Post::class)
-    <!-- The current user can create a post... -->
+    <!-- O usuário atual pode criar uma postagem... -->
 @endcanany
 ```
 
 #### Ações que não requerem modelos
 
- Como na maioria dos outros métodos de autorização, você pode passar um nome de classe para as diretivas `@can` e `@cannot` se o comando não exigir uma instância do modelo:
+Assim como a maioria dos outros métodos de autorização, você pode passar um nome de classe para as diretivas `@can` e `@cannot` se a ação não exigir uma instância do modelo:
 
 ```blade
 @can('create', App\Models\Post::class)
-    <!-- The current user can create posts... -->
+    <!-- O usuário atual pode criar postagens... -->
 @endcan
 
 @cannot('create', App\Models\Post::class)
-    <!-- The current user can't create posts... -->
+    <!--O usuário atual não pode criar postagens... -->
 @endcannot
 ```
 
-### Fornecimento de contexto adicional
+### Fornecer Contexto Adicional
 
- Ao autorizar ações usando políticas, você pode passar um array como segundo argumento para as várias funções e auxílios de autorização. O primeiro elemento no array será utilizado para determinar qual política deve ser invocada, enquanto o resto dos elementos do array são passados como parâmetros para a própria método da política e podem ser utilizados para contexto adicional quando tomando decisões de autorização. Por exemplo, considere a seguinte definição de método `PostPolicy`, que contém um parâmetro adicional `$category`:
+Ao autorizar ações usando políticas, você pode passar uma matriz como o segundo argumento para as várias funções de autorização e auxiliares. O primeiro elemento na matriz será usado para determinar qual política deve ser invocada, enquanto o restante dos elementos da matriz são passados como parâmetros para o método da política e podem ser usados para o contexto adicional quando se tomar decisões de autorização. Por exemplo, considere a seguinte definição do método `PostPolicy` que contém um parâmetro adicional chamado `category`:
 
 ```php
     /**
-     * Determine if the given post can be updated by the user.
+     * Determine se a postagem fornecida pode ser atualizada pelo usuário.
      */
     public function update(User $user, Post $post, int $category): bool
     {
@@ -727,11 +730,11 @@ php artisan make:policy PostPolicy --model=Post
     }
 ```
 
- Para determinar se o usuário autenticado pode atualizar um determinado post, devemos invocar este método de política:
+Ao tentar determinar se o usuário autenticado pode atualizar uma determinada publicação, podemos invocar este método de política assim:
 
 ```php
     /**
-     * Update the given blog post.
+     * Atualize a postagem do blog fornecida.
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
@@ -739,17 +742,17 @@ php artisan make:policy PostPolicy --model=Post
     {
         Gate::authorize('update', [$post, $request->category]);
 
-        // The current user can update the blog post...
+        // O usuário atual pode atualizar a postagem do blog...
 
         return redirect('/posts');
     }
 ```
 
-## Autorização e Inércia
+## Autorização & Inertia
 
- Apesar da autorização sempre ter que ser tratada no servidor, frequentemente pode ser conveniente disponibilizar ao seu aplicativo front-end dados de autorização para que a interface gráfica da sua aplicação seja devidamente apresentada. O Laravel não define uma convenção obrigatória para expor informações de autorização a um front-end alimentado por Inertia.
+Embora a autorização sempre seja tratada no servidor, muitas vezes pode ser conveniente fornecer dados de autorização ao seu aplicativo frontal para que ele possa renderizar a interface do usuário do seu aplicativo corretamente. O Laravel não define uma convenção necessária para expor informações de autorização a um frontend alimentado pelo Inertia.
 
- No entanto, se você estiver usando um dos [pacotes de inicialização](/docs/starter-kits) baseados em Inertia do Laravel, seu aplicativo já possui um middleware `HandleInertiaRequests`. Dentro deste middleware, no método `share`, você pode retornar dados compartilhados que serão fornecidos a todas as páginas da Inertia em seu aplicativo. Estes dados compartilhados podem servir como uma localização conveniente para definir informações de autorização do usuário:
+Porém, se você está usando um dos [starter kits](/docs/starter-kits) baseados em Inertia do Laravel, sua aplicação já contém um middleware `HandleInertiaRequests`. Dentro desto método `share` deste middleware, você pode retornar dados compartilhados que serão fornecidos para todas as páginas Inertia na sua aplicação. Esses dados compartilhados podem servir como um local conveniente para definir informações de autorização para o usuário:
 
 ```php
 <?php
@@ -765,7 +768,7 @@ class HandleInertiaRequests extends Middleware
     // ...
 
     /**
-     * Define the props that are shared by default.
+     * Defina os adereços que são compartilhados por padrão.
      *
      * @return array<string, mixed>
      */

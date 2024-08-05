@@ -48,13 +48,13 @@
     - [Processes](/src/docs/processes.md) ✅
     - [Queues](/src/docs/queues.md) ✅
     - [Rate Limiting](/src/docs/rate-limiting.md) ✅
-    - [Strings](/src/docs/strings.md) ⚙️
-    - [Task Scheduling](/src/docs/scheduling.md)
+    - [Strings](/src/docs/strings.md) ✅
+    - [Task Scheduling](/src/docs/scheduling.md) ⚙️
 - ## Segurança
     - [Autenticação](/src/docs/authentication.md) ✅
-    - [Authorization](/src/docs/authorization.md)
+    - [Authorization](/src/docs/authorization.md) ✅
     - [Email Verification](/src/docs/verification.md)
-    - [Encryption](/src/docs/encryption.md)
+    - [Encryption](/src/docs/encryption.md) ✅
     - [Hashing](/src/docs/hashing.md)
     - [Password Reset](/src/docs/passwords.md)
 - ## Base de dados

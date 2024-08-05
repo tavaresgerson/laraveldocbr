@@ -1,17 +1,17 @@
-# Confirmação de E-mail
+# Verificação por e-mail
 
 <a name="introduction"></a>
 ## Introdução
 
- Muitas aplicações web requerem que os utilizadores verifiquem o seu endereço de correio eletrónico antes de poderem utilizar a aplicação. Em vez de terem de implementar esta funcionalidade manualmente, Laravel oferece serviços integrados para envio e verificação de pedidos de confirmação do email.
+Muitos aplicativos da web exigem que os usuários verifiquem seus endereços de e-mail antes de usar o aplicativo. Em vez de forçá-lo a reimplementar esse recurso manualmente para cada aplicativo que você cria, o Laravel fornece serviços convenientes incorporados para enviar e verificar solicitações de verificação de e-mail.
 
- > [!ATENÇÃO]
- [Kits de início rápido para aplicações do Laravel](/docs/starter-kits) em uma aplicação recém-criada do Laravel. Os kits cuidarão da criação de todo o sistema de autenticação, incluindo suporte a verificação por email.
+> [!NOTE]
+> Quer começar rápido? Instale um dos [Kit de Início Laravel](https://laravel.com/docs/starter-kits) em um novo aplicativo Laravel. Os kits de início cuidarão do seu sistema completo de autenticação, incluindo suporte para verificação por e-mail.
 
 <a name="model-preparation"></a>
-### Pré-requisitos de modelos
+### Preparação do Modelo
 
- Antes de começar, verifique se o modelo `App\Models\User` implementa o contrato `Illuminate\Contracts\Auth\MustVerifyEmail`:
+Antes de começar, verifique se o seu modelo User implementa o contrato Illuminate\Contracts\Auth\MustVerifyEmail:
 
 ```php
     <?php
@@ -30,9 +30,9 @@
     }
 ```
 
- Depois que essa interface for adicionada ao seu modelo, será enviado automaticamente um e-mail contendo um link para confirmação de endereço de e-mail aos usuários recém-registrados. Isso ocorre sem problemas porque o Laravel registra automaticamente o `Illuminate\Auth\Listeners\SendEmailVerificationNotification` [evento de leitores](/docs/events) para o evento `Illuminate\Auth\Events\Registered`.
+Uma vez que esta interface tenha sido adicionada ao seu modelo, os novos usuários registrados serão automaticamente enviados um e-mail contendo um link de verificação de e-mail. Isso acontece sem problemas porque o Laravel registra automaticamente o ouvinte 'Illuminate\Auth\Listeners\SendEmailVerificationNotification' [ouvinte] para o evento 'Illuminate\Auth\Events\Registered'.
 
- Se você estiver implementando o registro manualmente em sua aplicação, em vez de usar um kit inicial [](/docs/starter-kits), deve garantir que envie o evento `Illuminate\Auth\Events\Registered` depois que o registro do usuário for concluído com sucesso:
+Se você está implementando manualmente a inscrição dentro do seu aplicativo em vez de usar um [Kit de Início] ([a starter kit](/docs/starter-kits)), você deve garantir que o evento `Illuminate\Auth\Events\Registered` é enviado após uma inscrição bem sucedida.
 
 ```php
     use Illuminate\Auth\Events\Registered;
@@ -41,23 +41,23 @@
 ```
 
 <a name="database-preparation"></a>
-### Preparação da Base de Dados
+### Preparação do banco de dados
 
- Em seguida, a sua tabela `users` deve conter uma coluna `email_verified_at` para armazenar a data e hora em que o endereço de email do usuário foi verificado. Normalmente, isto é incluído na migração de base de dados padrão `0001_01_01_000000_create_users_table.php` no Laravel.
+Em seguida, sua tabela de usuários deve conter uma coluna de e-mail verificado em que você armazena a data e hora que o endereço de e-mail do usuário foi verificado. Geralmente isso está incluído na migração padrão do banco de dados 0001_01_01_000000_create_users_table.php do Laravel
 
 <a name="verification-routing"></a>
-## Encaminhamento
+## Rotulagem de rotas
 
- Para implementar corretamente a verificação por e-mail, serão necessárias três rotas. Primeiro, é necessário criar uma rota para exibir um aviso ao usuário informando que ele deverá clicar no link de verificação do e-mail na mensagem de verificação enviada pelo Laravel após o registro.
+Para implementar adequadamente a verificação de e-mail, três rotas serão necessárias. Primeiro, uma rota será necessária para exibir uma notificação ao usuário que ele deve clicar no link de verificação de e-mail no e-mail enviado pelo Laravel após o registro.
 
- Em segundo lugar, será necessário definir um caminho para processar os pedidos gerados quando o usuário clica no link de verificação do endereço eletrónico disponibilizado pelo e-mail.
+Em segundo lugar, uma rota será necessária para lidar com os pedidos gerados quando o usuário clicar no link de verificação de e-mail no e-mail.
 
- Em terceiro lugar, será necessário definir uma rota para reenviar um link de verificação se o usuário perder acidentalmente o primeiro link de verificação.
+Terceiro, uma rota será necessária para reenviar um link de verificação se o usuário acidentalmente perder o primeiro link de verificação.
 
 <a name="the-email-verification-notice"></a>
-### O aviso de verificação do e-mail
+### A Notificação de Verificação de E-mail
 
- Como mencionado anteriormente, uma rotina deve ser definida que irá retornar uma exibição instruindo o usuário a clicar no link de verificação do email enviado por Laravel após o registro. Esta exibição será mostrada aos usuários quando eles tentarem acessar outras partes do aplicativo sem verificar seu endereço de e-mail primeiro. Lembre-se, o link é automaticamente enviado pelo aplicativo, contanto que o modelo `App\Models\User` implemente a interface `MustVerifyEmail`:
+Como mencionado anteriormente, uma rota deve ser definida que retornará uma visão instruindo o usuário a clicar no link de verificação de e-mail enviado por Laravel após o registro. Esta visão será exibida aos usuários quando eles tentarem acessar outras partes do aplicativo sem verificar primeiro seu endereço de e-mail. Lembre-se, o link é automaticamente enviado para o usuário desde que seu modelo 'App\Models\User' implemente a interface 'MustVerifyEmail':
 
 ```php
     Route::get('/email/verify', function () {
@@ -65,15 +65,15 @@
     })->middleware('auth')->name('verification.notice');
 ```
 
- A rota que devolve o aviso de verificação do e-mail deve ter o nome "verification.notice". É importante atribuir este nome exato à rota, porque o middleware `verified` (incluído com Laravel) redirecionará automaticamente para este nome de rota se um usuário não tiver verificado seu endereço de e-mail.
+A rota que retorna o aviso de verificação do e-mail deve ser chamada de `verification.notice`. É importante que a rota seja atribuída à este nome exato, visto que o middleware [incluído com Laravel](#proteger-rutas) redirecionará automaticamente para essa rota se um usuário não tiver verificado seu endereço de e-mail.
 
- > [!ATENÇÃO]
- [Kits de inicialização de aplicativos do Laravel](/docs/starter-kits).
+> [！注意]
+> Ao implementar manualmente a verificação de e-mail, você é obrigado a definir o conteúdo da visualização do aviso de verificação de conta por si mesmo. Se você gostaria de um modelo pré-definido com todas as visualizações necessárias para autenticação e verificação de contas, verifique os [kits iniciais de aplicativos Laravel](/docs/starter-kits).
 
 <a name="the-email-verification-handler"></a>
-### O email de verificação
+### O Email Verification Handler em Português
 
- Em seguida, precisamos definir uma rota que irá tratar os pedidos gerados quando o usuário clicar no link de verificação do e-mail enviado a ele. Esta rota deve ser nomeada como `verification.verify` e os middlewares `auth` e `signed` devem ser atribuídos:
+Em seguida, precisamos definir uma rota que irá lidar com as solicitações geradas quando o usuário clicar no link de verificação por e-mail enviado a ele. Esta rota deve ser chamada `verification.verify` e deve ter os middlewares `auth` e `signed`:
 
 ```php
     use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -85,14 +85,14 @@
     })->middleware(['auth', 'signed'])->name('verification.verify');
 ```
 
- Antes de seguirmos em frente, vamos dar uma olhada nesta rotina. Em primeiro lugar, você reparará que estamos usando um tipo de solicitação "EmailVerificationRequest" ao invés da típica instância `Illuminate\Http\Request`. O "EmailVerificationRequest" é um [tipo de solicitação de formulário](/docs/validation#form-request-validation) que está incluído no Laravel. Esta solicitação cuidará automaticamente da validação dos parâmetros `id` e `hash` da solicitação.
+Antes de prosseguir, vamos examinar mais de perto essa rota. Primeiro, você perceberá que estamos usando um tipo de solicitação `EmailVerificationRequest` em vez do tipo de solicitação padrão `Illuminate\Http\Request`. O `EmailVerificationRequest` é um [tipo de solicitação de formulário](/docs/validation#form-request-validation) incluído no Laravel. Esta solicitação cuidará automaticamente da validação dos parâmetros `id` e `hash` da solicitação.
 
- Em seguida, podemos chamar diretamente o método `fulfill` na requisição. Esse método chamará o método `markEmailAsVerified` no usuário autenticado e enviará o evento `Illuminate\Auth\Events\Verified`. O método `markEmailAsVerified` está disponível para o modelo padrão `App\Models\User` através da classe de base `Illuminate\Foundation\Auth\User`. Depois que o endereço de e-mail do usuário for verificado, você poderá redirecioná-los onde quiser.
+Em seguida, podemos prosseguir diretamente para chamar o método 'fulfill' na solicitação. Este método chamará o método 'markEmailAsVerified' no usuário autenticado e enviará o evento 'Illuminate\Auth\Events\Verified'. O método 'markEmailAsVerified' está disponível no modelo padrão 'App\Models\User' via a classe base 'Illuminate\Foundation\Auth\User'. Uma vez que o endereço de e-mail do usuário tenha sido verificado, você pode redirecioná-lo para onde quiser.
 
 <a name="resending-the-verification-email"></a>
-### Reenviar o e-mail de verificação
+### Enviando Email de Verificação Novamente
 
- Às vezes, o utilizador pode perder ou apagar acidentalmente o email de verificação. Para resolver este problema, poderá definir um caminho para permitir que o utilizador solicite novamente o envio do email de confirmação. Depois disso, deve enviar uma solicitação a esse caminho colocando um botão simples de submissão do formulário na sua página de notificação de verificação ([verificação de email](#the-email-verification-notice)):
+Às vezes um usuário pode confundir ou acidentalmente excluir o e-mail de verificação de endereço. Para acomodar isso, você pode definir uma rota para permitir que o usuário solicite que o e-mail de verificação seja reenviado. Em seguida, você pode fazer um pedido dessa rota colocando um botão simples de envio de formulário dentro do [verificação de notificação por e-mail](#a-notificação-de-verificação-por-e-mail):
 
 ```php
     use Illuminate\Http\Request;
@@ -105,9 +105,9 @@
 ```
 
 <a name="protecting-routes"></a>
-### Proteger as rotas
+### Proteger Rotas
 
- [Middlewares de rota](/docs/middleware) podem ser utilizados para permitir somente o acesso à uma determinada rota aos usuários verificados. O Laravel inclui um `alias_verified` [alias de middleware](/docs/middleware#middleware-alias), que é um alias para a classe do middleware `Illuminate\Auth\Middleware\EnsureEmailIsVerified`. Uma vez que este alias já está automaticamente registado pelo Laravel, tudo o que precisa fazer é anexar o middleware `verificado` a uma definição de rota. Normalmente, esse middleware é utilizado com o middleware `auth`:
+O middleware [Route middleware](/docs/middleware) pode ser utilizado para permitir somente usuários verificados ao acessar um determinado recurso. O Laravel inclui um alias chamado "verified" do middleware [middleware alias](/docs/middleware#middleware-alias), que é uma abreviação da classe middleware `Illuminate\Auth\Middleware\EnsureEmailIsVerified`. Como o Laravel já registra automaticamente este alias, tudo o que você precisa fazer é anexar o middleware "verified" a uma definição de rota. Normalmente, esse middleware é associado ao middleware "auth":
 
 ```php
     Route::get('/profile', function () {
@@ -115,17 +115,17 @@
     })->middleware(['auth', 'verified']);
 ```
 
- Se um usuário não verificado tentar acessar uma rota que tenha este middleware atribuído, ele será automaticamente redirecionado para o caminho nomeado `verification.notice` [](/docs/routing#named-routes).
+Se um usuário não verificado tenta acessar uma rota que tem sido atribuída este middleware, ele será automaticamente redirecionado para a `verification.notice` [rota nomeada](/docs/routing#named-routes).
 
 <a name="customization"></a>
 ## Personalização
 
 <a name="verification-email-customization"></a>
-#### Personalização do e-mail de verificação
+#### Personalização de verificação por e-mail
 
- Embora a notificação de verificação de e-mail padrão satisfaça os requisitos da maioria dos aplicativos, o Laravel permite personalizar como a mensagem do e-mail de verificação é construída.
+Embora a notificação padrão de verificação por e-mail deva satisfazer as exigências da maioria dos aplicativos, o Laravel permite que você personalize como a mensagem do e-mail de verificação é construída.
 
- Para começar, passe um fecho para o método `toMailUsing`, fornecido pela notificação `Illuminate\Auth\Notifications\VerifyEmail`. O fecho receberá a instância de modelo notificável que está recebendo a notificação, assim como a URL assinada da verificação do email que o utilizador deve visitar para verificar o seu endereço de email. O fecho deve retornar uma instância do `Illuminate\Notifications\Messages\MailMessage`. Normalmente, você deve chamar o método `toMailUsing` a partir da metodologia `boot` da sua aplicação, na classe `AppServiceProvider`:
+Para começar, passe uma "clausura" para o método `toMailUsing` fornecido pela classe `Illuminate\Auth\Notifications\VerifyEmail` da notificação. A "clausura" receberá a instância do modelo que está recebendo a notificação, assim como o URL de verificação de e-mail com assinatura que o usuário deve visitar para verificar seu endereço de e-mail. A "clausura" deve retornar uma instância de `Illuminate\Notifications\Messages\MailMessage`. Normalmente, você chama o método `toMailUsing` do método `boot` da classe `AppServiceProvider` do seu aplicativo:
 
 ```php
     use Illuminate\Auth\Notifications\VerifyEmail;
@@ -147,10 +147,10 @@
     }
 ```
 
- > [!AVISO]
- [Documentação sobre notificações por email](/docs/notifications#mail-notifications).
+> Nota:
+> Para aprender mais sobre notificações por e-mail, consulte a documentação de notificações [pelo e-mail]( /docs/notificações#notificações-e-mail ).
 
 <a name="events"></a>
 ## Eventos
 
- Ao usar os [Pacotes iniciais do Laravel](/docs/starter-kits), o Laravel dispara um evento `[Illuminate\Auth\Events\Verified]` ([eventos)](/docs/events) durante o processo de verificação por e-mail. Se você estiver manipulando a verificação de e-mail manualmente em sua aplicação, talvez queira disparar esses eventos manualmente após a conclusão da verificação.
+Ao usar o [Laravel Application Starter Kits](/docs/starter-kits), o Laravel envia um evento `Illuminate\Auth\Events\Verified` durante o processo de verificação de e-mail. Se você estiver lidando manualmente com a verificação de e-mail para sua aplicação, poderá enviar manualmente esses eventos após a conclusão da verificação.

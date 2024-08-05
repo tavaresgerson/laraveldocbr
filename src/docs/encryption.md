@@ -3,36 +3,36 @@
 <a name="introduction"></a>
 ## Introdução
 
- Os serviços de criptografia do Laravel fornecem uma interface simples e conveniente para criptografar e descriptografar texto por meio do OpenSSL, usando as criptografias AES-256 e AES-128. Todos os valores encriptados pelo Laravel são assinados utilizando um código de autenticação de mensagens (MAC), para que o seu valor subjacente não possa ser modificado ou adulterado, uma vez encriptados.
+Os serviços de criptografia do Laravel fornecem uma interface simples e conveniente para encriptar e descriptografar texto usando o OpenSSL com AES-256 e AES-128. Todos os valores encriptados do Laravel são assinados usando um código de autenticação de mensagem (MAC), para que seu valor subjacente não possa ser modificado ou manipulado uma vez encriptado.
 
 <a name="configuration"></a>
 ## Configuração
 
- Antes de usar o encriptador do Laravel, você deve definir a opção de configuração `key` no arquivo de configuração `config/app.php`. Esse valor é gerado pela variável ambiente `APP_KEY`. Você deve usar o comando `php artisan key:generate` para gerar este valor, pois o comando `key:generate` usará o gerador seguro de bytes do PHP para criar uma chave segura para sua aplicação. Normalmente, a variável ambiente `APP_KEY` é gerada automaticamente durante a instalação do Laravel.
+Antes de usar o encrypter do Laravel você deve definir a opção de configuração `key` em seu arquivo de configuração `config/app.php`. Este valor de configuração é influenciado pela variável de ambiente `APP_KEY`. Você deve usar o comando `php artisan key:generate` para gerar este valor, porque o comando `key:generate` irá utilizar o gerador de bytes aleatórios seguros do PHP para construir uma chave criptograficamente segura para sua aplicação. Normalmente, o valor da variável de ambiente `APP_KEY` será gerado por você durante a [instalação do Laravel](/docs/installation).
 
 <a name="gracefully-rotating-encryption-keys"></a>
-### Geração de chaves de criptografia com giro elegante
+### Chaves de Criptografia Giratórias Graciosas
 
- Se você alterar a chave de criptografia do seu aplicativo, todas as sessões autenticadas do usuário serão desconectadas do seu aplicativo porque todos os cookies, inclusive os cookies de sessão, são encriptados por Laravel. Além disso, não será mais possível descriptografar quaisquer dados que tenham sido encriptados com sua chave de criptografia anterior.
+Se você alterar a chave de criptografia do seu aplicativo, todos os usuários autenticados serão desconectados automaticamente do seu aplicativo. Isto porque o Laravel encripta todos os cookies, incluindo os cookies de sessão. Além disso, não será mais possível descriptografar quaisquer dados que foram encriptados com sua antiga chave de criptografia.
 
- Para minimizar este problema, o Laravel permite-lhe indicar as suas chaves de encriptação anteriores na variável de ambiente `APP_PREVIOUS_KEYS` da aplicação. Esta variável pode conter uma lista com vírgula entre as várias chaves de encriptação anteriores:
+Para mitigar esse problema, o Laravel permite que você liste suas chaves de criptografia anteriores na variável de ambiente `APP_PREVIOUS_KEYS` do seu aplicativo. Essa variável pode conter uma lista delimitada por vírgulas das suas chaves de criptografia anteriores:
 
 ```ini
 APP_KEY="base64:J63qRTDLub5NuZvP+kb8YIorGS6qFYHKVo6u7179stY="
 APP_PREVIOUS_KEYS="base64:2nLsGFGzyoae2ax3EF2Lyq/hH6QghBGLIq5uL+Gp8/w="
 ```
 
- Quando você define esta variável de ambiente, o Laravel usará sempre a chave de cifragem "atual" para cifrar valores, mas, ao descifrar valores, o Laravel tentará primeiro a chave atual e se o processo de descifragem falhar com essa chave, o Laravel testará todas as chaves anteriores até que uma das chaves consiga descifrar o valor.
+Quando você define esta variável de ambiente, o Laravel sempre utilizará a chave de criptografia atual ao criptografar valores. No entanto, quando os valores estão sendo descriptografados, o Laravel primeiro tentará com as chaves atuais e se a descriptografia falhar usando as chaves atuais, o Laravel tentar todas as chaves anteriores até que uma das chaves seja capaz de descriptografar o valor.
 
- Essa abordagem de descriptografia elegante permite que os usuários continuem utilizando seu aplicativo sem interrupções, mesmo se sua chave de criptografia tiver sido alterada.
+Este tipo de abordagem para descriptografar graciosamente permite que os usuários continuem usando seu aplicativo sem interrupções mesmo se sua chave de criptografia for girada.
 
 <a name="using-the-encrypter"></a>
-## Usando o Gerenciador de senhas
+## Usando o Encrypter
 
 <a name="encrypting-a-value"></a>
-#### Encriptação de um valor
+#### Criptografar um valor
 
- Pode criptografar um valor utilizando o método `encryptString`, fornecido pela fachada `Crypt`. Todos os valores são encriptados usando a cifra AES-256-CBC, e assinado com um código de autenticação de mensagens (MAC). O código de autenticação integrado impedirá a decodificação dos valores alterados por utilizadores maliciosos.
+Você pode criptografar um valor usando o `encryptString` método fornecido pela _facade_ `Crypt`. Todos os valores criptografados são criptografados com OpenSSL e o AES-256-CBC. Além disso, todos os valores criptografados são assinados com uma mensagem código de autenticação (MAC). O código integrado de autenticação de mensagens evitará a descriptografia de qualquer valor que tenha sido adulterado por usuários maliciosos:
 
 ```php
     <?php
@@ -46,7 +46,7 @@ APP_PREVIOUS_KEYS="base64:2nLsGFGzyoae2ax3EF2Lyq/hH6QghBGLIq5uL+Gp8/w="
     class DigitalOceanTokenController extends Controller
     {
         /**
-         * Store a DigitalOcean API token for the user.
+         * Armazene um token da API DigitalOcean para o usuário.
          */
         public function store(Request $request): RedirectResponse
         {
@@ -60,9 +60,9 @@ APP_PREVIOUS_KEYS="base64:2nLsGFGzyoae2ax3EF2Lyq/hH6QghBGLIq5uL+Gp8/w="
 ```
 
 <a name="decrypting-a-value"></a>
-#### Decodificar um valor
+#### Descriptografando um Valor
 
- Você pode descriptografar valores usando o método `decryptString`, fornecido pela faca do `Crypt`. Se um valor não puder ser descritografado adequadamente, tal como quando a chave de autenticação do mensagem estiver inválida, uma `Illuminate\Contracts\Encryption\DecryptException` (Exceção de Descriptografia) será lançada:
+Você pode descriptografar valores usando o método `decryptString` fornecido pela _facade_ `Crypt`. Se o valor não puder ser decifrado adequadamente, como quando a mensagem de código de autenticação é inválida, será lançada uma exceção `Illuminate\Contracts\Encryption\DecryptException`:
 
 ```php
     use Illuminate\Contracts\Encryption\DecryptException;
