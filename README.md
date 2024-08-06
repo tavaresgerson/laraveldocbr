@@ -43,13 +43,13 @@
     - [HTTP Client](/src/docs/http-client.md) ✅
     - [Localização](/src/docs/localization.md) ✅
     - [E-Mail](/src/docs/mail.md) ✅
-    - [Notifications](/src/docs/notifications.md) ✅
-    - [Package Development](/src/docs/packages.md) ✅
-    - [Processes](/src/docs/processes.md) ✅
-    - [Queues](/src/docs/queues.md) ✅
+    - [Notificações](/src/docs/notifications.md) ✅
+    - [Desenvolvimento de Pacotes](/src/docs/packages.md) ✅
+    - [Processos](/src/docs/processes.md) ✅
+    - [Filas](/src/docs/queues.md) ✅
     - [Rate Limiting](/src/docs/rate-limiting.md) ✅
     - [Strings](/src/docs/strings.md) ✅
-    - [Task Scheduling](/src/docs/scheduling.md) ⚙️
+    - [Agendamento de Tarefas](/src/docs/scheduling.md) ⚙️
 - ## Segurança
     - [Autenticação](/src/docs/authentication.md) ✅
     - [Authorization](/src/docs/authorization.md) ✅
