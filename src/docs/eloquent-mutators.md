@@ -1,19 +1,19 @@
-# Eloquent: Mutadores e Casteamento
+# Elocução: Mutadores e Castagem
 
 <a name="introduction"></a>
 ## Introdução
 
- Os acessores e mutadores permitem que você transforme valores de atributos Eloquent ao recuperá-los ou definí-los nas instâncias do modelo. Por exemplo, você pode querer usar o [criptografador Laravel](/docs/encryption) para criptografar um valor enquanto ele está armazenado no banco de dados e então decifrar automaticamente o atributo quando acessá-lo em uma instância do modelo Eloquent. Ou, você pode querer converter uma string JSON que está armazenada em seu banco de dados para um array ao ser acessado através de sua instância do modelo Eloquent.
+Accesores, mutadores e atributo de casting permitem que você transforme valores do Eloquent quando você os recupera ou define em instâncias do modelo. Por exemplo, você pode querer usar o [encriptador Laravel](/docs/encryption) para criptografar um valor enquanto ele é armazenado no banco de dados, e então automaticamente decifrar o atributo quando você acessa-lo em um modelo Eloquent. Ou, você pode querer converter uma string JSON que está armazenada em seu banco de dados em uma matriz quando ela é acessada através do seu modelo Eloquent.
 
 <a name="accessors-and-mutators"></a>
-## Acessores e mutadores
+## Acessores e Mútadores
 
 <a name="defining-an-accessor"></a>
-### Definindo um acesso
+### Definindo um Acessor
 
- Um accessor transforma um valor do atributo Eloquent quando é acessado. Para definir um accessor, crie uma método protegido no seu modelo para representar o atributo acessível. Esse nome de método deve corresponder à representação "palavra-chave em maiúsculas" do verdadeiro atributo subjacente do modelo/coluna do banco de dados, conforme aplicável.
+Um acessor transforma o valor de um atributo Eloquent quando é acessado. Para definir um acessor, crie um método protegido em seu modelo para representar o atributo acessível. O nome do método deve corresponder à representação "camel case" do verdadeiro atributo subjacente do modelo ou da coluna de banco de dados aplicável.
 
- Neste exemplo, definiremos um acessor para o atributo `first_name`. O acessor será chamado automaticamente pelo Eloquent ao tentar recuperar o valor do atributo `first_name`. Todos os métodos de acesso/mutação aos atributos devem declarar uma indicação do tipo de retorno como `Illuminate\Database\Eloquent\Casts\Attribute`:
+Neste exemplo, definiremos um acessor para o atributo `first_name`. O acessor será automaticamente chamado por Eloquent quando tentaremos recuperar o valor do atributo `first_name`. Todos os métodos de acessores/mutadores de atributos devem declarar um tipo-dica de retorno de `Illuminate\Database\Eloquent\Casts\Attribute`:
 
 ```php
     <?php
@@ -37,9 +37,9 @@
     }
 ```
 
- Todos os métodos de acessor retornam uma instância `Attribute`, que define como o atributo será acessado e, opcionalmente, alterado. Neste exemplo, estamos apenas definindo como o atributo será acessado. Para isso, fornecemos o argumento `get` ao construtor da classe `Attribute`.
+Todos os métodos acessores retornam uma instância de 'Atributo', que define como o atributo será acessado e, opcional, modificado. Neste exemplo, estamos definindo apenas como o atributo será acessado. Para isso, fornecemos o argumento 'get' para o construtor da classe 'Atributo'.
 
- Como podem verificar, o valor original da coluna é passado ao atributo de acesso, permitindo-lhe assim manipular e reter o valor. Para terem acesso ao valor do atributo de acesso, podem simplesmente aceder ao atributo `first_name` numa instância do modelo:
+Como você pode ver, o valor original da coluna é passado para o acessor, permitindo que você manipule e retorne o valor. Para acessar o valor do acessor, você simplesmente pode acessar o atributo 'first_name' de uma instância de modelo:
 
 ```php
     use App\Models\User;
@@ -49,13 +49,13 @@
     $firstName = $user->first_name;
 ```
 
- > [!NOTA]
- [você vai precisar anexá-los] (//docs/eloquent-serialization/).
+> Nota!
+> Se você gostaria que os valores computados fossem adicionados à representação de array / JSON do seu modelo, [você precisará anexá-los]( /docs/eloquent-serialization ).
 
 <a name="building-value-objects-from-multiple-attributes"></a>
-#### Criação de objetos de valor a partir de vários atributos
+#### Construindo Objeto de Valor com Atributos Múltiplos
 
- Algumas vezes, é necessário transformar vários atributos de um modelo num único "objeto com valor". Para isso, a função `get` pode aceitar um segundo argumento `$attributes`, que será automaticamente fornecido ao closure e conterá uma matriz contendo todos os atributos do modelo.
+Às vezes seu acessor pode precisar transformar múltiplos atributos do modelo em um "objeto valor". Para tanto, seu método get pode aceitar um segundo argumento $attributes, que será automaticamente fornecido e conterá um array com todos os atuais atributos do modelo:
 
 ```php
 use App\Support\Address;
@@ -76,9 +76,9 @@ protected function address(): Attribute
 ```
 
 <a name="accessor-caching"></a>
-#### Armazenagem de acessórios
+#### Cache de acessos
 
- Ao retornar objetos de valor dos acessores, as alterações feitas ao objeto de valor são automaticamente sincronizadas com o modelo antes que este seja salvo. Isso é possível porque Eloquent mantém as instâncias retornadas pelos acessores para poder retornar sempre a mesma instância cada vez que o acessor for invocado:
+Quando retornar objetos de valor do acessor, quaisquer alterações feitas no objeto de valor serão sincronizadas automaticamente para o modelo antes que ele seja salvo. Isso é possível porque o Eloquent retém instâncias retornadas pelo acessor para que ele possa retornar a mesma instância toda vez que o acessor for invocado:
 
 ```php
     use App\Models\User;
@@ -91,7 +91,7 @@ protected function address(): Attribute
     $user->save();
 ```
 
- No entanto, às vezes poderá pretender ativar a funcionalidade de armazenamento em cache para valores primitivos como string e booleanos, nomeadamente quando se tratam de cálculos intensivos. Para conseguir isto, poderá chamar o método `shouldCache` ao definir o seu acessor:
+No entanto, você pode por vezes desejar ativar a cache para valores primitivos como strings e booleanos, especialmente se eles são computacionalmente intensivos. Para fazer isso, você pode chamar o método `shouldCache` ao definir seu acessor:
 
 ```php
 protected function hash(): Attribute
@@ -102,7 +102,7 @@ protected function hash(): Attribute
 }
 ```
 
- Se você quiser desativar o comportamento de armazenamento em cache de objetos dos atributos, pode invocar o método `withoutObjectCaching` ao definir o atributo:
+Se você gostaria de desativar o comportamento do cache de objeto dos atributos, você pode invocar o método `withoutObjectCaching` ao definir o atributo:
 
 ```php
 /**
@@ -120,9 +120,9 @@ protected function address(): Attribute
 ```
 
 <a name="defining-a-mutator"></a>
-### Definindo um mutador
+### Definindo um mutator
 
- Um mutador transforma o valor de um atributo Eloquent ao ser definido. Para definir um mutador, você pode fornecer o argumento "set" quando estiver definindo seu atributo. Vamos definir um mutador para o atributo "first_name". Este mutador é chamado automaticamente quando tentarmos definir o valor do atributo "first_name" no modelo:
+Um Mutator transforma um valor de atributo Eloquent quando ele é definido. Para definir um Mutator, você pode fornecer o argumento 'set' ao definir seu atributo. Vamos definir um mutator para o atributo 'first_name'. Este mutador será automaticamente chamado quando tentarmos definir o valor do atributo 'first_name' no modelo:
 
 ```php
     <?php
@@ -147,7 +147,7 @@ protected function address(): Attribute
     }
 ```
 
- O closure do mutator receberá o valor que está sendo definido no atributo, permitindo a manipulação desse valor. Para usar nosso mutator, só precisamos definir o atributo `first_name` em um modelo Eloquent:
+O mutador de fechamento receberá o valor que está sendo definido no atributo, permitindo-lhe manipular o valor e retornar o valor manipulado. Para usar nosso mutador, precisamos definir apenas o atributo `first_name` em um modelo Eloquent:
 
 ```php
     use App\Models\User;
@@ -157,12 +157,12 @@ protected function address(): Attribute
     $user->first_name = 'Sally';
 ```
 
- No exemplo a seguir, o callback `set` será chamado com o valor `Sally`. O mutator aplicará então a função `strtolower` ao nome e definirá o seu resultado como um novo valor no array interno `$attributes` do modelo.
+No exemplo acima o callback 'set' será chamado com o valor 'Sally'. O mutador então aplicará a função 'strtolower' no nome, e colocará seu resultado na matriz de atributos internos do modelo.
 
 <a name="mutating-multiple-attributes"></a>
-#### Mutação de vários atributos
+#### Atributos Múltiplos Mutáveis
 
- Às vezes, o seu mutator pode precisar definir vários atributos no modelo subjacente. Para isso, você pode retornar um array a partir do closure `set`. Cada chave no array deve corresponder com um atributo subjacente / coluna de banco de dados associado ao modelo:
+Às vezes seu mutador pode precisar definir vários atributos no modelo subjacente. Para fazer isso, você pode retornar um array do closure 'set'. Cada chave no array deve corresponder a um atributo ou coluna de banco de dados subjacente associado ao modelo.
 
 ```php
 use App\Support\Address;
@@ -187,39 +187,39 @@ protected function address(): Attribute
 ```
 
 <a name="attribute-casting"></a>
-## Atribuição de atributos
+## Atribuição de Atributos
 
- O atributo casting permite uma funcionalidade semelhante à de acessores e mutadores, mas sem exigir que você defina nenhum método adicional em seu modelo. Em vez disso, o método `casts` do modelo fornece um modo conveniente de converter atributos para tipos de dados comuns.
+A atribuição de tipos fornece funcionalidades semelhantes ao acessar e modificadores sem exigir que você defina métodos adicionais em seu modelo. Em vez disso, o método 'atribuições' do seu modelo oferece uma maneira conveniente de converter atributos em tipos comuns de dados.
 
- O método `casts` deve retornar um array, onde o nome do atributo que está sendo convertido é a chave e o tipo ao qual você quer converter a coluna é o valor. Os tipos de conversão suportados são:
+O método 'casts' deve retornar uma matriz onde a chave é o nome do atributo sendo castado e o valor é o tipo que você deseja que a coluna seja castada. Os tipos de cast suportados são:
 
 <div class="content-list" markdown="1">
 
- - ``array``
- - `AsStringable::class`
- - `boolean`
- - "coleção"
- `- `date`
- - "datetime"
- - `immutable_date`
- - `imutável_data_e_hora`
+"array"
+- 'Stringable'
+- "boolean"
+- 'coleção'
+- "data"
+- 'data e hora'
+- `imutável_data`
+- `immutable_datetime`
 - <code>decimal:&lt;precision&gt;</code>
- - ``doble``
- `- `cifrado`
- - ``encrypted:array``
- - `encrypted:collection`
- - `encriptado: objeto`
- - `float`
- - `hashed`
- - `inteiro`
- - ``objeto``
- - ``real``
- - `` string ''
- - `timestamp`
+- 'duplo'
+"criptografado"
+"encrypted:array"
+- 'encrypted:collection'
+- 'encriptado:objeto'
+- "flutuar"
+- "hashado"
+- 'inteiro'
+- objeto
+- 'real'
+"Corda"
+- `carimbo de data e hora`
 
 </div>
 
- Para demonstrar o mapeamento de atributos, vamos mapear o atributo "is_admin", que está armazenado em nossa base de dados como um número inteiro (0 ou 1) para um valor boolean:
+Para demonstrar atributo de atribuição, vamos atribuir o atributo `is_admin`, que está armazenado em nosso banco de dados como um inteiro (‘0’ ou ‘1’) para um valor booleano:
 
 ```php
     <?php
@@ -244,7 +244,7 @@ protected function address(): Attribute
     }
 ```
 
- Depois de definir o elenco, o atributo `is_admin` será sempre convertido para um valor verdadeiro ou falso ao ser acessado, mesmo se o valor subjacente for armazenado no banco de dados como número inteiro:
+Depois de ter definido o tipo da classe, o atributo 'is_admin' será sempre um valor booleano quando for acessado, mesmo que o valor subjacente esteja armazenado no banco de dados como inteiro.
 
 ```php
     $user = App\Models\User::find(1);
@@ -254,7 +254,7 @@ protected function address(): Attribute
     }
 ```
 
- Se você precisar adicionar um novo e temporário casting em tempo de execução, poderá usar o método `mergeCasts`. Essas definições de casting serão adicionadas a qualquer um dos castings já definidos no modelo:
+Se você precisar adicionar um novo, temporário "cast" em tempo de execução, você pode usar o método `mergeCasts`. Essas definições de "cast" serão adicionadas a qualquer dos "casts" já definidos no modelo.
 
 ```php
     $user->mergeCasts([
@@ -263,13 +263,13 @@ protected function address(): Attribute
     ]);
 ```
 
- > [AVERTISSEMENT]
- > Os atributos com valor nulo não serão convertidos. Além disso, você nunca deve definir uma conversão (ou um atributo) com o mesmo nome de uma relação ou atribuir uma conversão ao principal chave do modelo.
+> [!ALERTA]
+> Atributos que são `null` não serão convertidos. Além disso, você nunca deve definir um atributo (ou conversão) com o mesmo nome de uma relação ou atribuir uma conversão à chave primária do modelo.
 
 <a name="stringable-casting"></a>
-#### Encenação em Stringable
+#### Moldeamento de peças
 
- Você pode usar a classe de casting `Illuminate\Database\Eloquent\Casts\AsStringable` para converter um atributo do modelo em um objeto [fluent `Illuminate\Support\Stringable`](/docs/strings#fluent-strings-method-list):
+Você pode usar a classe de `Illuminate\Database\Eloquent\Casts\AsStringable` para converter um atributo do modelo em uma [string fluente `/docs/strings#fluent-strings-method-list` objeto](`:
 
 ```php
     <?php
@@ -296,9 +296,9 @@ protected function address(): Attribute
 ```
 
 <a name="array-and-json-casting"></a>
-### Transposição de matrizes e JSON
+### Conversão de tipo Array e JSON
 
- O tipo de dados `array` é especialmente útil quando se trabalha com colunas armazenadas como JSON serializado. Por exemplo, se o seu banco de dados possuir um tipo de campo `JSON` ou `TEXT`, que contenham JSON serializado, adicionando o tipo de dados `array` a esse atributo, o mesmo será automaticamente deserializado em um array PHP quando você o consulter no seu modelo Eloquent:
+O `array` cast é particularmente útil quando se trabalha com colunas armazenadas como serialização de JSON. Por exemplo, se seu banco de dados tem um tipo de campo `JSON` ou `TEXT` que contém serialização de JSON, adicionar o `array` cast a esse atributo irá automaticamente desserializar o atributo para uma matriz PHP quando você acessa esse atributo em seu modelo Eloquent:
 
 ```php
     <?php
@@ -323,7 +323,7 @@ protected function address(): Attribute
     }
 ```
 
- Depois de definido o valor, você pode acessar o atributo `options`. O valor será automaticamente deserializado de um array PHP para um formato JSON. Ao configurar o valor do atributo `options`, o array fornecido será automaticamente serializado novamente em JSON para armazenamento:
+Uma vez que o elenco é definido, você pode acessar o atributo opções e será automaticamente desserializado de JSON para uma matriz PHP. Quando você define o valor do atributo opções, a matriz dada será automaticamente serializada de volta em JSON para armazenamento:
 
 ```php
     use App\Models\User;
@@ -339,7 +339,7 @@ protected function address(): Attribute
     $user->save();
 ```
 
- Para atualizar um único campo de um atributo JSON com uma sintaxe mais concisa, você pode [tornar o atributo massificável](/docs/eloquent#mass-assignment-json-columns) e usar o operador `->` ao chamar o método `update`:
+Para atualizar um único campo de um atributo JSON com uma sintaxe mais concisa, você pode [tornar o atributo mass assignável](/docs/eloquent#mass-assignment-json-columns) e usar o operador -> ao chamar o método update:
 
 ```php
     $user = User::find(1);
@@ -348,9 +348,9 @@ protected function address(): Attribute
 ```
 
 <a name="array-object-and-collection-casting"></a>
-#### Objeto de matriz e conversão de coleções
+#### Array, objeto e casting de coleção
 
- Apesar do casting padrão `array` ser suficiente para muitas aplicações, possui algumas desvantagens. Uma vez que o casting `array` retorna um tipo primitivo, não é possível mutar diretamente um offset do array. O código a seguir irá gerar um erro PHP:
+Embora o "array" padrão seja suficiente para muitos aplicativos, tem algumas desvantagens. Desde que o "array" retorna um tipo base, é impossível mutar diretamente um deslocamento do "array". Por exemplo, o seguinte código irá disparar um erro de PHP.
 
 ```php
     $user = User::find(1);
@@ -358,7 +358,7 @@ protected function address(): Attribute
     $user->options['key'] = $value;
 ```
 
- Para resolver isto, o Laravel oferece um "cast" de tipo `AsArrayObject` que transforma os atributos JSON em classes [ArrayObject](https://www.php.net/manual/en/class.arrayobject.php). Esta funcionalidade é implementada com a utilização da aplicação de casting personalizada do Laravel, o que permite ao Laravel criar um cache inteligente e transformar objetos mutados para que os seus índices sejam alteráveis sem desencadear um erro PHP. Para utilizar o "cast" `AsArrayObject`, basta atribuí-lo a um atributo:
+Para resolver esse problema, o Laravel oferece um casting que faz com que seus atributos JSON sejam convertidos para uma classe [ArrayObject](https://www.php.net/manual/en/class.arrayobject.php). Esta funcionalidade é implementada usando a implementação de casting personalizado do Laravel, que permite ao framework cachear e converter com inteligência o objeto mutado, de modo que os deslocamentos individuais possam ser modificados sem acionar um erro PHP. Para utilizar o casting `AsArrayObject`, basta atribuir este casting para um atributo:
 
 ```php
     use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -376,7 +376,7 @@ protected function address(): Attribute
     }
 ```
 
- Da mesma forma, o Laravel oferece um casting para uma instância de coleção do Laravel através da função `AsCollection`:
+Da mesma forma, o Laravel oferece um 'AsCollection' que transforma seu atributo JSON em uma instância de [Coleção]('/docs/coleções'):
 
 ```php
     use Illuminate\Database\Eloquent\Casts\AsCollection;
@@ -394,7 +394,7 @@ protected function address(): Attribute
     }
 ```
 
- Se você deseja que o tipo de casting `AsCollection` instancie uma classe de coleção personalizada em vez da classe de coleção básica do Laravel, pode fornecer o nome da classe como um argumento de tipo de casting:
+Se você gostaria que o 'AsCollection' fosse uma instância de uma classe personalizada em vez da classe base de coleções do Laravel, você pode fornecer o nome da classe da coleção como um argumento de casting:
 
 ```php
     use App\Collections\OptionCollection;
@@ -414,11 +414,11 @@ protected function address(): Attribute
 ```
 
 <a name="date-casting"></a>
-### Dates de elaboração
+### Dating casting
 
- Por padrão, Eloquent irá convertir as colunas `created_at` e `updated_at` em instâncias de [Carbon](https://github.com/briannesbitt/Carbon), que estende a classe PHP `DateTime` (Datetime) e fornece um conjunto de métodos úteis. Você pode converter atributos adicionais de data definindo conversões adicionais dentro do método `casts` do seu modelo. Normalmente, as datas devem ser convertidas usando os tipos de cast `datetime` ou `immutable_datetime`.
+Por padrão, Eloquent irá converter as colunas `created_at` e `updated_at` em instâncias de [Carbon](https://github.com/briannesbitt/Carbon), que estende a classe PHP `DateTime` e fornece um conjunto de métodos úteis. Você pode fazer cast de atributos de data adicionais definindo mais casts de data dentro do método 'casts' do seu modelo. Geralmente, as datas devem ser convertidas usando os tipos de cast 'datetime' ou 'immutable_datetime'.
 
- Ao definir um tipo de data ou data e hora, é possível especificar também o formato da data. Esse formato será usado ao [sériealizar o modelo para um array ou JSON](/docs/eloquent-serialization):
+Quando definindo um casting de 'date' ou 'datetime', você também pode especificar o formato da data. Este formato será utilizado quando o [modelo for serializado em um array ou json](/docs/eloquent-serialization):
 
 ```php
     /**
@@ -434,9 +434,9 @@ protected function address(): Attribute
     }
 ```
 
- Quando uma coluna é definida como data, você pode definir o valor do atributo correspondente no modelo para um timestamp UNIX, uma string de data (`Y-m-d`), uma string de data-hora ou uma instância `DateTime` / `Carbon`. O valor da data será convertido e armazenado corretamente em sua base de dados.
+Ao castar uma coluna como data, você pode definir o valor do atributo de modelo correspondente para um timestamp UNIX, uma string de data (‘Y-m-d’), uma string de data/hora ou uma instância DateTime/Carbon. O valor da data será convertido e armazenado com precisão no seu banco de dados.
 
- Você pode personalizar o formato de serialização padrão para todas as datas do modelo definindo um método `serializeDate` em seu modelo. Esse método não afeta a forma como as datas são formatadas para armazenamento no banco de dados:
+Você pode personalizar o formato de serialização padrão para todas as datas do seu modelo definindo um método 'serializeDate' no seu modelo. Este método não afeta como suas datas são formatadas para armazenamento no banco de dados:
 
 ```php
     /**
@@ -448,7 +448,7 @@ protected function address(): Attribute
     }
 ```
 
- Para especificar o formato que deve ser usado ao armazenar as datas do modelo em sua base de dados, você deve definir uma propriedade `$dateFormat` no seu modelo.
+Para especificar o formato que você deve utilizar ao realmente armazenar os dados de um modelo dentro do seu banco de dados, você deve definir uma propriedade `$dateFormat` no modelo.
 
 ```php
     /**
@@ -460,16 +460,16 @@ protected function address(): Attribute
 ```
 
 <a name="date-casting-and-timezones"></a>
-#### Data de colocação, serialização e fusos horários
+#### Data Casting, Serialização e Fuso horário
 
- Por padrão, as conversões `date` e `datetime` serializarão as datas como uma string de data ISO-8601 UTC (`AÑO-MES-DIA HORA:MINUTO:SEGUNDOS.uuuuuuZ`), independentemente do fuso horário especificado na opção de configuração `timezone` da sua aplicação. Recomendamos vivamente que utilize sempre este formato de serialização, além de armazenar as datas da sua aplicação no fuso UTC sem alterar a opção de configuração `timezone` para um valor diferente do padrão `UTC`. Ao utilizar consistentemente o fuso UTC em toda a sua aplicação, poderá beneficiar de o nível máximo de interoperabilidade com outras bibliotecas de manipulação de datas escritas em PHP e JavaScript.
+Por padrão, os casts 'date' e 'datetime' serializarão datas para uma string de data ISO-8601 (YYYY-MM-DDTHH:MM:SS.uuuuuuZ), independentemente da zona horária especificada na opção de configuração do 'timezone' no seu aplicativo. É fortemente recomendado usar sempre esse formato de serialização, bem como armazenar as datas do seu aplicativo na UTC não alterando a opção de configuração 'timezone' do seu aplicativo de seu valor padrão 'UTC'. Usar consistentemente a zona horária UTC ao longo do seu aplicativo proporcionará o nível máximo de interoperabilidade com bibliotecas de manipulação de datas escritas em PHP e JavaScript.
 
- Se um formato personalizado for aplicado ao casting `date` ou `datetime`, como `datetime:Y-m-d H:i:s`, o fuso horário interno da instância Carbon será usado durante a serialização de datas. Normalmente, este será o fuso horário especificado na opção de configuração `timezone` do aplicativo.
+Se um formato personalizado é aplicado ao `data` ou `datetime` cast, como por exemplo `datetime:Y-m-d H:i:s`, a zona horária interna do Carbon instance será usada durante a serialização da data. Normalmente, este será o fuso horário especificado na configuração de `timezone` do seu aplicativo.
 
 <a name="enum-casting"></a>
-### Estrutura de enumeração
+### Cast-Enum
 
- O Eloquent também permite que você atribua valores a um atributo em PHP [Enums](https://www.php.net/manual/en/language.enumerations.backed.php). Para fazer isso, especifique o atributo e o enumerador que você deseja mapear no método `casts` do seu modelo:
+A Eloquent também permite que você faça a conversão de seus valores de atributos para [Enums](https://www.php.net/manual/pt_br/language.enumerations.backed.php) PHP na sua classe 'casts' do modelo:
 
 ```php
     use App\Enums\ServerStatus;
@@ -487,7 +487,7 @@ protected function address(): Attribute
     }
 ```
 
- Uma vez que você definir o tipo de um modelo, o atributo especificado será automaticamente mapeado para e a partir de um tipo enumerável durante as interações com o atributo:
+Uma vez que você tenha definido o tipo de dados na sua classe modelo, o atributo especificado será automaticamente convertido entre um tipo enum e outro ao interagir com ele.
 
 ```php
     if ($server->status == ServerStatus::Provisioned) {
@@ -498,9 +498,9 @@ protected function address(): Attribute
 ```
 
 <a name="casting-arrays-of-enums"></a>
-#### Criando Conjuntos de Tabelas de Função de Vencimento em Serviços de Finanças
+#### Arrays de Enumerações
 
- Por vezes, pode ser necessário que o modelo armazene um conjunto de valores de tipo enumerado numa coluna única. Para conseguir isso, poderá utilizar os tipos de cast `AsEnumArrayObject` ou `AsEnumCollection`, fornecidos pelo Laravel:
+Às vezes, você pode precisar de seu modelo para armazenar uma matriz de valores enum dentro de uma única coluna. Para fazer isso, você pode usar as conversões 'AsEnumArrayObject' ou 'AsEnumCollection' fornecidas pelo Laravel:
 
 ```php
     use App\Enums\ServerStatus;
@@ -520,21 +520,21 @@ protected function address(): Attribute
 ```
 
 <a name="encrypted-casting"></a>
-### Transmissão Encriptada
+### Encodificação de Cast
 
- O tipo de dados "encryptado" irá criptografar o valor do atributo do modelo usando os recursos internos de encriptação do Laravel. Além disso, os tipos de dados "encrypted:array", "encrypted:collection", "encrypted:object", "AsEncryptedArrayObject" e "AsEncryptedCollection" funcionam como os seus equivalentes não encriptados; contudo, o valor subjacente é encriptado quando armazenado na base de dados.
+A função 'encrypted' criptografará o valor do atributo de um modelo usando os recursos de [criptografia] incorporados no Laravel. Além disso, as funções 'encrypted:array', 'encrypted:collection', 'encrypted:object', 'AsEncryptedArrayObject' e 'AsEncryptedCollection' funcionam como suas contrapartes não criptografadas; todavia, como você pode esperar, o valor subjacente é criptografado quando armazenado no seu banco de dados.
 
- Como o comprimento final do texto encriptado não é previsível e tem um comprimento superior ao da variante não encriptada, certifique-se de que a coluna do banco de dados associada tenha um tipo `TEXT` ou maior. Além disso, uma vez que os valores são encriptados no banco de dados, não será possível consultar ou pesquisar por valores de atributos encriptados.
+Como o comprimento final do texto cifrado não é previsível e é maior que o seu equivalente em texto simples, certifique-se de que a coluna de banco de dados associada é `TEXT` ou maior. Além disso, pois os valores são criptografados no banco de dados, você não poderá consultar ou pesquisar valores de atributo cifrados.
 
 <a name="key-rotation"></a>
-#### Rotatividade das chaves
+#### Rotação de Chaves
 
- Como você pode saber, o Laravel encripta strings usando o valor de configuração `key` especificado no arquivo de configuração da sua aplicação `app`. Normalmente, esse valor corresponde ao valor da variável de ambiente `APP_KEY`. Se você precisar alterar a chave de encriptação da sua aplicação, precisará reencriptar manualmente seus atributos com a nova chave.
+Como você pode saber, o Laravel encripta as strings usando o valor de configuração "chave" especificado no arquivo de configuração do seu aplicativo chamado "app". Normalmente, esse valor corresponde ao valor da variável de ambiente "APP_KEY". Se você precisar girar a chave de encriptação do seu aplicativo, você precisará re-encriptar manualmente seus atributos encriptados usando a nova chave.
 
 <a name="query-time-casting"></a>
-### Tempo de consulta da tabela de cotação
+### Tempo de consulta de lançamento
 
- Às vezes você pode precisar aplicar um bloqueio (cast) ao executar uma consulta, por exemplo, ao selecionar um valor bruto de uma tabela. Considere o exemplo a seguir:
+Às vezes, você pode precisar aplicar cast enquanto executar uma consulta, como quando selecionar um valor bruto de uma tabela. Por exemplo, considere a seguinte consulta:
 
 ```php
     use App\Models\Post;
@@ -547,7 +547,7 @@ protected function address(): Attribute
     ])->get();
 ```
 
- O atributo `last_posted_at` dos resultados desta consulta será uma simples string. Seria maravilhoso se pudéssemos aplicar um cast de `datetime` a esse atributo ao executarmos a consulta. Por sorte, podemos fazer isso usando o método `withCasts`:
+O atributo 'last_posted_at' nos resultados dessa consulta será uma string simples. Seria ótimo se pudéssemos aplicar um 'datetime' cast a esse atributo ao executar a consulta. Felizmente, podemos alcançar isso usando o método 'withCasts':
 
 ```php
     $users = User::select([
@@ -560,15 +560,15 @@ protected function address(): Attribute
 ```
 
 <a name="custom-casts"></a>
-## Fôrtes personalizados
+## Formas Personalizadas
 
- O Laravel possui vários tipos de castramento internos; no entanto, ocasionalmente podem ser necessários definir os próprios tipos de castramento. Para criar um castramento, execute o comando `make:cast`. A nova classe de castramento é salva na pasta `app/Casts`:
+Laravel possui uma variedade de tipos de "cast" úteis e incorporados; no entanto, você pode precisar ocasionalmente definir seu próprio tipo de "cast". Para criar um novo "cast", execute o comando Artisan `make:cast`. A nova classe de "cast" será colocada em sua pasta "app/Casts":
 
 ```shell
 php artisan make:cast Json
 ```
 
- Todas as classes personalizadas de tipo de dados implementam a interface `CastsAttributes`. As classes que implementem esta interface devem definir um método `get` e outro `set`. O método `get` é responsável por transformar o valor bruto da base de dados num valor convertido, enquanto o método `set` deve converter um valor convertido em um valor bruto que possa ser armazenado na base de dados. Como exemplo, re-implementaremos o tipo de dados de conversão nativo `json` como um tipo de dados personalizado:
+Todas as classes de casting personalizadas implementam a interface `CastsAttributes`. Classes que implementam esta interface devem definir um método `get` e `set`. O método `get` é responsável por transformar um valor bruto do banco em um valor de casting, enquanto o método `set` deve transformar um valor de casting em um valor bruto que pode ser armazenado no banco. Como exemplo, vamos re-implementar o tipo de casting interno `json` como um tipo de casting personalizado:
 
 ```php
     <?php
@@ -603,7 +603,7 @@ php artisan make:cast Json
     }
 ```
 
- Depois de definir um tipo personalizado do tipo CAST, você pode associá-lo a um atributo do modelo usando o nome da classe:
+Depois de ter definido um tipo de casta personalizado você pode anexá-lo a um atributo de modelo usando o nome da classe:
 
 ```php
     <?php
@@ -630,11 +630,11 @@ php artisan make:cast Json
 ```
 
 <a name="value-object-casting"></a>
-### Valor do objeto de caça-recompensas
+### Valor de objeto de arremesso
 
- Você não está limitado a mapear valores para tipos primitivos. Pode também mapeá-los para objetos. Definição de mapeamentos personalizados que mapeiam valores para objetos é muito semelhante ao mapeamento para tipos primitivos; no entanto, o método `set` deve retornar um array de pares chave/valor a serem usados para definir valores armazenáveis ​​no modelo.
+Você não está limitado a lançar valores para tipos primitivos. Você também pode lançar valores em objetos. Definir um "cast" personalizado que lance valores em objetos é muito semelhante ao tipo de lançamento para tipos primitivos; no entanto, o método 'set' deve retornar um array de pares chave/valor que serão usados para definir valores brutos no modelo.
 
- Como exemplo, definiremos uma classe de conversão personalizada que converte vários valores do modelo em um único objeto de valor `Address`. Suponhamos que o valor `Address` tem duas propriedades públicas: `lineOne` e `lineTwo`:
+Como exemplo, definiremos uma classe personalizada de tipo 'cast' que 'casta' vários valores do modelo em um único objeto 'Endereço'. Suponha que o objeto 'Endereço' possui duas propriedades públicas: 'linhaUm' e 'linhaDois':
 
 ```php
     <?php
@@ -681,7 +681,7 @@ php artisan make:cast Json
     }
 ```
 
- Ao criar objetos de valor como argumento para a função de cópia, as alterações feitas no objeto serão automaticamente sincronizadas com o modelo antes que este seja salvo:
+Quando lançando para um valor do objeto, quaisquer alterações feitas no objeto de valor serão sincronizadas automaticamente no modelo antes do modelo ser salvo:
 
 ```php
     use App\Models\User;
@@ -693,15 +693,15 @@ php artisan make:cast Json
     $user->save();
 ```
 
- > [!NOTA]
- > Se você pretende serializar seus modelos Eloquent que contêm objetos de valor para JSON ou arrays, deve implementar as interfaces `Illuminate\Contracts\Support\Arrayable` e `JsonSerializable` no objeto de valor.
+> [NOTA]
+> Se planeja serializar seus modelos Eloquent contendo objetos de valor para JSON ou matrizes, você deve implementar as interfaces `Illuminate\Contracts\Support\Arrayable` e `JsonSerializable` no objeto de valor.
 
 <a name="value-object-caching"></a>
-#### Armazenamento em Memória de Objetos Com Valor
+#### Valor de objeto de cache
 
- Quando os atributos são convertidos em objetos de valor, eles são armazenados na memória por Eloquent. Portanto, se o atributo for acessado novamente, será retornada a mesma instância do objeto.
+Quando os atributos que são arremessados para objetos de valor são resolvidos, eles são armazenados em cache pelo Eloquent. Portanto, a mesma instância do objeto será retornada se o atributo for acessado novamente.
 
- Se você quiser desativar o comportamento de armazenamento em cache de objetos das classes personalizadas, pode declarar uma propriedade pública `withoutObjectCaching` em sua classe de conversão personalizada:
+Se você deseja desativar o objeto de cache comportamento da classe de atalho personalizado, você pode declarar um `public withoutObjectCaching` propriedade em sua classe de atalho personalizado:
 
 ```php
 class Address implements CastsAttributes
@@ -713,11 +713,11 @@ class Address implements CastsAttributes
 ```
 
 <a name="array-json-serialization"></a>
-### Matriz/Serialização JSON
+### Serialização Array / JSON
 
- Quando um modelo Eloquent é convertido em um array ou JSON usando os métodos `toArray` e `toJson`, seus objetos de valor personalizados serão serializados desde que implementem as interfaces `Illuminate\Contracts\Support\Arrayable` e `JsonSerializable`. No entanto, ao usar objetos de valor fornecidos por bibliotecas de terceiros, você pode não poder adicionar estas interfaces aos objetos.
+Ao converter um modelo Eloquent a uma matriz ou JSON usando os métodos `toArray` e `toJson`, seus objetos de valor de tipo personalizado serão tipicamente serializados também, desde que eles implementem as interfaces `Illuminate\Contracts\Support\Arrayable` e `JsonSerializable`. No entanto, quando se usa objetos de valor fornecidos por bibliotecas de terceiros, talvez você não tenha a capacidade de adicionar essas interfaces ao objeto.
 
- Portanto, você pode especificar que sua classe de cast personalizada será responsável por serializar o objeto de valor. Para fazer isso, sua classe de cast personalizada deve implementar a interface `Illuminate\Contracts\Database\Eloquent\SerializesCastableAttributes`. Essa interface afirma que sua classe deve conter um método `serialize` que deverá retornar o formato serializado do seu objeto de valor:
+Portanto, você pode especificar que sua classe de tipo personalizado será responsável pela serialização do objeto de valor. Para fazer isso, sua classe de tipo personalizado deve implementar a interface `Illuminate\Contracts\Database\Eloquent\SerializesCastableAttributes`. Esta interface afirma que sua classe deve conter um método `serializar` que devolve o formato serializado do seu objeto de valor:
 
 ```php
     /**
@@ -732,17 +732,17 @@ class Address implements CastsAttributes
 ```
 
 <a name="inbound-casting"></a>
-### Casting de Entrada
+### Receptáculo de Lançamento
 
- Ocasionalmente, poderá ser necessário escrever uma classe de tipo personalizado que apenas transforma valores definidos no modelo e não executa operações quando os atributos são recuperados do modelo.
+Ocasionalmente você pode precisar escrever uma classe de modelo personalizada que apenas transforma os valores sendo definidos no modelo e não executa qualquer operação ao recuperar atributos do modelo.
 
- Os tipos de dados personalizados com apenas entradas devem implementar a interface `CastsInboundAttributes`, que exige somente uma método `set`. O comando Artesanato `make:cast` pode ser invocado com a opção `--inbound" para gerar um tipo de dado personalizado com apenas entradas:
+Apenas Casts de Entrada devem implementar a interface 'CastsInboundAttributes', que só exige um método 'set' ser definido. O comando Artisan 'make:cast' pode ser invocado com a opção '--inbound' para gerar uma classe apenas de Casts de Entrada:
 
 ```shell
 php artisan make:cast Hash --inbound
 ```
 
- Um exemplo clássico de um tipo que recebe apenas argumentos é o caso de uma função de "hashing". Por exemplo, podemos definir uma função que processe valores entrantes com base num algoritmo dado:
+Um exemplo clássico de um cast in-only é o casting "hashing". Por exemplo, podemos definir um cast que hash valores in-only através de um algoritmo:
 
 ```php
     <?php
@@ -776,9 +776,9 @@ php artisan make:cast Hash --inbound
 ```
 
 <a name="cast-parameters"></a>
-### Parâmetros de lançamento
+### Parâmetros do Cast
 
- Ao anexar um tipo personalizado a um modelo, pode especificar os parâmetros do tipo utilizando o separador `:` e com vírgula para delimitar vários parâmetros. Estes serão passados ao construtor da classe de tipo personalizado:
+Ao anexar um modelo de forma personalizada, os parâmetros da forma podem ser especificados separando-os do nome da classe usando um caractere ``:'' e usando vírgula para delimitar múltiplos parâmetros. Os parâmetros serão passados para o construtor da classe da forma:
 
 ```php
     /**
@@ -795,9 +795,9 @@ php artisan make:cast Hash --inbound
 ```
 
 <a name="castables"></a>
-### Misturáveis em Forno
+### castáveis
 
- Você pode permitir que os objetos de valores do seu aplicativo definam suas próprias classes de conversão personalizadas. Em vez de anexar a classe de conversão personalizada ao modelo, você poderá alternativamente anexar uma classe de valor que implemente a interface `Illuminate\Contracts\Database\Eloquent\Castable`:
+Você pode querer permitir que seus objetos de valor definam suas próprias classes de conversão personalizadas. Em vez de anexar a classe de conversão personalizada ao seu modelo, você pode alternativamente anexar uma classe de objeto de valor que implementa a interface 'Illuminate\Contracts\Database\Eloquent\Castable':
 
 ```php
     use App\ValueObjects\Address;
@@ -810,7 +810,7 @@ php artisan make:cast Hash --inbound
     }
 ```
 
- Objetos que implementem a interface `Castable` devem definir um método `castUsing`, que retorna o nome da classe da classe de conversão personalizada, responsável por fazer a conversão para e a partir da classe `Castable`:
+Os objetos que implementam a interface `Castable` devem definir o método `castUsing` que retorna o nome da classe do customizador que é responsável pelo casting para e do `Castable`:
 
 ```php
     <?php
@@ -834,7 +834,7 @@ php artisan make:cast Hash --inbound
     }
 ```
 
- Ao usar as classes `Castable`, você pode ainda fornecer argumentos na definição da metodologia `casts`. Esses argumentos serão passados para a metodologia `castUsing`:
+Ao usar classes `Castable`, você ainda pode fornecer argumentos na definição do método `casts`. Os argumentos serão passados para o método `castUsing`:
 
 ```php
     use App\ValueObjects\Address;
@@ -848,9 +848,9 @@ php artisan make:cast Hash --inbound
 ```
 
 <a name="anonymous-cast-classes"></a>
-#### Componentes para moldagem e classes de objetos anónimos
+#### Classes anônimas & Castáveis
 
- Combinando "castables" com [classes anônimas do PHP](https://www.php.net/manual/en/language.oop5.anonymous.php), você pode definir um objeto de valor e sua lógica de cascalhamento como um único objeto que pode ser cascado. Para conseguir isso, retorne uma classe anônima da `castUsing` método do seu objeto de valor. A classe anônima deve implementar a interface `CastsAttributes`:
+Ao combinar "castables" com classes anônimas de PHP (https://www.php.net/manual/pt_BR/language.oop5.anonymous.php), você pode definir um objeto valor e a lógica de casting como um único objeto castable. Para fazer isso, retorne uma classe anônima do método 'castUsing' do seu objeto valor. A classe anônima deve implementar a interface "CastsAttributes":
 
 ```php
     <?php

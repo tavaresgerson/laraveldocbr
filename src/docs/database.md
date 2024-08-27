@@ -1,76 +1,73 @@
-# Banco de dados: Princípios iniciais
+# Banco de dados: Começando
 
 <a name="introduction"></a>
 ## Introdução
 
- Quase todas as aplicações web modernas interagem com base de dados. O Laravel torna extremamente fácil a interação com várias bases de dados através do SQL bruto, um [construtor de consulta fluido](/docs/queries), e o [ORM Eloquent](/docs/eloquent). Atualmente, o Laravel fornece suporte interno para cinco bases de dados:
+Quase todas aplicações web modernas interagem com um banco de dados. O Laravel torna a interação com bancos de dados extremamente simples através de uma variedade de bancos de dados suportados usando SQL cru, um [*query builder* fluente](/docs/queries), e o [ORM Eloquent](/docs/eloquent). Atualmente, o Laravel oferece suporte de primeira classe para cinco bancos de dados.
 
-<div class="content-list" markdown="1">
-
- [Política de versão (https://mariadb.org/about/#maintenance-policy)](
- [Política de versões](https://pt.wikipedia.org/wiki/MySQL#Histórico_de_lançamentos)
- [Política de versões (en)](https://www.postgresql.org/support/versioning/)
- - SQLite 3.35.0+
- [Política de Versões](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server)
-
-</div>
+- MariaDB 10.3+ ([Política de Versão](https://mariadb.org/about/#maintenance-policy))
+- MySQL 5.7+ ([Política de Versão](https://en.wikipedia.org/wiki/MySQL#Release_history))
+- PostgreSQL 10.0+ ([Política de Versão](https://www.postgresql.org/support/versioning/))
+- SQLite 3.35.0+
+- SQL Server 2017+ ([Política de Versão](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
 
 <a name="configuration"></a>
 ### Configuração
 
- A configuração dos serviços de base de dados do Laravel está localizada no arquivo de configuração `config/database.php` da aplicação. Neste arquivo, você poderá definir todas as conexões com a base de dados e especificar qual ligação será usada por padrão. A maioria das opções de configuração nesse arquivo são direcionadas pelos valores das variáveis de ambiente da aplicação. Exemplos para a maioria dos sistemas de banco de dados suportados pelo Laravel estão disponíveis neste arquivo.
+A configuração para os serviços de banco de dados do Laravel é localizada no arquivo `config/database.php` da sua aplicação. Neste arquivo, você pode definir todas as suas conexões com o banco de dados, bem como especificar qual conexão deve ser usada por padrão. A maioria das opções de configuração dentro deste arquivo são controladas pelos valores das variáveis de ambiente da sua aplicação. Exemplos para os sistemas de bancos de dados suportados pelo Laravel são fornecidos neste arquivo.
 
- Por padrão, a configuração de ambiente [de amostra do Laravel](/docs/configuration#environment-configuration) está pronta para uso com o [Laravel Sail] (/docs/sail), que é uma configuração do Docker para desenvolvimento de aplicações Laravel na máquina local. No entanto, você pode modificar a configuração de banco de dados conforme necessário para o seu banco de dados local.
+Por padrão, a [configuração de ambiente](/docs/configuration#environment-configuration) da amostra do Laravel está pronta para ser usada com o [Laravel Sail](/docs/sail), que é uma configuração Docker para o desenvolvimento de aplicativos Laravel na sua máquina local. No entanto, você é livre para modificar sua configuração do banco de dados conforme necessário para o seu banco de dados local.
 
 <a name="sqlite-configuration"></a>
-#### Configuração do SQLite
+#### Configuração SQLite
 
- As bases de dados SQLite estão contidas num único ficheiro no seu sistema de arquivos. Pode criar uma nova base de dados SQLite utilizando o comando `touch` no terminal: `touch database/database.sqlite`. Depois de ter criado a base de dados, pode facilmente configurar as variáveis ambiente para apontarem para esta base de dados colocando o caminho absoluto da mesma na variável de ambiente `DB_DATABASE`:
+Os bancos de dados SQLite são contidos dentro de um único arquivo em seu sistema de arquivos. Você pode criar um novo banco de dados SQLite usando o comando `touch` no terminal: `touch banco/banco.sqlite`. Depois que o banco de dados foi criado, você pode configurar facilmente suas variáveis de ambiente para apontar para este banco de dados colocando o caminho absoluto do banco de dados na variável de ambiente 'DB_DATABASE':
 
 ```ini
 DB_CONNECTION=sqlite
 DB_DATABASE=/absolute/path/to/database.sqlite
 ```
 
- Por padrão, as restrições de chave estrangeira são habilitadas para conexões SQLite. Se pretender desativá-las, deve definir a variável ambiental `DB_FOREIGN_KEYS` como `false`:
+Por padrão, as restrições de chave estrangeira são ativadas para conexões SQLite. Se você gostaria de desativá-los, você deve definir a variável de ambiente `DB_FOREIGN_KEYS` para `false`:
 
 ```ini
 DB_FOREIGN_KEYS=false
 ```
 
- > [!ATENÇÃO]
- Crie uma aplicação Laravel utilizando o Instalador do Laravel ({{version}}) e selecione SQLite como banco de dados. O Laravel irá criar automaticamente um ficheiro `database/database.sqlite` e executará o modelo por defeito.
+::: info NOTA
+Se você utilizar o [installer do Laravel](https://laravel.com/docs/installation#creating-a-laravel-project) para criar seu aplicativo Laravel e selecionar SQLite como seu banco de dados, o Laravel criará automaticamente um arquivo `database/database.sqlite` e executará as migrações padrão do banco de dados para você.
+:::
 
 <a name="mssql-configuration"></a>
 #### Configuração do Microsoft SQL Server
 
- Para usar um banco de dados Microsoft SQL Server, você precisa garantir que o pacote de extensões PHP "sqlsrv" e "pdo_sqlsrv", bem como qualquer dependência necessária, foram instaladas, como por exemplo, o driver ODBC do Microsoft SQL.
+Para usar um banco de dados do Microsoft SQL Server, você deve garantir que tenha as extensões PHP `sqlsrv` e `pdo_sqlsrv` instaladas, bem como quaisquer dependências que elas possam exigir, tais como o Microsoft SQL ODBC Driver.
 
 <a name="configuration-using-urls"></a>
-#### Configuração utilizando URLs
+#### Configuração usando URLs
 
- Normalmente, as conexões de banco de dados são configuradas utilizando vários valores de configuração, como `host`, `database`, `username` e `password`. Cada um destes valores tem a sua própria variável do ambiente correspondente. Isto significa que ao configurar as informações da ligação de banco de dados num servidor de produção é necessário gerir várias variáveis do ambiente.
+Tipicamente, conexões de banco de dados são configuradas usando múltiplas configurações como "host", "banco de dados", "usuário" e "senha", etc. Cada uma dessas configurações tem sua própria variável de ambiente correspondente. Isso significa que ao configurar as informações da conexão do seu banco de dados em um servidor de produção, você precisa gerenciar várias variáveis de ambiente.
 
- Alguns provedores de bases de dados gerenciadas, como o AWS e o Heroku, disponibilizam uma "URL" do banco de dados única que inclui todas as informações de conexão para o banco de dados numa única string. A URL do exemplo é semelhante à seguinte:
+Alguns provedores de banco de dados, como AWS e Heroku fornecem um único "endereço da web" que contém todas as informações de conexão para o banco de dados em uma única string. Um exemplo de URL de banco de dados pode parecer algo como o seguinte:
 
 ```html
 mysql://root:password@127.0.0.1/forge?charset=UTF-8
 ```
 
- Estes endereços URL seguem tipicamente uma convenção padrão:
+Estes URLs normalmente seguem um padrão de convenção.
 
 ```html
 driver://username:password@host:port/database?options
 ```
 
- Por conveniência, o Laravel suporta esses URLs como alternativa ao configuração do seu banco de dados com várias opções de configuração. Se a opção de configuração `url` (ou a variável de ambiente correspondente `DB_URL`) estiver presente, ela será usada para extrair as informações de conexão e credenciais do banco de dados.
+Por motivos de conveniência, o Laravel suporta essas URLs como uma alternativa para configurar seu banco de dados com múltiplas opções de configuração. Se a opção de configuração 'url' (ou variável de ambiente correspondente 'DB_URL') estiver presente, ela será usada para extrair informações de conexão e credenciais do banco de dados.
 
 <a name="read-and-write-connections"></a>
-### Conexões de Leitura e Gravação
+### Leia e escreva conexões
 
- Às vezes, você poderá desejar usar uma conexão de banco de dados para instruções SELECT e outra para instruções INSERT, UPDATE e DELETE. O Laravel torna isso fácil. As conexões apropriadas serão sempre utilizadas se você estiver usando consultas brutos, o gerador de consulta ou o ORM Eloquent.
+Às vezes você pode querer usar uma conexão de banco de dados para instruções SELECT e outra para instruções INSERT, UPDATE e DELETE. Laravel torna isso fácil, e as conexões corretas serão sempre utilizadas caso esteja usando consultas brutas, o construtor de consultas ou o ORM Eloquent.
 
- Para ver como as conexões de leitura/gravação devem ser configuradas, vamos dar uma olhada neste exemplo:
+Para ver como as conexões devem ser configuradas, vamos analisar este exemplo:
 
 ```php
     'mysql' => [
@@ -103,24 +100,24 @@ driver://username:password@host:port/database?options
     ],
 ```
 
- Observe que foram adicionados três chaves na matriz de configurações: "read", "write" e "sticky". As chaves "read" e "write" possuem valores em matriz, contendo uma única chave "host". O resto das opções do banco de dados para as conexões "read" e "write" será combinado com a matriz principal de configuração do "mysql".
+Observe que foram adicionadas três chaves à matriz de configuração: `read`, `write` e `sticky`. As chaves `read` e `write` têm valores de matriz contendo uma única chave: `host`. O restante das opções do banco de dados para as conexões `read` e `write` serão mescladas da matriz de configuração principal `mysql`.
 
- Você só precisa colocar itens nos arrays "read" e "write" se desejar substituir os valores do array principal "mysql". Sendo assim, nesse caso, o endereço "192.168.1.1" será usado como o host para a conexão "leitura", enquanto que "192.168.1.3" será usado para a conexão "escrita". As credenciais de banco de dados, prefixo, conjunto de caracteres e todas as outras opções do array principal "mysql" serão compartilhadas entre ambas as conexões. Quando existirem vários valores no array de configuração "host", um host de banco de dados será escolhido aleatoriamente para cada solicitação.
+Você só precisa colocar itens nos arrays `read` e `write` se quiser substituir os valores do array principal do MySQL. Assim, neste caso, 192.168.1.1 será usado como o host para a conexão "read", enquanto que 192.168.1.3 será usada para a conexão `write`. As credenciais de banco de dados, prefixo, conjunto de caracteres e todas as outras opções no array principal MySQL serão compartilhadas entre as duas conexões. Quando múltiplos valores existem no array `host` de configuração, um *host* de banco de dados será escolhido aleatoriamente para cada solicitação.
 
 <a name="the-sticky-option"></a>
-#### Opção "sticky"
+#### A Opção `sticky`
 
- A opção `sticky` é um valor *opcional* que pode ser usado para permitir a leitura imediata de registos escritos na base de dados durante o ciclo de solicitação atual. Se a opção `sticky` estiver ativada e tiver sido realizada uma operação "escrita" contra a base de dados durante o ciclo de solicitação atual, quaisquer operações adicionais de leitura irão usar a conexão "escrita". Isto assegura que todos os dados escritos durante o ciclo de solicitação podem ser imediatamente lidos novamente na base de dados durante essa mesma solicitação. Depende de si decidir se este é o comportamento desejado para a sua aplicação.
+A opção `sticky` é um valor *opcional* que pode ser usado para permitir a leitura imediata dos registros que foram gravados no banco de dados durante o ciclo da requisição atual. Se a opção `sticky` estiver habilitada e uma operação `write` tiver sido executada no banco de dados durante o ciclo da requisição atual, qualquer operação subsequente de `read` (leitura) irá usar a conexão `write` (gravação). Isso garante que os dados gravados durante o ciclo da requisição possam ser imediatamente lidos do banco de dados na mesma requisição. Decida se esse é o comportamento desejado para sua aplicação.
 
 <a name="running-queries"></a>
-## Executando consultas SQL
+## Executando Consultas SQL
 
- Depois de configurar a conexão com sua base de dados, você poderá executar consultas utilizando o módulo `DB`. O módulo `DB` fornece métodos para cada tipo de query: `select`, `update`, `insert`, `delete` e `statement`.
+Uma vez que você tenha configurado sua conexão com o banco de dados, você pode executar consultas usando a facade `DB`. A facade `DB` fornece métodos para cada tipo de consulta: `select`, `update`, `insert`, `delete` e `statement`.
 
 <a name="running-a-select-query"></a>
-#### Executando uma consulta selecionada
+#### Executando uma consulta `SELECT`
 
- Para executar uma consulta básica de seleção, você pode usar o método `select` na interface `DB`:
+Para executar uma consulta básica, você pode usar o método `select` na facade `DB`:
 
 ```php
     <?php
@@ -134,7 +131,7 @@ driver://username:password@host:port/database?options
     class UserController extends Controller
     {
         /**
-         * Show a list of all of the application's users.
+         * Exibe uma lista de todos os usuários do aplicativo.
          */
         public function index(): View
         {
@@ -145,9 +142,9 @@ driver://username:password@host:port/database?options
     }
 ```
 
- O primeiro parâmetro passado ao método `select` é a consulta SQL, enquanto o segundo é um mapeamento de parâmetros que têm de ser vinculados à consulta. Normalmente, trata-se dos valores das restrições da cláusula `where`. O mapeamento de parâmetros oferece proteção contra injeção SQL.
+O primeiro argumento passado para o método `select` é a consulta SQL, enquanto o segundo argumento é quaisquer parâmetros de *binding* que precisam ser ligados à consulta. Geralmente, estes são os valores para restrições da cláusula `where`. A ligação de parâmetros fornece proteção contra injeção SQL.
 
- O método `select` sempre retornará um `array` de resultados. Cada resultado dentro do array será um objeto `stdClass` em PHP que representa um registro do banco de dados:
+O método `select` sempre retornará um `array` de resultados. Cada resultado dentro do `array` será um objeto PHP `stdClass` representando um registro do banco de dados:
 
 ```php
     use Illuminate\Support\Facades\DB;
@@ -160,9 +157,9 @@ driver://username:password@host:port/database?options
 ```
 
 <a name="selecting-scalar-values"></a>
-#### Selecionando valores escalares
+#### Selecionando Valores Scalar
 
- Por vezes, a consulta de uma base de dados pode resultar num valor único escalar. Em vez de ser necessário recuperar o resultado escalar da consulta de um objeto registro, Laravel permite que seja possível recuperar este valor diretamente através do método `scalar`:
+Às vezes, sua consulta de banco de dados pode resultar em um único valor *scalar*. Em vez de ser necessário obter o resultado *scalar* da consulta do registro, o Laravel permite que você obtenha esse valor diretamente usando o método *scalar*:
 
 ```php
     $burgers = DB::scalar(
@@ -171,9 +168,9 @@ driver://username:password@host:port/database?options
 ```
 
 <a name="selecting-multiple-result-sets"></a>
-#### Seleção de conjuntos de resultados múltiplos
+#### Selecionando Múltiplos Conjuntos de Resultados
 
- Se o seu aplicativo solicitar procedimentos armazenados que retornam conjuntos de resultados múltiplos, poderá utilizar a metodologia `selectResultSets` para recuperar todos os conjuntos de resultados retornados pelo procedimento armazenado:
+Se sua aplicação chama *stored procedures* que retornam múltiplos conjuntos de resultados, você pode usar o método `selectResultSets` para recuperar todos os conjuntos de resultados retornados pelo *stored procedures*:
 
 ```php
     [$options, $notifications] = DB::selectResultSets(
@@ -182,27 +179,29 @@ driver://username:password@host:port/database?options
 ```
 
 <a name="using-named-bindings"></a>
-#### Usando ligações nomeadas
+#### Usando Ligações Nomeadas
 
- Em vez de usar `?` para representar suas vinculações de parâmetros, você pode executar uma consulta usando vinculações nomeadas:
+Em vez de usar '?' para representar suas conexões do parâmetro, você pode executar uma consulta usando as conexões nomeadas:
 
 ```php
     $results = DB::select('select * from users where id = :id', ['id' => 1]);
 ```
 
 <a name="running-an-insert-statement"></a>
-#### Executando uma instrução de inserção
+#### Executando uma instrução INSERT
 
- Para executar uma declaração `insert`, você pode usar o método `insert` na interface `DB`. Assim como no caso do método `select`, esse método aceita a consulta SQL como primeiro argumento e vinculações como segundo argumento:
+Para executar um comando `INSERT`, você pode usar o método `insert` da facade `DB`. Assim como o comando `SELECT`, este método aceita o comando SQL como seu primeiro argumento e os bindings como seu segundo argumento:
 
- use Facade\Illuminate\Support\DB;
+```php
+use Illuminate\Support\Facades\DB;
 
- DB::insert('insert into users (id, nome) values (?, ?)', [1, 'Marc']);
+DB::insert('insert into users (id, name) values (?, ?)', [1, 'Marc']);
+```
 
 <a name="running-an-update-statement"></a>
-#### Executar uma declaração de atualização
+#### Executando uma declaração de UPDATE.
 
- O método `update` deve ser usado para atualizar os registros existentes na base de dados. O número de linhas afetadas pela instrução é retornada pelo método:
+O método `update` deve ser usado para atualizar registros existentes no banco de dados. O número de linhas afetadas pela declaração é retornado pelo método.
 
 ```php
     use Illuminate\Support\Facades\DB;
@@ -214,9 +213,9 @@ driver://username:password@host:port/database?options
 ```
 
 <a name="running-a-delete-statement"></a>
-#### Executar uma declaração de exclusão
+#### Executando uma declaração DELETE
 
- O método delete deve ser usado para excluir registos de banco de dados. Tal como na operação update, o número de linhas afetadas é retornado pelo método:
+O método `delete` deve ser usado para apagar os registros do banco de dados. Assim como o método `update`, o número de linhas afetadas será retornado pelo método:
 
 ```php
     use Illuminate\Support\Facades\DB;
@@ -225,41 +224,42 @@ driver://username:password@host:port/database?options
 ```
 
 <a name="running-a-general-statement"></a>
-#### Realizando uma declaração geral
+#### Executando uma Declaração Geral
 
- Algumas declarações de banco de dados não retornam qualquer valor. Para esses tipos de operações, você pode usar o método `statement` na interface `DB`:
+Algumas instruções de banco de dados não retornam nenhum valor. Para este tipo de operações, você pode usar o método `statement` da facade `DB`:
 
 ```php
     DB::statement('drop table users');
 ```
 
 <a name="running-an-unprepared-statement"></a>
-#### Execução de uma declaração não preparada
+#### Executar um *Unprepared Statement*
 
- Às vezes, você pode querer executar uma instrução SQL sem vinculá-la a qualquer valor. É possível usar o método `unprepared` da facada `DB` para isso:
+Às vezes você pode querer executar uma instrução SQL sem vincular nenhum valor. Você pode usar o método `unprepared` da facade `DB` para fazer isso:
 
 ```php
     DB::unprepared('update users set votes = 100 where name = "Dries"');
 ```
 
- > [ADVERTÊNCIA]
- > Uma vez que as declarações não preparadas não vinculam parâmetros, podem ser suscetíveis a injeção de SQL. Você nunca deve permitir valores controlados pelo usuário dentro de uma declaração não preparada.
+::: warning ATENÇÃO
+Como declarações não preparadas não estão vinculadas a parâmetros, elas podem ser vulneráveis à injeção SQL. Você nunca deve permitir valores controlados pelo usuário dentro de uma declaração *unprepared* (não preparada).
+:::
 
 <a name="implicit-commits-in-transactions"></a>
-#### Comitês Implícitos
+#### *Commits* Implícitos
 
- Ao usar os métodos `statement` e `unprepared` da facade `DB` dentro de transações, você deve ter cuidado para evitar declarações que causem [comités implícitos](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html). Essas declarações farão com que o motor de banco de dados comite indiretamente a transação inteira, deixando o Laravel inconsciente do nível da transação no banco de dados. Um exemplo disso é criar uma tabela de banco de dados:
+Ao usar os métodos `statement` e `unprepared` dentro de transações você deve ter cuidado para evitar consultas que causem um [commit implícito](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html). Essas consultas farão com que o motor do banco de dados faça commit indiretamente a toda transação, deixando o Laravel sem saber qual foi o nível de transação do banco de dados. Um exemplo dessas consultas é criar uma tabela no banco de dados:
 
 ```php
     DB::unprepared('create table a (col varchar(1) null)');
 ```
 
- Consulte o manual do MySQL para saber quais são todas as declarações que originam commit implícitos.
+Por favor, veja o [Manual do MySQL para a lista de instruções que disparam um commit implícito](https://dev.mysql.com/doc/refman/8.0/en/implicit-commit.html).
 
 <a name="using-multiple-database-connections"></a>
-### Usando conexões de banco de dados múltiplas
+### Usando conexões múltiplas de banco de dados
 
- Se o seu aplicativo definir várias conexões no arquivo de configuração `config/database.php`, você poderá acessar cada conexão através do método `connection` fornecido pela faca `DB`. O nome da conexão passado ao método `connection` deve corresponder a uma das conexões listadas no arquivo de configuração `config/database.php` ou configurada em tempo de execução usando o recurso `config`:
+Se a sua aplicação define múltiplas conexões no arquivo de configuração `config/database.php`, você pode acessar cada conexão via o método `connection` fornecido pela facade `DB`. O nome da conexão passado para o método `connection` deve corresponder a uma das conexões listadas no seu arquivo de configuração `config/database.php` ou configuradas em tempo de execução usando o *helper* `config`:
 
 ```php
     use Illuminate\Support\Facades\DB;
@@ -267,7 +267,7 @@ driver://username:password@host:port/database?options
     $users = DB::connection('sqlite')->select(/* ... */);
 ```
 
- Você pode obter a instância subjacente da PDO em bruto de uma conexão usando o método `getPdo` em uma instância de conexão:
+Você pode acessar a instância PDO bruta e subjacente de uma conexão usando o método `getPdo` em uma instância de conexão:
 
 ```php
     $pdo = DB::connection()->getPdo();
@@ -276,7 +276,7 @@ driver://username:password@host:port/database?options
 <a name="listening-for-query-events"></a>
 ### Ouvindo eventos de consulta
 
- Se você deseja especificar uma função de closure que é invocada para cada consulta SQL executada pelo seu aplicativo, você pode usar o método `listen` da faca `DB`. Este método pode ser útil para registrar consultas ou fazer debug. Você pode registrar sua função de closure na consulta no método `boot` de um [fornecedor de serviços](/docs/providers):
+Se quiser especificar um *closure* que é invocado para cada consulta SQL executada por seu aplicativo, você pode usar o método `listen` da facade `DB`. Este método pode ser útil para registrar consultas ou depuração. Você pode registrar o ouvinte da sua consulta do *closure* no método de inicialização de um [provedor de serviço](/docs/providers):
 
 ```php
     <?php
@@ -290,7 +290,7 @@ driver://username:password@host:port/database?options
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register any application services.
+         * Registre quaisquer serviços de aplicativos.
          */
         public function register(): void
         {
@@ -298,7 +298,7 @@ driver://username:password@host:port/database?options
         }
 
         /**
-         * Bootstrap any application services.
+         * Inicialize qualquer serviço de aplicativo.
          */
         public function boot(): void
         {
@@ -312,9 +312,9 @@ driver://username:password@host:port/database?options
 ```
 
 <a name="monitoring-cumulative-query-time"></a>
-### Monitorando tempo de consulta acumulativo
+### Monitorando o tempo de consulta cumulativa
 
- Um gargalo comum das performances de aplicações web modernas é o tempo gasto a interrogar os bancos de dados. Felizmente, Laravel permite acionar um fecho ou callback escolhido pelo utilizador quando este tempo for demasiado elevado durante uma única consulta ao banco de dados. Para iniciar, disponibilize o limiar de tempo de consulta (em milésimos) e o fecho para a função `whenQueryingForLongerThan`. Pode invocar esta função na metoda `boot` de um [fornecedor de serviços](/docs/providers):
+Um gargalo comum de desempenho dos aplicativos web modernos é o tempo que eles gastam consultando bancos de dados. Felizmente, Laravel pode invocar um *closure* ou retorno de chamada da sua preferência quando gasta muito tempo consultando o banco de dados durante uma única solicitação. Para começar, forneça uma limiar de tempo (em milissegundos) e um *closure* para o método `whenQueryingForLongerThan`. Você pode invocar este método no método `boot` de um [provedor de serviços](/docs/providers):
 
 ```php
     <?php
@@ -329,7 +329,7 @@ driver://username:password@host:port/database?options
     class AppServiceProvider extends ServiceProvider
     {
         /**
-         * Register any application services.
+         * Registre quaisquer serviços de aplicativos.
          */
         public function register(): void
         {
@@ -337,21 +337,21 @@ driver://username:password@host:port/database?options
         }
 
         /**
-         * Bootstrap any application services.
+         * Inicialize qualquer serviço de aplicativo.
          */
         public function boot(): void
         {
             DB::whenQueryingForLongerThan(500, function (Connection $connection, QueryExecuted $event) {
-                // Notify development team...
+                // Notifique a equipe de desenvolvimento...
             });
         }
     }
 ```
 
 <a name="database-transactions"></a>
-## Transações de banco de dados
+## Transações de Banco de Dados
 
- Você pode usar o método `transaction`, oferecido pela facade `DB`, para executar um conjunto de operações dentro de uma transação do banco de dados. Se for lançada uma exceção dentro da finalização da transação, esta será automaticamente revertida e a exceção será novamente lançada. Se o closure tiver sucesso, a transação será automaticamente comunicada:
+Você pode usar o método `transaction` fornecido pela facade `DB` para executar um conjunto de operações dentro de uma transação do banco de dados. Se uma exceção for lançada dentro da transação, a transação será automaticamente revertida e a exceção será re-lançada. Se o *closure* for executado com sucesso, a transação será automaticamente confirmada. Você não precisa se preocupar em reverter ou confirmar manualmente ao usar o método `transaction`:
 
 ```php
     use Illuminate\Support\Facades\DB;
@@ -364,9 +364,9 @@ driver://username:password@host:port/database?options
 ```
 
 <a name="handling-deadlocks"></a>
-#### Lidar com o impasse
+#### Tratando Deadlocks
 
- O método `transaction` aceita um segundo parâmetro opcional que define o número de vezes que uma transação deve ser reexecutada quando ocorre um bloqueio. Depois que essas tentativas forem concluídas, é lançado uma exceção:
+O método `transaction` aceita um argumento opcional que define o número de vezes que uma transação deve ser repetida quando ocorre um impasse. Uma vez que essas tentativas já foram esgotadas, uma exceção será lançada.
 
 ```php
     use Illuminate\Support\Facades\DB;
@@ -379,9 +379,9 @@ driver://username:password@host:port/database?options
 ```
 
 <a name="manually-using-transactions"></a>
-#### Manualmente usando transações
+#### Usando transações manualmente
 
- Se pretender iniciar uma transação manualmente e ter controlo completo sobre os rollbacks e commits pode usar o método `beginTransaction` fornecido pela interface `DB`:
+Se você gostaria de iniciar uma transação manualmente e ter controle total sobre reverter e confirmar, você pode usar o método `beginTransaction` fornecido pela facade `DB`:
 
 ```php
     use Illuminate\Support\Facades\DB;
@@ -389,58 +389,59 @@ driver://username:password@host:port/database?options
     DB::beginTransaction();
 ```
 
- É possível efetuar o retrocesso da transação através do método `rollBack`:
+Você pode reverter a transação usando o método `rollBack`:
 
 ```php
     DB::rollBack();
 ```
 
- Por fim, você pode comitar uma transação por meio do método `commit`:
+Por fim, você pode confirmar uma transação usando o método `commit`:
 
 ```php
     DB::commit();
 ```
 
- > [!ATENÇÃO]
- [ construção de consultas](/docs/queries) e
+::: info NOTA
+O método de transação da facade `DB` controla as transações para o [*query builder*](/docs/queries) e o [ORM Eloquent](/docs/eloquent).
+:::
 
 <a name="connecting-to-the-database-cli"></a>
-## Conectando-se ao DB CLIs
+## Conexão com o Banco de Dados CLI
 
- Se você deseja se conectar à CLI do seu banco de dados, poderá usar o comando "db" da classe "Artisan":
+Se quiser conectar-se a CLI do seu banco de dados, você pode usar o comando `db` no Artisan:
 
 ```shell
 php artisan db
 ```
 
- Se necessário, você pode especificar um nome de conexão de banco de dados para se conectar a uma conexão que não é a conexão padrão.
+Se necessário, você pode especificar um nome de conexão de banco de dados para se conectar com uma conexão de banco de dados que não seja a conexão padrão:
 
 ```shell
 php artisan db mysql
 ```
 
 <a name="inspecting-your-databases"></a>
-## Inspeção de suas bases de dados
+## Inspeccionando suas bases de dados.
 
- Usando os comandos Artisan `db:show` e `db:table`, é possível obter informações valiosas sobre seu banco de dados e suas tabelas associadas. Para ver uma visão geral do seu banco de dados, incluindo o tamanho, tipo, número de conexões em aberto e um resumo das suas tabelas, você pode usar o comando `db:show`:
+Usando os comandos Artisan `db:show` e `db:table`, você pode obter informações valiosas sobre seu banco de dados e tabelas associadas. Para ver um resumo do seu banco de dados, incluindo tamanho, tipo, número de conexões abertas e resumo das suas tabelas, você pode usar o comando `db:show`:
 
 ```shell
 php artisan db:show
 ```
 
- Pode especificar qual ligação de base de dados será inspecionada fornecendo o nome da ligação para a ordem através da opção `--database`:
+Você pode especificar qual conexão com o banco de dados deve ser verificada, fornecendo o nome da conexão com o banco de dados ao comando através da opção `--database`:
 
 ```shell
 php artisan db:show --database=pgsql
 ```
 
- Se pretender incluir a contagem de linhas e os detalhes das exibições de banco de dados no resultado do comando, pode fornecer as opções `--counts` e `--views`, respetivamente. No caso de bases de dados grandes, a recuperação da contagem de linhas e dos detalhes das exibições pode demorar:
+Se você gostaria de incluir contagens de linhas e detalhes da tabela dentro do resultado do comando, você pode fornecer as opções `--counts` e `--views`, respectivamente. Em grandes bancos de dados, a recuperação de contagens de linhas e visualizações pode ser lenta:
 
 ```shell
 php artisan db:show --counts --views
 ```
 
- Além disso, você pode usar os seguintes métodos do objeto Schema para inspecionar seu banco de dados:
+Além disso, você pode usar os seguintes métodos `Schema` para inspecionar seu banco de dados:
 
 ```php
     use Illuminate\Support\Facades\Schema;
@@ -452,33 +453,33 @@ php artisan db:show --counts --views
     $foreignKeys = Schema::getForeignKeys('users');
 ```
 
- Se você deseja inspecionar uma conexão de banco de dados que não é a conexão padrão do aplicativo, poderá usar o método `connection`:
+Se você gostaria de inspecionar uma conexão de banco que não é a padrão do seu aplicativo, você pode usar o método `connection`:
 
 ```php
     $columns = Schema::connection('sqlite')->getColumns('users');
 ```
 
 <a name="table-overview"></a>
-#### Visão geral da tabela
+#### Tabela de Visão Geral
 
- Se você deseja obter uma visão geral de uma tabela específica do seu banco de dados, poderá usar o comando `db:table`, que oferece um resumo geral de uma tabela de banco de dados, incluindo suas colunas, tipos, atributos, chaves e índices.
+Se você gostaria de obter uma visão geral de uma tabela individual dentro do seu banco de dados, você pode executar o comando no Artisan: `db:table`. Este comando fornece uma visão geral de uma tabela de banco de dados, incluindo suas colunas, tipos, atributos, chaves e índices.
 
 ```shell
 php artisan db:table users
 ```
 
 <a name="monitoring-your-databases"></a>
-## Monitorando suas bases de dados
+## Monitorando seus Bancos de Dados
 
- Usando o comando do artesão `db:monitor`, é possível instruir o Laravel a enviar um evento `Illuminate\Database\Events\DatabaseBusy` se o banco de dados estiver gerenciando mais que um determinado número de conexões em aberto.
+Usando o comando `db:monitor` no Artisan, você pode instruir o Laravel a disparar um evento do tipo `Illuminate\Database\Events\DatabaseBusy` se seu banco de dados estiver gerenciando mais conexões do que um número especificado.
 
- Para começar, você deve agendar o comando `db:monitor` para [executar a cada minuto] (/docs/scheduling). O comando aceita os nomes das configurações de conexão do banco de dados que deseja monitorar, bem como o número máximo de conexões abertas que devem ser toleradas antes da distribuição de um evento:
+Para começar, você deve agendar o comando `db:monitor` para ser executado a cada minuto. O comando aceita os nomes das configurações de conexão de banco de dados que você deseja monitorar, bem como o número máximo de conexões abertas toleradas antes da ocorrência de um evento:
 
 ```shell
 php artisan db:monitor --databases=mysql,pgsql --max=100
 ```
 
- O agendamento somente deste comando não é suficiente para acionar uma notificação informando o número de conexões em aberto. Quando este comando encontrar um banco de dados com um contador de conexões em aberto que exceder seu limite, um evento `DatabaseBusy` será enviado. Você deve monitorar esse evento no `AppServiceProvider` de sua aplicação para enviar uma notificação para você ou sua equipe de desenvolvimento:
+Agendar este comando sozinho não é suficiente para acionar uma notificação que o alerte sobre o número de conexões ativas. Quando o comando encontra um banco de dados com uma contagem de conexões ativas que excede seu limite, um evento `DatabaseBusy` será enviado. Você deve ouvir este evento dentro do `AppServiceProvider` de seu aplicativo para enviar uma notificação para você ou sua equipe de desenvolvimento:
 
 ```php
 use App\Notifications\DatabaseApproachingMaxConnections;
@@ -487,7 +488,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 
 /**
- * Bootstrap any application services.
+ * Inicialize qualquer serviço de aplicativo.
  */
 public function boot(): void
 {

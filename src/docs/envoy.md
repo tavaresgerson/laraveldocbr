@@ -1,34 +1,34 @@
-# Enviado do Laravel
+# Laravel Envoy
 
 <a name="introduction"></a>
 ## Introdução
 
- O [Laravel Envoy](https://github.com/laravel/envoy) é uma ferramenta para executar tarefas comuns que são executadas em servidores remotos. Usando a sintaxe de estilo [Blade](/docs/blade), você pode configurar facilmente tarefas para implantação, comandos Artisan e mais. Atualmente, o Envoy suporta apenas os sistemas operacionais Mac e Linux. No entanto, é possível obter suporte a Windows usando o [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+O [Laravel Envoy](https://github.com/laravel/envoy) é uma ferramenta para executar tarefas comuns em seus servidores remotos. Usando a sintaxe do [Blade](/docs/blade), você pode configurar facilmente as tarefas de implantação, os comandos Artisan e muito mais. Atualmente, o Envoy apenas suporta os sistemas operacionais Mac e Linux. No entanto, o suporte ao Windows é possível usando o [WSL2](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
 <a name="installation"></a>
 ## Instalação
 
- Primeiro, instale o Envoy no seu projeto usando o gerenciador de pacotes do Composer:
+Primeiro, instale o Envoy em seu projeto usando o pacote Composer:
 
 ```shell
 composer require laravel/envoy --dev
 ```
 
- Depois que o Envoy estiver instalado, o binário do Envoy ficará disponível no diretório `vendor/bin` de sua aplicação:
+Uma vez que o Envoy foi instalado, o binário do Envoy estará disponível na pasta 'vendor/bin' da sua aplicação:
 
 ```shell
 php vendor/bin/envoy
 ```
 
 <a name="writing-tasks"></a>
-## Tarefas de escrita
+## Tarefas de Redação
 
 <a name="defining-tasks"></a>
-### Definir tarefas
+### Definir Tarefas
 
- As tarefas são os blocos de construção básicos do Envoy. Elas definem os comandos shell que devem ser executados nos servidores remotos quando a tarefa é acionada. Por exemplo, você poderá definir uma tarefa que execute o comando `php artisan queue:restart` em todos os servidores de trabalho da fila do aplicativo.
+Tarefas são os blocos de construção básicos do Envoy. As tarefas definem os comandos de shell que devem ser executados em seus servidores remotos quando a tarefa é invocada. Por exemplo, você pode definir uma tarefa que executa o comando "php artisan queue:restart" em todos os servidores dos trabalhadores da fila do seu aplicativo.
 
- Todas as tarefas do Envoy devem ser definidas em um arquivo `./views/Envoy.blade.php` na raiz da sua aplicação. Abaixo, é mostrado um exemplo de como começar:
+Todos os seus Envoy tarefas devem ser definidas em um arquivo 'Envoy.blade.php' na raiz do seu aplicativo. Aqui está um exemplo para começar:
 
 ```blade
 @servers(['web' => ['user@192.168.1.1'], 'workers' => ['user@192.168.1.2']])
@@ -39,30 +39,30 @@ php vendor/bin/envoy
 @endtask
 ```
 
- Como você pode ver, uma matriz de `@servers` é definida no início do arquivo, permitindo que você faça referência a esses servidores por meio da opção `on` nas declarações das tarefas. A declaração `@servers` deve ser sempre colocada em uma única linha. Dentro de suas declarações `@task`, coloque os comandos do shell que devem ser executados nos servidores quando a tarefa for invocada.
+Como você pode ver, um array de `@servers` é definido na parte superior do arquivo, permitindo que se faça referência a esses servidores via a opção `on` das suas declarações de tarefa. A declaração `@server` deve sempre ser colocada em uma única linha. Dentro de suas declarações `@task`, deves colocar os comandos de shell para executar quando a tarefa for invocada nos seus servidores.
 
 <a name="local-tasks"></a>
 #### Tarefas locais
 
- Você pode forçar um script a ser executado no seu computador local especificando o endereço de IP do servidor como `127.0.0.1`:
+Você pode forçar um script a executar em seu computador local especificando o endereço do servidor como '127.0.0.1':
 
 ```blade
 @servers(['localhost' => '127.0.0.1'])
 ```
 
 <a name="importing-envoy-tasks"></a>
-#### Importação de tarefas do Envoy
+#### Importar tarefas do enviado
 
- Usando a diretiva `@import`, você pode importar outros arquivos do Envoy para que suas histórias e tarefas sejam adicionadas às suas. Depois que os arquivos forem importados, você poderá executar as tarefas deles como se elas tivessem sido definidas em seu próprio arquivo do Envoy:
+Usando a diretiva @import você pode importar outros arquivos do Envoy para que seus histórias e tarefas sejam adicionadas às suas. Após os arquivos terem sido importados você pode executar as tarefas contidas neles como se fossem definidas em seu próprio arquivo Envoy:
 
 ```blade
 @import('vendor/package/Envoy.blade.php')
 ```
 
 <a name="multiple-servers"></a>
-### Múltiplos servidores
+### Servidores múltiplos
 
- O Envoy permite executar uma tarefa em vários servidores com facilidade. Primeiro, adicione servidores adicionais à sua declaração `@servers`. Cada servidor deve receber um nome exclusivo. Depois de definir os servidores adicionais, você pode listar cada servidor no array `on` da tarefa:
+Envio permite que você execute facilmente uma tarefa em vários servidores. Primeiro, adicione mais servidores à sua declaração '@servers'. Cada servidor deve ser atribuído um nome único. Depois de definir os seus servidores adicionais você pode listar cada um dos servidores na matriz 'em' da tarefa:
 
 ```blade
 @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
@@ -75,9 +75,9 @@ php vendor/bin/envoy
 ```
 
 <a name="parallel-execution"></a>
-#### Execução paralela
+#### Execução Paralela
 
- Por padrão, as tarefas são executadas em cada servidor sequencialmente. Ou seja, uma tarefa só terminará de ser executada no primeiro servidor após o início da execução do segundo servidor. Se pretender executar simultaneamente a mesma tarefa em vários servidores, inclua a opção `parallel` na sua declaração de tarefas:
+Por padrão, as tarefas serão executadas de forma serial em cada servidor. Em outras palavras, uma tarefa terminará sua execução no primeiro servidor antes de passar para o segundo servidor. Se você gostaria de executar uma tarefa em vários servidores em paralelo, adicione a opção "paralelo" na declaração da tarefa:
 
 ```blade
 @servers(['web-1' => '192.168.1.1', 'web-2' => '192.168.1.2'])
@@ -92,7 +92,7 @@ php vendor/bin/envoy
 <a name="setup"></a>
 ### Configuração
 
- Por vezes, poderá precisar de executar um código PHP arbitrário antes do início das tarefas do Envoy. Poderá utilizar a diretiva `@setup` para definir um bloco de código PHP que deve ser executado antes das tarefas:
+Às vezes, você pode precisar executar código de php arbitrário antes de executar suas tarefas do Envoy. Você pode usar o `diretiva @setup` para definir um bloco de código de php que deve ser executado antes de suas tarefas:
 
 ```php
 @setup
@@ -100,7 +100,7 @@ php vendor/bin/envoy
 @endsetup
 ```
 
- Se você precisar usar outros arquivos de PHP antes da execução do seu aplicativo, pode utilizar a diretiva `@include` no topo do arquivo `Envoy.blade.php`:
+Se você precisar incluir outros arquivos PHP antes da sua tarefa ser executada, você pode usar a diretiva `@include` no topo do seu arquivo Envoy.blade.php:
 
 ```blade
 @include('vendor/autoload.php')
@@ -113,13 +113,13 @@ php vendor/bin/envoy
 <a name="variables"></a>
 ### Variáveis
 
- Se necessário, é possível passar argumentos para tarefas do Envoy ao especificá-los na linha de comando ao invocar o Envoy:
+Se necessário, você pode passar argumentos para as tarefas do Envoy especificando-os na linha de comando ao invocar o Envoy:
 
 ```shell
 php vendor/bin/envoy run deploy --branch=master
 ```
 
- Você pode usar a sintaxe "echo" do Blade para acessar as opções dentro de suas tarefas. Também é possível definir declarações `if` e loops dentro das suas tarefas. Por exemplo, vamos verificar a presença da variável `$branch` antes de executar o comando "git pull":
+Você pode acessar as opções dentro de suas tarefas usando a sintaxe "echo" do Blade. Você também pode definir as instruções "if" e "loop" do Blade dentro de suas tarefas. Por exemplo, vamos verificar se a variável `$branch` está definida antes de executar o comando `git pull`:
 
 ```blade
 @servers(['web' => ['user@192.168.1.1']])
@@ -136,9 +136,9 @@ php vendor/bin/envoy run deploy --branch=master
 ```
 
 <a name="stories"></a>
-### Histórias
+### Contos
 
- As histórias agrupam um conjunto de tarefas com um único nome conveniente. Por exemplo, uma história "deploy" pode executar as tarefas "update-code" e "install-dependencies", listando os nomes das tarefas dentro da sua definição:
+As histórias agrupam um conjunto de tarefas sob um único e conveniente nome. Por exemplo, uma história " implantar" pode executar as tarefas " atualização de código " e " instalação de dependências " ao listar os nomes das tarefas dentro de sua definição:
 
 ```blade
 @servers(['web' => ['user@192.168.1.1']])
@@ -159,7 +159,7 @@ php vendor/bin/envoy run deploy --branch=master
 @endtask
 ```
 
- Depois que a história for escrita, você poderá invocá-la da mesma maneira como você invocaria uma tarefa:
+Uma vez que a história tenha sido escrita, pode invocá-la da mesma forma como invocaria uma tarefa:
 
 ```shell
 php vendor/bin/envoy run deploy
@@ -168,14 +168,14 @@ php vendor/bin/envoy run deploy
 <a name="completion-hooks"></a>
 ### Ganchos
 
- Quando ocorre a execução de tarefas e histórias, vários ganchos são executados. Os tipos de gancho suportados pelo Envoy são `@before`, `@after`, `@error`, `@success` e `@finished`. Todo o código desses ganchos é interpretado como PHP e executado localmente, não nos servidores remotos com os quais suas tarefas interagem.
+Quando tarefas e histórias são executadas, um número de ganchos é executado. Os tipos de gancho suportados por Envoy são @before, @after, @error, @success e @finished. Todo o código nos ganchos é interpretado como PHP e executado localmente, não nos servidores remotos com os quais suas tarefas interagem.
 
- Você pode definir quantos hooks desejar de cada um deles, eles serão executados na ordem em que aparecem no script do Envoy.
+Você pode definir quantos de cada um desses ganchos que você quiser. Eles serão executados na ordem em que eles aparecem no seu script do Envoy.
 
 <a name="hook-before"></a>
-#### `@antecedente`
+#### 'antes de'
 
- Antes de cada execução da tarefa, todos os ganchos `@before`, registrados em seu roteiro do Envoy serão executados. Os ganchos `@before` recebem o nome da tarefa a ser executada:
+Antes de cada execução de tarefa, todos os ganchos do `@before` registrados no seu script do Envoy executarão. Os ganchos do `@before` recebem o nome da tarefa que será executada:
 
 ```blade
 @before
@@ -188,7 +188,7 @@ php vendor/bin/envoy run deploy
 <a name="completion-after"></a>
 #### `@after`
 
- Após a execução de cada tarefa, os ganchos "@after" registrados no seu script do Envoy serão executados. Os ganchos "@after" recebem o nome da tarefa que foi executada:
+Depois de cada execução de tarefa, todos os ganchos `@after` registrados em seu script Envoy serão executados. Os ganchos `@after` recebem o nome da tarefa que foi executada:
 
 ```blade
 @after
@@ -199,9 +199,9 @@ php vendor/bin/envoy run deploy
 ```
 
 <a name="completion-error"></a>
-#### `@erro`
+#### 'erro'
 
- Após o fracasso de uma tarefa (saída com um código de estado maior que `0`), todos os ganchos `@error` registrados no seu script do Envoy irão executar. Os ganchos `@error` recebem o nome da tarefa que foi executada:
+Após cada falha de uma tarefa (saída com um código de status maior que 0), todos os ganchos `@error` registrados no seu script do Envoy serão executados. Os ganchos `@error` recebem o nome da tarefa que foi executada:
 
 ```blade
 @error
@@ -214,7 +214,7 @@ php vendor/bin/envoy run deploy
 <a name="completion-success"></a>
 #### `@sucesso`
 
- Se todas as tarefas tiverem sido executadas sem erros, todos os ganchos `@success`, registrados no script do Envoy serão executados:
+Se todas as tarefas foram executadas sem erros, todos os ganchos `@success` registrados no seu script do Envoy serão executados:
 
 ```blade
 @success
@@ -223,9 +223,9 @@ php vendor/bin/envoy run deploy
 ```
 
 <a name="completion-finished"></a>
-#### @terminado
+#### '@acabou'
 
- Após a execução de todas as tarefas (independentemente do status da saída), serão executados todos os `hooks @finished`. Os `hooks @finished` recebem o código de status da tarefa concluída, que pode ser `null` ou um número `integer` maior ou igual a `0`:
+Após a execução de todas as tarefas (independentemente do status de saída), todos os ganchos `@finished` serão executados. Os ganchos `@finished` recebem o código de status da tarefa concluída, que pode ser nulo ou inteiro maior ou igual a 0:
 
 ```blade
 @finished
@@ -238,16 +238,16 @@ php vendor/bin/envoy run deploy
 <a name="running-tasks"></a>
 ## Tarefas em execução
 
- Para executar uma tarefa ou história definida no arquivo `Envoy.blade.php` da aplicação, execute o comando `run` do Envoy, informando o nome da tarefa ou história a ser executada. O Envoy irá executar a tarefa e exibirá a saída dos servidores remotos enquanto a tarefa estiver sendo executada:
+Para executar uma tarefa ou história definida no seu arquivo 'Envoy.blade.php', execute o comando de 'Envoy', passando o nome da tarefa ou história que você gostaria de executar. Envoy executará a tarefa e exibirá o resultado dos seus servidores remotos conforme a tarefa é executada.
 
 ```shell
 php vendor/bin/envoy run deploy
 ```
 
 <a name="confirming-task-execution"></a>
-### Confirmar a execução da tarefa
+### Confirmando a execução da tarefa
 
- Se você deseja que um aviso de confirmação seja exibido antes do início da execução de uma determinada tarefa em seus servidores, é necessário adicionar a diretiva `confirm` à sua declaração de tarefa. Esta opção é particularmente útil para operações destrutivas:
+Se você gostaria de ter um prompt de confirmação antes de executar uma tarefa em seus servidores, você deve adicionar o 'confirm' diretivo à sua declaração da tarefa. Esta opção é particularmente útil para operações destrutivas:
 
 ```blade
 @task('deploy', ['on' => 'web', 'confirm' => true])
@@ -263,9 +263,9 @@ php vendor/bin/envoy run deploy
 <a name="slack"></a>
 ### Slack
 
- O Envoy permite enviar notificações para o [Slack](https://slack.com) após a execução de cada tarefa. A diretiva `@slack` aceita um URL de hook do Slack e um canal/nome de usuário. Você pode obter seu URL de Webhook ao criar uma integração "Incoming WebHooks" em seu painel de controle do Slack.
+O Envoy suporta enviar notificações para o [Slack](https://slack.com) após cada tarefa ser executada. A diretiva `slack` aceita uma URL do gancho e um nome de canal/usuário. Você pode obter sua URL do gancho criando um "Webhook Entrante" na sua mesa de controle do Slack.
 
- Deve passar o URL completo do Webhook como primeiro argumento dado à diretiva `@slack`. O segundo argumento deve ser um nome de canal (`#canal`) ou o nome do utilizador:
+Você deve passar todo o URL do gancho como o primeiro argumento fornecido para a diretiva `@slack`. O segundo argumento fornecido para a diretiva `@slack` deve ser um nome de canal (`` #canal ``) ou um nome de usuário (`` @usuário ``:
 
 ```blade
 @finished
@@ -273,7 +273,7 @@ php vendor/bin/envoy run deploy
 @endfinished
 ```
 
- Por padrão, as notificações do Envoy enviarão uma mensagem para o canal de notificação descrevendo a tarefa que foi executada. No entanto, é possível substituir essa mensagem por sua própria mensagem personalizada ao passar um terceiro argumento à diretiva `@slack`:
+Por padrão, notificações do Envoy enviarão uma mensagem ao canal de notificação descrevendo a tarefa executada. No entanto, você pode sobrescrever esta mensagem com sua mensagem personalizada passando um terceiro argumento para o diretivo `@slack`:
 
 ```blade
 @finished
@@ -282,9 +282,9 @@ php vendor/bin/envoy run deploy
 ```
 
 <a name="discord"></a>
-### O Discord
+### Discordar
 
- O Envoy também suporta o envio de notificações para o [Discord](https://discord.com) após a execução da tarefa. A diretiva `@discord` aceita uma URL do hook e uma mensagem do Discord. Você pode recuperar sua URL de Webhook criando um "Webhook" em suas configurações do servidor e escolhendo qual canal o webhook deve postar. É necessário passar a URL completa do Webhook para a diretiva `@discord`:
+O Envoy também suporta enviar notificações para o [Discord](https://discord.com) após cada tarefa ser executada. A diretiva `@discord` aceita uma URL do gancho Discord e uma mensagem. Você pode recuperar sua URL do webhook criando um "Webhook" em suas Configurações do Servidor e escolhendo qual canal o webhook deve publicar:
 
 ```blade
 @finished
@@ -293,9 +293,9 @@ php vendor/bin/envoy run deploy
 ```
 
 <a name="telegram"></a>
-### Telegram
+### Telegramas
 
- O Envoy também permite o envio de notificações para [Telegram](https://telegram.org) após a execução de cada tarefa. A diretiva `@telegram` aceita um ID do Bot e um ID da chat. Você pode obter seu ID do Bot criando um novo bot usando o [BotFather](https://t.me/botfather). Pode obter um ID de Chat válido usando o [@username_to_id_bot](https://t.me/username_to_id_bot). Você deve passar o ID completo do Bot e do Chat na diretiva `@telegram`:
+Envio também suporta o envio de notificações para [Telegram](https://telegram.org) após cada tarefa ser executada. A diretiva `@telegram` aceita um ID do Telegram Bot e um ID da Sala. Você pode obter seu ID do Bot criando um novo bot usando [BotFather](https://t.me/botfather). Você pode obter um ID de sala válido usando [@username_to_id_bot](https://t.me/username_to_id_bot). Você deve passar o ID do Bot inteiro e o ID da Sala para a diretiva `@telegram`:
 
 ```blade
 @finished
@@ -304,9 +304,9 @@ php vendor/bin/envoy run deploy
 ```
 
 <a name="microsoft-teams"></a>
-### O Microsoft Teams
+### Microsoft Teams
 
- O Envoy também suporta enviar notificações para o [Microsoft Teams](https://www.microsoft.com/en-us/microsoft-teams) após a execução de cada tarefa. A diretiva `@microsoftTeams` aceita um Webhook do Microsoft Teams (obrigatório), uma mensagem, cor do tema (sucesso, informação, aviso e erro) e uma matriz de opções. Você pode obter o seu Webhook do Microsoft Teams criando um novo [Webhook entrante](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook). O API do Microsoft Teams tem muitos outros atributos para personalizar sua caixa de mensagens, como título, resumo e seções. Você pode encontrar mais informações na [documentação do Microsoft Teams](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL#example-of-connector-message). Você deve passar o URL completo do Webhook para a diretiva `@microsoftTeams`:
+Envio também suporta o envio de notificações para [Microsoft Teams](https://www.microsoft.com/en-us/microsoft-teams) após cada tarefa ser executada. A diretiva `@microsoftTeams` aceita um webhook do Microsoft Teams (obrigatório), uma mensagem, uma cor temática (sucesso, informação, aviso, erro) e uma matriz de opções. Você pode recuperar seu webhook do Microsoft Teams criando um novo [webhook de entrada](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook). A API do Microsoft Teams possui muitos outros atributos para personalizar sua caixa de mensagem, como título, resumo e seções. Você pode encontrar mais informações na [documentação do Microsoft Teams](https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/connectors-using?tabs=cURL#example-of-connector-message).
 
 ```blade
 @finished

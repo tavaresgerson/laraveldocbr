@@ -1,11 +1,11 @@
-# Eloquent: Coleções
+# Loquaz: Coleções
 
 <a name="introduction"></a>
 ## Introdução
 
- Todos os métodos de Eloquent que retornam mais do que um modelo irão retornar instâncias da classe `Illuminate\Database\Eloquent\Collection`, incluindo resultados recuperados através do método `get` ou acessados por meio de uma relação. O objeto Collection Eloquent se estende à base de coleções de Laravel, portanto herda naturalmente dezenas de métodos usados para trabalhar de forma fluente com o array subjacente de modelos Eloquent. Reveja a documentação da base de coleções do Laravel para saber tudo sobre esses úteis métodos!
+Todos os métodos Eloquent que retornam mais de um modelo resultarão em instâncias da classe `Illuminate\Database\Eloquent\Collection`, incluindo resultados recuperados via o método `get` ou acessados via uma relação. O objeto coleção Eloquent estende a [coleção base] (https://laravel.com/docs/collections) do Laravel, então ele herda naturalmente dezenas de métodos usados para trabalhar com fluidez com o array subjacente de modelos Eloquent. Tenha certeza de revisar a documentação da coleção do Laravel para aprender todos sobre esses métodos úteis!
 
- Todas as coleções servem como iterações, permitindo que você faça um loop delas como se fossem simples array de PHP:
+Todas coleções também servem como iteradores, permitindo que você passe por eles como se fossem simples matrizes PHP:
 
 ```php
     use App\Models\User;
@@ -17,7 +17,7 @@
     }
 ```
 
- No entanto, como mencionado anteriormente, as coleções são muito mais poderosas do que os arrays e permitem executar uma variedade de operações map/reduce que podem ser concatenadas com uma interface intuitiva. Por exemplo, podemos remover todos os modelos inativos e depois obter o primeiro nome para cada usuário:
+No entanto, como já mencionado, os conjuntos são muito mais poderosos do que as matrizes e expõem uma variedade de operações "map / reduce" que podem ser encadeadas usando uma interface intuitiva. Por exemplo, podemos remover todos os modelos inativos e depois reunir o primeiro nome para cada usuário restante:
 
 ```php
     $names = User::all()->reject(function (User $user) {
@@ -28,64 +28,64 @@
 ```
 
 <a name="eloquent-collection-conversion"></a>
-#### Conversão da coleção Eloquent
+#### Conversão de Eloquent Collection
 
- Enquanto a maioria dos métodos de coleção de Eloquent retorna uma nova instância da coleção, os métodos `collapse`, `flatten`, `flip`, `keys`, `pluck` e `zip` retornam uma instância da [coleção base](/docs/collections). Além disso, se uma operação `map` retornar uma coleção que não contenha nenhum modelo do Eloquent, ela será convertida para uma instância da coleção base.
+Enquanto a maioria dos métodos de coleção Eloquent retornam uma nova instância de uma coleção Eloquent, os métodos collapse, flatten, flip, keys, pluck e zip retornam uma instância de [coleção básica](/docs/collections). Da mesma forma, se uma operação "map" retornar uma coleção que não contém nenhum modelo Eloquent, ela será convertida em uma instância de coleção básica.
 
 <a name="available-methods"></a>
 ## Métodos disponíveis
 
- Todas as coleções do Eloquent são uma extensão do objeto de base [Coleção Laravel](/docs/collections#available-methods); portanto, elas herdam todos os métodos poderosos fornecidos pela classe de coleção básica.
+Todas as coleções Eloquent estendem o objeto [coleção Laravel](/docs/collections#available-methods); portanto, elas herdam todos os métodos poderosos fornecidos pela classe de coleção base.
 
- Além disso, a classe `Illuminate\Database\Eloquent\Collection` fornece uma superset de métodos para auxiliar na gestão das coleções do modelo. A maioria dos métodos retorna instâncias de `Illuminate\Database\Eloquent\Collection`; no entanto, alguns métodos, como o método `modelKeys`, retornam uma instância de `Illuminate\Support\Collection`.
+Além disso, a classe `Illuminate/Database/Eloquent/Collection` fornece um superconjunto de métodos para ajudar na gestão das suas coleções de modelos. A maioria dos métodos retorna instâncias de `Illuminate/Database/Eloquent/Collection`, mas alguns métodos, como o `modelKeys`, retornam uma instância de `Illuminate/Support/Collection`.
 
 <style>
- <p>Lembramos que, quando o método de coleta é listagem, as informações são apresentadas em ordem alfabética.</p>
- Colunas: 14.4em 1; -moz-colunas: 14.4em 1; -webkit-colunas: 14.4em 1;
- }
+.collection-method-list > p {
+colunas: 14.4em 1; -moz-colunas: 14.4em 1; -webkit-colunas: 14.4em 1;
+}
 
- .collection-method-list a {
- display: bloqueio
- overflow: oculto;
- text-overflow: elipsoide;
- white-space: nowrap;
- }
+.coleção-método-lista a {
+display: bloquear;
+overflow:hidden;
+text-overflow: ellips;
+white-space: nowrap;
+{
 
- .methodo-de-colecao código{
- tamanho da fonte: 14 px;
- }
+.coleção-método código {
+tamanho da fonte: 14px;
+{inglês
 
- .collection-method:not(.first-collection-method) {
- margem superior: 50 px;
- }
+.collection-method:not(.first-collection-method) {
+margin-top: 50px;
+}
 </style>
 
 <div class="collection-method-list" markdown="1">
 
- [anexar](#método-anexar)
- [contém (#método contém)
- [diferença de método] (#method-diff)
- [exceto (#method-except)
- [encontrar](#método-encontrar)
- [atualizar (#método atualizar)](/method/refresh/)
- [intersect (#método-intersect)]
- [Carregar] (#método-carregar)
- [carregarFalta](#método-carregarFalta)
- [chaves do modelo](#method-modelKeys)
- [tornarVisivel(# método tornarVisivel)
- [Tornar oculto (#método: makeHidden)](makeHidden)
- [apenas (#método_apenas)]
- [definir como visível#método definir como visível]
- [Fazer o elemento oculto?](#method-setHidden)
- [para consultar#método toQuery]
- [exclusivo] (#método:exclusivo)
+[append](#method-append)
+[contém](#method-contains)
+[diff](#method-diff)
+[except](#method-except )
+Encontrar
+Inglês: [fresh](#method-fresh)
+[intersectar](#method-intersect)
+[load] (método)
+[loadMissing](#method-loadMissing)
+[modelKeys](#method-modelkeys)
+[visível](#metodo-makevisible)
+[esconder](#method-esconder)
+[only](#method-only)
+[isVisible](#method-isVisible)
+[esconde](#method-hide)
+[para consulta](#método-paraquery)
+[único](#method-unico)
 
 </div>
 
 <a name="method-append"></a>
-#### `append($attributes)` {.collection-method .first-collection-method}
+#### `append($attributes)`  {.collection-method .first-collection-method}
 
- O método `append` pode ser usado para indicar que um atributo deve ser [anexado](/docs/eloquent-serialization#appending-values-to-json) a cada modelo na coleção. Este método aceita uma matriz de atributos ou apenas um único:
+O método `append` pode ser utilizado para indicar que um atributo deve ser [acrescido](/docs/eloquent-serialization#acrescendo-valores-para-json) para cada modelo na coleção. Este método aceita uma matriz de atributos ou apenas um único atributo:
 
 ```php
     $users->append('team');
@@ -94,9 +94,9 @@
 ```
 
 <a name="method-contains"></a>
-#### `contém($key, $operador = nulo, $valor = nulo)` {.collection-method}
+#### `contém($chave, $operador = nulo, $valor = nulo)` {metodo-colecao}
 
- O método `contém` pode ser usado para determinar se uma determinada instância do modelo está contida na coleção. Esse método aceita um código primário ou uma instância de modelo:
+O método `contains` pode ser usado para determinar se uma determinada instância de modelo está contido na coleção. Este método aceita uma chave primária ou uma instância de modelo:
 
 ```php
     $users->contains(1);
@@ -105,9 +105,9 @@
 ```
 
 <a name="method-diff"></a>
-#### `diff($itens)` {.método de coleção}
+#### `diff ($itens)` .{coleção-método}
 
- O método `diff` retorna todos os modelos que não estão presentes na coleção fornecida:
+O método `diff` retorna todos os modelos que não estão presentes na coleção fornecida:
 
 ```php
     use App\Models\User;
@@ -116,18 +116,18 @@
 ```
 
 <a name="method-except"></a>
-#### `exceto($chaves)` {.coletor-método}
+#### `except($keys)`  {.collection-method}
 
- O método `except` retorna todos os modelos que não têm as chaves primárias fornecidas:
+O método 'except' retorna todos os modelos que não possuem as chaves primárias dadas:
 
 ```php
     $users = $users->except([1, 2, 3]);
 ```
 
 <a name="method-find"></a>
-#### `encontrar($chave)` {.método da coleção}
+#### 'find($key)' . {coleção-método}
 
- O método `find` retorna o modelo que tem um chave primária correspondente à chave especificada. Se `$key` for uma instância de modelo, `find` tentará retornar um modelo correspondente à chave primária. Se `$key` for uma matriz de chaves, `find` retorna todos os modelos que têm uma chave primária na matriz especificada:
+O método 'find' retorna o modelo que possui uma chave primária igual à dada. Se o $key for um modelo, o 'find' tentará retornar um modelo com a chave primária correspondente. Se o $key for uma matriz de chaves, o 'find' retornará todos os modelos com chaves primárias na matriz:
 
 ```php
     $users = User::all();
@@ -136,9 +136,9 @@
 ```
 
 <a name="method-fresh"></a>
-#### `fresc($com = [])` {.método de coleção}
+#### `fresh($with = [])` {.collection-method}
 
- O método `fresh` recupera uma instância nova de cada modelo na coleção do banco de dados. Além disso, as relações especificadas serão carregadas com antecedência:
+O método `fresh` recupera um modelo "novo" de cada item no banco de dados da coleção. Além disso, todos os relacionamentos especificados serão carregados com fome.
 
 ```php
     $users = $users->fresh();
@@ -147,9 +147,9 @@
 ```
 
 <a name="method-intersect"></a>
-#### `intersect($itens)` {.método da coleção}
+#### `intersecção($itens)` {.collection-method}
 
- O método `intersect` retorna todos os modelos que também estão na coleção especificada.
+O método `intersect` retorna todos os modelos que estão presentes na coleção dada.
 
 ```php
     use App\Models\User;
@@ -158,9 +158,9 @@
 ```
 
 <a name="method-load"></a>
-#### `carregar($relations){.coletivométodo}`
+#### carregar ($ relações) {metodo de coleção}
 
- O método `load` carrega os relacionamentos indicados para todos os modelos da coleção:
+O método 'load' carrega todos os relacionamentos para todas as modelos na coleção:
 
 ```php
     $users->load(['comments', 'posts']);
@@ -171,9 +171,9 @@
 ```
 
 <a name="method-loadMissing"></a>
-#### `carregarFaltando($relations)`{.coletivo-método}
+#### loadMissing($relacionamentos) {.coleção-método}
 
- O método `loadMissing` carrega os relacionamentos especificados para todos os modelos da coleção se estes ainda não tiverem sido carregados:
+O método 'loadMissing' carrega as associações dadas para todos os modelos na coleção se as associações já não estiverem carregadas:
 
 ```php
     $users->loadMissing(['comments', 'posts']);
@@ -184,9 +184,9 @@
 ```
 
 <a name="method-modelKeys"></a>
-#### `modelKeys()` {.collection-method}
+#### modelKeys()
 
- O método `modelKeys` retorna as chaves primárias para todos os modelos na coleção:
+O método modelKeys retorna as chaves primárias para todos os modelos na coleção:
 
 ```php
     $users->modelKeys();
@@ -195,54 +195,54 @@
 ```
 
 <a name="method-makeVisible"></a>
-#### `makeVisible($attributes)` {.collection-method}
+#### '$attributes' visível {.coleção-método}
 
- O método `makeVisible` [tornará os atributos visíveis](/docs/eloquent-serialization#hiding-attributes-from-json), normalmente "escondidos" em cada modelo da coleção:
+O método 'makeVisible' [ torna atributos visíveis]/docs/eloquent-serialization#hiding-attributes-from-json) que são normalmente "ocultos" em cada modelo na coleção:
 
 ```php
     $users = $users->makeVisible(['address', 'phone_number']);
 ```
 
 <a name="method-makeHidden"></a>
-#### `makeHidden($attributes)` {.collection-method}
+#### 'hidden' ($atributos) {coleção-método}
 
- O método `makeHidden` esconde os atributos, que são normalmente "visíveis" em cada modelo na coleção. Para saber mais, consulte ["Ocultar Atributos em JSON"] (//docs/eloquent-serialization#hiding-attributes-from-json).
+O método 'makeHidden' [esconde atributos](/docs/eloquent-serialization#hiding-attributes-from-json) que normalmente são "visíveis" no modelo de cada coleção:
 
 ```php
     $users = $users->makeHidden(['address', 'phone_number']);
 ```
 
 <a name="method-only"></a>
-#### `apenas($chaves){.método de coleção}`
+#### ` apenas ($ chaves)` {metodo da colecao}
 
- O método `only` retorna todos os modelos que têm as chaves primárias dadas:
+O método 'only' retorna todos os modelos que possuem as chaves primárias dadas:
 
 ```php
     $users = $users->only([1, 2, 3]);
 ```
 
 <a name="method-setVisible"></a>
-#### `fazer visível(com atributos)` {.método de coleção}
+#### 'isVisible(atributos)' {método-coleção}
 
- O método `setVisible` [substitui temporariamente] (/) atributos visíveis de cada modelo na coleção.
+O método `isVisible` [substitui temporariamente](/docs/eloquent-serialization#temporarily-modifying-attribute-visibility) todos os atributos visíveis de cada modelo na coleção:
 
 ```php
     $users = $users->setVisible(['id', 'name']);
 ```
 
 <a name="method-setHidden"></a>
-#### `fazer escondido($attributes)` {.método de coleção}
+#### '$attributes->hidden()->setHidden()' {`.collection-method'}
 
- O método `setHidden` [ignora temporariamente](/docs/eloquent-serialization#temporarily-modifying-attribute-visibility) todos os atributos ocultos de cada modelo da coleção:
+O método 'setHidden' [substituir temporariamente] todos os atributos ocultos de cada modelo na coleção.
 
 ```php
     $users = $users->setHidden(['email', 'password', 'remember_token']);
 ```
 
 <a name="method-toquery"></a>
-#### `toQuery()` {.collection-method}
+#### 'query()' {.collection-method}
 
- O método `toQuery` retorna uma instância de consulta do Eloquent que contém um constrangimento `whereIn` nas chaves primárias do modelo da coleção:
+A `toQuery` retorna um objeto Eloquent query builder contendo uma restrição `whereIn` nas chaves primárias do modelo da coleção:
 
 ```php
     use App\Models\User;
@@ -255,18 +255,18 @@
 ```
 
 <a name="method-unique"></a>
-#### `unique($key = NULL, $strict = false)` {.collection-método}
+#### unique( $key = null, $strict = false ) { .collection-method }
 
- O método `unique` retorna todos os modelos únicos na coleção. Todo modelo com a mesma chave primária que outro modelo na coleção será removido:
+O método `unique` retorna todos os modelos únicos na coleção; Quaisquer modelos com a mesma chave primária como outro modelo na coleção são removidos.
 
 ```php
     $users = $users->unique();
 ```
 
 <a name="custom-collections"></a>
-## Coleções personalizadas
+## Coleções Personalizadas
 
- Se você quiser usar um objeto de coleção personalizado ao interagir com um modelo específico, poderá definir uma metodologia `newCollection` no seu modelo:
+Se você quiser usar um objeto 'Collection' personalizado quando interagindo com um modelo dado, você pode definir o método 'newCollection' no seu modelo.
 
 ```php
     <?php
@@ -292,4 +292,4 @@
     }
 ```
 
- Depois de definir um método `newCollection`, você receberá uma instância do seu conjunto personalizado sempre que o Eloquent normalmente retornar uma instância de `Illuminate\Database\Eloquent\Collection`. Se deseja usar um conjunto personalizado para cada modelo em sua aplicação, defina o método `newCollection` numa classe de modelo base que seja estendida por todos os modelos da sua aplicação.
+Uma vez que você tenha definido um método `newCollection`, você receberá uma instância de sua coleção personalizada sempre que o Eloquent normalmente retornaria uma instância de `Illuminate\Database\Eloquent\Collection`. Se você gostaria de usar uma coleção personalizada para cada modelo em seu aplicativo, você deve definir o método `newCollection` em uma classe base do modelo que é estendida por todos os modelos do seu aplicativo.

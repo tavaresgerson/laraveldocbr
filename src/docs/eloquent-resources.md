@@ -1,27 +1,27 @@
-# Eloquent: Recursos da API
+# eloquent: recursos da API
 
 <a name="introduction"></a>
 ## Introdução
 
- Ao construir uma API, você pode precisar de uma camada de transformação que seja colocada entre os seus modelos do Eloquent e as respostas em JSON que são realmente retornadas para os usuários da aplicativo. Por exemplo, talvez você queira mostrar atributos específicos para um subconjunto de usuários e não outros ou que talvez você queira incluir sempre certos relacionamentos na representação em JSON de seus modelos. As classes de recursos do Eloquent permitem que você transforme seus modelos e coletões de modelos expressiva e facilmente para um formato JSON.
+Ao construir uma API, você pode precisar de uma camada de transformação que esteja entre seus modelos Eloquent e as respostas JSON que são realmente retornadas aos usuários do seu aplicativo. Por exemplo, você pode querer exibir determinados atributos para um subconjunto de usuários e não outros, ou você pode querer sempre incluir determinadas relações na representação JSON de seus modelos. As classes de recursos do Eloquent permitem transformar expressivamente e facilmente seus modelos e coleções de modelos em JSON.
 
- É claro que você sempre pode converter modelos ou coleções do Eloquent para JSON usando os métodos `toJson`; no entanto, os recursos do Eloquent fornecem um controle mais granular e robusto da serialização de JSON de seus modelos e relacionamentos.
+É claro, você pode sempre converter modelos Eloquent ou coleções em JSON usando seus métodos 'toJson'; no entanto, os recursos Eloquent fornecem controle mais refinado e robusto sobre a serialização JSON de seus modelos e suas relações.
 
 <a name="generating-resources"></a>
-## Gerando recursos
+## Gerando Recursos
 
- Para gerar uma classe de recursos, você pode usar o comando `make:resource`, da Artisan. Os recursos serão exibidos no diretório padrão `app/Http/Resources` da sua aplicação. Os recursos se baseiam na classe `Illuminate\Http\Resources\Json\JsonResource`:
+Para gerar uma classe de recurso, você pode usar o comando 'make:resource' do Artisan. Por padrão, os recursos serão colocados no diretório 'app/Http/Resources' da sua aplicação. Os recursos estendem a classe 'Illuminate\Http\Resources\Json\JsonResource':
 
 ```shell
 php artisan make:resource UserResource
 ```
 
 <a name="generating-resource-collections"></a>
-#### Coleções de recursos
+#### Coletâneas de Recursos
 
- Além de gerar recursos para transformar modelos individuais, você pode criar recursos que são responsáveis por transformar coleções de modelos. Isso permite que as respostas JSON incluam links e outras informações metadados relevantes para uma coleção inteira de um recurso específico.
+Além de gerar recursos que transformam modelos individuais, você pode gerar recursos responsáveis por transformar coleções de modelos. Isso permite que suas respostas JSON incluam links e outra informação meta relevante para uma coleção inteira de um determinado recurso.
 
- Para criar uma coleção de recursos, é necessário utilizar o sinalizador `--collection` ao criar o recurso ou inclui a palavra "Coleção" no nome do recurso. Isso indica ao Laravel que deve criar um recurso de coleção. As coleções de recursos fazem uso da classe `Illuminate\Http\Resources\Json\ResourceCollection`:
+Para criar um recurso de coleção, você deve usar o sinalizador `--collection` ao criar o recurso. Ou incluindo a palavra "Collection" no nome do recurso indicará para Laravel que ele deverá criar um recurso de coleção. Os recursos de coleção estendem a classe `Illuminate\Http\Resources\Json\ResourceCollection`:
 
 ```shell
 php artisan make:resource User --collection
@@ -30,12 +30,12 @@ php artisan make:resource UserCollection
 ```
 
 <a name="concept-overview"></a>
-## Visão geral do conceito
+## Visão Geral do Conceito
 
- > [!ATENÇÃO]
- > Esta é uma visão geral de alto nível dos recursos e coleções de recursos. É altamente recomendável que você leia as outras seções desta documentação para obter um entendimento mais profundo das personalizações e poderes oferecidos pelos recursos.
+> Nota:
+> Esta é uma visão geral de alto nível dos recursos e coleções de recursos. Você é fortemente incentivado a ler as outras seções desta documentação para obter um entendimento mais profundo da personalização e do poder oferecido a você pelos recursos.
 
- Antes de mergulharmos em todas as opções disponíveis ao escrever recursos, vamos dar uma olhada em alto nível no uso dos recursos na Laravel. Um recurso representa um único modelo que precisa ser transformado em uma estrutura JSON. Por exemplo, aqui está uma simples classe de recurso "UserResource":
+Antes de mergulhar nas opções disponíveis para você ao escrever recursos, vamos dar uma olhada de alto nível sobre como os recursos são usados dentro do Laravel. Uma classe de recurso representa um único modelo que precisa ser transformado em uma estrutura JSON. Por exemplo, aqui está uma simples classe de `UserResource`:
 
 ```php
     <?php
@@ -65,9 +65,9 @@ php artisan make:resource UserCollection
     }
 ```
 
- Cada classe de recurso define um método `toArray`, que retorna o array de atributos que devem ser convertidos em JSON quando o recurso é retornado como uma resposta de um rote ou método do controlador.
+Cada classe de recurso define um método `toArray` que retorna o array de atributos que devem ser convertidos em JSON quando o recurso é retornado como uma resposta de uma rota ou método de controlador.
 
- Observe que é possível acessar propriedades do modelo diretamente da variável `$this`. Isso ocorre porque uma classe de recurso irá automaticamente fazer o acesso das propriedades e métodos na modelagem subjacente. Depois de definida, a recurso pode ser retornada por um roteador ou controlador. O recurso aceita as instâncias do modelo subjacente através de seu construtor:
+Observe que podemos acessar propriedades do modelo diretamente da variável `$this`. Isso se deve porque uma classe de recurso irá automaticamente encaminhar o acesso à propriedade e ao método para o modelo subjacente, tornando-o conveniente. Uma vez definido o recurso, ele pode ser retornado de um roteamento ou controlador. O recurso aceita a instância do modelo subjacente via seu construtor:
 
 ```php
     use App\Http\Resources\UserResource;
@@ -79,9 +79,9 @@ php artisan make:resource UserCollection
 ```
 
 <a name="resource-collections"></a>
-### Coleções de Recursos
+### Coletas de Recursos
 
- Se você estiver devolvendo uma coleção de recursos ou uma resposta em páginas, utilize o método `collection` fornecido pela sua classe de recursos ao criar a instância do recurso no roteamento ou no controlador:
+Se você está retornando uma coleção de recursos ou uma resposta paginada, você deve usar o método 'collection' fornecido pela sua classe de recurso ao criar a instância do recurso em sua rota ou controlador.
 
 ```php
     use App\Http\Resources\UserResource;
@@ -92,13 +92,13 @@ php artisan make:resource UserCollection
     });
 ```
 
- Observe que isso não permite nenhuma adição de metadados personalizados que possam precisar ser retornados com sua coleção. Se você desejar customizar a resposta da coleção de recursos, poderá criar um recurso dedicado para representar a coleção:
+Note que isso não permite qualquer adição de metadados personalizados que possam ser necessários para serem retornados com sua coleção. Se você gostaria de personalizar a resposta da coleção de recursos, você pode criar um recurso dedicado para representar a coleção:
 
 ```shell
 php artisan make:resource UserCollection
 ```
 
- Depois que a classe de coleção de recursos tiver sido gerada, você poderá definir facilmente qualquer um dos metadados que devem ser incluídos na resposta.
+Uma vez que a classe de coleta de recursos tenha sido gerada, você pode facilmente definir quaisquer metadados que devem ser incluídos na resposta:
 
 ```php
     <?php
@@ -127,7 +127,7 @@ php artisan make:resource UserCollection
     }
 ```
 
- Depois de definir sua coleção de recursos, ela poderá ser retornada de uma rota ou controlador:
+Depois de definir sua coleção de recursos, ele pode ser retornado a partir de uma rota ou controlador:
 
 ```php
     use App\Http\Resources\UserCollection;
@@ -139,9 +139,9 @@ php artisan make:resource UserCollection
 ```
 
 <a name="preserving-collection-keys"></a>
-#### Preservando as Chaves de Coleção
+#### Preservando as chaves da coleção
 
- Ao retornar uma coleção de recursos de um roteamento, o Laravel reinicia as chaves da coleção para que estejam em ordem numérica. No entanto, você pode adicionar uma propriedade `preserveKeys` à sua classe de recurso para indicar se as chaves originais de uma coleção devem ser preservadas:
+Ao retornar uma coleção de recursos de uma rota, o Laravel redefine as chaves da coleção para que estejam em ordem numérica. No entanto, você pode adicionar uma propriedade preserveKeys na classe do recurso indicando se as chaves originais de uma coleção devem ser preservadas ou não.
 
 ```php
     <?php
@@ -161,7 +161,7 @@ php artisan make:resource UserCollection
     }
 ```
 
- Quando a propriedade `preserveKeys` é definida como `true`, as chaves de uma coleção serão preservadas quando a coleção for retornada a partir de um roteamento ou controlador.
+Quando a propriedade `preserveKeys` é definida como "true", as chaves da coleção serão preservadas quando a coleção for retornada de um roteamento ou controlador:
 
 ```php
     use App\Http\Resources\UserResource;
@@ -173,11 +173,11 @@ php artisan make:resource UserCollection
 ```
 
 <a name="customizing-the-underlying-resource-class"></a>
-#### Personalizar a classe de recursos subjacente
+#### Personalizando a Classe de Recurso Subjacente
 
- Normalmente, a propriedade `$this->collection` de uma coleção de recursos é preenchida automaticamente com o resultado da correspondência de cada item da coleção à sua classe de recurso singular. Supõe-se que a classe de recurso singular tenha o nome da classe sem a parte final `Collection`. Além disso, dependendo das suas preferências pessoais, pode ou não ser adicionado um sufixo de `Resource` à classe de recurso singular.
+Tipicamente, a propriedade "$this->collection" de uma coleção de recursos é preenchida automaticamente com o resultado da mapeamento cada item da coleção para sua classe de recurso singular. A classe de recurso singular pressupõe ser o nome da classe da coleção sem a parte final "Collection" do nome da classe. Além disso, dependendo de suas preferências pessoais, a classe de recurso singular pode ou não ser precedida pelo sufixo "Resource".
 
- Por exemplo, `UserCollection` tentará mapear as instâncias de usuário fornecidas para o recurso `UserResource`. Para personalizar este comportamento, você pode override a propriedade `$collects` da sua coleção de recursos:
+Por exemplo, "UserCollection" tentará mapear as instâncias do usuário fornecidas no recurso "UserResource". Para personalizar esse comportamento, você pode substituir a propriedade "$collects" da sua coleção de recursos.
 
 ```php
     <?php
@@ -198,12 +198,12 @@ php artisan make:resource UserCollection
 ```
 
 <a name="writing-resources"></a>
-## Recursos de escrita
+## Recursos de Escrita
 
- > [!NOTA]
- Na seção [Visão geral do conceito](concept-overview), recomendamos vivamente que o faça antes de prosseguir com a documentação.
+> Nota:
+> Se você não leu a [ visão geral de conceitos](# visão-geral-de-conceitos), é fortemente encorajado a fazê-lo antes de prosseguir com esta documentação.
 
- Os recursos só precisam de converter um modelo específico em uma matriz. Portanto, cada recurso contém um método `toArray` que converte os atributos do seu modelo para uma matriz amigável com a API, podendo ser retornada dos roteadores ou controladores da sua aplicação:
+Recursos apenas precisam transformar um modelo dado em uma matriz. Então cada recurso contém um método toArray que traduz atributos do seu modelo em uma matriz amigável para API que pode ser retornada de suas rotas ou controladores de aplicação:
 
 ```php
     <?php
@@ -233,7 +233,7 @@ php artisan make:resource UserCollection
     }
 ```
 
- Após uma fonte ter sido definida, pode ser retornada diretamente de um roteamento ou controlador:
+Uma vez que um recurso tenha sido definido, ele pode ser retornado diretamente de uma rota ou controlador:
 
 ```php
     use App\Http\Resources\UserResource;
@@ -245,9 +245,9 @@ php artisan make:resource UserCollection
 ```
 
 <a name="relationships"></a>
-#### Relações
+#### Relacionamento
 
- Se você deseja incluir recursos relacionados em sua resposta, poderá adicioná-los à matriz retornada pelo método `toArray` do recurso. Nesse exemplo, usaremos o método `collection` do recurso `PostResource` para adicionar os posts de blog do usuário na resposta do recurso:
+Se você quiser incluir recursos relacionados em sua resposta, você pode adicioná-los ao array retornado pelo método 'toArray' do recurso. Neste exemplo, usaremos o método 'collection' do recurso 'PostResource' para adicionar as postagens do blog do usuário à resposta do recurso:
 
 ```php
     use App\Http\Resources\PostResource;
@@ -271,13 +271,13 @@ php artisan make:resource UserCollection
     }
 ```
 
- > [!AVISO]
- [relações condicionais (#conditional_relationships).
+> [NOTA]
+> Se quiser incluir relações apenas quando já tiverem sido carregadas, veja a documentação em [Relações Condicionais](# condicional-relações).
 
 <a name="writing-resource-collections"></a>
-#### Coleções de recursos
+#### Coleções de Recursos
 
- Embora os recursos transformem um único modelo em uma matriz, as coleções de recursos transformam uma matriz de modelos em uma matriz. Não é obrigatório definir uma classe de coleção de recursos para cada modelo, pois todos os recursos oferecem um método `collection` (coletânea) para gerar, "ad-hoc" (sobre a demanda), uma coleção de recursos no momento em que for necessário:
+Enquanto os recursos transformam um modelo único em uma matriz, as coleções de recursos transformam uma coleção de modelos em uma matriz. No entanto, não é absolutamente necessário definir uma classe de coleção de recursos para cada um dos seus modelos, já que todos os recursos fornecem um método `collection` para gerar uma coleção "ad-hoc" de recursos:
 
 ```php
     use App\Http\Resources\UserResource;
@@ -288,7 +288,7 @@ php artisan make:resource UserCollection
     });
 ```
 
- No entanto, se for necessário personalizar os metadados retornados com a coleção, é preciso definir sua própria coleção de recursos:
+Porém, se você precisa de personalizar o metadados retornado com a coleção, é necessário definir sua própria coleção de recursos:
 
 ```php
     <?php
@@ -317,7 +317,7 @@ php artisan make:resource UserCollection
     }
 ```
 
- Assim como os recursos singulares, as coleções de recursos podem ser retornadas diretamente a partir das rotas ou controladores:
+Assim como os recursos únicos, as coleções de recursos podem ser retornadas diretamente das rotas ou controladores:
 
 ```php
     use App\Http\Resources\UserCollection;
@@ -329,9 +329,9 @@ php artisan make:resource UserCollection
 ```
 
 <a name="data-wrapping"></a>
-### Embrulhar os dados
+### Encapsulamento de Dados
 
- Por padrão, o recurso mais externo é envolvido na chave `data` quando a resposta de um recurso é convertida para JSON. Assim, por exemplo, uma resposta típica da coleção de recursos será do tipo seguinte:
+Por padrão, seu recurso externo é envolvido em uma chave "data" quando a resposta do recurso é convertida para JSON. Então, por exemplo, uma resposta típica de coleção de recursos parece ser assim:
 
 ```json
 {
@@ -350,7 +350,7 @@ php artisan make:resource UserCollection
 }
 ```
 
- Se você deseja desativar a embelezamento do recurso mais externo, deverá invocar o método `withoutWrapping` na base da classe `Illuminate\Http\Resources\Json\JsonResource`. Normalmente, esse método é chamado do seu `AppServiceProvider` ou outro [fornecedor de serviços] (/docs/providers) que é carregado em todas as solicitações para sua aplicação:
+Se você deseja desativar o wrapper do recurso mais externo, você deve invocar o método `withoutWrapping` na classe base `Illuminate\Http\Resources\Json\JsonResource`. Normalmente, você deverá chamar esse método do seu `AppServiceProvider` ou outro provedor de serviço que é carregado em cada solicitação para sua aplicação:
 
 ```php
     <?php
@@ -380,15 +380,15 @@ php artisan make:resource UserCollection
     }
 ```
 
- > [!ATENÇÃO]
- > O método `withoutWrapping` afeta somente a resposta mais externa e não removerá as chaves `data` que você adicionar manualmente às suas próprias coleções de recursos.
+> [AVERTENÇÃO!]
+> O método 'withoutWrapping' só afeta a resposta externa e não removerá as chaves de 'dados' que você adiciona manualmente às suas próprias coleções de recursos.
 
 <a name="wrapping-nested-resources"></a>
-#### Embrulhar recursos aninhados
+#### Enrolar Recursos Aninhados
 
- Você tem total liberdade para determinar como as relações dos seus recursos serão envolvidas. Se você quiser que todas as coleções de recursos sejam envolvidas por uma chave "data", independentemente do nível de seu nível de aninhamento, é recomendável definir uma classe de coleção de recursos para cada recurso e retornar a coleção dentro da chave "data".
+Você tem total liberdade para determinar como as relações de seus recursos são empacotadas. Se você gostaria que todas as coleções de recursos fossem empacotadas em uma chave "dados", independentemente do seu nível de aninhamento, você deve definir uma classe de coleção de recursos para cada recurso e retornar a coleção dentro de uma chave "dados".
 
- Você pode estar se perguntando se isso fará com que o seu recurso mais externo seja envolvido em duas chaves `data`. Não se preocupe, o Laravel nunca deixará seus recursos serem acidentalmente envoltos duas vezes, então você não precisa estar preocupado com o nível de aninhamento da coleção de recursos que está sendo transformada:
+Você pode estar se perguntando se isso fará com que o seu recurso externo seja envolvido em duas chaves de dados. Não se preocupe, Laravel nunca deixará seus recursos serem acidentalmente dobrados, por isso você não precisa se preocupar com o nível de aninhamento da coleção de recursos que você está transformando:
 
 ```php
     <?php
@@ -412,9 +412,9 @@ php artisan make:resource UserCollection
 ```
 
 <a name="data-wrapping-and-pagination"></a>
-#### Embrulho e Paginadoria de Dados
+#### Dados de Paginação e Envolvimento
 
- Ao retornar coleções em páginas por meio de uma resposta de recurso, o Laravel envolverá seus dados de recurso com a chave `data`, mesmo se o método `withoutWrapping` tiver sido chamado. Isso ocorre porque as respostas paginadas sempre contêm as chaves `meta` e `links` com informações sobre o estado do paginador:
+Ao retornar coleções paginadas através de uma resposta de recurso, o Laravel envolverá os dados do recurso em uma chave "data", mesmo que a chamada do método "withoutWrapping" tenha sido feita. Isso se deve ao fato de que as respostas paginadas sempre contêm as chaves "meta" e "links" com informações sobre o estado do paginador:
 
 ```json
 {
@@ -449,9 +449,9 @@ php artisan make:resource UserCollection
 ```
 
 <a name="pagination"></a>
-### Paginador
+### Paginação
 
- Você pode passar uma instância de paginador da Laravel para o método `collection` do recurso ou para um recurso personalizado:
+Você pode passar uma instância de paginação do Laravel para o método 'coleção' de um recurso ou para uma coleção personalizada de recursos:
 
 ```php
     use App\Http\Resources\UserCollection;
@@ -462,7 +462,7 @@ php artisan make:resource UserCollection
     });
 ```
 
- As respostas com páginas sempre incluem as chaves `meta` e `links` que fornecem informações sobre o estado do paginador.
+Respostas paginadas sempre incluem as chaves "meta" e "links" com informações sobre o estado do paginador:
 
 ```json
 {
@@ -497,9 +497,9 @@ php artisan make:resource UserCollection
 ```
 
 <a name="customizing-the-pagination-information"></a>
-#### Personalização das informações de página por página
+#### Personalizando as informações de paginação
 
- Se você deseja personalizar as informações incluídas nas chaves `links` ou `meta` da resposta de paginação, é possível definir um método `paginationInformation` no recurso. Este método receberá os dados `$paginated` e a matriz de informações `$default`, que contém uma chave array com as chaves `links` e `meta`:
+Se quiser personalizar as informações contidas na chave 'links' ou 'meta' da resposta de paginação, você pode definir um método chamado 'paginationInformation' no recurso. Este método receberá os dados 'paginados' e uma matriz de 'informação padrão', que é uma matriz contendo as chaves 'links' e 'meta':
 
 ```php
     /**
@@ -519,9 +519,9 @@ php artisan make:resource UserCollection
 ```
 
 <a name="conditional-attributes"></a>
-### Atributos condicionais
+### Atributos Condicionais
 
- Às vezes, você pode querer incluir um atributo em uma resposta somente se uma determinada condição for satisfeita. Por exemplo, talvez você queira incluir um valor apenas quando o usuário atual for "administrador". O Laravel fornece vários métodos de auxílio para auxiliar nessas situações. O método `when` pode ser utilizado para adicionar um atributo condicionalmente a uma resposta do recurso:
+Às vezes você pode desejar incluir apenas um atributo em uma resposta de recurso se uma determinada condição for atendida. Por exemplo, talvez você queira incluir apenas um valor se o usuário atual for um "administrador". Laravel fornece vários métodos auxiliares para ajudá-lo nessa situação. O método `when` pode ser usado para adicionar condicionalmente um atributo a uma resposta de recurso:
 
 ```php
     /**
@@ -542,9 +542,9 @@ php artisan make:resource UserCollection
     }
 ```
 
- Neste exemplo, a chave `secret` só será incluída na resposta final do recurso se o método `isAdmin` do usuário autenticado retornar `true`. Se o método retornar `false`, a chave `secret` será removida da resposta do recurso antes de enviada ao cliente. O método `when` permite definir seus recursos sem a necessidade de utilizar declarações condicionais ao construir o array.
+Neste exemplo, a chave 'secret' será retornada somente na resposta final do recurso se o método 'isAdmin' do usuário autenticado retornar 'true'. Se o método retornar 'false', a chave 'secret' será removida da resposta do recurso antes de ser enviada ao cliente. O método 'when' permite você definir expressivamente seus recursos sem recorrer a declarações condicionais quando estiver construindo um array.
 
- O método `when` aceita um fecho de função como segundo argumento, permitindo-lhe calcular o valor resultante apenas se a condição for verdadeira:
+O método 'quando' também aceita uma função como segundo argumento, permitindo que o valor resultante seja calculado somente se a condição dada for verdadeira:
 
 ```php
     'secret' => $this->when($request->user()->isAdmin(), function () {
@@ -552,22 +552,22 @@ php artisan make:resource UserCollection
     }),
 ```
 
- O método `whenHas` pode ser utilizado para incluir um atributo se este estiver realmente presente no modelo subjacente.
+O método `whenHas` pode ser usado para incluir um atributo se ele estiver realmente presente no modelo subjacente:
 
 ```php
     'name' => $this->whenHas('name'),
 ```
 
- Além disso, o método `whenNotNull` pode ser utilizado para incluir um atributo no corpo da resposta se esse atributo não for nulo:
+Além disso, o método `whenNotNull` pode ser usado para incluir um atributo na resposta do recurso se o atributo não for nulo:
 
 ```php
     'name' => $this->whenNotNull($this->name),
 ```
 
 <a name="merging-conditional-attributes"></a>
-#### Fusão de atributos condicionais
+#### Atributos Condicionais
 
- Às vezes, você pode ter vários atributos que devem ser incluídos na resposta de recursos apenas com base na mesma condição. Nesse caso, você pode usar o método `mergeWhen` para incluir os atributos na resposta somente quando a condição for verdadeira:
+Às vezes você pode ter vários atributos que devem ser incluídos na resposta de recurso com base na mesma condição. Neste caso, você pode usar o método `mergeWhen` para incluir os atributos na resposta apenas quando a condição dada é `verdadeira`:
 
 ```php
     /**
@@ -591,17 +591,17 @@ php artisan make:resource UserCollection
     }
 ```
 
- Mais uma vez, se a condição for falsa, esses atributos serão removidos da resposta do recurso antes de ela ser enviada ao cliente.
+Novamente, se a condição dada for falsa, esses atributos serão removidos da resposta do recurso antes de ser enviado ao cliente.
 
- > Atenção !
- > O método mergeWhen não pode ser utilizado em arrays que misturam chaves numéricas e alfanuméricas. Além disso, não pode ser usado em arrays com chaves numéricas que não são ordenadas sequencialmente.
+> [¡ALERTA!]
+> O método `mergeWhen` não deve ser utilizado dentro de arrays que misturam chaves numéricas e de string. Além disso, ele não deve ser utilizado dentro de arrays com chaves numéricas desordenadas sequencialmente.
 
 <a name="conditional-relationships"></a>
 ### Relações Condicionais
 
- Além de atribuir condicionalmente atributos, é possível incluir relacionamentos, com base na carga inicial do relacionamento no modelo. Isso permite que o controle decida quais os relacionamentos a serem carregados no modelo e seu recurso pode incluí-los facilmente apenas quando já tiver sido carregado. Isso permite evitar problemas de consulta "N+1" em seus recursos.
+Além de carregar atributos condicionalmente, você pode incluir relacionamentos nas respostas do recurso com base em se o relacionamento já foi carregado no modelo. Isso permite que seu controlador decida quais relacionamentos devem ser carregados no modelo e seus recursos podem facilmente incluí-los apenas quando eles têm sido realmente carregados. Finalmente, isso facilita evitar problemas de "N+1" dentro de suas respostas de recursos.
 
- O método `whenLoaded` pode ser usado para carregar condicionalmente uma relação. Para evitar o carregamento desnecessário de relações, esse método aceita o nome da relação em vez da própria relação:
+O método "whenLoaded" pode ser usado para carregar condicionalmente um relacionamento. Para evitar o carregamento desnecessário de relacionamentos, este método aceita o nome do relacionamento em vez do próprio relacionamento:
 
 ```php
     use App\Http\Resources\PostResource;
@@ -624,18 +624,18 @@ php artisan make:resource UserCollection
     }
 ```
 
- Neste exemplo, se a relação não tiver sido carregada, a chave `posts` será removida da resposta de recurso antes dela ser enviada ao cliente.
+Neste exemplo, se a relação não estiver carregada, a chave posts será removida da resposta do recurso antes de ser enviada ao cliente.
 
 <a name="conditional-relationship-counts"></a>
-#### Recursos condicionais importam
+#### Condicional de Relação Contagem
 
- Além de incluir condicionalmente relações, você pode incluir condicionalmente "contagens" de relacionamentos em suas respostas de recurso com base no fato da contagem da relação ter sido carregada no modelo.
+Além de incluir condicionalmente relações, você pode incluir condicionalmente contagem de relações em suas respostas de recursos com base se a contagem da relação foi carregada no modelo.
 
 ```php
     new UserResource($user->loadCount('posts'));
 ```
 
- O método `whenCounted` pode ser utilizado para incluir, condicionalmente, o número de relações no seu conteúdo da resposta ao cliente. Este método evita a inclusão desnecessária do atributo se o número de relações não estiver presente:
+A `method whenCounted` pode ser usado para incluir condicionalmente o número de relações em sua resposta de recurso. Este método evita incluir desnecessariamente o atributo se a contagem das relações não estiver presente:
 
 ```php
     /**
@@ -656,9 +656,9 @@ php artisan make:resource UserCollection
     }
 ```
 
- Neste exemplo, se a contagem da relação `posts` não tiver sido carregada, a chave `posts_count` será removida da resposta de recurso antes que esteja enviada ao cliente.
+No exemplo acima se o contador de 'postagens' não foi carregado, a chave 'postagens_contador' será removida da resposta do recurso antes de ser enviada ao cliente.
 
- Outros tipos de agregados, como `avg`, `sum`, `min` e `max`, também podem ser carregados condicionalmente usando o método `whenAggregated`:
+Outros tipos de agregações, tais como `avg`, `sum`, `min` e `max` também podem ser carregados condicionalmente usando o método `whenAggregated`:
 
 ```php
 'words_avg' => $this->whenAggregated('posts', 'words', 'avg'),
@@ -668,9 +668,9 @@ php artisan make:resource UserCollection
 ```
 
 <a name="conditional-pivot-information"></a>
-#### Informação sobre os pivots condicionais
+#### Condicional Pivotação de informação
 
- Além de incluir informações sobre relacionamentos de forma condicional em suas respostas aos recursos, você pode incluir dados das tabelas intermediárias de relações muitodirecionais usando o método `whenPivotLoaded`. O método `whenPivotLoaded` aceita como primeiro argumento o nome da tabela pivot. O segundo argumento deve ser um fecho que retorna o valor a ser retornado se as informações de pivot estiverem disponíveis no modelo:
+Além de incluir condicionalmente informações de relacionamento em suas respostas de recursos, você pode condicionalmente incluir dados das tabelas intermediárias de relacionamentos muitos-para-muitos usando o método `whenPivotLoaded`. O método `whenPivotLoaded` aceita o nome da tabela pivot como seu primeiro argumento. O segundo argumento deve ser uma função que retorna o valor a ser retornado se as informações do pivot estiverem disponíveis no modelo:
 
 ```php
     /**
@@ -690,7 +690,7 @@ php artisan make:resource UserCollection
     }
 ```
 
- Se o seu relacionamento estiver usando um [modelo de tabela intermediária personalizada](/docs/eloquent-relationships#defining-custom-intermediate-table-models), você pode passar uma instância do modelo de tabela intermediária como o primeiro argumento para o método `whenPivotLoaded`:
+Se o seu relacionamento estiver usando um [modelo de tabela intermediária personalizado](/docs/{{version}}/eloquent-relationships#definindo-modelos-de-tabela-intermediária-personalizados)), você pode passar uma instância do modelo da tabela intermediária como o primeiro argumento para o método `whenPivotLoaded`:
 
 ```php
     'expires_at' => $this->whenPivotLoaded(new Membership, function () {
@@ -698,7 +698,7 @@ php artisan make:resource UserCollection
     }),
 ```
 
- Se a tabela intermediária estiver usando um atributo diferente de `pivot`, você pode usar o método `whenPivotLoadedAs`:
+Se sua tabela intermediária está usando um acessor diferente de "pivot", você pode usar o método `whenPivotLoadedAs`:
 
 ```php
     /**
@@ -719,15 +719,9 @@ php artisan make:resource UserCollection
 ```
 
 <a name="adding-meta-data"></a>
-### Adição de meta dados
+### Adicionando metadados
 
- Algumas normas da API JSON exigem a adição de metadados para os seus recursos e respostas das coleções de recursos. Isso geralmente inclui informações, como links para o próprio recurso ou recursos relacionados ou informações meta sobre o recurso em si. Se você precisar retornar metadados adicionais sobre um recurso, inclua-os no seu método `toArray`. Por exemplo:
-
-```java
-public static List<String> toArray(String json) {
-  return Arrays.asList("id", "name", "links");
-}
-```
+Alguns padrões de API JSON exigem a adição de metadados à sua resposta de recursos e coleções de recursos. Isso geralmente inclui coisas como "links" para o recurso ou recursos relacionados, ou metadados sobre o próprio recurso. Se você precisa retornar metadados adicionais sobre um recurso, inclua-o em seu método 'toArray'. Por exemplo, você pode incluir informações "link" ao transformar uma coleção de recursos:
 
 ```php
     /**
@@ -746,12 +740,12 @@ public static List<String> toArray(String json) {
     }
 ```
 
- Quando devolver dados adicionais de metadados dos seus recursos, você nunca tem que se preocupar em sobrescrever acidentalmente as chaves `links` ou `meta` que são automaticamente adicionadas pelo Laravel ao devolver respostas paginadas. Quaisquer links adicionais que você definir serão mesclados aos links fornecidos pela ferramenta para paginação.
+Ao retornar metadados adicionais de seus recursos, você nunca precisa se preocupar com a substituição acidental das chaves 'links' ou 'meta' que são automaticamente adicionadas pelo Laravel quando retorna respostas paginadas. Qualquer link adicional que você definir será mesclado aos links fornecidos pelo paginador.
 
 <a name="top-level-meta-data"></a>
-#### Meta Dados Principais
+#### Top Level Meta Dados
 
- Às vezes você pode querer incluir somente determinados metadados com uma resposta de recurso se o recurso for o recurso mais externo que está sendo retornado. Normalmente, isso inclui informações metadados sobre a resposta como um todo. Para definir esses metadados, adicione um método `with` ao seu modelo de classe do recurso. Esse método deve retornar uma matriz de metadados que será incluída com a resposta do recurso somente quando o recurso for o mais externo que está sendo transformado:
+Às vezes, você pode querer apenas incluir determinados metadados com uma resposta de recurso se o recurso for o recurso externo que está sendo retornado. Geralmente, isso inclui metadados sobre a resposta como um todo. Para definir esses metadados, adicione um método "with" à sua classe de recursos. Este método deve retornar uma matriz de metadados a serem incluídos com a resposta do recurso apenas quando o recurso for o recurso externo que está sendo transformado:
 
 ```php
     <?php
@@ -789,9 +783,9 @@ public static List<String> toArray(String json) {
 ```
 
 <a name="adding-meta-data-when-constructing-resources"></a>
-#### Adicionando metadados ao criar recursos
+#### Adicionando metadados na construção de recursos
 
- Você também pode adicionar dados de nível superior ao construir instâncias de recursos em sua rota ou controller. O método `additional`, que está disponível para todos os recursos, aceita um array com dados que devem ser adicionados à resposta do recurso:
+Você também pode adicionar dados de nível superior ao construir instâncias de recurso em sua rota ou controlador. O método `additional`, disponível em todos os recursos, aceita uma matriz de dados que devem ser adicionados à resposta do recurso:
 
 ```php
     return (new UserCollection(User::all()->load('roles')))
@@ -801,9 +795,9 @@ public static List<String> toArray(String json) {
 ```
 
 <a name="resource-responses"></a>
-## Respostas aos Recursos
+## Respostas de Recursos
 
- Como você já leu, os recursos podem ser devolvidos diretamente das rotas e controladores:
+Como você já leu, os recursos podem ser retornados diretamente de rotas e controladores:
 
 ```php
     use App\Http\Resources\UserResource;
@@ -814,7 +808,7 @@ public static List<String> toArray(String json) {
     });
 ```
 
- No entanto, por vezes poderá ser necessário personalizar a resposta HTTP em saída antes de ser enviada ao cliente. Há duas maneiras para o efeito. Primeiro, pode adicionar a metoda `response` à recurso. Esta metodaindica uma instância da classe `Illuminate\Http\JsonResponse`, conferindo-lhe controlo total sobre as cabeçalhas da resposta:
+No entanto, às vezes você pode precisar personalizar a resposta HTTP antes de ser enviada ao cliente. Existem duas maneiras de realizar isso. Primeiro, você pode encadear o método "response" no recurso. Este método retornará uma instância de "Illuminate\Http\JsonResponse", dando-lhe controle total sobre os cabeçalhos da resposta:
 
 ```php
     use App\Http\Resources\UserResource;
@@ -827,7 +821,7 @@ public static List<String> toArray(String json) {
     });
 ```
 
- Alternativamente, é possível definir um método `comResposta` dentro do próprio recurso. Esse método será chamado quando o recurso for devolvido como recurso mais externo em uma resposta:
+Alternativamente, você pode definir um método `withResponse` dentro do próprio recurso. Este método será chamado quando o recurso for retornado como o recurso externo em uma resposta:
 
 ```php
     <?php

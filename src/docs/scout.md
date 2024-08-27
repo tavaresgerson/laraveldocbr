@@ -3,26 +3,26 @@
 <a name="introduction"></a>
 ## Introdução
 
- O [Laravel Scout](https://github.com/laravel/scout) fornece uma solução simples e baseada em drivers para adicionar pesquisa de texto completo aos seus [modelos Eloquent] (/docs/eloquent). Usando observadores do modelo, o Scout manterá automaticamente os seus índices de busca sincronizados com os registros do Eloquent.
+O [Laravel Scout](https://github.com/laravel/scout) fornece uma solução simples baseada em drivers para adicionar pesquisa de texto integral aos seus modelos [Eloquent](/docs/eloquent). Ao usar observadores do modelo, o Scout sincronizará automaticamente os índices de busca com os registros Eloquent.
 
- Atualmente, o Scout tem como opções de serviços [Algolia](https://www.algolia.com/), [Meilisearch](https://www.meilisearch.com), [Typesense](https://typesense.org) e drivers MySQL/PostgreSQL (banco de dados). Além disso, o Scout inclui um driver "colleção" que foi desenvolvido para uso em ambiente de desenvolvimento local e não requer dependências externas ou serviços de terceiros. Você também pode escrever drivers personalizados e estender o Scout com suas próprias implementações de busca.
+Atualmente, o Scout suporta  [Algolia](https://www.algolia.com/),  [Meilisearch](https://www.meilisearch.com),  [Typesense](https://typesense.org), e drivers de MySQL/PostgreSQL (driver 'database') Iniciação. Além disso, o Scout inclui um driver "coleções" projetado para uso de desenvolvimento local que não requer quaisquer dependências externas ou serviços de terceiros. Além disso, escrever drivers personalizados é simples, e você é livre para estender o Scout com suas próprias implementações de pesquisa.
 
 <a name="installation"></a>
 ## Instalação
 
- Primeiro, você deve instalar o Scout através do gerenciador de pacotes Composer:
+Primeiro, instale o Scout via o gerenciador de pacotes do Composer:
 
 ```shell
 composer require laravel/scout
 ```
 
- Depois de instalar o Scout, você deve publicar seu arquivo de configuração usando a ordem de comando `vendor:publish` do Artisan. Esta ordem irá publicar o arquivo de configuração `scout.php` para o diretório `config` da aplicação:
+Depois de instalar o Scout, você deve publicar o arquivo de configuração do Scout usando o comando `vendor:publish` no Artisan. Este comando publicará o arquivo de configuração `scout.php` no diretório `config` do seu aplicativo:
 
 ```shell
 php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 ```
 
- Por último, adicione o traço `Laravel\Scout\Searchable` ao modelo que você gostaria de tornar pesquisável. Este traço registrará um observador de modelo que manterá automaticamente o modelo sincronizado com seu mecanismo de busca:
+Por fim, adicione o trait `Laravel\Scout\Searchable` ao modelo que você gostaria de tornar pesquisável. Este trait registrará um observador de modelo para manter o modelo sincronizado com seu mecanismo de pesquisa:
 
 ```php
     <?php
@@ -39,19 +39,19 @@ php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
 ```
 
 <a name="queueing"></a>
-### Ficar na fila
+### Fila
 
- Embora o uso do Scout não seja estritamente necessário, você deve considerar fortemente a configuração de um [driver de fila](/docs/queues) antes de usar a biblioteca. O funcionamento de um trabalhador da fila permitirá que o Scout agende todas as operações que sincronizam informações do modelo com seus índices de busca, proporcionando tempo de resposta muito melhor para a interface web de seu aplicativo.
+Embora não seja estritamente necessário usar o Scout, você deve considerar fortemente configurar um [driver de fila](/docs/queues) antes de utilizar a biblioteca. Executar um trabalhador de fila permitirá que o Scout coloque em fila todas as operações que sincronizarão suas informações do modelo com seus índices de pesquisa, fornecendo tempos de resposta muito melhores para sua interface da web de aplicativos.
 
- Depois de configurar um driver de fila, configure o valor da opção `queue` no arquivo de configuração do seu `config/scout.php` para `true`:
+Depois de configurar um motorista de fila, defina o valor da opção `queue` em seu arquivo de configuração `config/scout.php` para `true`:
 
 ```php
     'queue' => true,
 ```
 
- Mesmo quando a opção `queue` é definida como `false`, é importante lembrar que alguns motores de busca Scout, como Algolia e Meilisearch, sempre indexam registos de forma assíncrona. Isto significa que, embora a operação de indexação tenha sido concluída no seu aplicativo Laravel, o motor de busca em si pode não refletir imediatamente os novos registos ou registos atualizados.
+Mesmo quando a opção 'queue' está definida como 'false', é importante lembrar que alguns drivers de busca do Scout, como o Algolia e o Meilisearch, sempre indexam registros de forma assíncrona. Isso quer dizer, mesmo que a operação de indexação tenha sido concluída dentro do seu aplicativo Laravel, o próprio mecanismo de busca poderá não refletir imediatamente os novos e atualizados registros.
 
- Para especificar a conexão e fila que os seus trabalhos Scout utilizam, pode definir a opção de configuração `queue` como um conjunto de elementos:
+Para especificar a fila e a conexão que seus trabalhos do Scout utilizam, você pode definir o parâmetro de configuração 'queue' como um array:
 
 ```php
     'queue' => [
@@ -60,19 +60,19 @@ php artisan vendor:publish --provider="Laravel\Scout\ScoutServiceProvider"
     ],
 ```
 
- Claro que se personalizar a conexão e fila empregada pelo Scout será necessário executar um agente de filas para processar trabalhos nessa conexão e fila.
+É claro que se você personalizar a conexão e a fila de trabalhos utilizados pelo Scout, você precisa executar um trabalhador da fila para processar os trabalhos nessa conexão e nessa fila:
 
 ```php
     php artisan queue:work redis --queue=scout
 ```
 
 <a name="driver-prerequisites"></a>
-## Requisitos prévios do driver
+## Requisitos para motorista
 
 <a name="algolia"></a>
 ### Algolia
 
- Para usar o driver Algolia, você deve configurar suas credenciais de `id` e `secret` no arquivo de configuração `config/scout.php`. Depois que as credenciais estiverem configuradas, será necessário instalar o SDK PHP do Algolia através do gerenciador de pacotes Composer:
+Quando usando o driver Algolia, você deve configurar suas credenciais de ID e segredo do Algolia no arquivo de configuração `config/scout.php`. Depois que suas credenciais tiverem sido configuradas, também será necessário instalar o SDK PHP do Algolia usando o gerenciador de pacotes Composer:
 
 ```shell
 composer require algolia/algoliasearch-client-php
@@ -81,15 +81,15 @@ composer require algolia/algoliasearch-client-php
 <a name="meilisearch"></a>
 ### Meilisearch
 
- O Meilisearch (https://www.meilisearch.com) é um motor de busca rápido e open source. Se você não tiver certeza sobre como instalar o Meilisearch em sua máquina local, pode usar o [Laravel Sail](/docs/sail#meilisearch), ambiente de desenvolvimento Docker oficialmente suportado pelo Laravel.
+[Meilisearch](https://www.meilisearch.com) é um mecanismo de pesquisa rápido e de código aberto. Se você não tem certeza de como instalar o Meilisearch na sua máquina local, você pode usar [Laravel Sail](/docs/sail#meilisearch), ambiente de desenvolvimento Docker oficialmente suportado do Laravel.
 
- Ao utilizar o driver Meilisearch, será necessário instalar o Meilisearch SDK PHP através do gerenciador de pacotes Composer.
+Ao utilizar o driver Meilisearch você precisará instalar a biblioteca de software PHP do Meilisearch usando o gerenciador de pacotes Composer:
 
 ```shell
 composer require meilisearch/meilisearch-php http-interop/http-factory-guzzle
 ```
 
- Em seguida, defina a variável de ambiente `SCOUT_DRIVER`, bem como suas credenciais do host e chave do Meilisearch no arquivo `.env` da sua aplicação:
+Então, defina a variável de ambiente `SCOUT_DRIVER` também como suas credenciais `host` e `key` do MeiliSearch dentro do arquivo `.env` de sua aplicação:
 
 ```ini
 SCOUT_DRIVER=meilisearch
@@ -97,48 +97,48 @@ MEILISEARCH_HOST=http://127.0.0.1:7700
 MEILISEARCH_KEY=masterKey
 ```
 
- Para mais informações sobre Meilisearch, consulte a documentação [aqui](https://docs.meilisearch.com/learn/getting_started/quick_start.html).
+Para mais informações sobre o Meilisearch, por favor consulte a [documentação do Meilisearch](https://docs.meilisearch.com/learn/getting_started/quick_start.html).
 
- Além disso, você deve garantir que instale uma versão do `meilisearch/meilisearch-php` compatível com sua versão binária da Meilisearch revisando a [documentação Meilisearch sobre compatibilidade de binários](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch).
+Além disso, certifique-se de instalar uma versão do `meilisearch/meilisearch-php` que seja compatível com a sua versão binária do Meilisearch ao revisar [a documentação do Meilisearch em relação à compatibilidade binária](https://github.com/meilisearch/meilisearch-php#-compatibility-with-meilisearch).
 
- > [AVISO]
- Consulte [ quaisquer alterações drásticas adicionais] (https://github.com/meilisearch/Meilisearch/releases) no próprio serviço do Meilisearch para obter informações sobre as alterações mais recentes.
+> ¡¡ALERTA!
+> Ao atualizar o Scout em uma aplicação que utiliza o Meilisearch, você deve sempre revisar quaisquer [novas mudanças quebradoras] no próprio serviço Meilisearch.
 
 <a name="typesense"></a>
-### Tiposense
+### typesense
 
- O Typesense (https://typesense.org) é um motor de busca rápido e aberto que permite realizar pesquisas por palavra-chave, pesquisa semântica, pesquisa geográfica e pesquisa vetorial.
+[Typesense](https://typesense.org) é um mecanismo de busca rápido e de código aberto que suporta pesquisa por palavras-chave, pesquisa semântica, pesquisa geográfica e vetor de pesquisa.
 
- Você pode [hospedar o Typesense localmente](https://typesense.org/docs/guide/install-typesense.html#option-2-local-machine-self-hosting) ou usar a [Nuvem do Typesense](https://cloud.typesense.org).
+Você pode [auto-hospedar] Typesense ou usar o [Typesense Cloud].
 
- Para começar a usar o Typesense com o Scout, instale o Typesense PHP SDK através do gerenciador de pacotes Composer:
+Para começar a usar o Typesense com o Scout, instale o Typesense PHP SDK via o gerenciador de pacotes do Composer:
 
 ```shell
 composer require typesense/typesense-php
 ```
 
- Em seguida, defina a variável de ambiente `SCOUT_DRIVER`, bem como suas credenciais do anfitrião e chave da API do Typesense no arquivo .env da sua aplicação:
+Então defina a variável de ambiente `SCOUT_DRIVER` e também suas credenciais da host do Typesense e chave da API dentro do seu arquivo .env do aplicativo:
 
-```
+```env
 SCOUT_DRIVER=typesense
 TYPESENSE_API_KEY=masterKey
 TYPESENSE_HOST=localhost
 ```
 
- Se necessário, você também pode especificar o port, caminho e protocolo da sua instalação:
+Se necessário, você também pode especificar porta, caminho e protocolo da instalação:
 
-```
+```env
 TYPESENSE_PORT=8108
 TYPESENSE_PATH=
 TYPESENSE_PROTOCOL=http
 ```
 
- Definições adicionais e definições de esquema para as suas coleções no Typesense podem ser encontradas no arquivo de configuração `config/scout.php` da sua aplicação. Para mais informações sobre o Typesense, consulte a [Documentação do Typesense](https://typesense.org/docs/guide/#quick-start).
+Configurações adicionais e definições de esquema para suas coleções Typesense podem ser encontradas na sua aplicação's `config/scout.php` arquivo de configuração. Para mais informações sobre o Typesense, por favor consulte a documentação do Typesense  [Typesense documentação](https://typesense.org/docs/guide/#quick-start).
 
 <a name="preparing-data-for-storage-in-typesense"></a>
-#### Preparação dos Dados para Armazenamento no Typesense
+#### Preparando dados para armazenamento no Typesense
 
- Ao utilizar o Typesense, os modelos pesquisáveis devem definir um método `toSearchableArray`, que converte a chave primária do modelo para uma string e a data de criação para um timestamp UNIX:
+Ao utilizar o Typesense, seu modelo pesquisável deve definir um método `toSearchableArray` que converte a chave primária do modelo para uma string e a data de criação para um carimbo de data/hora da Unix.
 
 ```php
 /**
@@ -155,11 +155,11 @@ public function toSearchableArray()
 }
 ```
 
- Você também deve definir os esquemas das suas coleções no arquivo `config/scout.php` do seu aplicativo. Um esquema de coleção descreve os tipos de dados de cada campo que podem ser pesquisados via Typesense. Para obter mais informações sobre todas as opções disponíveis, consulte a [documentação do Typesense](https://typesense.org/docs/latest/api/collections.html#schema-parameters).
+Você também deve definir seus esquemas de coleção em seu arquivo "config/scout.php" na sua aplicação. Um esquema de coleção descreve os tipos de dados de cada campo pesquisável por Typesense. Para mais informações sobre todas as opções do esquema disponíveis, consulte a documentação do Typesense [https://typesense.org/docs/latest/api/collections.html#schema-parameters].
 
- Se você precisar alterar o esquema da sua coleção do Typesense depois de definido, você pode executar `scout:flush` e `scout:import`, que excluirá todos os dados indexados existentes e recriará o esquema. Ou ainda poderá usar a API do Typesense para alterar o esquema da coleção sem remover nenhum dado indexado.
+Se você precisar modificar o esquema da sua coleção Typesense depois que ele já foi definido, você pode executar `scout:flush` e `scout:import`, o que vai excluir todos os dados indexados existentes e recriar o esquema. Ou você pode usar a API do Typesense para modificar o esquema da coleção sem remover nenhum dado indexado.
 
- Se o seu modelo indexável for excluído somente no nível de arquivo, você deve definir um campo `__soft_deleted` no esquema do Typesense correspondente ao modelo na pasta `config/scout.php` da aplicação:
+Se seu modelo pesquisável é "soft delete", você deve definir um campo `__soft_deleted` no esquema do Typesense correspondente ao modelo dentro do arquivo de configuração `config/scout.php` de sua aplicação:
 
 ```php
 User::class => [
@@ -177,9 +177,9 @@ User::class => [
 ```
 
 <a name="typesense-dynamic-search-parameters"></a>
-#### Parâmetros de busca dinâmica
+#### Parâmetros de Pesquisa Dinâmica
 
- O Typesense permite que você modifique seus [parâmetros de pesquisa](https://typesense.org/docs/latest/api/search.html#search-parameters) dinamicamente ao realizar uma operação de busca via o método `options`:
+O Typesense permite que você modifique seus [parâmetros de pesquisa](https://typesense.org/docs/latest/api/search.html#search-parameters) dinamicamente ao realizar uma operação de busca usando o método `options`:
 
 ```php
 use App\Models\Todo;
@@ -193,9 +193,9 @@ Todo::search('Groceries')->options([
 ## Configuração
 
 <a name="configuring-model-indexes"></a>
-### Configurando índices de modelo
+### Configurar índices de modelo
 
- Cada modelo Eloquent é sincronizado com um determinado "indice" de busca, que contém todos os registos pesquisáveis para esse modelo. Em outras palavras, você pode pensar em cada índice como uma tabela do MySQL. Por padrão, cada modelo será persistido para um índice correspondente ao nome "tabela" do modelo. Normalmente, esse nome é a forma plural do nome do modelo; no entanto, você pode personalizar o índice do modelo substituindo o método `searchableAs` no modelo:
+Cada modelo Eloquent é sincronizado com um "índice" de pesquisa dado, que contém todos os registros pesquisáveis para esse modelo. Em outras palavras, você pode pensar em cada índice como uma tabela MySQL. Por padrão, cada modelo será persistido em um índice que corresponda ao nome da tabela típica do modelo. Geralmente, isso é a forma plural do nome do modelo; no entanto, você é livre para personalizar o índice do modelo sobrecarregando o método `searchableAs` no modelo:
 
 ```php
     <?php
@@ -220,9 +220,9 @@ Todo::search('Groceries')->options([
 ```
 
 <a name="configuring-searchable-data"></a>
-### Configurando dados indexáveis
+### Configurando Dados Pesquisáveis
 
- Por padrão, o modelo completo da forma "toArray" será persistido no seu índice de pesquisa. Se pretender personalizar os dados que são sincronizados com o índice de pesquisa, pode substituir a metodologia "toSearchableArray" no modelo:
+Por padrão, todo o formulário `toArray` de um modelo será persistido ao seu índice de pesquisa. Se você gostaria de personalizar os dados que sincronizam-se ao índice de pesquisa, pode substituir o método `toSearchableArray` no modelo:
 
 ```php
     <?php
@@ -252,7 +252,7 @@ Todo::search('Groceries')->options([
     }
 ```
 
- Alguns motores de busca, como o Meilisearch, só efetuam operações de filtro (">", "<", etc.) em dados do tipo correto. Assim, ao utilizar esses motores de busca e personalizar os seus dados pesquisáveis, deve certificar-se que os valores numéricos são convertidos para o tipo correto:
+Alguns mecanismos de busca, como o Meilisearch, realizam operações de filtragem (`>`, `<` ,etc.) apenas em dados do tipo correto. Por isso, ao utilizar esses mecanismos e personalizar seus dados pesquisáveis, certifique-se que os valores numéricos são convertidos para o tipo correto:
 
 ```php
     public function toSearchableArray()
@@ -266,11 +266,11 @@ Todo::search('Groceries')->options([
 ```
 
 <a name="configuring-filterable-data-for-meilisearch"></a>
-#### Configuração de dados com filtros e configurações do índice (Meilisearch)
+#### Configuração de Filtragem e Configurações do Índice (MeiliSearch)
 
- Diferente dos outros motoristas do Scout, o Meilisearch exige que você predefina as configurações da pesquisa por índice, como atributos filtraveis e ordenáveis, bem como [outros campos suportados de configuração](https://docs.meilisearch.com/reference/api/settings.html).
+Ao contrário de outros motoristas do Scout, o Meilisearch exige que você defina previamente os parâmetros de pesquisa de índice como atributos filtráveis, atributos classificáveis e [outros campos de configurações suportados](https://docs.meilisearch.com/reference/api/settings.html).
 
- Atributos filtráveis são quaisquer atributos que você pretende filtrar ao invocar o método `where` do Scout. Já os atributos ordenáveis são qualquer atributo pelo qual você pretenda realizar a ordem ao invocar o método `orderBy` do Scout. Para definir suas configurações de índices, adicione a seção `index-settings` à sua entrada de configuração do MeiliSearch na arquivo de configuração da sua aplicação:
+Atributos filtráveis são quaisquer atributos que você planeja filtrar ao invocar o método 'where' do Scout, enquanto os atributos ordenáveis são quaisquer atributos que você planeja classificar ao invocar o método 'orderBy' do Scout. Para definir suas configurações de índice, ajuste a seção 'index-settings' de sua configuração 'meilisearch' no arquivo de configuração do Scout do seu aplicativo:
 
 ```php
 use App\Models\User;
@@ -293,7 +293,7 @@ use App\Models\Flight;
 ],
 ```
 
- Se o modelo subjacente de um determinado índice for excluído silenciosamente e incluído na matriz `index-settings`, Scout irá incluir automaticamente suporte para filtragem em modelos excluídos silenciosamente nesse índice. Se você não tiver outros atributos filtraveis ou ordenáveis a definir para um modelo excluído silenciosamente, pode simplesmente adicionar uma entrada vazia à matriz `index-settings` para esse modelo:
+Se o modelo subjacente de um determinado índice é "excluível" e está incluído na matriz 'index-settings', o Scout irá incluir suporte automático para filtragem sobre modelos excluíveis no índice. Se não houver outros atributos filtráveis ou ordenáveis a serem definidos em um índice de modelo excluível, você pode simplesmente adicionar uma entrada vazia à matriz 'index-settings' para esse modelo:
 
 ```php
 'index-settings' => [
@@ -301,16 +301,16 @@ use App\Models\Flight;
 ],
 ```
 
- Depois de configurar as configurações do índice da sua aplicação, você deve invocar o comando `scout:sync-index-settings`. Este comando informará a Meilisearch das suas atuais configurações de índices. Para maior conveniência, você pode desejar tornar este comando parte do seu processo de implantação:
+Após configurar as configurações de índice da sua aplicação, você deve invocar o comando `scout:sync-index-settings`. Este comando informará ao Meilisearch sobre suas configurações atuais do índice. Para conveniência, você pode querer tornar este comando parte do seu processo de implantação:
 
 ```shell
 php artisan scout:sync-index-settings
 ```
 
 <a name="configuring-the-model-id"></a>
-### Configurando o Identificador do Modelo
+### Configurando a ID do Modelo
 
- Por padrão, o Scout usará a chave primária do modelo como identificador único / chave que será armazenada no índice de busca. Se você precisar customizar esse comportamento, poderá sobrepor as métricas `getScoutKey` e `getScoutKeyName` no modelo:
+Por padrão, o Scout usará a chave primária do modelo como a chave única do modelo que é armazenada no índice de busca. Se você precisar personalizar esse comportamento, você pode substituir os métodos 'getScoutKey' e 'getScoutKeyName' no modelo:
 
 ```php
     <?php
@@ -343,9 +343,9 @@ php artisan scout:sync-index-settings
 ```
 
 <a name="configuring-search-engines-per-model"></a>
-### Configurando motores de busca por modelo
+### Configurar Motores de Busca para Modelo
 
- Normalmente, ao efetuar uma pesquisa, o Scout utiliza o motor de busca padrão especificado no arquivo de configuração `scout` do aplicativo. No entanto, é possível alterar o mecanismo de busca para um modelo específico através da sobreposição do método `searchableUsing` no modelo:
+Ao pesquisar, o Scout normalmente usa o mecanismo de busca padrão especificado no arquivo 'scout' da configuração do aplicativo. Contudo, o mecanismo de busca para um modelo específico pode ser alterado por sobrescrevendo o método 'searchableUsing' na classe do modelo.
 
 ```php
     <?php
@@ -372,40 +372,40 @@ php artisan scout:sync-index-settings
 ```
 
 <a name="identifying-users"></a>
-### Identificar os Usuários
+### Identificando Usuários
 
- O Scout também permite identificar automaticamente os usuários quando é utilizado o Algolia. Associar o usuário autenticado às operações de busca pode ser útil ao analisar as análises das pesquisas no painel do Algolia. Você pode ativar a identificação de usuários definindo uma variável de ambiente `SCOUT_IDENTIFY` como `true` no arquivo `.env` do seu aplicativo:
+O Scout também permite que você identifique automaticamente os usuários ao utilizar o [Algolia](https://algolia.com). Associar o usuário autenticado com as operações de pesquisa pode ser útil quando visualizar seus análises de pesquisa dentro do painel do Algolia. Você pode habilitar a identificação de usuário definindo uma variável de ambiente `SCOUT_IDENTIFY` como 'verdadeira' no arquivo `.env` de sua aplicação:
 
 ```ini
 SCOUT_IDENTIFY=true
 ```
 
- Permitir essa função também envia o endereço de IP da solicitação e seu identificador primário de usuários autenticados ao Algolia para que os dados sejam associados a qualquer solicitação de pesquisa realizada pelo usuário.
+A ativação desta funcionalidade também passará o endereço IP da solicitação e o identificador principal do usuário autenticado para a Algolia, para que os dados sejam associados à qualquer solicitação de pesquisa feita pelo usuário.
 
 <a name="database-and-collection-engines"></a>
-## Motores de Base de Dados/ Coleções
+## Motores de Banco de Dados / Coleções
 
 <a name="database-engine"></a>
-### Motor de Banco de Dados
+### Maquina de banco de dados
 
- > [!AVISO]
- > O motor de banco de dados atualmente suporta o MySQL e o PostgreSQL.
+> [Aviso]
+> O banco de dados atualmente suporta MySQL e PostgreSQL.
 
- Se o seu aplicativo interagir com bancos de dados de pequeno a médio porte ou tiver uma carga de trabalho leve, poderá considerar iniciar pelo motor de banco de dados Scout. O motor de banco de dados usará cláusulas "where like" e índices de texto completo ao filtrar os resultados do seu banco de dados existente para determinar os resultados aplicáveis para sua consulta.
+Se sua aplicação interage com bancos de dados pequenos ou médios ou tem um trabalho leve, você pode encontrar mais conveniente começar a usar o "engine" do banco de dados do Scout. O mecanismo usará cláusulas "where like" e índices de texto completo ao filtrar os resultados do seu banco de dados para determinar quais os resultados aplicáveis para sua consulta.
 
- Para utilizar o motor de base de dados, pode definir simplesmente o valor da variável do ambiente `SCOUT_DRIVER` em `database`, ou especificar o driver `database` diretamente no ficheiro de configuração do `scout` da sua aplicação:
+Para utilizar o mecanismo de banco de dados, você pode simplesmente definir o valor da variável ambiental `SCOUT_DRIVER` para `database`, ou especificar diretamente o driver `database` no arquivo de configuração do seu aplicativo.
 
 ```ini
 SCOUT_DRIVER=database
 ```
 
- Depois de especificar o motor de banco de dados como o driver preferido, você deve [configurar seus dados pesquisáveis] (#Configuring-Searchable-Data). Em seguida, pode começar a [executar consultas de pesquisa] (#searching) contra seus modelos. O índice do motor de busca, como o índice necessário para gerar os índices Algolia, Meilisearch ou Typesense não é mais necessário quando você usa o motor de banco de dados.
+Depois de especificar o motor de banco de dados como seu driver preferido, você deve  [configurar os seus dados pesquisáveis](#configurando-dados-pesquisáveis) . Em seguida, você pode começar a  [executar consultas de pesquisa](#pesquisa) em seus modelos. A indexação do mecanismo de pesquisa, como o índice necessário para preencher índices do Algolia, Meilisearch ou Typesense, é desnecessária ao usar o motor de banco de dados.
 
-#### Personalizar estratégias de pesquisa do banco de dados
+#### Personalizando Estratégias de Pesquisa no Banco de Dados
 
- Por padrão, o motor de banco de dados executa uma consulta "like where" contra todos os atributos do modelo que você [tornou pesquisáveis](#configurando-dados-pesquisaveis). No entanto, nalgumas situações, isso pode resultar em pior desempenho. Assim, a estratégia de pesquisa do motor de banco de dados pode ser configurada para que certas colunas especificadas utilizem consultas de pesquisa de texto completo ou apenas restrinjam as buscas aos prefixos das strings (por exemplo, "exemplo%") em vez de procurarem dentro da totalidade da string ("%exemplo%").
+Por padrão, o banco de dados executará uma consulta "onde like" contra todos os atributos do modelo que você tenha [configurado como pesquisáveis](#configurando-dados-pesquisáveis). No entanto, em algumas situações isso pode resultar em desempenho ruim. Portanto, a estratégia de pesquisa do mecanismo de banco de dados pode ser configurada para que algumas colunas especificadas utilizem consultas de busca de texto integral ou apenas usem as restrições "onde like" para pesquisar prefíxos de strings ( `example%`) em vez de pesquisar dentro da string inteira ( `%example%`).
 
- Para definir esse comportamento, é possível atribuir atributos PHP à método do modelo `toSearchableArray`. Todas as colunas que não receberem um novo comportamento de estratégia de busca manterão o comportamento padrão "where like":
+Para definir esse comportamento, você pode atribuir atributos PHP ao método "toSearchableArray" do seu modelo. Qualquer colunas que não tiverem um comportamento adicional de estratégia de busca continuarão a utilizar a estratégia padrão "onde like":
 
 ```php
 use Laravel\Scout\Attributes\SearchUsingFullText;
@@ -429,50 +429,50 @@ public function toSearchableArray(): array
 }
 ```
 
- > [AVISO]
- [Índice completo do texto](/docs/migrations#available-index-types).
+> ¡¡ALERTA!
+> Antes de especificar que uma coluna deve usar restrições de consulta de texto completo, certifique-se de que a coluna tenha sido atribuída um [índice de texto completo]( /docs/migrations # tipos-de-índices disponíveis ).
 
 <a name="collection-engine"></a>
-### Motor de coleta
+### Coleta de dados
 
- Ao usar os mecanismos de busca Algolia, Meilisearch ou Typesense durante o desenvolvimento local, você pode optar por começar com o mecanismo "collection". O motor de coleção usará cláusulas "where" e filtragem de coleções nos resultados do banco de dados para determinar os resultados de busca aplicáveis à sua consulta. Ao usar este mecanismo, não é necessário "indexar" seus modelos de pesquisa, pois eles serão simplesmente recuperados do seu banco de dados local.
+Embora você possa usar o Algolia, Meilisearch ou TypeSense durante a fase de desenvolvimento local, talvez seja mais conveniente começar com o "motor da coleção". O motor da coleção utilizará cláusulas "onde" e filtragem de coleções nos resultados do seu banco de dados existente para determinar os resultados de pesquisa aplicáveis à sua consulta. Quando se utiliza este motor, não é necessário "indexar" seus modelos pesquisáveis, pois eles serão simplesmente recuperados do seu banco de dados local.
 
- Para usar o motor de coleta, você pode simplesmente definir o valor da variável ambiental `SCOUT_DRIVER` como `collection`, ou especificar o `driver` diretamente no arquivo de configuração do aplicativo.
+Para usar o motor de coleta, você pode simplesmente definir o valor da variável de ambiente `SCOUT_DRIVER` para "coleção", ou especificar o motorista "coleção" diretamente no arquivo de configuração do Scout do seu aplicativo.
 
 ```ini
 SCOUT_DRIVER=collection
 ```
 
- Depois de especificar o driver de coleção como seu preferido, você poderá começar a [executar consultas de pesquisa] (#searching) contra seus modelos. O índice do motor de busca, tal como o necessário para preencher os índices Algolia, Meilisearch ou Typesense não é necessário ao usar o motor de coleção.
+Uma vez que você tenha especificado o driver de coleção como seu driver preferido, você pode começar [executando consultas de pesquisa](#pesquisa) em seus modelos. A indexação do mecanismo de pesquisa, como a indexação necessária para preencher índices de Algolia, Meilisearch ou Typesense, é desnecessária ao usar o mecanismo de coleção.
 
-#### Diferenças do motor de banco de dados
+#### Diferenças da partir do Motor de Banco de Dados
 
- À primeira vista, os motores "base de dados" e "coleções" são bastante semelhantes. Ambos interagem diretamente com o seu banco de dados para recuperar resultados da pesquisa. No entanto, o motor de coleção não utiliza índices de texto completo ou cláusulas `LIKE` para encontrar registros que correspondam à pesquisa. Em vez disso, eles extraem todos os possíveis registros e usam a ajuda Laravel `Str::is` para determinar se a string de pesquisa existe nos valores dos atributos do modelo.
+Ao olhar para o primeiro "motor de banco de dados" e "coleções", eles são bastante semelhantes. Ambos interagem diretamente com seu banco de dados para recuperar os resultados da pesquisa. No entanto, o motor de coleções não utiliza índices de texto completo ou cláusulas LIKE para encontrar registros correspondentes. Em vez disso, ele pega todos os possíveis registros e usa a função `Str::is` do Laravel para determinar se a string de pesquisa existe nos valores do atributo do modelo.
 
- O motor de coleta é o mais portátil dos motores de busca, pois funciona em todas as bases de dados relacionais suportadas pelo Laravel (incluindo SQLite e SQL Server). No entanto, é menos eficiente do que o motor de base de dados Scout.
+O mecanismo de busca é o mais portátil como ele funciona através de todos os bancos de dados relacionais suportados pelo Laravel (incluindo SQLite e SQL Server), porém, ele é menos eficiente do que o banco de dados do Scout.
 
 <a name="indexing"></a>
 ## Indexação
 
 <a name="batch-import"></a>
-### Importação de lotes
+### Importação em lote
 
- Se estiver a instalar o Scout num projeto existente, poderá já dispor de registos no banco de dados que pretende importar para os seus índices. O Scout disponibiliza um comando "scout:import" no Artisan que lhe permite importar todos os registos existentes nos seus índices de pesquisa:
+Se você estiver instalando o Scout em um projeto existente, você já pode ter registros de banco de dados que você precisa importar para seus índices. O Scout fornece um comando "Artisan" chamado 'scout:import' que você pode usar para importar todos os seus registros existentes nos índices de pesquisa:
 
 ```shell
 php artisan scout:import "App\Models\Post"
 ```
 
- O comando `flush` pode ser usado para remover todos os registos de um modelo dos seus índices de pesquisa.
+O comando "flush" pode ser utilizado para remover todos os registros de um modelo dos seus índices de busca:
 
 ```shell
 php artisan scout:flush "App\Models\Post"
 ```
 
 <a name="modifying-the-import-query"></a>
-#### Modificar a consulta de importação
+#### Modificando a Consulta de Importação
 
- Se você quiser alterar a consulta usada para recuperar todos os seus modelos para importação em lote, pode definir um método `makeAllSearchableUsing` no seu modelo. Esse é o lugar ideal para adicionar qualquer carregamento de relacionamentos ansiados que possam ser necessários antes do carregamento dos modelos:
+Se você gostaria de modificar a consulta que é usada para recuperar todos os seus modelos para importação em lote, você pode definir um método `makeAllSearchableUsing` no seu modelo. Este é um ótimo lugar para adicionar qualquer carregamento de relação ansiosa que pode ser necessário antes de importar seus modelos:
 
 ```php
     use Illuminate\Database\Eloquent\Builder;
@@ -486,13 +486,13 @@ php artisan scout:flush "App\Models\Post"
     }
 ```
 
- > [ADVERTÊNCIA]
- [ não restaurado] (/) quando as coleções de modelo são processadas por tarefas.
+> [Aviso]
+> O método `makeAllSearchableUsing` não é aplicável quando se utiliza uma fila para lotes de modelos importados. As relações [não são restauradas] quando coleções de modelos são processadas por trabalhos.
 
 <a name="adding-records"></a>
-### Adicionar registros
+### Adicionando registros
 
- Depois de adicionar o trato `Laravel\Scout\Searchable` a um modelo, tudo o que precisa de fazer é `salvar` ou criar uma instância do modelo e ele será automaticamente adicionado ao seu índice de pesquisas. Se você tiver configurado Scout para usar [filas] (#queueing), esta operação será realizada em segundo plano pelo seu trabalhador de fila:
+Uma vez que você tenha adicionado o trait `Laravel\Scout\Searchable` ao seu modelo, tudo que você precisa fazer é salvar ou criar uma instância do modelo e ela será adicionada automaticamente ao seu índice de pesquisa. Se você configurou o Scout para usar filas, esta operação será realizada em segundo plano pelo trabalhador da fila.
 
 ```php
     use App\Models\Order;
@@ -505,9 +505,9 @@ php artisan scout:flush "App\Models\Post"
 ```
 
 <a name="adding-records-via-query"></a>
-#### Adição de registros através de consulta
+#### Adicionando Registros mediante consulta
 
- Se você deseja adicionar uma coleção de modelos ao seu índice de pesquisa por meio de uma consulta Eloquent, pode concatenar a método `searchable` em uma consulta Eloquent. O método `searchable` agrupará os resultados da consulta e adicionará os registros ao seu índice de pesquisa. Novamente, se você configurou o Scout para usar filas, todas as partes serão importadas em segundo plano por seus trabalhadores de fila:
+Se você deseja adicionar uma coleção de modelos ao seu índice de busca via consulta Eloquent, você pode encadear o método 'searchable' para a consulta Eloquent. O método 'searchable' irá [fragmentar os resultados](/docs/eloquent#fragmenting-results) da consulta e adicionará os registros ao seu índice de busca. Novamente, se você configurou o Scout para usar filas, todos os fragmentos serão importados em segundo plano por seus trabalhadores de fila:
 
 ```php
     use App\Models\Order;
@@ -515,25 +515,25 @@ php artisan scout:flush "App\Models\Post"
     Order::where('price', '>', 100)->searchable();
 ```
 
- Você também pode chamar o método `searchable` em uma instância de relacionamento do Eloquent:
+Você também pode chamar o método `searchable` em uma instância de relacionamento do Eloquent:
 
 ```php
     $user->orders()->searchable();
 ```
 
- Ou se você já tem uma coleção de modelos Eloquent em memória, você pode chamar o método `searchable` na instância da coleção para adicionar as instâncias do modelo ao índice correspondente:
+Ou, se já tiver uma coleção de modelos Eloquent na memória, você pode chamar o método `searchable` da instância da coleção para adicionar as instâncias do modelo aos seus índices correspondentes:
 
 ```php
     $orders->searchable();
 ```
 
- > [!NOTA]
- > O método `searchable` pode ser considerado uma operação "upsert". Em outras palavras, se o registro do modelo já estiver no índice, ele será atualizado. Se não existir no índice de pesquisa, será adicionado.
+> Nota!
+> O método `searchable` pode ser considerado uma operação "upsert". Em outras palavras, se o registro do modelo já estiver em seu índice, ele será atualizado. Se não existir no índice de busca, ele será adicionado ao índice.
 
 <a name="updating-records"></a>
-### Atualização de registros
+### Atualizar Registros
 
- Para atualizar um modelo pesquisável, você só precisa atualizar as propriedades da instância de modelo e salvar o modelo para sua base de dados. O Scout irá automaticamente salientar as alterações em seu índice de busca:
+Para atualizar um modelo pesquisável, você só precisa atualizar as propriedades da instância do modelo e salvar o modelo no banco de dados. O Scout irá persistir automaticamente as mudanças no seu índice de pesquisa:
 
 ```php
     use App\Models\Order;
@@ -545,28 +545,28 @@ php artisan scout:flush "App\Models\Post"
     $order->save();
 ```
 
- Você também pode invocar o método `searchable` em uma instância de consulta `Eloquent` para atualizar sua coleção de modelos. Se os modelos não existirem no seu índice de pesquisas, eles serão criados:
+Você também pode usar o método 'searchable' em uma instância de consulta Eloquent para atualizar uma coleção de modelos. Se os modelos não existem no seu índice de pesquisa, eles serão criados:
 
 ```php
     Order::where('price', '>', 100)->searchable();
 ```
 
- Se você deseja atualizar os registros do índice de pesquisa para todos os modelos em uma relação, é possível invocar o método `searchable` na instância da relação:
+Se você gostaria de atualizar os registros do índice de pesquisa para todos os modelos em uma relação, você pode invocar o 'pesquisável' no exemplo da instância de relacionamento:
 
 ```php
     $user->orders()->searchable();
 ```
 
- Ou, se você já tiver uma coleção de modelos Eloquent em memória, poderá chamar o método `searchable` na instância da coleção para atualizar as instâncias do modelo em seu índice correspondente:
+Ou, se você já tiver uma coleção de modelos Eloquent na memória, você pode chamar o método `searchable` da instância da coleção para atualizar as instâncias do modelo em seu índice correspondente:
 
 ```php
     $orders->searchable();
 ```
 
 <a name="modifying-records-before-importing"></a>
-#### Alterar registros antes da importação
+#### Modificar registros antes da importação
 
- Às vezes você pode precisar preparar a coleção de modelos antes que eles se tornem pesquisáveis. Por exemplo, talvez você queira carregar antecipadamente um relacionamento para que os dados do mesmo possam ser adicionados com eficiência ao seu índice de busca. Para isso, defina o método `makeSearchableUsing` no modelo correspondente:
+Às vezes você pode precisar preparar a coleção de modelos antes que eles sejam pesquisáveis. Por exemplo, você talvez queira carregar uma relação em massa para que os dados da relação possam ser adicionados com eficiência ao seu índice de pesquisa. Para fazer isso, defina um método 'makeSearchableUsing' no modelo correspondente:
 
 ```php
     use Illuminate\Database\Eloquent\Collection;
@@ -581,9 +581,9 @@ php artisan scout:flush "App\Models\Post"
 ```
 
 <a name="removing-records"></a>
-### Remoção de registos
+### Remoção de Registros
 
- Para remover um registro do índice, basta "apagar" o modelo no banco de dados. Isso pode ser feito mesmo se você estiver usando modelos com [exclusão suave](/docs/eloquent#soft-deleting):
+Para remover um registro do seu índice você pode simplesmente "apagar" o modelo do banco de dados. Isso pode ser feito mesmo se estiver usando modelos [apagados suavemente](/docs/eloquent#soft-deleting):
 
 ```php
     use App\Models\Order;
@@ -593,34 +593,34 @@ php artisan scout:flush "App\Models\Post"
     $order->delete();
 ```
 
- Caso não queira recuperar o modelo antes de excluir o registro, pode utilizar a metodologia `unsearchable` numa instância da consulta Eloquent:
+Se não quiser reavaliar o modelo antes de apagar a registro, você pode usar o método 'unsearchable' em uma instância da consulta do Eloquent:
 
 ```php
     Order::where('price', '>', 100)->unsearchable();
 ```
 
- Se você deseja remover os registros do índice de pesquisa de todos os modelos em um relacionamento, pode chamar o método `unsearchable` na instância de relacionamento:
+Se você gostaria de remover os registros de pesquisa para todos os modelos em uma relação, você pode invocar o `unsearchable` sobre a instância da relação:
 
 ```php
     $user->orders()->unsearchable();
 ```
 
- Ou se você já tem uma coleção de modelos Eloquent em memória, você pode chamar o método `unsearchable` na instância da coleção para remover as instâncias do modelo dos índices correspondentes:
+Ou, se já tiver uma coleção de modelos Eloquent na memória, você pode chamar o método `unsearchable` da instância da coleção para remover as instâncias do modelo de seus respectivos índices:
 
 ```php
     $orders->unsearchable();
 ```
 
- Para remover todos os registos de modelo do respetivo índice, poderá invocar o método `removeAllFromSearch`:
+Para remover todos os registros do modelo de seu índice correspondente, você pode invocar o método 'removeFromSearch':
 
 ```php
     Order::removeAllFromSearch();
 ```
 
 <a name="pausing-indexing"></a>
-### Interromper indexação
+### Índice de Pausa
 
- Às vezes, poderá ser necessário executar um lote de operações Eloquent num modelo sem sincronizar os dados do modelo com o seu índice de pesquisa. Pode fazer isto utilizando o método `withoutSyncingToSearch`. Este método aceita um único fecho que será imediatamente executado. Quaisquer operações em modelos, que ocorram dentro do fecho, não serão sincronizadas com o índice do modelo:
+Às vezes você pode precisar executar uma série de operações Eloquent em um modelo sem sincronizar os dados do modelo com seu índice de pesquisa. Você pode fazer isso usando o método `withoutSyncingToSearch`. Este método aceita um único fechamento que será imediatamente executado. Qualquer operação do modelo que ocorra dentro do fechamento não será sincronizado para o índice do modelo:
 
 ```php
     use App\Models\Order;
@@ -631,9 +631,9 @@ php artisan scout:flush "App\Models\Post"
 ```
 
 <a name="conditionally-searchable-model-instances"></a>
-### Exemplos de instâncias de modelo com pesquisa condicional
+### Instâncias do Modelo de Pesquisa Condicional
 
- Às vezes, talvez você só queira tornar um modelo pesquisável sob certas condições. Por exemplo, imagine que você tenha o modelo `App\Models\Post` que pode estar em dois estados: "em revisão" e "publicado". Talvez você só queira permitir a pesquisa dos posts "publicados". Para isso, é possível definir um método `shouldBeSearchable` no seu modelo:
+Às vezes você pode precisar apenas de fazer um modelo pesquisável sob certas condições. Por exemplo, imagine que você tem o modelo 'App\Models\Post' que pode ser em um dos dois estados: "rascunho" e "publicado". Você só pode querer permitir que os posts "publicados" sejam pesquisáveis. Para fazer isso, você pode definir um método `shouldBeSearchable` em seu modelo:
 
 ```php
     /**
@@ -645,15 +645,15 @@ php artisan scout:flush "App\Models\Post"
     }
 ```
 
- O método `shouldBeSearchable` é aplicado somente quando se manipula modelos através dos métodos `save` e `create`, consultas ou relacionamentos. Se você fizer um modelo ou uma coleção pesquisável usando o método `searchable`, ele irá anular os resultados do método `shouldBeSearchable`.
+O método `shouldBeSearchable` é apenas aplicado quando se manipula modelos através dos métodos 'save', 'create', consultas ou relacionamentos. Fazer diretamente modelos ou coleções pesquisáveis usando o método 'searchable' irá sobrepor os resultados do método `shouldBeSearchable`.
 
- > [AVERIGUAR]
- Em vez disso, use conjuntos de condições (Where Clauses).
+> [!Aviso]
+> O método 'shouldBeSearchable' não se aplica quando usando o 'database' engine de Scout, pois todos os dados pesquisáveis são armazenados no banco de dados. Para alcançar um comportamento similar ao usar o banco de dados, você deve utilizar as [cláusulas where](#where-clauses) em vez disso.
 
 <a name="searching"></a>
-## Pesquisando
+## Buscando
 
- Você pode começar a pesquisar um modelo usando o método `search`. O método de busca aceita uma única string que será usada para pesquisar os seus modelos. Deve então anexar o método `get` à consulta de pesquisa para recuperar os modelos Eloquent que correspondam à consulta de busca:
+Você pode começar a procurar um modelo usando o método 'pesquisa'. O método pesquisa aceita uma única string que será usada para pesquisar seus modelos. Você então deve encadear o método 'get' na consulta de pesquisa para recuperar os modelos Eloquent que correspondem à consulta de pesquisa dada:
 
 ```php
     use App\Models\Order;
@@ -661,7 +661,7 @@ php artisan scout:flush "App\Models\Post"
     $orders = Order::search('Star Trek')->get();
 ```
 
- Como as buscas de Scout retornam uma coleção de modelos Eloquent, você pode até mesmo retornar os resultados diretamente de um rote ou controlador e eles serão automaticamente convertidos para JSON:
+Como o Search retorna uma coleção de modelos Eloquent, você pode até retornar os resultados diretamente de uma rota ou controlador e eles serão automaticamente convertidos para JSON.
 
 ```php
     use App\Models\Order;
@@ -672,16 +672,16 @@ php artisan scout:flush "App\Models\Post"
     });
 ```
 
- Se você deseja obter os resultados de pesquisa brutos antes que eles sejam convertidos em modelos Eloquent, pode usar o método "raw":
+Se você quiser obter os resultados da pesquisa bruta antes que eles sejam convertidos em modelos Eloquent, você pode usar o método "raw":
 
 ```php
     $orders = Order::search('Star Trek')->raw();
 ```
 
 <a name="custom-indexes"></a>
-#### Índices Personalizados
+#### Índices personalizados
 
- Normalmente, as consultas de pesquisa são executadas no índice especificado pelo método [`searchableAs`](#configuring-model-indexes) do modelo. No entanto, você pode usar o método `within` para especificar um índice personalizado que deve ser pesquisado em vez disso:
+As consultas de pesquisa geralmente serão executadas no índice especificado pelo método 'searchableAs' do modelo. Contudo, você pode usar o método 'within' para especificar um índice personalizado que deve ser pesquisado em vez disso:
 
 ```php
     $orders = Order::search('Star Trek')
@@ -690,9 +690,9 @@ php artisan scout:flush "App\Models\Post"
 ```
 
 <a name="where-clauses"></a>
-### Onde estão as cláusulas
+### Onde as cláusulas
 
- O Scout permite que você adicione simples cláusulas "onde" para suas consultas de pesquisa. Atualmente, essas cláusulas suportam apenas verificações básicas de igualdade numérica e são principalmente úteis para delimitar as consultas de pesquisa por um ID de proprietário:
+O Scout permite acrescentar cláusulas simples "onde" às suas consultas de pesquisa. Atualmente, essas cláusulas só suportam verificações básicas de igualdade numérica e são úteis principalmente para definir o escopo de uma consulta de pesquisa por um ID de proprietário:
 
 ```php
     use App\Models\Order;
@@ -700,7 +700,7 @@ php artisan scout:flush "App\Models\Post"
     $orders = Order::search('Star Trek')->where('user_id', 1)->get();
 ```
 
- Além disso, o método `whereIn` pode ser usado para verificar se um determinado valor de uma determinada coluna está contido no arranjo dado:
+Além disso, o método 'whereIn' pode ser usado para verificar que um valor de uma coluna está contido em um determinado array.
 
 ```php
     $orders = Order::search('Star Trek')->whereIn(
@@ -708,7 +708,7 @@ php artisan scout:flush "App\Models\Post"
     )->get();
 ```
 
- O método `whereNotIn` verifica se o valor da coluna não está contido no array especificado.
+O método `whereNotIn` verifica que o valor da coluna dada não está contido no dado array:
 
 ```php
     $orders = Order::search('Star Trek')->whereNotIn(
@@ -716,15 +716,15 @@ php artisan scout:flush "App\Models\Post"
     )->get();
 ```
 
- Como o índice de pesquisa não é um banco de dados relacional, as cláusulas "where" mais avançadas não são suportadas no momento.
+Como um índice de pesquisa não é um banco de dados relacional, as cláusulas "onde" mais avançadas não são suportadas atualmente.
 
- > [ATENÇÃO]
- Antes de utilizar as cláusulas "onde" do Scout, deve criar um campo com [ atributos filtração](#configuring-filterable-data-for-meilisearch).
+> [!AVISO]
+> Se a sua aplicação estiver utilizando o Meilisearch, você deve configurar os atributos [filtrables](#configurando-atributos-filtrabies-para-o-meilisearch) da sua aplicação antes de utilizar as cláusulas "where" do Scout.
 
 <a name="pagination"></a>
-### Paginador
+### Página de número
 
- Além de recuperar uma coleção de modelos, você pode paginar seus resultados de busca usando o método `paginate`. Esse método retornará uma instância de `Illuminate\Pagination\LengthAwarePaginator` assim como se você tivesse [paginado uma consulta Eloquent tradicional](/docs/pagination):
+Além de buscar uma coleção de modelos, você pode usar o método paginate para retornar seus resultados paginados. Este método retornará um objeto 'Illuminate\Pagination\LengthAwarepaginator' exatamente como se você tivesse [paginado um inquérito tradicional do Eloquent](/docs/pagination):
 
 ```php
     use App\Models\Order;
@@ -732,13 +732,13 @@ php artisan scout:flush "App\Models\Post"
     $orders = Order::search('Star Trek')->paginate();
 ```
 
- Você pode especificar quantos modelos devem ser recuperados por página passando a quantidade como o primeiro argumento ao método `paginate`:
+Você pode especificar quantos modelos recuperar por página, passando a quantidade como o primeiro argumento do método paginate :
 
 ```php
     $orders = Order::search('Star Trek')->paginate(15);
 ```
 
- Uma vez recuperados os resultados, poderá visualizar os resultados e renderizar os vínculos das páginas utilizando [Blade] (https://github.com/laravel/framework/tree/master/app/Http/Controllers/Blade) tal como se tivesse feito um pedido por páginas de uma consulta Eloquent tradicional:
+Uma vez que você tenha obtido os resultados, você pode exibir os resultados e renderizar os links de página usando [Blade] (docs/blade), exatamente como se tivesse paginado uma consulta tradicional do Eloquent.
 
 ```html
 <div class="container">
@@ -750,7 +750,7 @@ php artisan scout:flush "App\Models\Post"
 {{ $orders->links() }}
 ```
 
- É claro que, se você quiser recuperar os resultados de paginação como JSON, poderá retornar a instância do Paginator diretamente de um roteador ou controlador:
+Claro, se você gostaria de recuperar os resultados da paginação como JSON, você pode retornar a instância do paginador diretamente de uma rota ou controlador:
 
 ```php
     use App\Models\Order;
@@ -761,19 +761,19 @@ php artisan scout:flush "App\Models\Post"
     });
 ```
 
- > [AVERIGUAR]
- > Como os mecanismos de busca não estão cientes das definições do escopo global em seu modelo Eloquent, você deve evitar utilizar esse recurso nas aplicações que utilizam a paginação Scout. Caso necessário, você deve reproduzir as restrições do escopo global quando pesquisando através de Scout.
+> ¡Advertência!
+> Como os mecanismos de busca não sabem do escopo global das definições da sua Eloquent model, você não deve utilizar escopos globais em aplicações que utilizam a paginação do Scout. Ou, você deveria recriar as restrições do escopo global quando estiver pesquisando via Scout.
 
 <a name="soft-deleting"></a>
-### Exclusão soft
+### Apagamento suave
 
- Se os seus modelos indexados estiverem em [forma de exclusão suave](/docs/eloquent#soft-deleting) e necessitar pesquisar os modelos deletados suavemente, defina a opção `soft_delete` do arquivo de configuração `config/scout.php`, para "true":
+Se seus modelos indexados são [excluídos suavemente](/docs/eloquent#soft-deleting) e você precisa pesquisar seus modelos excluídos suavemente, defina a opção de 'soft_delete' do arquivo de configuração `config/scout.php` para "true":
 
 ```php
     'soft_delete' => true,
 ```
 
- Quando esta opção estiver definida como `true`, o Scout não removerá modelos suavemente apagados do índice de pesquisa. Em vez disso, ele configurará um atributo escondido `__soft_deleted` no registro indexado. Assim, pode utilizar os métodos `withTrashed` ou `onlyTrashed` para recuperar os registos apagados suavemente na pesquisa:
+Quando essa opção de configuração é `verdadeira`, o Scout não removerá modelos excluídos com suavidade do índice de pesquisa. Em vez disso, ele definirá um atributo oculto `__soft_deleted` no registro indexado. Então, você pode usar os métodos `withTrashed` ou `onlyTrashed` para obter registros excluídos com suavidade ao pesquisar:
 
 ```php
     use App\Models\Order;
@@ -785,13 +785,13 @@ php artisan scout:flush "App\Models\Post"
     $orders = Order::search('Star Trek')->onlyTrashed()->get();
 ```
 
- > [!AVISO]
- > Quando um modelo excluído temporariamente for permanentemente apagado usando o comando forceDelete, Scout o removerá automaticamente do índice de busca.
+> NOTA:
+> Ao excluir um modelo com exclusão suave usando o comando 'forceDelete', o Scout irá removê-lo do índice de busca automaticamente.
 
 <a name="customizing-engine-searches"></a>
-### Personalizar as buscas do motor
+### Personalizando as pesquisas do motor
 
- Se você precisa fazer uma personalização avançada do comportamento de pesquisa de um motor, poderá passar uma função anônima como o segundo argumento para o método `search`. Por exemplo, é possível usar esse callback para adicionar dados de geolocalização às suas opções de busca antes que a consulta de pesquisa seja enviada ao Algolia:
+Se você precisa realizar um ajuste mais sofisticado do comportamento de pesquisa de uma ferramenta você pode passar um closure como segundo argumento para o método `search`. Por exemplo, você poderia usar esse retorno de chamada para adicionar dados de geolocalização à sua pesquisa antes que a consulta seja passada ao Algolia:
 
 ```php
     use Algolia\AlgoliaSearch\SearchIndex;
@@ -811,9 +811,9 @@ php artisan scout:flush "App\Models\Post"
 ```
 
 <a name="customizing-the-eloquent-results-query"></a>
-#### Personalizar a consulta de resultados do Eloquent
+#### Personalizando a consulta de resultados eloquentes
 
- Após Scout recuperar uma lista de modelos Eloquent correspondentes do mecanismo de busca da sua aplicação, você pode usar o Eloquent para recuperar todos os modelos correspondentes por meio das chaves primárias. Você pode personalizar esta consulta convocando a metodologia `query`. A metodologia `query` aceita um closure que recebe como argumento uma instância do construtor de consultas Eloquent:
+Depois de Scout recupera uma lista de modelos Eloquent correspondentes do mecanismo de pesquisa do seu aplicativo, Eloquent é usado para recuperar todos os modelos correspondentes por suas chaves primárias. Você pode personalizar esta consulta invocando o método 'query'. O método 'query' aceita um fechamento que receberá a instância construtora de consulta Eloquent como argumento:
 
 ```php
 use App\Models\Order;
@@ -824,15 +824,15 @@ $orders = Order::search('Star Trek')
     ->get();
 ```
 
- Uma vez que este callback é invocado depois de os modelos relevantes já terem sido recuperados a partir do mecanismo de busca da aplicação, a metodologia `query` não deve ser utilizada para "filtrar" resultados. Em vez disso, você deve usar as cláusulas [Scout WHERE](#where-clauses).
+Como essa chamada é invocada depois que os modelos relevantes já foram buscados do mecanismo de busca da sua aplicação, o método 'query' não deve ser utilizado para "filtragem" dos resultados. Em vez disso, utilize as [clausulas onde da Scout](#where-clauses).
 
 <a name="custom-engines"></a>
-## Máquinas personalizadas
+## Motores personalizados
 
 <a name="writing-the-engine"></a>
-#### Escrevendo o motor
+#### Escrevendo o Motor
 
- Se um dos motores de busca incorporados do Scout não atender às suas necessidades, você poderá escrever seu próprio motor personalizado e registrá-lo com o Scout. Seu motor deve estender a classe abstrata `Laravel\Scout\Engines\Engine`. Esta classe abstrata contém oito métodos que seu motor personalizado deverá implementar:
+Se um dos mecanismos de busca integrados do Scout não atende às suas necessidades, você pode escrever seu próprio mecanismo personalizado e registrá-lo com o Scout. Seu mecanismo deve estender a classe abstrata `Laravel\Scout\Engines\Engine`. Esta classe abstrata contém oito métodos que seu mecanismo personalizado deve implementar:
 
 ```php
     use Laravel\Scout\Builder;
@@ -847,12 +847,12 @@ $orders = Order::search('Star Trek')
     abstract public function flush($model);
 ```
 
- Você poderá achar útil revisar as implementações desses métodos na classe `Laravel\Scout\Engines\AlgoliaEngine`. Essa classe lhe oferece um bom ponto de partida para aprender como implementar cada um desses métodos em seu próprio mecanismo.
+Você pode achar útil revisar as implementações desses métodos na classe `Laravel\Scout\Engines\AlgoliaEngine`. Essa classe fornecerá um bom ponto de partida para aprender como implementar cada um desses métodos em seu próprio mecanismo.
 
 <a name="registering-the-engine"></a>
-#### Registo do motor
+#### Registro do Motor
 
- Depois de ter escrito seu motor personalizado, você pode registrá-lo com Scout usando o método `extend` do gerenciador de motores da Scout. O gerenciador de motores do Scout pode ser resolvido a partir do contêiner de serviços Laravel. Você deve chamar o método `extend` a partir da méthode `boot` da sua classe `App\Providers\AppServiceProvider` ou qualquer outro provedor de serviço usado por seu aplicativo:
+Uma vez que você tenha escrito seu motor personalizado, você pode registrá-lo com Scout usando o método `extend` do gerenciador de motores do Scout. O gerenciador de motores do Scout pode ser resolvido a partir do contêiner de serviços Laravel. Você deve chamar o método `extend` do método `boot` da sua classe `App\Providers\AppServiceProvider` ou qualquer outro provedor de serviços utilizado pelo seu aplicativo:
 
 ```php
     use App\ScoutExtensions\MySqlSearchEngine;
@@ -869,7 +869,7 @@ $orders = Order::search('Star Trek')
     }
 ```
 
- Depois que o motor estiver registrado, você poderá especificá-lo como seu driver Scout padrão no arquivo de configuração do aplicativo `config/scout.php`:
+Depois que seu motor de banco de dados estiver registrado você pode especificar ele como o driver padrão do Scout no arquivo 'config/scout.php' da sua aplicação.
 
 ```php
     'driver' => 'mysql',

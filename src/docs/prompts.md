@@ -1,35 +1,35 @@
-# Solicitações
+# Prompts
 
 <a name="introduction"></a>
 ## Introdução
 
- [Promptes de Laravel](https://github.com/laravel/prompts) é um pacote PHP que permite adicionar belos e fáceis de usar formulários às suas aplicações em linha de comando, com recursos semelhantes a um navegador, incluindo texto no lugar do campo de destino e validação.
+[Laravel Prompts](https://github.com/laravel/prompts) é um pacote em PHP para acrescentar belas e amigáveis formulários para suas aplicações de linha de comando, com funcionalidades como texto de espaço reservado e validação.
 
 <img src="https://laravel.com/img/docs/prompts-example.png">
 
- O Laravel Prompts é perfeito para aceitar a entrada do utilizador nos seus comandos de consola [Laravel Artisan](/docs/artisan#writing-commands), mas pode também ser usado em qualquer projeto de linha de comando PHP.
+O Laravel Prompts é perfeito para aceitar a entrada do usuário em seus [comandos de console Artisan]( /docs/artisan # writing - commands ), mas também pode ser usado em qualquer projeto PHP de linha de comando.
 
- > [!NOTA]
- [ Ambientes não suportados e medidas de contingência (#fallbacks).
+> Nota:
+> Laravel Prompts suporta macOS, Linux e Windows com WSL. Para mais informações, veja nossa documentação sobre [ambientes não suportados e atalhos](#atalhos).
 
 <a name="installation"></a>
 ## Instalação
 
- O Laravel Prompts já está incluído na última versão do Laravel.
+Laravel Prompts já está incluído com a última versão do Laravel.
 
- Os prompts do Laravel também podem ser instalados em outros projetos em PHP usando o gerenciador de pacotes Composer:
+Laravel Prompts também pode ser instalado em seus outros projetos PHP usando o gerenciador de pacotes composer:
 
 ```shell
 composer require laravel/prompts
 ```
 
 <a name="available-prompts"></a>
-## Sugestões disponíveis
+## Prompts disponíveis
 
 <a name="text"></a>
 ### Texto
 
- A função `text` solicitará ao usuário a questão fornecida, aceitará sua resposta e depois retornará ela:
+A função de texto irá solicitar ao usuário a pergunta dada, aceitar sua entrada e então retornar:
 
 ```php
 use function Laravel\Prompts\text;
@@ -37,7 +37,7 @@ use function Laravel\Prompts\text;
 $name = text('What is your name?');
 ```
 
- Você também pode incluir um texto de substituição, um valor padrão e uma dica informativa:
+Você também pode incluir texto de espaço reservado, um valor padrão e uma dica informativa:
 
 ```php
 $name = text(
@@ -49,9 +49,9 @@ $name = text(
 ```
 
 <a name="text-required"></a>
-#### Valores Exigidos
+#### Valores Obrigatórios
 
- Se você exigir que um valor seja inserido, poderá passar o argumento `required`:
+Se você precisa de um valor para ser inserido, você pode passar o argumento "required":
 
 ```php
 $name = text(
@@ -60,7 +60,7 @@ $name = text(
 );
 ```
 
- Se desejar personalizar a mensagem de validação, você também pode usar uma string:
+Se você gostaria de personalizar a mensagem de validação, você também pode passar uma string:
 
 ```php
 $name = text(
@@ -70,9 +70,9 @@ $name = text(
 ```
 
 <a name="text-validation"></a>
-#### Validação adicional
+#### Validação Adicional
 
- Finalmente, se você quiser executar uma lógica de validação adicional, poderá passar um closure para o argumento `validade`:
+Finalmente, se você quiser aplicar lógica de validação adicional, você pode passar um fechamento para o argumento 'validate':
 
 ```php
 $name = text(
@@ -85,9 +85,9 @@ $name = text(
 );
 ```
 
- O valor do fecho receberá o valor inserido e poderá retornar uma mensagem de erro ou `null`, caso a validação passe.
+O fechamento receberá o valor que foi inserido e pode retornar uma mensagem de erro ou 'nulo' se a validação passar.
 
- Como alternativa, você pode aproveitar o poder da validação de Laravel. Para fazer isso, forneça um array contendo o nome do atributo e as regras de validação desejadas para o parâmetro `validate`:
+Alternativamente, você pode aproveitar o poder de [validador] (/docs / validação) . Para fazer isso, forneça uma matriz contendo o nome do atributo e as regras de validação desejadas para o parâmetro validate:
 
 ```php
 $name = text(
@@ -99,7 +99,7 @@ $name = text(
 <a name="textarea"></a>
 ### Textarea
 
- A função `textarea` irá apresentar uma questão ao utilizador, aceitar o seu input através de um espaço de texto multilinha (textarea) e então reenviá-lo:
+A função `textarea` irá solicitar ao usuário a resposta à pergunta dada, aceitar seu texto por uma área de texto multilinha e retornar o resultado.
 
 ```php
 use function Laravel\Prompts\textarea;
@@ -107,7 +107,7 @@ use function Laravel\Prompts\textarea;
 $story = textarea('Tell me a story.');
 ```
 
- Também é possível incluir um texto de substituição, um valor por defeito e uma dica informativa:
+Você também pode incluir texto de espaço reservado, um valor padrão e uma dica informativa:
 
 ```php
 $story = textarea(
@@ -118,9 +118,9 @@ $story = textarea(
 ```
 
 <a name="textarea-required"></a>
-#### Valores exigidos
+#### Valores Requeridos
 
- Se você precisar que um valor seja inserido, pode passar o argumento `required`:
+Se você requer um valor a ser inserido, você pode passar o argumento 'required':
 
 ```php
 $story = textarea(
@@ -129,7 +129,7 @@ $story = textarea(
 );
 ```
 
- Se pretender personalizar a mensagem de validação, pode também facultar uma string:
+Se você gostaria de personalizar a mensagem de validação, você também pode passar uma string:
 
 ```php
 $story = textarea(
@@ -139,9 +139,9 @@ $story = textarea(
 ```
 
 <a name="textarea-validation"></a>
-#### Validação Adicional
+#### Validação adicional
 
- Se pretender executar uma lógica de validação adicional, poderá fazer o seguinte:
+Finalmente, se você quiser executar lógica de validação adicional, você pode passar um fechamento para o argumento 'validate':
 
 ```php
 $story = textarea(
@@ -154,9 +154,9 @@ $story = textarea(
 );
 ```
 
- O closure receberá o valor que foi inserido e poderá retornar uma mensagem de erro ou `null` se a validação tiver sido bem-sucedida.
+A função de finalização receberá o valor que foi inserido e retornará uma mensagem de erro ou 'nul' se a validação passar.
 
- Como alternativa, você pode usar o poder da validação de Laravel. Para fazer isso, forneça um array contendo o nome do atributo e as regras de validação desejadas para o parâmetro `validate`:
+Alternativamente você pode aproveitar o poder de [validator]/docs/validation) do Laravel. Para isso, forneça um array contendo o nome do atributo e as regras de validação desejadas no argumento 'validate':
 
 ```php
 $story = textarea(
@@ -168,7 +168,7 @@ $story = textarea(
 <a name="password"></a>
 ### Senha
 
- A função `password` é semelhante à função `text`, mas o texto introduzido pelo utilizador será enmascarado enquanto digitam na consola. Isto é útil ao requisitar informações confidenciais, tais como as palavras-passe:
+A função "senha" é parecida com a função de texto, porém o usuário que digita na tela será mascarado. Isto é útil quando se está pedindo informação sensível como senhas:
 
 ```php
 use function Laravel\Prompts\password;
@@ -176,7 +176,7 @@ use function Laravel\Prompts\password;
 $password = password('What is your password?');
 ```
 
- Também é possível incluir um texto de substituição e uma dica informativa:
+Você também pode incluir texto de espaço reservado e um dica informativa:
 
 ```php
 $password = password(
@@ -187,9 +187,9 @@ $password = password(
 ```
 
 <a name="password-required"></a>
-#### Valores necessários
+#### Valores Requeridos
 
- Se você necessitar que um valor seja inserido, poderá passar o argumento `required`:
+Se você deseja que um valor seja inserido, você pode passar o argumento `required`:
 
 ```php
 $password = password(
@@ -198,7 +198,7 @@ $password = password(
 );
 ```
 
- Se você gostaria de personalizar a mensagem de validação, poderá também passar uma string:
+Se você quiser personalizar o texto de validação, você pode passar uma string também:
 
 ```php
 $password = password(
@@ -208,9 +208,9 @@ $password = password(
 ```
 
 <a name="password-validation"></a>
-#### Validação adicional
+#### Validação Adicional
 
- Por último, se pretender executar uma lógica de validação adicional, pode passar um fecho (closure) para o argumento `validate`:
+Finalmente, se você gostaria de executar lógica de validação adicional, você pode passar um fechamento para o argumento "valida":
 
 ```php
 $password = password(
@@ -222,9 +222,9 @@ $password = password(
 );
 ```
 
- O método "close" receberá o valor inserido e poderá retornar uma mensagem de erro ou `null`, caso a validação seja passada.
+O fechamento receberá o valor inserido e pode retornar uma mensagem de erro ou 'nulo' se a validação passar.
 
- Como alternativa, você pode utilizar o poder da validação de Laravel. Para fazer isso, forneça um array contendo o nome do atributo e as regras desejadas para o argumento `validate`:
+Alternativamente, você pode usar o poder de [validador](/docs/validação) em Laravel. Para isso, forneça um array contendo o nome do atributo e as regras de validação desejadas para o parâmetro "valida":
 
 ```php
 $password = password(
@@ -234,9 +234,9 @@ $password = password(
 ```
 
 <a name="confirm"></a>
-### Confirme
+### Confirmar
 
- Se você precisar pedir confirmação ao usuário com uma resposta "sim" ou "não", poderá usar a função `confirm`. Os usuários podem usar as teclas de seta, bem como digitar "y" (sim) ou "n" (não). Esta função retornará "true" (verdadeiro) ou "false" (falso).
+Se você precisa perguntar ao usuário por uma " confirmação de sim ou não", você pode usar a função `confirm`. Os usuários podem usar as teclas setas para selecionar sua resposta ou pressionar 'y' ou 'n'. A função retornará 'true' ou 'false'.
 
 ```php
 use function Laravel\Prompts\confirm;
@@ -244,7 +244,7 @@ use function Laravel\Prompts\confirm;
 $confirmed = confirm('Do you accept the terms?');
 ```
 
- Também é possível incluir um valor padrão, uma redação personalizada para as etiquetas "Sim" e "Não", bem como uma dica de informação:
+Você pode incluir um valor padrão, palavras personalizadas para as etiquetas "Sim" e "Não" e uma dica informativa.
 
 ```php
 $confirmed = confirm(
@@ -259,7 +259,7 @@ $confirmed = confirm(
 <a name="confirm-required"></a>
 #### Exigindo "Sim"
 
- Se necessário, você poderá requisitar que os usuários selecionem "Sim", passando o argumento `required`:
+Se necessário, você pode exigir que seus usuários selecionem "Sim" passando o argumento `required`:
 
 ```php
 $confirmed = confirm(
@@ -268,7 +268,7 @@ $confirmed = confirm(
 );
 ```
 
- Se quiser personalizar a mensagem de validação, você também pode passar uma string:
+Se você gostaria de personalizar a mensagem de validação, também pode passar uma string:
 
 ```php
 $confirmed = confirm(
@@ -278,9 +278,9 @@ $confirmed = confirm(
 ```
 
 <a name="select"></a>
-### Selecione
+### Selecionar
 
- Se você precisar que o usuário escolha entre um conjunto pré-definido de opções, poderá usar a função `select`:
+Se você precisa que o usuário selecione de um conjunto prédefinido de opções, você pode usar a função `select`:
 
 ```php
 use function Laravel\Prompts\select;
@@ -291,7 +291,7 @@ $role = select(
 );
 ```
 
- Também é possível especificar a escolha por defeito e uma indicação:
+Você também pode especificar a escolha padrão e um atalho informativo:
 
 ```php
 $role = select(
@@ -302,7 +302,7 @@ $role = select(
 );
 ```
 
- Você também pode passar um conjunto associavido para o argumento `options`, para que a chave selecionada seja devolvida ao invés do valor:
+Você também pode passar uma matriz associativa para o argumento `options` para obter a chave selecionada em vez do valor:
 
 ```php
 $role = select(
@@ -316,7 +316,7 @@ $role = select(
 );
 ```
 
- Até cinco opções serão exibidas antes do início da rolagem. Você pode personalizar esse valor passando o argumento `scroll`:
+Até cinco opções serão exibidas antes da lista começar a rolar, você pode personalizar isso passando o argumento `scroll`:
 
 ```php
 $role = select(
@@ -329,7 +329,7 @@ $role = select(
 <a name="select-validation"></a>
 #### Validação
 
- Ao contrário de outras funções de aviso, a função `select` não aceita o argumento `required` porque não é possível selecionar nada. No entanto, pode ser passado um fecho ao argumento `validate` se necessitar apresentar uma opção mas impedir que seja selecionada:
+Ao contrário de outras funções de prompt, a função `select` não aceita o argumento `required`, porque não é possível selecionar nada. Contudo, você pode passar uma função fechada para o argumento `validate` se precisar mostrar uma opção mas impedi-la de ser selecionada:
 
 ```php
 $role = select(
@@ -346,12 +346,12 @@ $role = select(
 );
 ```
 
- Se o argumento `options` for um array associavê, a função de validação recebe a chave selecionada; caso contrário, será recebido o valor selecionado. A função pode retornar uma mensagem com erro ou `null`, caso passe na validação.
+Se o argumento 'options' é um array associativo, então o closures receberá a chave selecionada, caso contrário receberá o valor selecionado. O closures pode retornar uma mensagem de erro, ou 'null' se a validação for bem sucedida.
 
 <a name="multiselect"></a>
-### Seleção múltipla
+### Selecione várias
 
- Se o usuário precisar selecionar várias opções, você pode usar a função `multi-seleção`:
+Se você precisa que o usuário possa selecionar múltiplas opções, você pode usar a função 'multiselect':
 
 ```php
 use function Laravel\Prompts\multiselect;
@@ -362,7 +362,7 @@ $permissions = multiselect(
 );
 ```
 
- Também é possível especificar escolhas padrão e uma dica informativa:
+Você também pode especificar opções padrão e uma dica informativa:
 
 ```php
 use function Laravel\Prompts\multiselect;
@@ -375,7 +375,7 @@ $permissions = multiselect(
 );
 ```
 
- Você também pode passar um array associavido ao argumento `options` para retornar as chaves das opções selecionadas em vez de seus valores.
+Você também pode passar uma matriz associativa para o argumento "options" para retornar as chaves das opções selecionadas em vez de seus valores:
 
 ```php
 $permissions = multiselect(
@@ -390,7 +390,7 @@ $permissions = multiselect(
 );
 ```
 
- Serão exibidas até cinco opções antes que a lista comece a rodar. Você pode personalizar isso passando o argumento `scroll`:
+Até cinco opções serão mostradas antes da lista começar a rolar. Você pode personalizar isso passando o argumento 'scroll':
 
 ```php
 $categories = multiselect(
@@ -400,7 +400,7 @@ $categories = multiselect(
 );
 ```
 
- Você pode permitir que o usuário selecione facilmente todas as opções por meio do argumento `canSelectAll`:
+Você pode permitir que o usuário selecione todas as opções facilmente passando o parâmetro `canSelectAll`:
 
 ```php
 $categories = multiselect(
@@ -411,9 +411,9 @@ $categories = multiselect(
 ```
 
 <a name="multiselect-required"></a>
-#### Exigir um valor
+#### Exigindo um Valor
 
- Por padrão, o usuário pode selecionar uma ou mais opções. Você pode usar o argumento `required` para forçar a presença de uma ou mais opções:
+Por padrão, o usuário pode selecionar zero ou mais opções. Você pode passar o argumento `required` para forçar uma ou mais opções:
 
 ```php
 $categories = multiselect(
@@ -423,7 +423,7 @@ $categories = multiselect(
 );
 ```
 
- Se você deseja personalizar a mensagem de validação, poderá fornecer uma string para o argumento `required`:
+Se você gostaria de personalizar a mensagem de validação, você pode fornecer uma string para o argumento 'obrigatório':
 
 ```php
 $categories = multiselect(
@@ -436,7 +436,7 @@ $categories = multiselect(
 <a name="multiselect-validation"></a>
 #### Validação
 
- É possível transmitir uma lista de opções ao argumento `validate`, caso seja necessário apresentar uma opção, mas impedindo que ela seja selecionada.
+Você pode passar uma opção para o argumento 'validar' se você precisa apresentar uma opção, mas impedir que ele seja selecionado:
 
 ```php
 $permissions = multiselect(
@@ -453,12 +453,12 @@ $permissions = multiselect(
 );
 ```
 
- Se o argumento `options` for um array associação, a função receberá as chaves selecionadas, caso contrário, ela receberá os valores selecionados. A função pode retornar uma mensagem de erro ou `null`, se a validação passar.
+Se o argumento de opções é uma matriz associativa então a função de retorno receberá as chaves selecionadas, caso contrário receberá os valores selecionados. A função de retorno pode retornar uma mensagem de erro ou "nulo" se a validação passar.
 
 <a name="suggest"></a>
 ### Sugerir
 
- A função `sugest_` pode ser utilizada para disponibilizar a opção de preenchimento automático de escolhas possíveis. O utilizador ainda assim poderá fornecer qualquer resposta, independentemente das dicas de sugestão:
+A função sugerir pode ser usada para fornecer auto-conclusão para possíveis escolhas. O usuário ainda pode fornecer qualquer resposta, independentemente das dicas de auto-conclusão:
 
 ```php
 use function Laravel\Prompts\suggest;
@@ -466,7 +466,7 @@ use function Laravel\Prompts\suggest;
 $name = suggest('What is your name?', ['Taylor', 'Dayle']);
 ```
 
- Como alternativa, você pode passar uma função como segundo argumento da função `suggest`. A função será chamada sempre que o usuário digitou um caractere. A função deve aceitar um parâmetro de tipo string contendo a entrada do usuário até então e retornar um array com opções para autocompletar:
+Alternativamente, você pode passar um retículo como o segundo argumento da função `suggest`. O retículo será chamado cada vez que o usuário digitar um caractere de entrada. O retículo deve aceitar um parâmetro de string contendo a entrada do usuário até o momento e retornar um array de opções para auto-completar:
 
 ```php
 $name = suggest(
@@ -476,7 +476,7 @@ $name = suggest(
 )
 ```
 
- Você também pode incluir um texto de substituição, um valor por padrão e uma dica informativa:
+Você também pode incluir texto de espaço reservado, um valor padrão e uma dica informativa:
 
 ```php
 $name = suggest(
@@ -489,9 +489,9 @@ $name = suggest(
 ```
 
 <a name="suggest-required"></a>
-#### Valores necessários
+#### Valores Requeridos
 
- Se você precisar de que um valor seja preenchido, pode passar o argumento `required`:
+Se você precisa de um valor para ser inserido, você pode passar o argumento `required`:
 
 ```php
 $name = suggest(
@@ -501,7 +501,7 @@ $name = suggest(
 );
 ```
 
- Se você deseja personalizar a mensagem de validação, você também pode passar uma string:
+Se você gostaria de personalizar a mensagem de validação, também pode passar uma string.
 
 ```php
 $name = suggest(
@@ -512,9 +512,9 @@ $name = suggest(
 ```
 
 <a name="suggest-validation"></a>
-#### Validação adicional
+#### Validação Adicional
 
- Finalmente, se quiser executar uma lógica de validação adicional, poderá passar um closure para o argumento `validate`:
+Finalmente, se você gostaria de executar lógica adicional de validação, você pode passar um fechamento para o argumento 'validate':
 
 ```php
 $name = suggest(
@@ -528,9 +528,9 @@ $name = suggest(
 );
 ```
 
- A função closure receberá o valor que foi inserido e poderá retornar uma mensagem de erro ou `null`, se a validação tiver sido bem-sucedida.
+O fechamento receberá o valor que foi inserido e pode retornar uma mensagem de erro, ou nulo caso a validação passe.
 
- Como alternativa, você pode usar o poder do [validador de Laravel](https://laravel.com/docs/5.8/validation). Para fazer isso, forneça um array contendo o nome do atributo e as regras de validação desejadas ao argumento `validate`:
+Alternativamente, você pode aproveitar o poder de validação do [validator] (documentação) do Laravel. Para tanto, forneça uma matriz contendo o nome da atributo e as regras de validação desejadas para o parâmetro 'validate':
 
 ```php
 $name = suggest(
@@ -541,9 +541,9 @@ $name = suggest(
 ```
 
 <a name="search"></a>
-### Busca
+### Pesquisar
 
- Se o utilizador tiver muitas opções de seleção, a função `search` permite-lhe escrever uma consulta de pesquisa para filtrar os resultados antes de escolher uma das opções com as setas do teclado:
+Se você tem muitas opções para o usuário selecionar, o 'search' permite que o usuário digite uma consulta de pesquisa e filtra os resultados antes de usar as teclas de seta para selecionar uma opção.
 
 ```php
 use function Laravel\Prompts\search;
@@ -556,9 +556,9 @@ $id = search(
 );
 ```
 
- O método de closure recebe o texto que foi digitado pelo usuário até então e deve retornar um array de opções. Se você retornar um array associavó, o nome do item selecionado será retornado; caso contrário, seu valor será retornado.
+O encerramento receberá o texto que já foi digitado pelo usuário e deve retornar um array de opções. Se você retorna uma matriz associativa então a chave da opção selecionada será retornada, caso contrário seu valor será retornado em vez disso.
 
- Também é possível incluir texto de substituição e uma dica informativa:
+Você também pode incluir texto de espaço reservado e um dica informativa:
 
 ```php
 $id = search(
@@ -571,7 +571,7 @@ $id = search(
 );
 ```
 
- Serão exibidas até cinco opções antes que a lista comece a ser escoada. Você pode personalizar isso passando o argumento "scroll".
+Até cinco opções serão exibidas antes que a lista comece a rolar. Você pode personalizar isso passando o argumento `scroll`:
 
 ```php
 $id = search(
@@ -586,7 +586,7 @@ $id = search(
 <a name="search-validation"></a>
 #### Validação
 
- Se desejar executar uma lógica de validação adicional, você pode passar um closure para o argumento `validate`:
+Se você quiser executar lógica de validação adicional, você pode passar um encerramento para o argumento "validate":
 
 ```php
 $id = search(
@@ -604,12 +604,12 @@ $id = search(
 );
 ```
 
- Se o fecho `options` retornar um array associavó, em seguida, ele receberá a chave selecionada. Caso contrário, ele receberá o valor selecionado. O fecho poderá retornar uma mensagem de erro ou `null` se a validação passar.
+Se o `options` for uma função que retorna um array associativo, então a função receberá a chave selecionada, caso contrário, receberá o valor selecionado. A função pode retornar uma mensagem de erro ou `null` se a validação passar.
 
 <a name="multisearch"></a>
-### Busca Múltipla
+### Pesquisa múltipla
 
- Se você tiver várias opções de pesquisa e necessitar que o usuário selecione itens múltiplos, a função `multisearch` permite que o usuário digite uma consulta de busca para filtrar os resultados antes de usar as setas do teclado e a espaçosa para selecionar opções:
+Se você tiver muitas opções pesquisáveis e precisar que o usuário possa selecionar mais de uma opção, o recurso multisearch permite ao usuário digitar um termo de pesquisa para filtrar os resultados antes de usar as teclas seta e barra de espaço para selecionar opções.
 
 ```php
 use function Laravel\Prompts\multisearch;
@@ -622,9 +622,9 @@ $ids = multisearch(
 );
 ```
 
- O método de closure recebe o texto que foi digitado pelo usuário até então e deve retornar um array de opções. Se ele retornar um array associativo, as chaves das opções selecionadas serão retornadas; caso contrário, seus valores serão retornados.
+O closure receberá o texto que foi digitado pelo usuário até agora e deve retornar uma matriz de opções. Se você retornar uma matriz associativa, então as chaves das opções selecionadas serão retornadas; caso contrário, seus valores serão retornados em vez disso.
 
- Também é possível incluir um texto de substituição e uma dica de informação:
+Você também pode incluir texto de espaço reservado e um dica informativa:
 
 ```php
 $ids = multisearch(
@@ -637,7 +637,7 @@ $ids = multisearch(
 );
 ```
 
- Vão ser exibidas até cinco opções antes que a lista comece a rolar. Pode personalizar isto ao fornecer o argumento `scroll`:
+Até cinco opções serão exibidas antes que a lista comece a rolar. Você pode personalizar isso fornecendo o argumento `scroll`:
 
 ```php
 $ids = multisearch(
@@ -650,9 +650,9 @@ $ids = multisearch(
 ```
 
 <a name="multisearch-required"></a>
-#### Exigindo um valor
+#### Exigindo um Valor
 
- Por padrão, o usuário pode selecionar opções zero ou mais. Você pode passar o argumento `required` para forçar uma ou mais opções em vez disso:
+Por padrão, o usuário pode selecionar zero ou mais opções. Você pode passar o argumento `requerido` para impor uma ou mais opções em vez disso:
 
 ```php
 $ids = multisearch(
@@ -664,7 +664,7 @@ $ids = multisearch(
 );
 ```
 
- Se desejar personalizar a mensagem de validação, pode fornecer uma string para o argumento `required`:
+Se você gostaria de personalizar a mensagem de validação, você também pode fornecer uma string para o argumento `requerido`:
 
 ```php
 $ids = multisearch(
@@ -679,7 +679,7 @@ $ids = multisearch(
 <a name="multisearch-validation"></a>
 #### Validação
 
- Se você deseja executar uma lógica de validação adicional, pode passar um closure para o argumento `validate`:
+Se você gostaria de executar lógica adicional de validação, você pode passar um fechamento para o argumento "valida":
 
 ```php
 $ids = multisearch(
@@ -697,12 +697,12 @@ $ids = multisearch(
 );
 ```
 
- Se a chave de retorno do closure `options` for um mapeamento associativo, o closure receberá as chaves selecionadas; caso contrário, ele receberá os valores selecionados. O closure pode retornar uma mensagem de erro ou nulo se a validação der certo.
+Se a função `options` retornar uma matriz associativa, então a função receberá as chaves selecionadas. Caso contrário, ela receberá os valores selecionados. A função pode retornar uma mensagem de erro ou um valor nulo caso a validação seja realizada com sucesso.
 
 <a name="pause"></a>
 ### Pausa
 
- A função "pausa" permite mostrar ao utilizador um texto informativo e esperar que confirme a intenção de continuar premindo o teclado Enter/Retorno.
+A função 'pausa' pode ser usada para exibir texto informativo ao usuário e esperar que ele confirme seu desejo de prosseguir, pressionando as teclas enter ou return.
 
 ```php
 use function Laravel\Prompts\pause;
@@ -711,9 +711,9 @@ pause('Press ENTER to continue.');
 ```
 
 <a name="forms"></a>
-## Formulários
+## Formas
 
- Muitas vezes serão exibidos vários pedidos na ordem de coleta de informações antes da execução de outros comandos. Você pode usar a função `form` para criar um grupo de pedidos para o usuário concluir:
+Com frequência, você terá múltiplas solicitações que serão exibidas em sequência para coletar informações antes de realizar ações adicionais. Você pode usar a função 'form' para criar um conjunto agrupado de solicitações para o usuário completar:
 
 ```php
 use function Laravel\Prompts\form;
@@ -725,7 +725,7 @@ $responses = form()
     ->submit();
 ```
 
- O método `submit` retorna um array indexado numericamente que contém todas as respostas dos alertas do formulário. No entanto, pode fornecer um nome para cada aviso através do argumento `name`. Quando é fornecido um nome, a resposta da indicação com esse nome pode ser obtida:
+O método "submit" retornará uma matriz de índice numérico contendo todas as respostas do formulário. Contudo, você pode fornecer um nome para cada prompt através do argumento "nome". Quando um nome é fornecido, a resposta do prompt nomeado poderá ser acessada através desse mesmo nome.
 
 ```php
 use App\Models\User;
@@ -747,9 +747,9 @@ User::create([
 ]);
 ```
 
- O principal benefício de usar a função `form` é que o utilizador tem a capacidade para voltar aos prompts anteriores no formulário usando as teclas de atalho `CTRL + U`. Isto permite ao utilizador corrigir erros ou alterar seleções sem necessitar cancelar e reiniciar todo o formulário.
+O principal benefício de usar a função 'Form' é a capacidade do usuário em retornar aos prompts anteriores no formulário usando 'Ctrl + U'. Isso permite que o usuário corrija erros ou altere suas seleções sem precisar cancelar e reiniciar todo o formulário.
 
- Se você precisar de um controle mais detalhado sobre uma solicitação em um formulário, poderá invocar o método `add`, ao invés de chamar diretamente uma das funções de solicitação. O método `add` recebe todas as respostas anteriores do usuário:
+Se você precisa de mais controle granular sobre uma entrada em um formulário, você pode invocar o método 'adicionar' em vez de chamar uma das funções de entrada diretamente. O método 'adicionar' recebe todas as respostas anteriores fornecidas pelo usuário:
 
 ```php
 use function Laravel\Prompts\form;
@@ -768,7 +768,7 @@ outro("Your name is {$responses['name']} and you are {$responses['age']} years o
 <a name="informational-messages"></a>
 ## Mensagens informativas
 
- As funções note, info, warning, error e alert podem ser usadas para exibir mensagens informativas.
+As funções 'note', 'info', 'warning', 'error' e 'alert' podem ser usadas para exibir mensagens informativas.
 
 ```php
 use function Laravel\Prompts\info;
@@ -777,9 +777,9 @@ info('Package installed successfully.');
 ```
 
 <a name="tables"></a>
-## Tabelas
+## Mesa
 
- A função `table` facilita a visualização de várias linhas e colunas de dados. Tudo o que você precisa fazer é fornecer os nomes das colunas e os dados da tabela:
+A função "table" facilita a exibição de múltiplas linhas e colunas de dados. Tudo o que você precisa fazer é fornecer os nomes das colunas e os dados para a tabela:
 
 ```php
 use function Laravel\Prompts\table;
@@ -791,9 +791,9 @@ table(
 ```
 
 <a name="spin"></a>
-## Spin
+## Frenético
 
- A função `spin` exibe um giroscópio (ou "spinner") junto com uma mensagem opcional enquanto executa o callback especificado. Ele serve para indicar processos em andamento e retorna os resultados do callback após sua conclusão:
+A função "spin" exibe uma roda giratória junto com uma mensagem opcional enquanto executa um retorno de chamada especificado. Ele serve para indicar processos em andamento e retorna os resultados do retorno de chamada quando a conclusão é:
 
 ```php
 use function Laravel\Prompts\spin;
@@ -804,13 +804,13 @@ $response = spin(
 );
 ```
 
- > [ADVERTÊNCIA]
- > A função `spin` requer o módulo PHP `pcntl`. Caso este módulo não esteja disponível, será exibida uma versão estática do giroscópio em vez disso.
+> [!ALERTA]
+> A função "spin" requer a extensão "pcntl" do PHP para animar o spinner. Quando esta extensão não está disponível, uma versão estática do spinner aparecerá em vez disso.
 
 <a name="progress"></a>
-## Barras de progresso
+## Barras de Progresso
 
- Para tarefas de longa duração, é útil exibir uma barra de progresso que informe aos usuários o grau de conclusão da tarefa. Usando a função `progress`, Laravel irá mostrar uma barra de progresso e avançar seu progresso em cada iteração sobre um valor iterável:
+Para tarefas longas, é possível mostrar uma barra de progresso que informe aos usuários o quão completo está o trabalho. Utilizando a função "progress", o Laravel irá exibir uma barra de progresso e avançar seu progresso em cada iteração sobre um valor iterável dado:
 
 ```php
 use function Laravel\Prompts\progress;
@@ -822,9 +822,9 @@ $users = progress(
 );
 ```
 
- A função `progress()` funciona como uma função de mapeamento e retornará um array contendo o valor de retorno de cada iteração do seu callback.
+A função `progress` funciona como uma função de mapa, e retornará um array contendo o valor de retorno de cada iteração do seu callback.
 
- A função de retorno também pode aceitar a instância de `\Laravel\Prompts\Progress`, permitindo que você modifique o rótulo e a dica em cada iteração:
+O callback também pode aceitar a instância `\Laravel\Prompts\Progress`, permitindo que você modifique o rótulo e a dica em cada iteração.
 
 ```php
 $users = progress(
@@ -841,7 +841,7 @@ $users = progress(
 );
 ```
 
- Às vezes, você pode precisar de um controle manual maior sobre como a barra de progresso é avançada. Primeiro, defina o número total de passos que o processo irá percorrer. Em seguida, avance na barra de progresso através do método `advance` após processar cada item:
+Às vezes, você pode precisar de um controle manual sobre como uma barra de progresso é avançada. Primeiro, defina o número total de etapas que o processo irá iterar através. Em seguida, avance a barra de progresso através do método 'avance' após processar cada item:
 
 ```php
 $progress = progress(label: 'Updating users', steps: 10);
@@ -860,32 +860,32 @@ $progress->finish();
 ```
 
 <a name="terminal-considerations"></a>
-## Considerações sobre o terminal
+## Considerações Finais
 
 <a name="terminal-width"></a>
-#### Comprimento do terminal
+#### Largura do terminal
 
- Se o comprimento de qualquer etiqueta, opção ou mensagem de validação exceder o número de "colunas" no terminal do usuário, ele será automaticamente truncado para caber. Considere minimizar o comprimento dessas strings se os seus usuários estiverem utilizando terminais mais estreitos. Um tamanho máximo normalmente seguro é 74 caracteres para suportar um terminal de 80 caracteres.
+Se o comprimento de qualquer etiquetação ou mensagem de validação exceder o número de "colunas" do terminal do usuário, ele será automaticamente truncado para se encaixar. Considere minimizar o comprimento dessas strings se seus usuários podem estar usando terminais mais estreitos. Um limite seguro típico é 74 caracteres para suportar um terminal de 80 caracteres.
 
 <a name="terminal-height"></a>
-#### Alteza do terminal
+#### Altura do terminal
 
- Para comandos que aceitem o argumento `scroll`, o valor configurado será reduzido automaticamente para caber na altura do terminal de um usuário, incluindo espaço para uma mensagem de validação.
+Para qualquer prompt que aceite o argumento de `scroll`, o valor configurado será automaticamente reduzido para caber na altura do terminal do usuário, incluindo espaço para uma mensagem de validação.
 
 <a name="fallbacks"></a>
-## Ambientes não suportados e alternativas
+## Ambientes Incomuns e Recuperações
 
- O Laravel Prompts suporta o macOS, o Linux e o Windows com o WSL. Em virtude de limitações na versão do Windows do PHP, não é possível utilizar o Laravel Prompts no Windows fora do ambiente de execução WSL.
+Laravel prompts suporta macOS, Linux e Windows com WSL. Devido a limitações na versão do Windows de PHP, não é possível usar o Laravel prompts no momento fora do WSL em um Windows.
 
- Por este motivo, o Laravel Prompts suporta a recuperação para uma implementação alternativa como o [Question Helper do Symfony Console](https://symfony.com/doc/7.0/components/console/helpers/questionhelper.html).
+Por este motivo, o Laravel Prompt suporta cair de volta para uma implementação alternativa como o [Symfony Console Question Helper](https://symfony.com/doc/7.0/components/console/helpers/questionhelper.html).
 
- > [!ATENÇÃO]
- > Ao usar os Assistentes do Laravel com o framework Laravel, os recursos de suporte aos assistentes foram configurados para você e serão ativados automaticamente em ambientes não-suportados.
+> [!NOTE]
+> Quando você estiver usando os prompts do Laravel com o framework Laravel, para cada prompt que você usar foi configurado um fallback e ele será automaticamente habilitado em ambientes não suportados.
 
 <a name="fallback-conditions"></a>
-#### Condições de contingência
+#### Condições de queda
 
- Se você não estiver usando o Laravel ou precisar personalizar quando o comportamento de retorno é usado, poderá passar um booleano ao método estático "fallbackWhen" da classe "Prompt":
+Se você não está usando o Laravel ou precisa de personalizar quando o comportamento padrão é usado, você pode passar um booleano para o método estático `fallbackWhen` na classe Prompt:
 
 ```php
 use Laravel\Prompts\Prompt;
@@ -896,9 +896,9 @@ Prompt::fallbackWhen(
 ```
 
 <a name="fallback-behavior"></a>
-#### Comportamento de Retorno Automático
+#### Comportamento de Recuperação
 
- Se você não estiver usando o Laravel ou precisar personalizar o comportamento de retorno, pode passar um bloco de código (closure) para o método estático `fallbackUsing` em cada classe de prompt:
+Se você não estiver usando o Laravel ou precisar personalizar o comportamento de fallback, você pode passar um método de fechamento para o método estático `fallbackUsing` em cada classe de solicitação:
 
 ```php
 use Laravel\Prompts\TextPrompt;
@@ -928,4 +928,4 @@ TextPrompt::fallbackUsing(function (TextPrompt $prompt) use ($input, $output) {
 });
 ```
 
- Os fallback devem ser configurados individualmente para cada classe de prompt. O closure receberá uma instância da classe de prompt e deve retornar um tipo apropriado para o prompt.
+Os fallback devem ser configurados individualmente para cada classe de prompt. O encerramento receberá uma instância da classe de prompt e deve retornar um tipo apropriado para o prompt.

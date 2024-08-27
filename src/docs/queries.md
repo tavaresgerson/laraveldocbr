@@ -1,22 +1,22 @@
-# Banco de dados: Construtor de consultas
+# Banco de dados: construtor de consultas
 
 <a name="introduction"></a>
 ## Introdução
 
- A construção de consultas de base de dados fornecida pelo Laravel fornece uma interface fluente e conveniente para a criação e execução de consultas de bases de dados. Ela pode ser utilizada na maioria das operações de banco de dados da sua aplicação, e funciona perfeitamente com todos os sistemas de base de dados suportados pelo Laravel.
+O construtor de consultas do banco de dados Laravel fornece uma interface conveniente e fluente para criação e execução de consultas ao banco de dados. Pode ser usado para realizar a maioria das operações do banco de dados em sua aplicação e funciona perfeitamente com todos os sistemas de banco de dados suportados pelo Laravel.
 
- O construtor de consulta do Laravel utiliza o vinculamento de parâmetro PDO para proteger a aplicação contra ataques de injeção SQL. Não é necessário limpar ou sanitizar strings passadas ao construtor de consultas, pois os vínculos são realizados pelo sistema.
+O construtor de consulta do Laravel utiliza vinculação de parâmetros PDO para proteger seu aplicativo contra ataques de injeção de SQL. Não há necessidade de limpar ou sanear strings passadas para o construtor de consultas como associações de consulta.
 
- > [!AVISO]
- > O ANSP não suporta vinculação de nomes de coluna. Portanto, você nunca deve permitir que a entrada do usuário dite os nomes das colunas referenciadas por suas consultas, incluindo as colunas "ordenar por".
+> [ALERTA]
+> A PDO não oferece suporte à vinculação de nomes de colunas. Por esta razão, você nunca deve permitir que entradas do usuário dictam os nomes das colunas referenciados em suas consultas, incluindo colunas "order by".
 
 <a name="running-database-queries"></a>
-## Executar consultas de banco de dados
+## Executando consultas de banco de dados
 
 <a name="retrieving-all-rows-from-a-table"></a>
-#### Recuperar todas as linhas de uma tabela
+#### Recuperando todas as linhas de uma tabela
 
- É possível usar o método `table`, oferecido pela façade `DB`, para iniciar uma consulta. O método `table` retorna uma instância do construtor de consultas fluente para a tabela especificada, permitindo que você junte mais restrições à consulta e, então, finalize a recuperação dos resultados da consulta usando o método `get`:
+Você pode usar o método 'table' fornecido pela fachada 'DB' para iniciar uma consulta. O método 'table' retorna um construtor de consulta fluente para a tabela especificada, permitindo que você encadeie mais restrições na consulta e finalmente recupere os resultados da consulta usando o método 'get':
 
 ```php
     <?php
@@ -40,7 +40,7 @@
     }
 ```
 
- O método `get` retorna uma instância de `Illuminate\Support\Collection`, que contém os resultados da consulta, onde cada resultado é uma instância do objeto PHP `stdClass`. Pode aceder ao valor de cada coluna acessando-as como propriedades do objeto:
+O método get retorna uma instância de Illuminate\Support\Collection que contém os resultados da consulta em que cada resultado é uma instância do objeto PHP stdClass. Você pode acessar o valor de cada coluna acessando-a como propriedade do objeto:
 
 ```php
     use Illuminate\Support\Facades\DB;
@@ -52,13 +52,13 @@
     }
 ```
 
- > [!NOTA]
- [Documentação da coleção] (/).
+> [!NOTA]
+> Laravel Collections oferece um grande número de métodos extremamente poderosos para mapear e reduzir dados. Para mais informações sobre o Laravel Collections, veja a documentação em [coleções]('/)
 
 <a name="retrieving-a-single-row-column-from-a-table"></a>
-#### Recuperar uma linha única de uma tabela
+#### Recuperando uma única linha/coluna de uma tabela
 
- Se você só precisa de recuperar uma linha de uma tabela do banco de dados, pode usar o método `first`, que retorna um único objeto `stdClass`:
+Se você precisa apenas de recuperar uma única linha de uma tabela do banco de dados, você pode usar o método 'first' da classe 'DB'. Este método retornará um único objeto 'stdClass':
 
 ```php
     $user = DB::table('users')->where('name', 'John')->first();
@@ -66,22 +66,22 @@
     return $user->email;
 ```
 
- Se você não precisa de uma linha inteira, poderá extrair um único valor de um registro usando o método `value`. Este método retornará o valor da coluna diretamente:
+Se você não precisa de uma linha inteira, você pode extrair um valor único de um registro usando o método 'valor'. Esse método retornará o valor da coluna diretamente:
 
 ```php
     $email = DB::table('users')->where('name', 'John')->value('email');
 ```
 
- Para recuperar uma linha única pelo valor da coluna 'id', utilize o método `find`:
+Para recuperar uma única linha pelo valor da coluna `id`, utilize o método `find`:
 
 ```php
     $user = DB::table('users')->find(3);
 ```
 
 <a name="retrieving-a-list-of-column-values"></a>
-#### Recuperar um conjunto de valores para as colunas
+#### Recuperando uma Lista de Valores da Coluna
 
- Se você quiser recuperar uma instância da coleção `Illuminate\Support\Collection`, contendo os valores de uma única coluna, você pode usar o método `pluck`. Neste exemplo, nós vamos recuperar uma coleção de títulos do usuário:
+Se você gostaria de recuperar uma instância de `Illuminate\Support\Collection` contendo os valores de um único campo, você pode usar o método `pluck`. Neste exemplo, vamos buscar uma coleção de títulos de usuário:
 
 ```php
     use Illuminate\Support\Facades\DB;
@@ -93,7 +93,7 @@
     }
 ```
 
- Você pode especificar a coluna que a coleção resultante deve usar como chaves, fornecendo um segundo argumento para o método `pluck`:
+Você pode especificar a coluna que o resultado da coleção deve usar como chaves fornecendo um segundo argumento para o método `pluck`:
 
 ```php
     $titles = DB::table('users')->pluck('title', 'name');
@@ -104,9 +104,9 @@
 ```
 
 <a name="chunking-results"></a>
-### Resultados de chunking
+### Resultados de Chunca
 
- Se você precisa trabalhar com milhares de registros do banco de dados, considere usar o método `chunk` fornecido pela facade `DB`. Este método recupera um pequeno bloco de resultados de cada vez e alimenta cada bloco em uma função fechada para processamento. Por exemplo, vamos recuperar toda a tabela `users` em blocos de 100 registros por vez:
+Se você precisa trabalhar com milhares de registros em um banco de dados, considere usar o método 'chunk' fornecido pela fachada DB. Este método recupera um pequeno pedaço de resultados de cada vez e alimenta cada pedaço em uma função para processamento. Por exemplo, vamos recuperar a tabela 'users' inteira em pedaços de 100 registros cada:
 
 ```php
     use Illuminate\Support\Collection;
@@ -119,7 +119,7 @@
     });
 ```
 
- É possível interromper o processamento de novas porções retornando `false` do closure:
+Você pode parar a execução de mais pedaços retornando `false` do fechamento:
 
 ```php
     DB::table('users')->orderBy('id')->chunk(100, function (Collection $users) {
@@ -129,7 +129,7 @@
     });
 ```
 
- Se estiver a atualizar registos de base de dados ao mesmo tempo que efetua o chunking dos resultados, os resultados do chunk podem mudar de maneira inesperada. Se planeia atualizar os registos recuperados enquanto efetua o chunking, é sempre melhor utilizar a método `chunkById`. Este método paginará automaticamente os resultados com base na chave primária do registro:
+Se você está atualizando registros de banco de dados enquanto os resultados são agrupados, seus resultados agrupados podem mudar de maneiras inesperadas. Se você planeja atualizar os registros recuperados enquanto os resultados são agrupados, é sempre melhor usar o método `chunkById` em vez disso. Este método paginará automaticamente os resultados com base na chave primária do registro:
 
 ```php
     DB::table('users')->where('active', false)
@@ -142,13 +142,13 @@
         });
 ```
 
- > [!AVISO]
- > Ao atualizar ou apagar registros dentro do callback de segmentos, as alterações na chave primária ou nas chaves estrangeiras podem afetar a consulta do segmento. Isso poderia resultar no não-inclusão de registros nos resultados divididos em segmentos.
+> [Aviso]
+> Ao atualizar ou excluir registros dentro do retorno de chamada de pedaço, qualquer alteração na chave primária ou chaves estrangeiras pode afetar a consulta de pedaço. Isso pode potencialmente resultar em registros não incluídos no resultados pedaçados.
 
 <a name="streaming-results-lazily"></a>
-### Resultados de streaming sem esforço
+### Resultados de streaming preguiçosos
 
- O método `lazy` funciona de forma semelhante ao método [chunk](#chunking-results) no sentido de executar a consulta em lotes, mas, em vez de passar cada lote para um callback, o método `lazy()` retorna uma [`LazyCollection`](/docs/collections#lazy-collections), que permite interagir com os resultados como um único fluxo:
+O método `lazy()` funciona de maneira similar ao [método `chunked`]("/docs/methods/#chunking") na medida em que executa a consulta em pedaços. No entanto, em vez de passar cada pedaço para uma função de retorno de chamada, o `lazy()` retorna um [coleção lazy](/docs/collections#lazy-collections), permitindo que você interaja com os resultados como um único fluxo:
 
 ```php
 use Illuminate\Support\Facades\DB;
@@ -158,7 +158,7 @@ DB::table('users')->orderBy('id')->lazy()->each(function (object $user) {
 });
 ```
 
- Novamente, se você pretende atualizar os registros recuperados durante a iteração dos mesmos, é melhor usar o método `lazyById` ou `lazyByIdDesc`. Estes métodos farão automaticamente a paginação dos resultados com base na chave primária do registro:
+Mais uma vez, se você planeja atualizar os registros recuperados enquanto iteram sobre eles, é melhor usar o método 'lazyById' ou 'lazyByIdDesc' em vez disso. Esses métodos paginarão automaticamente os resultados com base na chave primária do registro:
 
 ```php
 DB::table('users')->where('active', false)
@@ -169,13 +169,13 @@ DB::table('users')->where('active', false)
     });
 ```
 
- > [!AVISO]
- > Ao atualizar ou excluir registros ao passar por eles em iteração, alterações no(s) principal(is)/chave estrangeira(s) podem afetar a consulta de segmentos. Isso poderia resultar na exclusão de registros nos resultados.
+> [ALERTA]
+> Ao atualizar ou excluir registros enquanto iteramos sobre eles, qualquer alteração na chave primária ou chaves estrangeiras pode afetar a consulta em partes. Isso pode potencialmente resultar em registros não incluídos nos resultados.
 
 <a name="aggregates"></a>
 ### Agregados
 
- O construtor de consultas também oferece vários métodos para recuperar valores agregados, como `contagem`, `máximo`, `mínimo`, `mediana` e `somatório`. Você pode chamar qualquer um desses métodos depois que sua consulta estiver construída:
+O construtor de consultas também fornece uma variedade de métodos para recuperar valores agregados como 'contar', 'máximo', 'mínimo', 'média' e 'soma'. Você pode chamar qualquer um desses métodos após construir sua consulta.
 
 ```php
     use Illuminate\Support\Facades\DB;
@@ -185,7 +185,7 @@ DB::table('users')->where('active', false)
     $price = DB::table('orders')->max('price');
 ```
 
- Claro que você pode combinar esses métodos com outros parâmetros para ajustar melhor os cálculos do valor agregado.
+É claro que você pode combinar esses métodos com outras cláusulas para ajustar como o seu valor agregado é calculado.
 
 ```php
     $price = DB::table('orders')
@@ -194,9 +194,9 @@ DB::table('users')->where('active', false)
 ```
 
 <a name="determining-if-records-exist"></a>
-#### Determinar se há registros
+#### Determinar se Registros Existem
 
- Ao invés de usar o método `count` para determinar se existem registros que atendam às restrições da consulta, você pode usar os métodos `exists` e `doesntExist`:
+Em vez de usar o método 'count' para determinar se há algum registro que corresponda aos critérios da sua consulta, você pode utilizar os métodos 'exists' e 'doesntExist':
 
 ```php
     if (DB::table('orders')->where('finalized', 1)->exists()) {
@@ -209,12 +209,12 @@ DB::table('users')->where('active', false)
 ```
 
 <a name="select-statements"></a>
-## Selecione Declarações
+## Declarações Selecionadas
 
 <a name="specifying-a-select-clause"></a>
-#### Especificando uma Cláusula de Seleção
+#### Especificando uma Cláusula Selecionada
 
- Nem sempre deseja selecionar todas as colunas de uma tabela de banco de dados. Com o método `select`, você pode especificar uma cláusula "selecione" personalizada para a consulta:
+Você pode não querer selecionar todas as colunas de uma tabela do banco de dados. Usando o método 'select', você pode especificar um "select" personalizado para a consulta:
 
 ```php
     use Illuminate\Support\Facades\DB;
@@ -224,13 +224,13 @@ DB::table('users')->where('active', false)
                 ->get();
 ```
 
- O método `distinct` permite obrigar a consulta a devolver resultados distintos:
+O método 'distinct' permite forçar a consulta a retornar resultados distintos:
 
 ```php
     $users = DB::table('users')->distinct()->get();
 ```
 
- Se você já tiver uma instância de builder de consulta e desejar adicionar uma coluna à cláusula "SELECT" existente, poderá usar o método `addSelect`:
+Se você já tem uma instância de um construtor de consulta e deseja adicionar uma coluna ao seu cláusula SELECT existente, você pode usar o método "addSelect":
 
 ```php
     $query = DB::table('users')->select('name');
@@ -239,9 +239,9 @@ DB::table('users')->where('active', false)
 ```
 
 <a name="raw-expressions"></a>
-## Expressões sem processamento
+## Expressões cruas
 
- Às vezes você pode precisar inserir uma cadeia de caracteres aleatória em uma consulta. Para criar uma expressão de string bruta, utilize o método `raw`, fornecido pela façana `DB`:
+Às vezes, você pode precisar inserir uma sequência arbitrária em uma consulta. Para criar uma expressão de string crua, você pode usar o método `raw` fornecido pela fachada DB:
 
 ```php
     $users = DB::table('users')
@@ -251,18 +251,18 @@ DB::table('users')->where('active', false)
                  ->get();
 ```
 
- > [Atenção]
- > As declarações brutos serão injetadas na consulta como cadeias de caracteres. Por isso deve ter um cuidado redobrado para evitar a criação de vulnerabilidades da injeção de SQL.
+> [Aviso]
+> As declarações brutas serão injetadas na consulta como strings, então você deve ser extremamente cuidadoso para evitar criar vulnerabilidades de injeção SQL.
 
 <a name="raw-methods"></a>
 ### Métodos Brutos
 
- Em vez de usar o método `DB::raw`, você também pode usar os seguintes métodos para inserir expressões brutos em várias partes da sua consulta. **Lembre-se, a Laravel não garante que qualquer consulta que use expressões brutas esteja protegida contra vulnerabilidades de injeção SQL**.
+Em vez de usar o método `DB::raw`, você também pode usar os seguintes métodos para inserir uma expressão bruta em diferentes partes da sua consulta. **Lembre-se, o Laravel não pode garantir que qualquer consulta usando expressões brutas é protegida contra vulnerabilidades de injeção SQL**.
 
 <a name="selectraw"></a>
-#### `selecionar bruto`
+#### 'selectRaw'
 
- O método `selectRaw` pode ser utilizado em vez de `addSelect(DB::raw(/* ... */))`. Este método aceita como segundo argumento uma matriz opcional de ligações:
+O método `selectRaw` pode ser usado no lugar de `addSelect(DB::raw(/* ... */))`. Este método aceita um array opcional de vinculações como segundo argumento:
 
 ```php
     $orders = DB::table('orders')
@@ -271,9 +271,9 @@ DB::table('users')->where('active', false)
 ```
 
 <a name="whereraw-orwhereraw"></a>
-#### `ondeBruto/ouWhereBrutal`
+#### „ondeRaw” ou „orWhereRaw”
 
- Os métodos `whereRaw` e `orWhereRaw` podem ser utilizados para injetar uma cláusula "where" em sua consulta. Estes métodos aceitam um array opcional de ligações como seu segundo argumento:
+Os métodos 'whereRaw' e 'orWhereRaw' podem ser usados para injetar uma cláusula "onde" bruta na sua consulta. Esses métodos aceitam um array opcional de associações como seu segundo argumento:
 
 ```php
     $orders = DB::table('orders')
@@ -282,9 +282,9 @@ DB::table('users')->where('active', false)
 ```
 
 <a name="havingraw-orhavingraw"></a>
-#### `tendoRaw/ouTendoRaw`
+#### 'havingRaw / orHavingRaw'
 
- Os métodos `havingRaw` e `orHavingRaw` podem ser usados para fornecer uma string bruta como valor da cláusula "having". Estes métodos aceitam um array de vinculações opcional como segundo argumento:
+Os métodos `havingRaw` e `orHavingRaw` podem ser usados para fornecer uma string bruta como o valor da cláusula "having". Estes métodos aceitam um array opcional de vinculações no segundo argumento:
 
 ```php
     $orders = DB::table('orders')
@@ -295,9 +295,9 @@ DB::table('users')->where('active', false)
 ```
 
 <a name="orderbyraw"></a>
-#### `orderByRaw`
+#### 'orderByRaw'
 
- É possível usar o método `orderByRaw` para fornecer uma string bruta como valor da cláusula de "ordenar por":
+O método `orderByRaw` pode ser usado para fornecer uma string bruta como o valor da cláusula "ordenar por":
 
 ```php
     $orders = DB::table('orders')
@@ -306,9 +306,9 @@ DB::table('users')->where('active', false)
 ```
 
 <a name="groupbyraw"></a>
-### `groupByRaw`
+### "groupByRaw"
 
- O método `groupByRaw` pode ser usado para fornecer uma cadeia de texto sem formatação como valor da cláusula `group by`:
+O método `groupByRaw` pode ser usado para fornecer uma string bruta como o valor da cláusula `GROUP BY`:
 
 ```php
     $orders = DB::table('orders')
@@ -318,12 +318,12 @@ DB::table('users')->where('active', false)
 ```
 
 <a name="joins"></a>
-## Joins
+## Junções
 
 <a name="inner-join-clause"></a>
-#### Cláusula de junção interna
+#### A cláusula de junção interna
 
- O construtor de consultas pode também ser usado para adicionar cláusulas de união às suas consultas. Para realizar uma "união interna" básica, pode utilizar o método `join` numa instância do construtor de consultas. O primeiro argumento passado ao método `join` é o nome da tabela a que necessita de ser unida. Os restantes argumentos especificam as restrições de coluna para a união. Pode até mesmo realizar uma união de várias tabelas numa única consulta:
+O construtor de consulta também pode ser usado para adicionar cláusulas JOIN às suas consultas. Para realizar um "INNER JOIN" básico, você pode usar o método `join` em uma instância do construtor de consulta. O primeiro argumento passado ao método `join` é o nome da tabela que você precisa unir à sua tabela atual, enquanto os argumentos restantes especificam as restrições de coluna para a junção. Você até pode unir múltiplas tabelas em uma única consulta:
 
 ```php
     use Illuminate\Support\Facades\DB;
@@ -336,9 +336,9 @@ DB::table('users')->where('active', false)
 ```
 
 <a name="left-join-right-join-clause"></a>
-#### Cláusula de União Esquerda/Direita
+#### Cláusula de Junção Esquerda / Direita
 
- Se pretender executar uma operação de "juntada esquerda" ou "juntada direita" em vez de uma "juntada interna", utilize os métodos `leftJoin` ou `rightJoin`. Estes têm a mesma assinatura que o método `join`:
+Se você quiser executar um "left join" ou um "right join" em vez de um "inner join", utilize o método 'leftJoin' ou 'rightJoin'. Estes métodos têm a mesma assinatura do método 'join':
 
 ```php
     $users = DB::table('users')
@@ -351,9 +351,9 @@ DB::table('users')->where('active', false)
 ```
 
 <a name="cross-join-clause"></a>
-#### Cláusula de União
+#### Junção de cruz
 
- Você pode usar o método `crossJoin` para executar uma "união cruzada". As uniões cruzadas geram um produto cartesiano entre a primeira tabela e a tabela associada:
+Você pode usar o método 'crossJoin' para realizar um "cross join". Cross joins geram um produto cartesiano entre a primeira tabela e a tabela unida:
 
 ```php
     $sizes = DB::table('sizes')
@@ -362,9 +362,9 @@ DB::table('users')->where('active', false)
 ```
 
 <a name="advanced-join-clauses"></a>
-#### Cláusulas de junção avançadas
+#### Cláusulas de Junção Avançadas
 
- Também é possível especificar cláusulas de união mais avançadas. Para começar, passar um closures como segundo argumento ao método `join`. O closures receberá uma instância da classe `Illuminate\Database\Query\JoinClause`, permitindo a especificação de restrições na cláusula "união":
+Você também pode especificar cláusulas de junção mais avançadas. Para começar, passe um fechamento como o segundo argumento para o método 'join'. O fechamento receberá uma instância de 'Illuminate/Database/Query/JoinClause' que permite especificar restrições na cláusula "join":
 
 ```php
     DB::table('users')
@@ -374,7 +374,7 @@ DB::table('users')->where('active', false)
             ->get();
 ```
 
- Se pretender usar uma cláusula "where" nas suas operações de junção, poderá utilizar os métodos `where` e `orWhere` fornecidos pela instância `JoinClause`. Em vez de compararem duas colunas, estes métodos irão comparar a coluna com um valor:
+Se você quiser usar uma cláusula "onde" em suas junções, você pode usar os métodos `where` e `orWhere` fornecidos pela instância `JoinClause`. Em vez de comparar duas colunas, esses métodos irão comparar a coluna com um valor.
 
 ```php
     DB::table('users')
@@ -386,9 +386,9 @@ DB::table('users')->where('active', false)
 ```
 
 <a name="subquery-joins"></a>
-#### Uniões de subconjunto
+#### Junções de subconsulta
 
- Você pode usar os métodos `joinSub`, `leftJoinSub`, e `rightJoinSub` para unir uma consulta a uma sub-consulta. Cada um destes métodos recebe três argumentos: a sub-consulta, o alias da tabela relacionada, e um closure que define as colunas relacionadas. Neste exemplo, vamos obter uma coleção de usuários onde cada registro do usuário também contém a data e hora `created_at` (timestamp) do post mais recente do blog desse usuário:
+Você pode usar os métodos 'joinSub', 'leftJoinSub' e 'rightJoinSub' para juntar uma consulta a uma subconsulta. Cada um desses métodos recebe três argumentos: a subconsulta, seu nome de tabela e uma função lambda que define as colunas relacionadas. Neste exemplo, vamos obter uma coleção de usuários onde cada registro do usuário também contém o carimbo de data e hora 'created_at' do último blog post publicado pelo usuário:
 
 ```php
     $latestPosts = DB::table('posts')
@@ -403,14 +403,14 @@ DB::table('users')->where('active', false)
 ```
 
 <a name="lateral-joins"></a>
-#### Juntas laterais
+#### Junções Laterais
 
- > Aviso [!AVERTISSEMENT]
- > Atualmente, as junções laterais são suportadas pelos sistemas PostgreSQL e SQL Server.
+> [!ALERTA]
+> As junções laterais atualmente são suportadas pelo PostgreSQL, MySQL >= 8.0.14 e SQL Server.
 
- Você pode usar os métodos `joinLateral` e `leftJoinLateral` para executar uma "joia lateral" com um sub-queroy. Cada um desses métodos recebe dois argumentos: o sub-queroy e seu alias de tabela. A(s) condição(ões) de join devem ser especificadas dentro da cláusula `where` do sub-queroy especificado. Joins laterais são avaliadas para cada linha e podem fazer referência a colunas fora do sub-queroy.
+Você pode usar os métodos `joinLateral` e `leftJoinLateral` para realizar uma "junção lateral" com uma subconsulta. Cada um desses métodos recebe dois argumentos: a subconsulta e sua tabela alias. As condições de junção(s) devem ser especificadas dentro da cláusula `where` da dada subconsulta. Junções laterais são avaliadas por linha, e podem referir colunas fora da subconsulta.
 
- Neste exemplo, recuperaremos uma coleção de utilizadores assim como os três posts de blog mais recentes do utilizador. Cada utilizador pode gerar um máximo de três linhas no conjunto de resultados: uma para cada um dos seus posts de blog mais recentes. A condição de associação é especificada com uma cláusula `whereColumn` na sub-query, referenciando a linha atual do utilizador:
+Neste exemplo, vamos buscar uma coleção de usuários assim como o usuário' três últimas postagens no blog. Cada usuário pode produzir até três linhas na tabela de resultados: uma para cada um das postagens do blog mais recentes. A condição de junção é especificada com a cláusula `whereColumn` dentro da subconsulta, referenciando a linha atual do usuário:
 
 ```php
     $latestPosts = DB::table('posts')
@@ -427,7 +427,7 @@ DB::table('users')->where('active', false)
 <a name="unions"></a>
 ## Sindicatos
 
- O construtor de consultas também fornece uma conveniente maneira de "fusionar" duas ou mais consultas juntas. Por exemplo, você pode criar uma consulta inicial e usar o método `union` para uni-la a outras consultas:
+A construção de consultas também fornece um método conveniente para "união" de duas ou mais consultas juntas. Por exemplo, você pode criar uma consulta inicial e usar o método 'unione' para uni-la com mais consultas:
 
 ```php
     use Illuminate\Support\Facades\DB;
@@ -441,17 +441,17 @@ DB::table('users')->where('active', false)
                 ->get();
 ```
 
- Além do método `union`, o construtor de consultas disponibiliza o método `unionAll`. As consultas combinadas com o uso do método `unionAll` não têm os seus resultados duplicados removidos. O método `unionAll` tem a mesma assinatura de método que o método `union`.
+Além do método 'union', o construtor de consultas fornece um método 'unionAll'. Consultas que são combinadas usando o método 'unionAll' não terão seus resultados duplicados removidos. O método 'unionAll' tem a mesma assinatura de método como o 'union' método.
 
 <a name="basic-where-clauses"></a>
-## Condicional de Localização
+## Cláusulas básicas de onde
 
 <a name="where-clauses"></a>
-### Onde as cláusulas
+### Onde Cláusulas
 
- Para adicionar cláusulas WHERE à consulta, pode utilizar o método `where` do construtor de consultas. A chamada mais básica para este método requer três argumentos. O primeiro é o nome da coluna. O segundo é um operador, que pode ser qualquer um dos operadores suportados pelo banco de dados. O terceiro é o valor a comparar com o valor da coluna.
+Você pode usar o método 'where' do construtor de query para acrescentar "onde" a consulta. A chamada básica do método 'where' requer três argumentos. O primeiro argumento é o nome da coluna. O segundo argumento é um operador, que pode ser qualquer um dos operadores suportados pelo banco de dados. O terceiro argumento é o valor para comparação contra o valor da coluna.
 
- Por exemplo, a consulta a seguir recupera os usuários cujo valor da coluna "votes" é igual a `100` e o valor da coluna "age" é maior que `35`:
+Por exemplo, a seguinte consulta recupera os usuários onde o valor da coluna "votos" é igual a 100 e o valor da coluna "idade" é maior que 35:
 
 ```php
     $users = DB::table('users')
@@ -460,13 +460,13 @@ DB::table('users')->where('active', false)
                     ->get();
 ```
 
- Para conveniência, caso você queira verificar se uma coluna é igual a um determinado valor, pode passar o valor como segundo argumento ao método where. O Laravel assumirá que deseja utilizar o operador `=`:
+Para conveniência, caso queira verificar se uma coluna é igual a um determinado valor, você pode passar o valor como segundo argumento para o método 'where'. O Laravel presumirá que você quer usar o operador '=':
 
 ```php
     $users = DB::table('users')->where('votes', 100)->get();
 ```
 
- Como já mencionado, você pode usar qualquer operador que seja suportado pelo seu sistema de banco de dados:
+Como já mencionado, você pode utilizar qualquer operador que seu sistema de banco de dados suporte:
 
 ```php
     $users = DB::table('users')
@@ -482,7 +482,7 @@ DB::table('users')->where('active', false)
                     ->get();
 ```
 
- Você também pode passar um array de condições para a função `where`. Cada elemento do array deve conter uma matriz contendo os três argumentos normalmente passados para o método `where`:
+Você também pode passar uma matriz de condições para o método `where`. Cada elemento da matriz deve ser uma matriz que contenha os três argumentos tipicamente passados para o método `where`:
 
 ```php
     $users = DB::table('users')->where([
@@ -491,13 +491,13 @@ DB::table('users')->where('active', false)
     ])->get();
 ```
 
- > [AVISO]
- > O ADO não suporta vinculação de nomes de colunas. Portanto, nunca deve permitir que a entrada do usuário determine os nomes das colunas referenciadas pelas consultas, incluindo as colunas "ordenar por".
+> [Aviso!]
+> O PDO não suporta nomes de coluna vinculados. Portanto, nunca permita que a entrada do usuário dicte os nomes da coluna referenciada em suas consultas, incluindo colunas "order by".
 
 <a name="or-where-clauses"></a>
-### Onde as cláusulas
+### Ou Cláusulas
 
- Ao concatenar chamadas ao método "where" do construtdor de consulta, as cláusulas "where" serão unidas utilizando o operador "and". No entanto, você pode usar o método "orWhere" para juntar uma cláusula à consulta usando o operador "or". O método "orWhere" aceita os mesmos argumentos que o método "where":
+Quando encadeamos chamadas para o método "where" do construtor de consulta, as cláusulas "where" serão encadeadas usando o operador "and". No entanto, você pode usar o método "orWhere" para unir uma cláusula à consulta usando o operador "or". O método "orWhere" aceita os mesmos argumentos que o método "where":
 
 ```php
     $users = DB::table('users')
@@ -506,7 +506,7 @@ DB::table('users')->where('active', false)
                         ->get();
 ```
 
- Se você precisa agrupar uma condição de "ou" entre parênteses, pode passar um closure como primeiro argumento para o método `orWhere`:
+Se você precisa agrupar uma condição "ou" dentro de parênteses, você pode passar um fechamento como o primeiro argumento para o método 'orWhere':
 
 ```php
     $users = DB::table('users')
@@ -518,19 +518,19 @@ DB::table('users')->where('active', false)
                 ->get();
 ```
 
- O exemplo acima produz o seguinte SQL:
+O exemplo acima produzirá o seguinte SQL:
 
 ```sql
 select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 ```
 
- > [!AVISO]
- > É sempre aconselhável agrupar chamadas de `orWhere` para evitar comportamentos inesperados quando é aplicada a escala global.
+> (!Aviso)
+> Você deve agrupar as chamadas `orWhere` para evitar um comportamento inesperado quando escopos globais são aplicados.
 
 <a name="where-not-clauses"></a>
-### Onde não se aplicam as cláusulas
+### Onde não cláusulas
 
- Os métodos `whereNot` e `orWhereNot` podem ser usados para rejeitar um determinado grupo de restrições de consulta. Por exemplo, a seguinte consulta exclui produtos que estejam em liquidação ou com preços inferiores a dez:
+Os métodos whereNot e orWhereNot podem ser usados para negar um determinado grupo de restrições de consulta. Por exemplo, a seguinte consulta exclui produtos que estão em liquidação ou os quais têm um preço inferior a dez:
 
 ```php
     $products = DB::table('products')
@@ -542,9 +542,9 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
 ```
 
 <a name="where-any-all-clauses"></a>
-### Onde as cláusulas Todo/Todo
+### Onde Quaisquer/Todos Os Cláusulas
 
- Algumas vezes pode ser necessário aplicar as mesmas restrições de consulta para várias colunas. Por exemplo, poderá pretender recuperar todos os registos onde quaisquer colunas numa lista dada são semelhantes a um valor determinado. Isto é efetuado utilizando o método `whereAny`:
+Às vezes você pode precisar aplicar as mesmas restrições de consulta a várias colunas. Por exemplo, você pode querer buscar todos os registros onde qualquer coluna em uma determinada lista é `LIKE` um determinado valor. Você pode fazer isso usando o método `whereAny`:
 
 ```php
     $users = DB::table('users')
@@ -557,7 +557,7 @@ select * from users where votes > 100 or (name = 'Abigail' and votes > 50)
                 ->get();
 ```
 
- A consulta acima resultará no seguinte código SQL:
+A consulta acima produzirá o seguinte SQL:
 
 ```sql
 SELECT *
@@ -569,7 +569,7 @@ WHERE active = true AND (
 )
 ```
 
- Da mesma forma, o método `whereAll` pode ser utilizado para recuperar registos onde todas as colunas indicadas correspondam a um determinado critério.
+Da mesma forma, o método "whereAll" pode ser usado para obter registros onde todas as colunas fornecidas correspondam a uma determinada restrição:
 
 ```php
     $posts = DB::table('posts')
@@ -581,7 +581,7 @@ WHERE active = true AND (
                 ->get();
 ```
 
- A pergunta acima irá gerar o seguinte SQL:
+A consulta acima produz a seguinte SQL:
 
 ```sql
 SELECT *
@@ -593,9 +593,9 @@ WHERE published = true AND (
 ```
 
 <a name="json-where-clauses"></a>
-### JSON Cláusulas WHERE
+### JSON Onde Cláusulas
 
- O Laravel também suporta consultas de tipos de colunas JSON em bases de dados que disponibilizem suporte para tipos de coluna JSON. Atualmente, isto inclui o MySQL 8.0+, PostgreSQL 12.0+, SQL Server 2017+ e SQLite 3.39.0+ (com a [extensão JSON1](https://www.sqlite.org/json1.html)). Para consultar uma coluna JSON, utilize o operador `->`:
+O Laravel também suporta consultar colunas de tipo JSON em bancos que fornecem suporte para o tipo de coluna JSON. Atualmente, isso inclui MySQL 8.0+, PostgreSQL 12.0+, SQL Server 2017+, e SQLite 3.39.0+ (com a extensão [JSON1](https://www.sqlite.org/json1.html)). Para consultar uma coluna de tipo JSON, use o operador `->`:
 
 ```php
     $users = DB::table('users')
@@ -603,7 +603,7 @@ WHERE published = true AND (
                     ->get();
 ```
 
- Você pode usar o `whereJsonContém` para consultar matrizes JSON:
+Você pode usar o comando `whereJsonContains` para fazer pesquisa de arrays em formato JSON:
 
 ```php
     $users = DB::table('users')
@@ -611,7 +611,7 @@ WHERE published = true AND (
                     ->get();
 ```
 
- Se o seu aplicativo utilizar os bancos de dados MySQL ou PostgreSQL, poderá transmitir um conjunto de valores para a metodologia `whereJsonContains`:
+Se sua aplicação utilizar bancos de dados MySQL ou PostgreSQL, você pode passar um array de valores para o método `whereJsonContains`:
 
 ```php
     $users = DB::table('users')
@@ -619,7 +619,7 @@ WHERE published = true AND (
                     ->get();
 ```
 
- Você pode usar o método `whereJsonLength` para consultar arrays de JSON por sua extensão:
+Você pode usar o método whereJsonLength para consultar matrizes de JSON por sua extensão:
 
 ```php
     $users = DB::table('users')
@@ -632,11 +632,11 @@ WHERE published = true AND (
 ```
 
 <a name="additional-where-clauses"></a>
-### Adicionalidade de cláusulas de destino
+### Cláusulas Adicionais "where"
 
- **whereBetween/ouWhereBetween**
+**ondeEntre / ouWhereBetween**
 
- O método `whereBetween` verifica se um valor de coluna está entre dois valores:
+O método `WhereBetween` verifica se o valor de uma coluna está entre dois valores:
 
 ```php
     $users = DB::table('users')
@@ -644,9 +644,9 @@ WHERE published = true AND (
                ->get();
 ```
 
- **/ou**
+**ondeNãoEntre / ouWhereNotBetween**
 
- O método `whereNotBetween` verifica se o valor de uma coluna está fora dos dois valores:
+O método `whereNotBetween` verifica que o valor de uma coluna está fora de dois valores:
 
 ```php
     $users = DB::table('users')
@@ -654,9 +654,9 @@ WHERE published = true AND (
                         ->get();
 ```
 
- **whereBetweenColumns/ whereNotBetweenColumns/ ouWhereBetweenColumns/ ouWhereNotBetweenColumns**
+**ondeEntreColunas / ondeNãoEntreColunas ou ondeEntreColunas / ondeNãoEntreColunas**
 
- O método `whereBetweenColumns` verifica se o valor de uma coluna está entre os valores de duas outras colunas da mesma linha na tabela:
+O método `whereBetweenColumns` verifica que o valor de uma coluna se encontra entre os dois valores de duas colunas na mesma linha da tabela.
 
 ```php
     $patients = DB::table('patients')
@@ -664,7 +664,7 @@ WHERE published = true AND (
                            ->get();
 ```
 
- O método `whereNotBetweenColumns` verifica se o valor de uma determinada coluna está fora dos valores das duas colunas da mesma linha na tabela.
+O método "whereNotBetweenColumns" verifica que o valor de uma coluna se encontra fora dos valores de duas colunas na mesma linha da tabela.
 
 ```php
     $patients = DB::table('patients')
@@ -672,9 +672,9 @@ WHERE published = true AND (
                            ->get();
 ```
 
- **whereIn / whereNotIn / orWhereIn / orWhereNotIn**
+ondeIn / ondeNotIn ou orWhereIn / orWhereNotIn
 
- O método whereIn verifica se um determinado valor de uma coluna está contido no conjunto de valores fornecido por um array.
+O método `whereIn` verifica se o valor de uma coluna dada está contido em um determinado array.
 
 ```php
     $users = DB::table('users')
@@ -682,7 +682,7 @@ WHERE published = true AND (
                         ->get();
 ```
 
- O método `whereNotIn` verifica se o valor da coluna fornecida não está contido no conjunto de dados:
+O método `whereNotIn` verifica que o valor da coluna especificada não está contido no array fornecido:
 
 ```php
     $users = DB::table('users')
@@ -690,7 +690,7 @@ WHERE published = true AND (
                         ->get();
 ```
 
- Você também pode fornecer um objeto de consulta como o segundo argumento do método `whereIn`:
+Você também pode fornecer um objeto de consulta como segundo argumento do método 'whereIn':
 
 ```php
     $activeUsers = DB::table('users')->select('id')->where('is_active', 1);
@@ -700,7 +700,7 @@ WHERE published = true AND (
                         ->get();
 ```
 
- O exemplo acima produzirá o seguinte SQL:
+O exemplo acima produzirá o seguinte SQL:
 
 ```sql
 select * from comments where user_id in (
@@ -710,12 +710,12 @@ select * from comments where user_id in (
 )
 ```
 
- > [Atenção]
- > Se você estiver adicionando um grande array de vinculações inteiras para sua consulta, os métodos `whereIntegerInRaw` ou `whereIntegerNotInRaw` podem ser usados para reduzir significativamente o uso da memória.
+> ¡ADVERTENCIA!
+> Se você estiver adicionando uma grande matriz de variáveis inteiras para sua consulta, o método 'whereIntegerInRaw' ou 'whereIntegerNotInRaw' pode ser usado para reduzir muito seu uso de memória.
 
- **whereNull/ onde não existe /ouWhereNull / ouWhereNotNull**
+onde Null / ondeNotNull ou whereNull / whereNotNull
 
- O método `whereNull` verifica se o valor da coluna indicada é `NULL`:
+O método `whereNull` verifica que o valor da coluna fornecida seja `NULL`:
 
 ```php
     $users = DB::table('users')
@@ -723,7 +723,7 @@ select * from comments where user_id in (
                     ->get();
 ```
 
- O método `whereNotNull` verifica se o valor da coluna não é `NULL`.
+O método `whereNotNull` verifica que o valor da coluna não é 'NULL':
 
 ```php
     $users = DB::table('users')
@@ -731,9 +731,9 @@ select * from comments where user_id in (
                     ->get();
 ```
 
- **whereDate/whereMonth/whereDay/whereYear/whereTime**
+**ondeData / ondeMês / ondeDia / ondeAno / ondeHora**
 
- O método `whereDate` pode ser utilizado para comparar um valor de coluna com uma data:
+O método 'whereDate' pode ser usado para comparar um valor de coluna com uma data:
 
 ```php
     $users = DB::table('users')
@@ -741,7 +741,7 @@ select * from comments where user_id in (
                     ->get();
 ```
 
- O método `whereMonth` permite comparar o valor de uma coluna com um mês específico:
+O método `whereMonth` pode ser usado para comparar um valor de uma coluna com um mês específico:
 
 ```php
     $users = DB::table('users')
@@ -749,7 +749,7 @@ select * from comments where user_id in (
                     ->get();
 ```
 
- O método `whereDay` pode ser usado para comparar um valor de coluna com um dia específico do mês:
+O método `whereDay` pode ser utilizado para comparar o valor de uma coluna com um dia específico do mês:
 
 ```php
     $users = DB::table('users')
@@ -757,7 +757,7 @@ select * from comments where user_id in (
                     ->get();
 ```
 
- O método `whereYear` pode ser utilizado para comparar o valor de uma coluna com um ano específico:
+A função `whereYear` pode ser usada para comparar um valor de coluna com um ano específico:
 
 ```php
     $users = DB::table('users')
@@ -765,7 +765,7 @@ select * from comments where user_id in (
                     ->get();
 ```
 
- O método `whereTime` pode ser usado para comparar o valor de uma coluna com um determinado horário:
+O método `whereTime` pode ser usado para comparar um valor de coluna em relação a uma hora específica:
 
 ```php
     $users = DB::table('users')
@@ -773,9 +773,9 @@ select * from comments where user_id in (
                     ->get();
 ```
 
- **ouWhereColumn**
+**ondeColuna / ou OndeColuna**
 
- O método `whereColumn` pode ser utilizado para verificar se duas colunas são iguais:
+O método 'whereColumn' pode ser usado para verificar que duas colunas são iguais:
 
 ```php
     $users = DB::table('users')
@@ -783,7 +783,7 @@ select * from comments where user_id in (
                     ->get();
 ```
 
- Também é possível utilizar um operador de comparação com o método `whereColumn`:
+Você também pode passar um operador de comparação para o método `whereColumn`:
 
 ```php
     $users = DB::table('users')
@@ -791,7 +791,7 @@ select * from comments where user_id in (
                     ->get();
 ```
 
- Você também pode passar um array de comparações de colunas para o método `whereColumn`. Essas condições serão unidas usando o operador `and`:
+Você também pode passar um array de comparações de coluna para o método `whereColumn`. Essas condições serão unidas usando o operador `and`:
 
 ```php
     $users = DB::table('users')
@@ -802,9 +802,9 @@ select * from comments where user_id in (
 ```
 
 <a name="logical-grouping"></a>
-### Agrupamento lógico
+### Agrupamento Lógico
 
- Às vezes você pode precisar agrupar várias cláusulas "onde" entre parênteses para conseguir o agrupamento lógico desejado em sua consulta. Na verdade, geralmente é sempre necessário agrupar os chamados para o método `orWhere` entre parêntesis para evitar comportamentos inesperados da consulta. Para isso, você pode passar um closure ao método `where`:
+Às vezes você pode precisar agrupar várias cláusulas "onde" dentro de parênteses para alcançar o agrupamento lógico desejado da sua consulta. Na verdade, você deve geralmente agrupar as chamadas ao método `orWhere` dentro de parênteses para evitar o comportamento inesperado da consulta. Para fazer isso, você pode passar uma closure ao método `where`:
 
 ```php
     $users = DB::table('users')
@@ -816,22 +816,22 @@ select * from comments where user_id in (
                ->get();
 ```
 
- Como você pode ver, o passar de uma construção de função para o método `where` indica ao construtor de consultas que irá iniciar um grupo de restrições. O closure receberá uma instância do construtor de consulta que poderá ser usada para definir as restrições que devem estar contidas no parênteses do grupo. O exemplo acima produz o seguinte SQL:
+Como você pode ver, passando uma consulta para o método `where` instrui o construtor de consultas a começar um grupo de restrições. A consulta receberá uma instância do construtor de consultas que você poderá usar para definir as restrições que devem ser contidas dentro do grupo de parênteses. O exemplo acima produziria a seguinte SQL:
 
 ```sql
 select * from users where name = 'John' and (votes > 100 or title = 'Admin')
 ```
 
- > [AVISO]
- > Você deve sempre agrupar chamadas de `orWhere` para evitar comportamentos inesperados quando escopos globais são aplicados.
+> [!ALERTA]
+> Você deve agrupar os chamas de `orWhere` para evitar comportamentos inesperados quando escopos globais são aplicados.
 
 <a name="advanced-where-clauses"></a>
-### Avançado – Conjuntos de condicionalidade
+### Cláusulas avançadas de onde
 
 <a name="where-exists-clauses"></a>
-### Onde existem cláusulas
+### Onde existir cláusulas
 
- O método `whereExists` permite que você escreva cláusulas SQL do tipo "where exists". O método `whereExists` aceita um closure que receberá uma instância do constructor da Query, permitindo definir a consulta que deve ser colocada dentro da cláusula "exists":
+O método 'whereExists' permite que você escreva as cláusulas "WHERE EXISTS". O método 'whereExists' aceita um 'closure', que receberá uma instância do 'query builder', permitindo-lhe definir a consulta que deve ser colocada dentro da cláusula "existe":
 
 ```php
     $users = DB::table('users')
@@ -843,7 +843,7 @@ select * from users where name = 'John' and (votes > 100 or title = 'Admin')
                ->get();
 ```
 
- Como alternativa, você pode fornecer um objeto de consulta ao método `whereExists` em vez de um fecho (closure):
+Alternativamente, você pode fornecer um objeto de consulta para o método 'whereExists' em vez de uma função anônima:
 
 ```php
     $orders = DB::table('orders')
@@ -855,7 +855,7 @@ select * from users where name = 'John' and (votes > 100 or title = 'Admin')
                         ->get();
 ```
 
- Ambos os exemplos acima produzirão o seguinte SQL:
+Ambos os exemplos acima produzirão o seguinte SQL:
 
 ```sql
 select * from users
@@ -867,9 +867,9 @@ where exists (
 ```
 
 <a name="subquery-where-clauses"></a>
-### Subconsulta em Cláusulas Where
+### Subconsulta Cláusulas WHERE
 
- Às vezes é necessário construir uma cláusula de "onde" que compara os resultados de uma sub-consulta com um valor dado. Pode ser realizada através da passagem de um fecho e um valor para o método `where`. Por exemplo, a seguinte consulta irá recuperar todos os utilizadores que tenham recentemente "aderido" a um tipo específico;
+Às vezes você pode precisar de construir uma cláusula "onde" que compara os resultados de um subconsulta com um determinado valor. Você pode fazer isso passando um fecho e um valor para o método "onde". Por exemplo, a seguinte consulta irá retornar todos os usuários que têm um recente "membro" do tipo dado;
 
 ```php
     use App\Models\User;
@@ -884,7 +884,7 @@ where exists (
     }, 'Pro')->get();
 ```
 
- Talvez seja necessário construir uma cláusula "WHERE" que compare uma coluna com os resultados de uma sub-consulta. Isso pode ser feito passando uma coluna, operador e um closure ao método `where`. Por exemplo, a seguinte consulta recuperará todos os registos de receitas em que o valor é menor do que a média;
+Ou, você pode precisar construir uma cláusula "onde" que compara uma coluna aos resultados de uma subconsulta. Você pode conseguir isso passando uma coluna, operador e fechamento para o método 'onde'. Por exemplo, a seguinte consulta irá recuperar todos os registros de renda onde a quantidade é menor que a média;
 
 ```php
     use App\Models\Income;
@@ -896,12 +896,12 @@ where exists (
 ```
 
 <a name="full-text-where-clauses"></a>
-### Tabela completa de cláusulas
+### Texto Inteiro Onde Cláusulas
 
- > [AVISO]
- > Texto completo, onde as cláusulas são atualmente suportadas pelo MySQL e pelo PostgreSQL.
+> ¡ALERTA!
+> Texto completo onde cláusulas atualmente são suportadas pelo MySQL e o PostgreSQL.
 
- Os métodos `whereFullText` e `orWhereFullText` podem ser utilizados para adicionar uma cláusula "where" com texto completo a consultas de colunas que tenham índices [de texto completo](/docs/migrations#available-index-types). Estes métodos serão transformados em SQL adequado ao sistema de banco de dados subjacente por Laravel. Por exemplo, uma cláusula `MATCH AGAINST` será gerada para aplicações que utilizem o MySQL:
+Os métodos `whereFullText` e `orWhereFullText` podem ser utilizados para acrescentar cláusulas "where" de texto completo em uma consulta para colunas que possuem índices de [texto completo](/docs/migrations#available-index-types). Laravel irá converter estes métodos no SQL apropriado para o sistema de banco de dados subjacente. Por exemplo, um `MATCH AGAINST` será gerado para aplicações utilizando MySQL:
 
 ```php
     $users = DB::table('users')
@@ -910,15 +910,15 @@ where exists (
 ```
 
 <a name="ordering-grouping-limit-and-offset"></a>
-## Ordenação, agrupamento e posição de limite e de deslocamento
+## Ordenar, Agrupar, Limitar e Deslocar
 
 <a name="ordering"></a>
-### Pedido
+### Comando
 
 <a name="orderby"></a>
-#### O Método orderBy
+#### Método `orderBy`
 
- O método `orderBy` permite-lhe classificar os resultados da consulta por uma determinada coluna. O primeiro argumento aceito pelo método `orderBy` deve ser a coluna pela qual pretende efetuar o sorteio, enquanto o segundo argumento determina a direção do ordenamento e pode ser tanto `asc` como `desc`:
+O método `orderBy` permite que você classifique os resultados da consulta por uma coluna específica. O primeiro argumento aceito pelo `orderBy` deve ser a coluna pela qual deseja classificar os resultados, enquanto o segundo argumento determina a direção da classificação e pode ser ou 'asc' ou 'desc':
 
 ```php
     $users = DB::table('users')
@@ -926,7 +926,7 @@ where exists (
                     ->get();
 ```
 
- Para ordenar por várias colunas, basta invocar o método `orderBy` quantas vezes forem necessárias:
+Para classificar por múltiplas colunas, você pode simplesmente invocar `orderBy` quantas vezes forem necessárias:
 
 ```php
     $users = DB::table('users')
@@ -936,9 +936,9 @@ where exists (
 ```
 
 <a name="latest-oldest"></a>
-#### Os métodos `último` e `mais antigo`
+#### Métodos `latest` e `oldest`
 
- Os métodos `latest` e `oldest` permitem-lhe ordenar os resultados facilmente por data. Por defeito, o resultado será ordenado pela coluna `created_at` da tabela. Ou pode indicar a coluna na qual pretende ordenar:
+O método 'latest' e 'oldest' permitem ordenar os resultados por data com facilidade. Por padrão, o resultado será ordenado pela coluna 'created_at' da tabela. Ou, você pode passar o nome da coluna que deseja classificar:
 
 ```php
     $user = DB::table('users')
@@ -947,9 +947,9 @@ where exists (
 ```
 
 <a name="random-ordering"></a>
-#### Ordenamento aleatório
+#### Ordenação aleatória
 
- O método `inRandomOrder` pode ser usado para ordenar os resultados da consulta aleatoriamente. Por exemplo, você pode usar esse método para obter um usuário aleatório:
+O método 'InRandomOrder' pode ser usado para ordenar os resultados da consulta em ordem aleatória. Por exemplo, você poderia usar este método para obter um usuário aleatório:
 
 ```php
     $randomUser = DB::table('users')
@@ -958,9 +958,9 @@ where exists (
 ```
 
 <a name="removing-existing-orderings"></a>
-#### Remover encomendas existentes
+#### Removendo as Ordenações Existentes
 
- O método `reorder` remove todas as cláusulas `"order by"` aplicadas previamente à consulta:
+O método 'reordenar' remove todas as cláusulas "ORDER BY" que foram previamente aplicadas à consulta:
 
 ```php
     $query = DB::table('users')->orderBy('name');
@@ -968,7 +968,7 @@ where exists (
     $unorderedUsers = $query->reorder()->get();
 ```
 
- Você pode passar uma coluna e direção ao chamar o método reorder para remover todas as cláusulas “order by” existentes e aplicar uma ordem totalmente nova à consulta:
+Você pode passar uma coluna e direção quando chamar o método `reorder` para remover todos os "order by" existentes e aplicar uma nova ordem totalmente à consulta.
 
 ```php
     $query = DB::table('users')->orderBy('name');
@@ -980,9 +980,9 @@ where exists (
 ### Grupo
 
 <a name="groupby-having"></a>
-#### As Métodos `groupBy` e `having`
+#### Métodos 'groupBy' e 'having'
 
- Como de costume, as funcionalidades `groupBy` e `having` podem ser utilizadas para agrupar os resultados da consulta. A assinatura da função `having` é semelhante à do método `where`:
+Como você poderia esperar, os métodos 'groupBy' e 'having' podem ser usados para agrupar os resultados da consulta. A assinatura do método 'having' é semelhante à do método 'where':
 
 ```php
     $users = DB::table('users')
@@ -991,7 +991,7 @@ where exists (
                     ->get();
 ```
 
- Você pode usar o método `havingBetween` para filtrar os resultados dentro de um intervalo determinado:
+Você pode usar o método `havingBetween` para filtrar os resultados dentro de um determinado intervalo:
 
 ```php
     $report = DB::table('orders')
@@ -1001,7 +1001,7 @@ where exists (
                     ->get();
 ```
 
- Você pode passar vários argumentos para o método `groupBy` para agrupar por várias colunas.
+Você pode passar múltiplos argumentos para o método `groupBy`, agrupando por múltiplas colunas:
 
 ```php
     $users = DB::table('users')
@@ -1010,21 +1010,21 @@ where exists (
                     ->get();
 ```
 
- Para construir declarações do tipo "ON HAVING" mais avançadas, consulte o método [`havingRaw`](#métodos-raw).
+Para construir declarações mais avançadas de "having", veja o método [havingRaw](#raw-methods).
 
 <a name="limit-and-offset"></a>
-### Limite e Desvio
+### Limitar e Deslocar
 
 <a name="skip-take"></a>
-#### As Métodos `skip` e `take`
+#### Métodos 'saltar' e 'pegue'
 
- Pode utilizar os métodos `skip` e `take` para limitar o número de resultados retornados pela consulta ou para ignorar um determinado número de resultados na consulta.
+Você pode usar os métodos 'skip' e 'take' para limitar o número de resultados retornados pela consulta ou para pular um determinado número de resultados na consulta:
 
 ```php
     $users = DB::table('users')->skip(10)->take(5)->get();
 ```
 
- Como alternativa, você pode usar os métodos `limit` e `offset`. Estes métodos são equivalentes funcionalmente aos métodos `take` e `skip`, respectivamente:
+Alternativamente, você pode usar os métodos "limit" e "offset". Estes são funcionalmente equivalentes aos métodos "take" e "skip", respectivamente:
 
 ```php
     $users = DB::table('users')
@@ -1034,9 +1034,9 @@ where exists (
 ```
 
 <a name="conditional-clauses"></a>
-## Cláusulas condicionais
+## O que são cláusulas condicionais em inglês?
 
- Às vezes você pode querer aplicar determinadas cláusulas de consulta com base em outra condição. Por exemplo, você só pode querer aplicar uma instrução `where` se um valor específico estiver presente no pedido HTTP entrantes. Isso pode ser feito usando o método `when`:
+Às vezes você pode querer que certas cláusulas de consulta sejam aplicadas ao seu próprio consulta com base em outra condição, por exemplo, você só pode aplicar uma cláusula WHERE se um valor específico for fornecido no pedido HTTP de entrada usando o método when.
 
 ```php
     $role = $request->string('role');
@@ -1048,9 +1048,9 @@ where exists (
                     ->get();
 ```
 
- O método when executa o grupo de instruções somente se o primeiro argumento for verdadeiro. Se o primeiro argumento for falso, o grupo de instruções não será executado. Nos exemplos acima, o grupo de instruções dado ao método when só será invocado caso o campo role esteja presente no pedido de entrada e se avalie como verdadeiro.
+O método `when` executa o fechamento apenas quando o primeiro argumento for verdadeiro. Se o primeiro argumento for falso, o fechamento não será executado. Assim, no exemplo acima, o fechamento fornecido para o método `when` só será invocado se o campo "role" estiver presente na solicitação recebida e avaliar como verdadeiro.
 
- Você pode usar outra expressão como o terceiro argumento da função `when`. Essa expressão será executada apenas se o primeiro argumento tiver valor falsificável. Para ilustrar como esse recurso funciona, vamos usá-lo para configurar a ordem padrão de uma consulta:
+Você pode passar outro closure como o terceiro argumento para o método "when". Este closure será executado somente se o primeiro argumento for avaliado como falso. Para ilustrar como esta característica pode ser usada, usaremos isso para configurar a ordem padrão de uma consulta:
 
 ```php
     $sortByVotes = $request->boolean('sort_by_votes');
@@ -1065,7 +1065,7 @@ where exists (
 ```
 
 <a name="insert-statements"></a>
-## Declarações a inserir
+## Inserir instruções
 
 ```php
 The query builder also provides an `insert` method that may be used to insert records into the database table. The `insert` method accepts an array of column names and values:
@@ -1076,7 +1076,7 @@ The query builder also provides an `insert` method that may be used to insert re
     ]);
 ```
 
- Pode inserir vários registos de uma só vez, utilizando um array de arrays. Cada array representa um registro a inserir na tabela:
+Você pode inserir vários registros de uma vez passando um array de arrays. Cada array representa um registro que deve ser inserido na tabela:
 
 ```php
     DB::table('users')->insert([
@@ -1085,7 +1085,7 @@ The query builder also provides an `insert` method that may be used to insert re
     ]);
 ```
 
- O método `insertOrIgnore` ignorará erros durante a inserção de registos na base de dados. Quando utiliza este método, deve ter em atenção que erros por duplicação de registro serão ignorados e outros tipos de erro podem também ser ignorados consoante o motor da base de dados. Por exemplo, o `insertOrIgnore` irá [ignorar modo estrito do MySQL](https://dev.mysql.com/doc/refman/en/sql-mode.html#ignore-effect-on-execution):
+O método `insertOrIgnore` ignorará erros enquanto inserir registros no banco de dados. Ao utilizar esse método, você deve estar ciente de que o erro de registro duplicado será ignorado e outros tipos de erros também podem ser ignorados dependendo do mecanismo do banco de dados. Por exemplo, `insertOrIgnore` [dispensará MySQL' 'modo estrito']:
 
 ```php
     DB::table('users')->insertOrIgnore([
@@ -1094,7 +1094,7 @@ The query builder also provides an `insert` method that may be used to insert re
     ]);
 ```
 
- O método `insertUsing` inserirá novos registros na tabela usando uma sub-consulta para determinar os dados que devem ser inseridos:
+O método 'insertUsing' inserirá novos registros na tabela usando uma subconsulta para determinar os dados que devem ser inseridos:
 
 ```php
     DB::table('pruned_users')->insertUsing([
@@ -1105,9 +1105,9 @@ The query builder also provides an `insert` method that may be used to insert re
 ```
 
 <a name="auto-incrementing-ids"></a>
-#### IDs com inicio automático
+#### ID's incrementados automaticamente
 
- Se o campo for um identificador com incremento automático, utilize o método `insertGetId` para inserir um registro e obter depois o código do ID:
+Se o campo é de auto-incremental, utilize o método `insertGetId` para inserir um registro e então obter o ID
 
 ```php
     $id = DB::table('users')->insertGetId(
@@ -1115,13 +1115,13 @@ The query builder also provides an `insert` method that may be used to insert re
     );
 ```
 
- > [ATENÇÃO]
- > Ao usar o PostgreSQL, o método `insertGetId` espera que a coluna com auto-incremento seja chamada de `id`. Se você deseja recuperar o ID de uma sequência diferente, poderá passar o nome da coluna como um segundo parâmetro para o método `insertGetId`.
+> [!ALERTA]
+> Ao usar o PostgreSQL, o método `insertGetId` espera que a coluna auto-incrementada seja chamada de `id`. Se você gostaria de obter a ID de uma "sequência" diferente, você pode passar o nome da coluna como o segundo parâmetro para o método `insertGetId`.
 
 <a name="upserts"></a>
 ### Upserts
 
- O método `upsert` insere registos que não existem e atualiza os registos já existentes com novos valores especificados pelo utilizador. O primeiro argumento do método consiste nos valores a inserir ou atualizar, enquanto o segundo argumento lista as colunas que identificam exclusivamente um registro na tabela associada. O terceiro e último argumento é uma matriz de colunas que devem ser atualizadas se já existir correspondência entre os dados no banco de dados:
+O método `upsert` inserirá registros que não existem e atualizará os registros existentes com novos valores que você pode especificar. O argumento do método consiste nos valores para inserção ou atualização, enquanto o segundo argumento lista a coluna (s) que identifica exclusivamente os registros na tabela associada. O terceiro e último argumento é uma matriz de colunas que devem ser atualizadas se um registro correspondente já existir no banco de dados:
 
 ```php
     DB::table('flights')->upsert(
@@ -1134,15 +1134,15 @@ The query builder also provides an `insert` method that may be used to insert re
     );
 ```
 
- No exemplo acima, o Laravel tentará inserir dois registos. Se existir um registro com os mesmos valores de coluna `departure` e `destination`, o Laravel atualizará a coluna `price` desse registro.
+No exemplo acima, o Laravel tentará inserir dois registros. Se um registro já existir com os mesmos valores de coluna `saída` e `destino`, o Laravel atualizará a coluna `preço` daquele registro.
 
- > [AVISO]
- > Todos os bancos de dados exceto SQL Server exigem que as colunas do segundo argumento da função `upsert` tenham um índice "primário" ou "único". Além disso, o driver de banco de dados MySQL ignora o segundo argumento da função `upsert` e sempre usa os índices "primários" e "únicos" da tabela para detectar registos existentes.
+> [!ALERTA]
+> Todos os bancos de dados, exceto o SQL Server, requerem que as colunas na segunda argumento do método 'upsert' tenham um índice "primário" ou "único". Além disso, o driver do banco de dados MySQL ignora a segundo argumento do método 'upsert' e sempre utiliza os índices "primário" e "único" da tabela para detectar registros existentes.
 
 <a name="update-statements"></a>
-## Declarações de atualização
+## Atualizações de declaração
 
- O criador de consultas não apenas insere registos na base de dados, como também atualiza os registos existentes utilizando o método `update`. Assim como o método `insert`, o método `update` aceita um array de pares coluna-valor que indicam as colunas a serem atualizadas. O método `update` retorna o número de linhas afetadas. Pode restringir a consulta utilizando cláusulas `where`:
+Além de inserir registros no banco de dados, o construtor de consultas também pode atualizar registros existentes usando o método 'update'. O método 'update', assim como o 'insert', aceita um array de pares coluna-valor indicando as colunas a serem atualizadas. O método 'update' retorna o número de linhas afetadas. Você pode restringir a consulta de atualização usando cláusulas 'where':
 
 ```php
     $affected = DB::table('users')
@@ -1151,11 +1151,11 @@ The query builder also provides an `insert` method that may be used to insert re
 ```
 
 <a name="update-or-insert"></a>
-#### Atualizar ou Inserir
+#### Atualizar ou inserir
 
- Às vezes poderá desejar atualizar um registro existente na base de dados ou criar-lhe um novo se não existir nenhum registro correspondente. Neste cenário, o método `updateOrInsert` poderá ser utilizado. O método `updateOrInsert` aceita dois argumentos: um array de condições para encontrar o registro e um array de pares de coluna e valor que indicam as colunas a atualizar.
+Às vezes você pode querer atualizar um registro existente no banco de dados ou criar um se não houver nenhum registro correspondente. Neste cenário, o método `updateOrInsert` pode ser usado. O método `updateOrInsert` aceita dois argumentos: uma matriz de condições para encontrar o registro e uma matriz de pares coluna-valor indicando as colunas a serem atualizadas.
 
- O método `updateOrInsert` tenta encontrar o registro de dados do banco de dados com base nos pares coluna/valor no primeiro argumento. Se o registro existir, será atualizado com os valores do segundo argumento. Se o registro não puder ser encontrado, será inserido um novo registro com os atributos combinados dos dois argumentos:
+O método `updateOrInsert` tentará localizar um registro de banco de dados correspondente usando os pares de coluna e valor do primeiro argumento. Se o registro existir, ele será atualizado com os valores no segundo argumento. Se o registro não puder ser encontrado, um novo registro será inserido com os atributos mesclados de ambos os argumentos:
 
 ```php
     DB::table('users')
@@ -1165,7 +1165,7 @@ The query builder also provides an `insert` method that may be used to insert re
         );
 ```
 
- É possível fornecer um closure à método `updateOrInsert` para personalizar os atributos que serão atualizados ou inseridos no banco de dados com base na existência de um registro correspondente:
+Você pode fornecer um fechamento para o método `updateOrInsert` para personalizar atributos que são atualizados ou inseridos no banco de dados com base na existência de uma linha correspondente.
 
 ```php
 DB::table('users')->updateOrInsert(
@@ -1182,9 +1182,9 @@ DB::table('users')->updateOrInsert(
 ```
 
 <a name="updating-json-columns"></a>
-### Atualização de colunas JSON
+### Atualizando Colunas JSON
 
- Ao atualizar uma coluna JSON, você deve usar a sintaxe `->` para atualizar a chave apropriada no objeto JSON. Esta operação é suportada nos bancos de dados MySQL 5.7+ e PostgreSQL 9.5+:
+Ao atualizar uma coluna JSON, você deve usar a sintaxe `->` para atualizar a chave apropriada no objeto JSON. Esta operação é suportada em MySQL 5.7 e PostgreSQL 9.5+.
 
 ```php
     $affected = DB::table('users')
@@ -1193,9 +1193,9 @@ DB::table('users')->updateOrInsert(
 ```
 
 <a name="increment-and-decrement"></a>
-### Aumentar e Diminuir
+### Incremento e Diminuição
 
- O construtor de consultas também fornece métodos práticos para aumentar ou diminuir o valor de uma determinada coluna. Ambos os métodos aceitam pelo menos um argumento: a coluna a ser modificada. Um segundo argumento pode ser especificado para indicar em que medida a coluna deve ser incrementada ou decrementada:
+O construtor de consulta também fornece métodos convenientes para incrementar ou decrementar o valor de uma determinada coluna. Ambos os métodos aceitam pelo menos um argumento: a coluna a modificar. Um segundo argumento pode ser fornecido para especificar o valor pelo qual a coluna deve ser incrementada ou decrementada.
 
 ```php
     DB::table('users')->increment('votes');
@@ -1207,13 +1207,13 @@ DB::table('users')->updateOrInsert(
     DB::table('users')->decrement('votes', 5);
 ```
 
- Caso necessário, você também poderá especificar colunas adicionais para atualizar durante a operação de incremento ou decremento:
+Se necessário você também pode especificar colunas adicionais para atualizar durante a operação de incremento ou decremento.
 
 ```php
     DB::table('users')->increment('votes', 1, ['name' => 'John']);
 ```
 
- Além disso, você pode incrementar ou decrementar várias colunas de uma vez usando os métodos `incrementEach` e `decrementEach`:
+Além disso, você pode aumentar ou diminuir várias colunas de uma vez usando os métodos `incrementEach` e `decrementEach`:
 
 ```php
     DB::table('users')->incrementEach([
@@ -1223,9 +1223,9 @@ DB::table('users')->updateOrInsert(
 ```
 
 <a name="delete-statements"></a>
-## Excluir declarações
+## Excluir afirmações
 
- O método `delete` do criador de consultas pode ser usado para excluir registos da tabela. O método `delete` retorna o número de linhas afetadas. Você pode restringir declarações `delete` adicionando cláusulas "where" antes de chamar o método `delete`:
+O método 'delete' do construtor de consultas pode ser usado para apagar registros da tabela. O método 'delete' retorna o número de linhas afetadas. Você pode restringir 'deletar' declarações adicionando "onde" cláusulas antes de chamar o método 'delete':
 
 ```php
     $deleted = DB::table('users')->delete();
@@ -1233,21 +1233,21 @@ DB::table('users')->updateOrInsert(
     $deleted = DB::table('users')->where('votes', '>', 100)->delete();
 ```
 
- Se pretender apagar uma tabela inteira, o que irá remover todos os registos da mesma e redefinir o número de identificação "auto incrementável" para zero, poderá usar o método `truncate`:
+Se você deseja cortar uma tabela inteira, que vai remover todos os registros da tabela e redefinir o ID incrementado automaticamente para zero, você pode usar o método "truncate":
 
 ```php
     DB::table('users')->truncate();
 ```
 
 <a name="table-truncation-and-postgresql"></a>
-#### Tabela truncada e o PostgreSQL
+#### Tabela Truncation e PostgreSQL
 
- Ao encurtar um banco de dados do PostgreSQL, o comportamento `CASCADE` será aplicado. Isto significa que todos os registos relacionados com a chave estrangeira em outras tabelas também serão excluídos.
+Ao truncar um banco de dados PostgreSQL, o comportamento `CASCADE` será aplicado. Isso significa que todos os registros relacionados à chave estrangeira em outras tabelas serão excluídos também.
 
 <a name="pessimistic-locking"></a>
 ## Bloqueio pessimista
 
- O construtor de consulta também inclui alguns recursos para ajudar você a conseguir um "bloqueio pessimista" ao executar suas declarações `select`. Para executar uma declaração com um "lock compartilhado", chame o método `sharedLock`. Um lock compartilhado impede que as linhas selecionadas sejam modificadas até a transação for commitada:
+O construtor de consultas também inclui algumas funções para ajudá-lo a alcançar o "lock pessimista" quando executar suas instruções 'select'. Para executar uma declaração com um "lock compartilhado", você pode chamar o método `sharedLock`. Um lock compartilhado impede que as linhas selecionadas sejam modificadas até que sua transação seja confirmada:
 
 ```php
     DB::table('users')
@@ -1256,7 +1256,7 @@ DB::table('users')->updateOrInsert(
             ->get();
 ```
 
- Em alternativa, você pode usar o método `lockForUpdate`. O bloqueio com a indicação "para atualização" impede que os registros selecionados sejam modificados ou que outros compartilhamentos de bloqueios os selecionem:
+Alternativamente, você pode usar o método `lockForUpdate`. Uma "trava para atualização" impede que os registros selecionados sejam modificados ou selecionados com outra travagem compartilhada:
 
 ```php
     DB::table('users')
@@ -1266,9 +1266,9 @@ DB::table('users')->updateOrInsert(
 ```
 
 <a name="debugging"></a>
-## Depuração
+## Depuração de código
 
- Pode utilizar os métodos `dd` e `dump` para construir uma query para descarregar as ligações de consulta e SQL atuais. O método `dd` exibe a informação de depuração e, em seguida, interrompe o processamento da solicitação. O método `dump` exibe a informação de depuração mas permite continuar o processamento da solicitação:
+Você pode usar os métodos 'dd' e 'dump' durante a construção de uma consulta para descartar as associações atuais da consulta e SQL. O método 'dd' exibirá a informação de depuração e então parará de executar o pedido. O método 'dump' exibirá a informação de depuração mas permitirá que o pedido continue em execução:
 
 ```php
     DB::table('users')->where('votes', '>', 100)->dd();
@@ -1276,7 +1276,7 @@ DB::table('users')->updateOrInsert(
     DB::table('users')->where('votes', '>', 100)->dump();
 ```
 
- Os métodos `dumpRawSql` e `ddRawSql` podem ser invocados em uma consulta para exibir o SQL da consulta com todos os vínculos de parâmetros substituídos corretamente:
+Os métodos `dumpRawSql` e `ddRawSql` podem ser invocados em uma consulta para gerar o SQL da consulta com todas as ligações de parâmetros substituídas corretamente.
 
 ```php
     DB::table('users')->where('votes', '>', 100)->dumpRawSql();

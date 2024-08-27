@@ -1,11 +1,11 @@
-# Eloquente: Fábricas
+# Elegantes: Fábricas
 
 <a name="introduction"></a>
 ## Introdução
 
- Quando testar sua aplicação ou inserir dados na base de dados, talvez seja necessário inserir alguns registros. Em vez de especificar manualmente o valor de cada coluna, o Laravel permite definir um conjunto de atributos padrão para os [modelos Eloquent](/docs/eloquent) usando fatorias de modelo.
+Ao testar sua aplicação ou ao plantar seu banco de dados, você pode precisar inserir alguns registros em seu banco de dados. Em vez de especificar manualmente o valor de cada coluna, Laravel permite definir um conjunto de atributos padrão para cada um de seus [modelos Eloquent](/docs/{{version}}/eloquent) usando fábricas de modelos.
 
- Para ver um exemplo de como escrever uma fabricação, confira o arquivo `database/factories/UserFactory.php` em sua aplicação. Essa fabricação é incluída com todas as novas aplicações do Laravel e contém a seguinte definição da fábrica:
+Para ver um exemplo de como escrever uma fábrica, veja o arquivo `database/factories/UserFactory.php` na sua aplicação. Esta fábrica vem com todos os novos aplicativos Laravel e contém a seguinte definição da fábrica:
 
 ```php
     namespace Database\Factories;
@@ -52,33 +52,33 @@
     }
 ```
 
- Como você pode ver, na sua forma mais básica, as fábricas são classes que estendem a classe de fábrica base do Laravel e definem um método `definition`. O método `definition` retorna o conjunto padrão de valores de atributo que devem ser aplicados ao criar um modelo usando a fábrica.
+Como você pode ver, na sua forma mais básica, as fábricas são classes que estendem a classe de fábrica base do Laravel e definem um método "definição". O método "definição" retorna o conjunto padrão de valores de atributo que devem ser aplicados quando criar um modelo usando a fábrica.
 
- Através da ajuda de `fake`, as fábricas têm acesso à biblioteca [Faker](https://github.com/FakerPHP/Faker) PHP, que permite gerar convenientemente vários tipos de dados aleatórios para teste e sementeamento.
+Através do "fake" helper, as fábricas têm acesso à [Faker](https://github.com/FakerPHP/Faker) biblioteca em PHP, que permite gerar dados aleatórios de forma conveniente para testes e inicialização de bancos de dados.
 
- > [!ATENÇÃO]
- > Você pode alterar o local do seu aplicativo com o Faker atualizando a opção `faker_locale` em seu arquivo de configuração `config/app.php`.
+> Nota:
+> Você pode alterar o idioma do seu aplicativo Faker atualizando a opção `faker_locale` no arquivo de configuração `config/app.php`.
 
 <a name="defining-model-factories"></a>
 ## Definindo fábricas de modelos
 
 <a name="generating-factories"></a>
-### Fabricantes de geradores
+### Gerando Fábricas
 
- Para criar uma fábrica, execute o comando `make:factory [Artefato command]`:
+Para criar uma fábrica, execute o comando 'make:factory' [Comando Artisan] (http://docs.laravel.com/docs/master/artisan#commands-and-tasks):
 
 ```shell
 php artisan make:factory PostFactory
 ```
 
- A nova classe de fato será colocada em seu diretório `database/factories`.
+A nova classe de fábrica será colocada em seu diretório de banco de dados "database/factories".
 
 <a name="factory-and-model-discovery-conventions"></a>
-#### Modelos e convenções de descoberta das fábricas
+#### Convenções de Modelo e Fabricante
 
- Uma vez que você definiu as fábricas, você pode usar o método estático `factory` proporcionado aos seus modelos pelo traço `Illuminate\Database\Eloquent\Factories\HasFactory`, de forma a instanciar uma instância da fábrica para esse modelo.
+Depois de definir suas fábricas, você pode usar o método estático 'factory' fornecido por seus modelos pelo traço 'Illuminate\Database\Eloquent\Factories\HasFactory' para criar uma instância da fábrica desse modelo.
 
- O método da característica `HasFactory` `factory` utilizará convenções para determinar a fábrica adequada para o modelo em que foi atribuída a característica. Especificamente, o método procurará uma fábrica no namespace `Database\Factories`, cujo nome de classe corresponda ao nome do modelo e seja terminado com "Factory". Se estas convenções não forem aplicáveis à sua aplicação ou fábrica específica, você pode sobrescrever o método `newFactory` em seu modelo para retornar diretamente uma instância da fábrica correspondente ao mesmo:
+O método 'factory' da característica 'HasFactory' usará convenções para determinar a fábrica apropriada para o modelo ao qual ela é atribuída. Especificamente, o método procurará uma fábrica no namespace 'Database\Factories' que tenha um nome de classe correspondente ao nome do modelo e com um sufixo 'Factory'. Se essas convenções não se aplicarem à sua aplicação ou à sua fábrica específica, você pode substituir o método 'newFactory' no seu modelo para retornar uma instância da fábrica correspondente diretamente.
 
 ```php
     use Illuminate\Database\Eloquent\Factories\Factory;
@@ -93,7 +93,7 @@ php artisan make:factory PostFactory
     }
 ```
 
- Em seguida, defina uma propriedade `model` na correspondente fábrica:
+Então, defina uma propriedade 'model' na fábrica correspondente:
 
 ```php
     use App\Administration\Flight;
@@ -111,11 +111,11 @@ php artisan make:factory PostFactory
 ```
 
 <a name="factory-states"></a>
-### Estados da fábrica
+### Estados da Fábrica
 
- Os métodos de manipulação de estado permitem definir alterações discritas que podem ser aplicadas às fábricas de modelo em qualquer combinação. Por exemplo, sua `Database\Factories\UserFactory` fábrica poderia conter um método de estado `suspended` que modifica um dos seus valores de atributos padrão.
+Os métodos de manipulação de estado permitem que você defina modificações discretas que podem ser aplicadas às suas fábricas de modelo em qualquer combinação. Por exemplo, sua fábrica 'Database/Factories/UserFactory' pode conter um método 'suspenso' que modifica o valor padrão de um de seus atributos.
 
- Os métodos de transformação do estado geralmente chamam o método "state" fornecido pela classe de fábrica base do Laravel. O método "state" aceita um closure que receberá a matriz de atributos brutos definida para o fabricante e deve retornar uma matriz de atributos para modificação:
+Métodos de transformação do estado normalmente chamam o método `state` fornecido pela classe de fábrica base do Laravel. O método `state` aceita um fechamento que receberá o array de atributos brutos definidos para a fábrica e deve retornar um array de atributos para modificar:
 
 ```php
     use Illuminate\Database\Eloquent\Factories\Factory;
@@ -134,9 +134,9 @@ php artisan make:factory PostFactory
 ```
 
 <a name="trashed-state"></a>
-#### Estado "degradado"
+#### Estado "Trashed"
 
- Se o seu modelo Eloquent puder ser [excluído silenciosamente](/docs/eloquent#soft-deleting), você poderá invocar a método de estado `trashed` interna para indicar que o modelo criado já foi "excluído silenciosamente". Você não precisa definir manualmente o estado `trashed`, pois ele está automaticamente disponível em todas as fábricas:
+Se o seu Eloquent model pode ser [soft deleted](/docs/{{version}}/eloquent#soft-deleting), você pode invocar a built-in `trashed` state method para indicar que o modelo criado deveria já estar "soft deleted". Você não precisa definir manualmente o estado `trashed` pois ele está automaticamente disponível para todas as factories:
 
 ```php
     use App\Models\User;
@@ -145,9 +145,9 @@ php artisan make:factory PostFactory
 ```
 
 <a name="factory-callbacks"></a>
-### Llamadas de fábrica
+### Recall de fábrica
 
- Os chamados de fábrica são registrados usando os métodos `afterMaking` e `afterCreating` e permitem que você execute tarefas adicionais após fazer ou criar um modelo. Você deve registrar esses chamados definindo o método `configure` em sua classe de fato. Esse método será automaticamente chamado pelo Laravel quando a fábrica for instanciada:
+Os callbacks da fábrica são registrados usando os métodos afterMaking e afterCreating e permitem que você execute tarefas adicionais após fazer ou criar um modelo. Você deve registrar esses callbacks definindo um método configure na classe da fábrica. Este método será automaticamente chamado pelo Laravel quando a fábrica for instanciada.
 
 ```php
     namespace Database\Factories;
@@ -173,7 +173,7 @@ php artisan make:factory PostFactory
     }
 ```
 
- Você também pode registrar os retornos de chamada de fábrica em métodos estatais para executar tarefas adicionais específicas para um determinado estado:
+Você também pode registrar retornos de fábrica dentro métodos de estado para realizar tarefas adicionais específicas para um determinado estado:
 
 ```php
     use App\Models\User;
@@ -197,12 +197,12 @@ php artisan make:factory PostFactory
 ```
 
 <a name="creating-models-using-factories"></a>
-## Criando modelos usando fábricas
+## Criando Modelos Usando Fábricas
 
 <a name="instantiating-models"></a>
-### Instanciando modelos
+### Instantiando Modelos
 
- Definida as fábricas, você pode usar o método estático `factory`, disponível aos seus modelos pela característica `Illuminate\Database\Eloquent\Factories\HasFactory`, para criar uma instância da fábrica desse modelo. Vamos ver alguns exemplos de como criar modelos. Primeiro, usaremos o método `make` para criar modelos sem persistê-los no banco de dados:
+Uma vez que você tenha definido suas fábricas, você pode usar o método estático `factory` fornecido aos seus modelos pelo trait `Illuminate\Database\Eloquent\Factories\HasFactory` a fim de instanciar uma instância da fábrica para esse modelo. Vamos dar um olhada em alguns exemplos de criação de modelos. Primeiro, vamos usar o método `make` para criar modelos sem persistir no banco:
 
 ```php
     use App\Models\User;
@@ -210,25 +210,25 @@ php artisan make:factory PostFactory
     $user = User::factory()->make();
 ```
 
- Pode criar uma coleção de vários modelos através do método `count`:
+Você pode criar uma coleção de vários modelos usando o método "count".
 
 ```php
     $users = User::factory()->count(3)->make();
 ```
 
 <a name="applying-states"></a>
-#### Países que aplicam o tratado
+#### Aplicando Estados
 
- Você também poderá aplicar qualquer um de seus estados de fábrica aos modelos. Se você deseja aplicar várias transformações de estado aos modelos, poderá simplesmente chamar os métodos de transformação de estado diretamente:
+Você também pode aplicar qualquer um dos seus [Estados](#estados-da-fábrica) nos modelos. Se você gostaria de aplicar múltiplas transformações do estado aos modelos, você simplesmente pode chamar os métodos de transformação do estado diretamente:
 
 ```php
     $users = User::factory()->count(5)->suspended()->make();
 ```
 
 <a name="overriding-attributes"></a>
-#### Atributos de substituição
+#### Atributos Sobrescritos
 
- Se desejar substituir alguns dos valores padrão de seus modelos, você pode passar um array de valores para o método `make`. Só os atributos especificados serão alterados enquanto o restante deles permanecerão definidos conforme especificado pela fábrica:
+Se você gostaria de substituir alguns dos valores padrão do seu modelo, você pode passar um array de valores para o método 'make'. Somente os atributos especificados serão substituídos enquanto o restante dos atributos permanecerão com seus valores padrão como especificado pelo fábrido.
 
 ```php
     $user = User::factory()->make([
@@ -236,7 +236,7 @@ php artisan make:factory PostFactory
     ]);
 ```
 
- Como alternativa, o método `state` pode ser chamado diretamente na instância da fábrica para executar uma transformação de estado em linha:
+Alternativamente, o método 'state' pode ser chamado diretamente na instância da fábrica para realizar uma transformação de estado embutida:
 
 ```php
     $user = User::factory()->state([
@@ -244,13 +244,13 @@ php artisan make:factory PostFactory
     ])->make();
 ```
 
- > [!ATENÇÃO]
- A proteção contra atribuições em massa (/) não é automaticamente desativada quando são criados modelos usando fábricas.
+> [NOTA]
+> [Proteção de atribuição em massa](/docs/{{version}}/eloquent#mass-assignment) é automaticamente desativado ao criar modelos usando fábricas.
 
 <a name="persisting-models"></a>
 ### Modelos persistentes
 
- O método `create` instancia instâncias de modelo e as persistência no banco de dados usando o método `save` da Eloquent:
+O método "create" instancia as instâncias do modelo e persiste-as no banco de dados usando o método "save" do Eloquent.
 
 ```php
     use App\Models\User;
@@ -262,7 +262,7 @@ php artisan make:factory PostFactory
     $users = User::factory()->count(3)->create();
 ```
 
- Você pode ignorar os atributos do modelo padrão da fábrica, passando uma matriz de atributos ao método `create`:
+Você pode sobrescrever os atributos padrão do modelo da fábrica passando uma matriz de atributos para o método create:
 
 ```php
     $user = User::factory()->create([
@@ -271,9 +271,9 @@ php artisan make:factory PostFactory
 ```
 
 <a name="sequences"></a>
-### Seqüências
+### Sequências
 
- Às vezes, você pode querer alterar o valor de um atributo de modelo dado para cada modelo criado. Você pode fazer isso definindo uma transformação estatal como uma sequência. Por exemplo, talvez você queira alternar o valor da coluna `admin` entre `Y` e `N` para cada usuário criado:
+Às vezes você pode desejar alternar o valor de um atributo de modelo dado para cada modelo criado. Você pode alcançar isso definindo uma transformação de estado como uma sequência. Por exemplo, você pode querer alternar o valor de uma coluna "admin" entre 'Y' e 'N' por cada usuário criado:
 
 ```php
     use App\Models\User;
@@ -288,9 +288,9 @@ php artisan make:factory PostFactory
                     ->create();
 ```
 
- Neste exemplo, serão criados cinco usuários com um valor de `admin` como `S` e cinco usuários com um valor de `admin` como `N`.
+Neste exemplo, serão criados 5 usuários com um valor de `admin` igual a 'Y' e 5 usuários com um valor de `admin` igual a 'N'.
 
- Se necessário, pode incluir um bloqueio como valor de uma sequência. O bloqueio será invocado sempre que a sequência precisar de um novo valor:
+Se necessário, você pode incluir um fechamento como o valor da sequência. O fechamento será invocado sempre que a sequência precisar de um novo valor:
 
 ```php
     use Illuminate\Database\Eloquent\Factories\Sequence;
@@ -303,7 +303,7 @@ php artisan make:factory PostFactory
                     ->create();
 ```
 
- Numa função de fecho de sequência, pode aceder às propriedades `$index` ou `$count` da instância de sequência que é injetada na função. A propriedade `$index` contém o número de iterações através da sequência que já ocorreram e a propriedade `$count` contém o número total de vezes em que a sequência será invocada:
+Dentro de uma sequência de fechamento, você pode acessar as propriedades `$index` ou `$count` na instância da sequência injetada no fechamento. A propriedade `$index` contém o número de iterações pela sequência que ocorreram até agora, enquanto a propriedade `$count` contém o número total de vezes que a sequência será invocada:
 
 ```php
     $users = User::factory()
@@ -312,7 +312,7 @@ php artisan make:factory PostFactory
                     ->create();
 ```
 
- Para conveniência, as seqüências também podem ser aplicadas usando o método `sequence`, que simplesmente chama o método `state`. O método `sequence` aceita um closure ou uma matriz de atributos sequenciados:
+Para maior comodidade, sequências também podem ser aplicadas usando o método `sequence`, que simplesmente invoca o método interno `state`. O método `sequence` aceita um closure ou uma matriz de atributos sequenciais.
 
 ```php
     $users = User::factory()
@@ -328,9 +328,9 @@ php artisan make:factory PostFactory
 ## Relações de fábrica
 
 <a name="has-many-relationships"></a>
-### Tem Muitos Relacionamentos
+### Tem Muita Relação
 
- Vamos explorar agora a criação de relacionamentos do modelo Eloquent usando os métodos de fabricação fluente do Laravel. Primeiro, vamos supor que nossa aplicação tenha um modelo `App\Models\User` e outro modelo `App\Models\Post`. Além disso, vamos supor que o modelo `User` defina uma relação `hasMany` com o modelo `Post`. Podemos criar um usuário com três posts usando o método `has`, fornecido pelos fabricantes do Laravel. O método `has` aceita uma instância de fábrica:
+Em seguida vamos explorar o modo de fazer relações em Eloquent usando os métodos da fábrica do Laravel. Primeiro, vamos supor que nosso aplicativo tem um modelo App\Models\User e outro modelo chamado App\Models\Post. Além disso vamos supor que o modelo "Usuário" define uma relação "hasMany" com o modelo "Post". Podemos criar um usuário com três postagens usando o método 'has' fornecido pelas fábricas do Laravel. O método 'has' aceita uma instância de fábrica:
 
 ```php
     use App\Models\Post;
@@ -341,7 +341,7 @@ php artisan make:factory PostFactory
                 ->create();
 ```
 
- Por convenção, ao passar um modelo `Post` para o método `has`, o Laravel presume que o modelo `User` deve ter um método `posts` que defina a relação. Se necessário, você pode especificar explicitamente o nome da relação que gostaria de manipular:
+Por convenção, ao passar um modelo 'Post' para o método 'has', o Laravel supõe que o modelo 'Usuário' deve ter um método 'posts' que define a relação. Se necessário, você pode especificar explicitamente o nome da relação que gostaria de manipular:
 
 ```php
     $user = User::factory()
@@ -349,7 +349,7 @@ php artisan make:factory PostFactory
                 ->create();
 ```
 
- Claro, você pode executar manipulações de estado nos modelos relacionados. Além disso, você pode passar uma transformação do estado baseada em um fecho se sua alteração de estado exigir acesso ao modelo parental:
+É claro que você pode executar manipulações de estado nos modelos relacionados. Além disso, você pode passar uma transformação de estado baseada em um fechamento se sua alteração de estado exigir acesso ao modelo pai:
 
 ```php
     $user = User::factory()
@@ -364,9 +364,9 @@ php artisan make:factory PostFactory
 ```
 
 <a name="has-many-relationships-using-magic-methods"></a>
-#### Usando métodos mágicos
+#### Usando Métodos Mágicos
 
- Para conveniência, você pode usar os métodos de relação do mago da fábrica no Laravel para criar relacionamentos. Por exemplo, o exemplo a seguir usará uma convenção que determinará que os modelos relacionados devem ser criados através de um método de relação `posts` no modelo `User`:
+Para conveniência, você pode usar o método de relacionamento da fábrica mágica do Laravel para construir relacionamentos. Por exemplo, o seguinte exemplo usará a convenção para determinar que os modelos relacionados devem ser criados através do método de relacionamento "posts" no modelo "Usuário":
 
 ```php
     $user = User::factory()
@@ -374,7 +374,7 @@ php artisan make:factory PostFactory
                 ->create();
 ```
 
- Ao usar métodos mágicos para criar relações de fábrica, você pode passar uma matriz de atributos a serem substituídos nos modelos relacionados:
+Quando usando métodos mágicos para criar relações de fábrica, você pode passar um array de atributos para substituir na classe relacionada.
 
 ```php
     $user = User::factory()
@@ -384,7 +384,7 @@ php artisan make:factory PostFactory
                 ->create();
 ```
 
- Você pode fornecer uma transformação de estado com closure se sua mudança no estado exigir o acesso ao modelo pai:
+Você pode fornecer uma transformação de estado baseada em encerramento se sua mudança de estado requer acesso ao modelo pai:
 
 ```php
     $user = User::factory()
@@ -395,9 +395,9 @@ php artisan make:factory PostFactory
 ```
 
 <a name="belongs-to-relationships"></a>
-### Pertence a relações
+### Relações Pertences
 
- Agora que exploramos como criar relações de muitos-a-múltiplos utilizando fatorias, vamos explorar o inverso da relação. O método `for` pode ser utilizado para definir o modelo pai a que os modelos criados por meio dessas fábricas pertencem. Por exemplo, podemos criar três instâncias do modelo App\Models\Post que pertençam a um único usuário:
+Agora que exploramos como construir "has many" relações usando fábricas, vamos explorar o inverso da relação. O método `for` pode ser usado para definir o modelo pai do qual as instâncias criadas pela fábrica pertencem. Por exemplo, podemos criar três instâncias do modelo App\Models\Post que pertencem a um único usuário:
 
 ```php
     use App\Models\Post;
@@ -411,7 +411,7 @@ php artisan make:factory PostFactory
                 ->create();
 ```
 
- Se você já tiver uma instância de modelo pai que deve ser associada aos modelos que estão sendo criados, é possível passar a instância do modelo para o método `for`:
+Se você já tem uma instância de modelo pai que deve ser associada aos modelos que está criando, você pode passar a instância do modelo para o método "for":
 
 ```php
     $user = User::factory()->create();
@@ -425,7 +425,7 @@ php artisan make:factory PostFactory
 <a name="belongs-to-relationships-using-magic-methods"></a>
 #### Usando Métodos Mágicos
 
- Para comodidade, você pode usar os métodos de relações de fábrica mágicas do Laravel para definir as relações "belongs to". Por exemplo, o seguinte exemplo usará a convenção para determinar que os três posts deverão pertencer à relação `user` no modelo Post:
+Para conveniência, você pode usar os métodos de relacionamento do fábrica de mágica Laravel para definir relacionamentos "Pertence a". Por exemplo, o seguinte exemplo usará a convenção para determinar que os três posts devem "pertencer" ao usuário na relação do modelo "Post":
 
 ```php
     $posts = Post::factory()
@@ -437,9 +437,9 @@ php artisan make:factory PostFactory
 ```
 
 <a name="many-to-many-relationships"></a>
-### Relações de muitos para muitos
+### Relações Múltiplas a Múltiplos
 
- Assim como nos casos de vários relacionamentos (#has-many-relationships), os relacionamentos do tipo “muitos para muitos” podem ser criados utilizando o método `has`:
+Assim como [tem muitas relações](#has-many-relationships), as relações "muitos a muitos" podem ser criadas usando o método `has`:
 
 ```php
     use App\Models\Role;
@@ -451,9 +451,9 @@ php artisan make:factory PostFactory
 ```
 
 <a name="pivot-table-attributes"></a>
-#### Atributos das tabelas de pivotamento
+#### Atributos de Tabela Dinâmica
 
- Se você precisar definir atributos que devem ser definidos na tabela de cruzamento/intermediária que liga os modelos, poderá usar o método `hasAttached`. Esse método aceita um array de nomes e valores dos atributos da tabela de cruzamento como seu segundo argumento:
+Se você precisa definir atributos que devem ser definidos na tabela pivô ou intermediária que liga os modelos, você pode usar o método `hasAttached`. Este método aceita um array de nomes de atributos da tabela pivô e valores como seu segundo argumento:
 
 ```php
     use App\Models\Role;
@@ -467,7 +467,7 @@ php artisan make:factory PostFactory
                 ->create();
 ```
 
- Você poderá fornecer uma transformação de estado baseada em fechamentos se sua alteração de estado exigir o acesso ao modelo relacionado:
+Você pode fornecer um estado de transformação baseado em fechamento se o seu estado de mudança requer acesso ao modelo relacionado:
 
 ```php
     $user = User::factory()
@@ -482,7 +482,7 @@ php artisan make:factory PostFactory
                 ->create();
 ```
 
- Se você já tem instâncias de modelo que gostaria ser vinculadas aos modelos que está criando, pode passar as instâncias do modelo ao método `hasAttached`. Neste exemplo, os mesmos três papéis serão vinculados a todos os três usuários:
+Se você já tem instâncias do modelo que gostaria de anexar aos modelos que está criando, você pode passar as instâncias do modelo para o método "hasAttached". Neste exemplo, os mesmos três papéis serão anexados a todos os três usuários:
 
 ```php
     $roles = Role::factory()->count(3)->create();
@@ -494,9 +494,9 @@ php artisan make:factory PostFactory
 ```
 
 <a name="many-to-many-relationships-using-magic-methods"></a>
-#### Usando métodos mágicos
+#### Usando Métodos Mágicos
 
- Para conveniência, você pode usar os métodos de fábrica mágicos de relacionamentos do Laravel para definir relações "muitos-para-muitos". Por exemplo, o exemplo a seguir usará uma convenção para determinar que os modelos relacionados devem ser criados através de um método de relação "roles" no modelo `User`:
+Para conveniência, você pode usar os métodos de relações mágicas do Laravel para definir relações muitos-para-muitos. Por exemplo, o seguinte exemplo usará a convenção para determinar que os modelos relacionados devem ser criados por meio de um método de relação "roles" no modelo "User":
 
 ```php
     $user = User::factory()
@@ -507,9 +507,9 @@ php artisan make:factory PostFactory
 ```
 
 <a name="polymorphic-relationships"></a>
-### Relações polimórficas
+### Relações Polimórficas
 
- [Relações polimórficas](/docs/eloquent-relationships#polymorphic-relationships) também podem ser criadas usando fatorias. Relações "morph many" (polimórficas) são criadas da mesma forma que as relações "has many" tradicionais. Por exemplo, se um modelo `App\Models\Post` tem uma relação polimórfica com um modelo `App\Models\Comment`:
+[Relações polimórficas](/docs/{{version}}/eloquent-relationships#polymorphic-relationships) também podem ser criadas usando fábricas. Relações polimórficas "morf-muitos" são criados da mesma maneira que relações "tem muitos" típicas. Por exemplo, se um modelo `App\Models\Post` tem uma relação "morf-muitos" com um modelo `App\Models\Comment`:
 
 ```php
     use App\Models\Post;
@@ -518,9 +518,9 @@ php artisan make:factory PostFactory
 ```
 
 <a name="morph-to-relationships"></a>
-#### Mova para relações
+#### Avança Para Relação
 
- Não é possível usar métodos mágicos para criar relações "morphTo". Em vez disso, o método `for` deve ser usado diretamente e o nome da relação deve ser fornecido explicitamente. Por exemplo, imagine que o modelo `Comment` tenha um método `commentable` que defina uma relação "morphTo". Nesta situação, podemos criar três comentários pertencentes a um único post usando o método `for` diretamente:
+Métodos mágicos não podem ser utilizados para criar relacionamentos `morphTo`. Em vez disso, o método `for` deve ser utilizado diretamente e o nome do relacionamento deve ser fornecido explicitamente. Por exemplo, imagine que o modelo 'Comment' tenha um método 'commentable' que define um relacionamento 'morphTo'. Neste caso, podemos criar três comentários que pertencem a uma única postagem usando o método 'for' diretamente:
 
 ```php
     $comments = Comment::factory()->count(3)->for(
@@ -529,9 +529,9 @@ php artisan make:factory PostFactory
 ```
 
 <a name="polymorphic-many-to-many-relationships"></a>
-#### Relações polimórficas de muitos para muitos
+#### Relações Múltiplas de Muitos para Muitos
 
- As relações polimórficas "muitos a muitos" ("morphToMany"/"morphedByMany") podem ser criadas da mesma maneira que as não polimórficas "muitos a muitos":
+As relações polimórficas "muitos para muitos" ("morphtomany" / "morphedbymany") podem ser criadas exatamente como as relações não-polimórficas "muitos para muitos":
 
 ```php
     use App\Models\Tag;
@@ -545,7 +545,7 @@ php artisan make:factory PostFactory
                 ->create();
 ```
 
- É claro que o método mágico `has` também pode ser usado para criar relações polimórficas de "muitos a muitos":
+Claro, o método mágico 'has' também pode ser usado para criar relacionamentos polimórficos "muitos a muitos":
 
 ```php
     $videos = Video::factory()
@@ -554,9 +554,9 @@ php artisan make:factory PostFactory
 ```
 
 <a name="defining-relationships-within-factories"></a>
-### Definindo as relações dentro de fábricas
+### Definindo relacionamentos dentro de fábricas
 
- Definir uma relação dentro da fábrica de modelo, você normalmente atribuirá uma nova instância da fábrica à chave estrangeira da relação. Isso geralmente é feito para as relações "inversas", como as relacionamentos `belongsTo` e `morphTo`. Por exemplo, se você deseja criar um novo usuário ao criar uma postagem, poderá fazer o seguinte:
+Para definir uma relação dentro de sua fábrica de modelos, normalmente atribuirá um novo caso de fábrica para a chave estrangeira da relação. Isso é normalmente feito para as "relações inversas" tais como "belongsTo" e "morphTo" relações. Por exemplo, se você gostaria de criar um novo usuário ao criar uma nova postagem, você pode fazer o seguinte:
 
 ```php
     use App\Models\User;
@@ -576,7 +576,7 @@ php artisan make:factory PostFactory
     }
 ```
 
- Se as colunas da relação dependerem da fábrica que o define, pode atribuir um fecho a um atributo. O fecho receberá o array de atributos avaliado pela fábrica:
+Se as colunas de relacionamento dependem da fábrica que a define, você pode atribuir um fechamento ao atributo. O fechamento receberá o array do atributo avaliado da fábrica:
 
 ```php
     /**
@@ -598,11 +598,11 @@ php artisan make:factory PostFactory
 ```
 
 <a name="recycling-an-existing-model-for-relationships"></a>
-### Reciclando um modelo existente de relacionamento
+### Reutilizando um Modelo Existente para Relações
 
- Se os modelos tiverem um relacionamento comum com outro modelo, pode utilizar o método `recycle` para garantir que uma única instância do modelo relacionado seja reciclada para todas as relações criadas pela fábrica.
+Se você tem modelos que compartilham uma relação comum com outro modelo, você pode usar o método "recycle" para garantir um único instância do modelo relacionado é reciclado para todas as relações criadas pela fábrica.
 
- Por exemplo, imaginemos que você tem os modelos "Aerolínea", "Voo" e "Ticket". Nesse caso, o bilhete pertence a uma companhia aérea e a um voo. O voo também pertence a uma companhia aérea. Ao criar bilhetes, você provavelmente deseja usar a mesma companhia aérea para o bilhete e o voo. Assim, é possível passar uma instância de companhia aérea ao método `recycle`:
+Por exemplo, imagine que você tem "Airline", "Flight" e "Ticket" como modelos onde o ticket pertence a uma companhia aérea e um voo, e o voo também pertence a uma companhia aérea. Ao criar os tickets, provavelmente você vai querer a mesma companhia aérea para ambos os casos, então você pode passar uma instância da companhia aérea para o método recycle:
 
 ```php
     Ticket::factory()
@@ -610,9 +610,9 @@ php artisan make:factory PostFactory
         ->create();
 ```
 
- O método `recycle` pode ser particularmente útil se você possuir modelos que pertençam a um usuário ou equipe comum.
+O método `recycle` pode ser especialmente útil se você tiver modelos pertencentes a um usuário ou equipe comum.
 
- O método recycle também aceita uma coleção de modelos existentes. Quando uma coleção for fornecida ao método recycle, um modelo aleatório da lista será escolhido quando a fábrica precisar de um modelo desse tipo:
+O método "recycle" também aceita uma coleção de modelos existentes. Quando uma coleção é fornecida ao método "recycle", um modelo aleatório dessa coleção será escolhido quando a fábrica precisar de um modelo desse tipo:
 
 ```php
     Ticket::factory()

@@ -3,11 +3,11 @@
 <a name="introduction"></a>
 ## Introdução
 
- O Redis é um servidor de estrutura de dados, open source e avançado, com armazenamento de chave/valor. É referido frequentemente como um servidor de estruturas de dados visto que as suas chaves podem conter [strings](https://redis.io/docs/data-types/strings/), [hashes](https://redis.io/docs/data-types/hashes/), [lists](https://redis.io/docs/data-types/lists/), [sets](https://redis.io/docs/data-types/sets/) e [sorted sets](https://redis.io/docs/data-types/sorted-sets/).
+[Redis](https://redis.io) é uma loja de chave-valor, avançada e de código aberto. Frequentemente se refere como um servidor de estrutura de dados, pois as chaves podem conter [strings](https://redis.io/docs/data-types/strings/), [hashes](https://redis.io/docs/data-types/hashes/), [listas](https://redis.io/docs/data-types/lists/), [conjuntos](https://redis.io/docs/data-types/sets/) e [conjuntos classificados](https://redis.io/docs/data-types/sorted-sets/).
 
- Antes de utilizar o Redis com Laravel, recomendamos que instale e utilize a extensão PHP [PhpRedis](https://github.com/phpredis/phpredis) através do PECL. A instalação desta extensão é mais complexa em comparação com pacotes de PHP "user-land", mas pode gerar um melhor desempenho para aplicações que utilizam intensivamente o Redis. Se estiver a usar [Laravel Sail](/docs/sail), esta extensão já está instalada no contêiner Docker da sua aplicação.
+Antes de usar o Redis com o Laravel, nós encorajamos a instalação e utilização do [PhpRedis](https://github.com/phpredis/phpredis) PHP extension através do PECL. A extensão é mais complexa para instalar se comparado à pacotes "user-land" PHP, mas pode gerar melhor performance para aplicativos que usam muito o Redis. Se você estiver usando o Laravel Sail (/docs/sail), essa extensão já está instalada no contêiner Docker da sua aplicação.
 
- Se você não conseguir instalar a extensão PhpRedis, poderá instalar o pacote `predis/predis` através do Composer. Predis é um cliente Redis escrito inteiramente em PHP e não requer nenhuma extensão adicional:
+Se você não conseguir instalar a extensão PhpRedis, pode instalar o pacote 'predis/predis' através do Composer. O Predis é um cliente Redis escrito inteiramente em PHP e não necessita de nenhuma extensão adicional:
 
 ```shell
 composer require predis/predis:^2.0
@@ -16,7 +16,7 @@ composer require predis/predis:^2.0
 <a name="configuration"></a>
 ## Configuração
 
- Você pode configurar as configurações do Redis de sua aplicação usando o arquivo de configuração `config/database.php`. Nesse arquivo, você verá um array chamado `redis` que contém os servidores Redis usados pela sua aplicação:
+Você pode configurar as configurações do seu aplicativo Redis através do arquivo de configuração `config/database.php`. Neste arquivo, você verá um array chamado `redis` contendo os servidores Redis utilizados por seu aplicativo:
 
 ```php
     'redis' => [
@@ -49,7 +49,7 @@ composer require predis/predis:^2.0
     ],
 ```
 
- Todos os servidores Redis definidos no arquivo de configuração são obrigados a ter um nome, um anfitrião e uma porta, exceto se você definir uma única URL para representar a conexão com o Redis:
+Cada servidor Redis definido no arquivo de configuração é obrigado a ter um nome, host e uma porta, a menos que você defina um único URL para representar a conexão com o Redis.
 
 ```php
     'redis' => [
@@ -73,9 +73,9 @@ composer require predis/predis:^2.0
 ```
 
 <a name="configuring-the-connection-scheme"></a>
-#### Configurando um esquema de conexão
+#### Configurar o esquema de conexão
 
- Por padrão, os clientes Redis usarão o esquema `tcp` ao se conectarem aos seus servidores Redis; no entanto, você pode usar criptografia TLS/SSL especificando uma opção de configuração `scheme` em seu array de configurações do servidor Redis:
+Por padrão, os clientes do Redis usarão o esquema de TCP ao se conectar aos seus servidores Redis. No entanto, você pode usar o esquema de criptografia TLS / SSL especificando uma opção "configuração" no seu arquivo de configuração do servidor Redis:
 
 ```php
     'default' => [
@@ -92,7 +92,7 @@ composer require predis/predis:^2.0
 <a name="clusters"></a>
 ### Cluster
 
- Se o seu aplicativo estiver utilizando um cluster de servidores Redis, você deve definir esses clusters dentro da chave `clusters` da sua configuração Redis. Esta chave de configuração não existe por padrão, então é preciso criá-la no arquivo de configuração do seu aplicativo `config/database.php`:
+Se sua aplicação está utilizando um cluster de servidores Redis, você deve definir esses clusters dentro de uma chave ‘clusters’ em seu arquivo de configuração do Redis. Essa chave não existe por padrão então você precisará criá-la dentro do arquivo de configuração da sua aplicação no ‘config/database.php’:
 
 ```php
     'redis' => [
@@ -121,11 +121,11 @@ composer require predis/predis:^2.0
     ],
 ```
 
- Por padrão, o Laravel utilizará o agrupamento nativo do Redis uma vez que o valor da configuração `options.cluster` está definido como `redis`. O agrupamento do Redis é uma ótima opção por padrão, pois ele faz um failover com maestria.
+Por padrão, o Laravel usará o Redis clustering nativo já que o valor da configuração 'options.cluster' está definido como 'redis'. O Redis clustering é uma ótima opção padrão, pois lida com o failover de maneira graciosa.
 
- O Laravel também oferece suporte a partilha no lado do cliente. No entanto, a partilha no lado do cliente não inclui falhas; portanto, é mais adequado para dados temporários armazenados em cache que estejam disponíveis num repositório de dados primário diferente.
+Laravel também suporta fragmentação do lado do cliente. No entanto, a fragmentação do lado do cliente não manipula o failover; portanto, é adequado principalmente para dados em cache de curta duração que são acessados de outro repositório de dados principal.
 
- Se você deseja usar o agrupamento do lado do cliente em vez do agrupamento nativo do Redis, poderá remover o valor de configuração `options.cluster` no arquivo de configuração `config/database.php` da sua aplicação:
+Se quiser utilizar o sharding do lado do cliente em vez do cluster nativo Redis, você pode remover o valor de configuração 'options.cluster' dentro da sua aplicação's 'config/database.php' arquivo de configuração:
 
 ```php
     'redis' => [
@@ -143,7 +143,7 @@ composer require predis/predis:^2.0
 <a name="predis"></a>
 ### Predis
 
- Se você deseja que seu aplicativo interaja com o Redis através do pacote Predis, deve garantir que o valor da variável de ambiente `REDIS_CLIENT` seja "predis":
+Se você gostaria que seu aplicativo interaja com o Redis através do pacote predis, você deve garantir que o valor da variável de ambiente REDIS_CLIENT é predis.
 
 ```php
     'redis' => [
@@ -154,7 +154,7 @@ composer require predis/predis:^2.0
     ],
 ```
 
- Além das opções de configuração padrão, Predis suporta [parâmetros de conexão] (https://github.com/nrk/predis/wiki/Connection-Parameters) adicionais que podem ser definidos para cada um dos seus servidores Redis. Para utilizar essas opções de configuração adicionais, adicione-os à sua configuração do servidor Redis no arquivo de configuração `config/database.php` da aplicação:
+Além das opções padrão de configuração, Predis oferece parâmetros adicionais [de conexão](https://github.com/nrk/predis/wiki/Connection-Parameters) que podem ser definidos para cada um dos seus servidores Redis. Para utilizar essas opções adicionais de configuração, adicione-as na configuração do seu servidor Redis no arquivo de configuração `config/database.php` em sua aplicação:
 
 ```php
     'default' => [
@@ -171,7 +171,7 @@ composer require predis/predis:^2.0
 <a name="phpredis"></a>
 ### PhpRedis
 
- Por padrão, o Laravel utilizará a extensão PhpRedis para se comunicar com o Redis. O cliente que será utilizado pelo Laravel para se comunicar com o Redis é determinado pela opção de configuração `redis.client`, que normalmente reflete o valor da variável ambiental `REDIS_CLIENT`:
+Por padrão, o Laravel usará a extensão "PHP Redis" para se comunicar com o Redis. O cliente que Laravel utilizará para se comunicar com o Redis é determinado pelo valor da opção de configuração 'redis.client', que normalmente reflete o valor da variável de ambiente 'REDIS_CLIENT':
 
 ```php
     'redis' => [
@@ -182,7 +182,7 @@ composer require predis/predis:^2.0
     ],
 ```
 
- Além das opções de configuração padrão, o PhpRedis suporta os seguintes parâmetros adicionais de conexão: `name`, `persistent`, `persistent_id`, `prefix`, `read_timeout`, `retry_interval`, `timeout` e `context`. Você pode adicionar qualquer uma dessas opções à sua configuração do servidor Redis no arquivo de configuração `config/database.php`:
+Além das opções padrão de configuração, o PhpRedis suporta os seguintes parâmetros adicionais de conexão: 'name', 'persistent', 'persistent_id', 'prefix', 'read_timeout', 'retry_interval', 'timeout' e 'context'. Você pode adicionar qualquer uma dessas opções ao arquivo de configuração do servidor Redis no arquivo de configuração 'config/database.php':
 
 ```php
     'default' => [
@@ -201,9 +201,9 @@ composer require predis/predis:^2.0
 ```
 
 <a name="phpredis-serialization"></a>
-#### Seriamente e compressão de dados em PhpRedis
+#### PHP-Redis Serialização e Compressão
 
- A extensão PhpRedis também pode ser configurada para usar uma variedade de formatação e algoritmos de compressão. Esses algoritmos podem ser configurados através da matriz `options` da sua configuração Redis:
+A extensão do PHP Redis também pode ser configurada para usar uma variedade de serializadores e algoritmos de compressão. Esses algoritmos podem ser configurados através da matriz 'opções' da sua configuração do Redis:
 
 ```php
     'redis' => [
@@ -221,14 +221,14 @@ composer require predis/predis:^2.0
     ],
 ```
 
- Atualmente, os serializadores suportados incluem: `Redis::SERIALIZER_NONE` (por padrão), `Redis::SERIALIZER_PHP`, `Redis::SERIALIZER_JSON`, `Redis::SERIALIZER_IGBINARY`, e `Redis::SERIALIZER_MSGPACK`.
+Os serializadores suportados atualmente incluem: `Redis::SERIALIZER_NONE` (padrão), `Redis::SERIALIZER_PHP`, `Redis::SERIALIZER_JSON`, `Redis::SERIALIZER_IGBINARY` e `Redis::SERIALIZER_MSGPACK`.
 
- Os algoritmos de compressão incluem os seguintes valores: `Redis::COMPRESSION_NONE` (padrão), `Redis::COMPRESSION_LZF`, `Redis::COMPRESSION_ZSTD` e `Redis::COMPRESSION_LZ4`.
+Os algoritmos de compressão suportados incluem: 'Redis::COMPRESSION_NONE' (padrão), 'Redis::COMPRESSION_LZF', 'Redis::COMPRESSION_ZSTD' e 'Redis::COMPRESSION_LZ4'.
 
 <a name="interacting-with-redis"></a>
 ## Interagindo com o Redis
 
- Você pode interagir com o Redis chamando vários métodos do `Redis` [facade](/docs/facades). O `Redis` facade suporta métodos dinâmicos, o que significa que você pode chamar qualquer [comando Redis](https://redis.io/commands) no facade e o comando será passado diretamente ao Redis. Neste exemplo, chamaremos o comando `GET` do Redis, chamando o método `get` do facade:
+Você pode interagir com o Redis chamando vários métodos no [facade](/docs/facades) Redis. O `Redis` facade suporta métodos dinâmicos, ou seja você pode chamar qualquer [comando Redis](https://redis.io/commands) no facade e o comando será passado diretamente para o Redis. Neste exemplo, chamaremos o comando Redis 'GET' chamando o método `get` no `Redis` facade:
 
 ```php
     <?php
@@ -253,7 +253,7 @@ composer require predis/predis:^2.0
     }
 ```
 
- Como mencionado anteriormente, é possível chamar qualquer comando de Redis na interface `Redis`. O Laravel utiliza métodos mágicos para passar os comandos ao servidor Redis. Se um comando de Redis espera argumentos, você deve passá-los para o método correspondente da facade:
+Como mencionado acima, você pode chamar qualquer um dos comandos do Redis na fachada 'Redis'. O Laravel usa métodos mágicos para passar os comandos para o servidor Redis. Se um comando Redis espera argumentos, você deve passar esses argumentos para o método correspondente da fachada:
 
 ```php
     use Illuminate\Support\Facades\Redis;
@@ -263,22 +263,22 @@ composer require predis/predis:^2.0
     $values = Redis::lrange('names', 5, 10);
 ```
 
- Como alternativa, você pode enviar comandos para o servidor utilizando o método `command`, da interface `Redis`, que aceita como primeiro parâmetro o nome do comando e como segundo um array de valores.
+Alternativamente você pode passar comandos para o servidor usando o método 'command' da fachada Redis que aceita como seu primeiro argumento o nome do comando e como segundo argumento uma matriz de valores.
 
 ```php
     $values = Redis::command('lrange', ['name', 5, 10]);
 ```
 
 <a name="using-multiple-redis-connections"></a>
-#### Usando várias conexões com o Redis
+#### Usando Múltiplas Conexões Redis
 
- O arquivo de configuração do aplicativo `config/database.php` permite definir várias conexões/servidores Redis. Você pode obter uma conexão com um servidor Redis específico usando o método `connection` da facade `Redis`:
+O arquivo de configuração do 'config/database.php' de sua aplicação permite que você defina múltiplas conexões ou servidores de Redis. Você pode obter uma conexão com uma conexão específica de Redis usando o método 'conexão' da fachada 'Redis':
 
 ```php
     $redis = Redis::connection('connection-name');
 ```
 
- Para obter uma instância da conexão padrão do Redis, você pode chamar o método `connection` sem qualquer argumento adicional:
+Para obter uma instância da conexão padrão do Redis, você pode chamar o método `connection` sem argumentos adicionais:
 
 ```php
     $redis = Redis::connection();
@@ -287,7 +287,7 @@ composer require predis/predis:^2.0
 <a name="transactions"></a>
 ### Transações
 
- O método `transaction` da facade do `Redis` fornece uma embalagem conveniente em torno dos comandos nativos `MULTI` e `EXEC` do Redis. O método `transaction` aceita um closure como seu único argumento. Esse closure receberá uma instância de conexão com o Redis e poderá emitir quaisquer comandos que desejar para essa instância. Todos os comandos emissos no interior do closure serão executados numa única transação atómica:
+O método de transação do objeto 'Redis Facade' fornece um wrapper conveniente em torno dos comandos nativos 'MULTI' e 'EXEC' do Redis. O método de transação aceita uma função como seu único argumento. Esta função receberá uma instância de conexão com o Redis, e poderá emitir qualquer comando que desejar para esta instância. Todos os comandos do Redis emitidos dentro da função serão executados em uma única, transacional ação:
 
 ```php
     use Redis;
@@ -299,16 +299,16 @@ composer require predis/predis:^2.0
     });
 ```
 
- > [!ALERTA]
- > Ao definir uma transação do Redis, você não pode recuperar valores da conexão Redis. Lembre-se que sua transação será executada como uma única operação atômica e que essa operação só será executada depois que todos os comandos de seu bloqueio tiverem sido concluídos.
+> [¡ALERTA!
+> Ao definir uma transação do Redis, você não pode obter nenhum valor da conexão com o Redis. Lembre-se de que sua transação é executada como uma única operação atômica e que essa operação só será executada até que seu todo o fechamento tenha terminado de executar seus comandos.
 
-#### Scripts do Lua
+#### Lua scripts
 
- O método `eval` fornece outro método de execução de comandos Redis em uma única operação, mas esse método permite interagir e inspecionar os valores das chaves durante a operação. Os scripts do Redis são escritos no [linguagem de programação Lua](https://www.lua.org).
+O método 'eval' fornece outra forma de executar múltiplos comandos do Redis em uma única operação atômica. Contudo, o método 'eval' tem a vantagem de permitir que interaja e inspecione valores das chaves do Redis durante essa operação. Os scripts Redis são escritos na [linguagem de programação Lua](https://www.lua.org).
 
- O método `eval` pode assustar um pouco à primeira vista, mas vamos explorar um exemplo básico para quebrar o gelo. O método `eval` espera vários argumentos. Primeiro, você deve passar o script de Lua (como uma string) ao método. Em seguida, você deve passar o número de chaves (como um inteiro) com as quais o script interage. Por último, é possível passar qualquer outro argumento adicional que seja necessário acessar em seu script.
+O método `eval` pode ser um pouco assustador a princípio, mas exploraremos um exemplo básico para quebrar o gelo. O método `eval` espera vários argumentos. Primeiro, você deve passar o Lua script (como uma string) ao método. Em segundo lugar, você deve passar o número de chaves (como um inteiro) que o script interage com. Em terceiro lugar, você deve passar os nomes dessas chaves. Finalmente, você pode passar quaisquer outros argumentos adicionais que você precisa acessar dentro do seu script.
 
- Neste exemplo, iremos incrémentar um contador, inspecionar o seu novo valor e incrémentar um segundo contador se o primeiro tiver um valor superior a cinco. Por último, devolveremos o valor do primeiro contador:
+Neste exemplo, vamos incrementar um contador, inspecionar o novo valor dele e incrementar um segundo contador se o primeiro contador tiver um valor maior do que 5. Finalmente, vamos retornar o valor do primeiro contador.
 
 ```php
     $value = Redis::eval(<<<'LUA'
@@ -322,13 +322,13 @@ composer require predis/predis:^2.0
     LUA, 2, 'first-counter', 'second-counter');
 ```
 
- > Atenção!
- Consulte o documento da Redis [Códigos de Comando](https://redis.io/commands/eval), para obter mais informações sobre a linguagem de script do Redis.
+> [ALERTA!]
+> Por favor, veja a documentação do Redis para mais informações sobre scripting no Redis.
 
 <a name="pipelining-commands"></a>
-### Comandos de pipelining
+### Pipeline de Comandos
 
- Às vezes você pode precisar executar dezenas de comandos do Redis. Em vez disso, usar o método `pipeline`. O método `pipeline` aceita um argumento: uma função que recebe uma instância do Redis. É possível enviar todos os seus comandos para essa instância e eles serão todos enviados ao servidor do Redis simultaneamente, reduzindo as viagens de rede ao servidor. Os comandos ainda serão executados na ordem que foram emitidos:
+Às vezes você pode precisar executar dezenas de comandos do Redis. Em vez de fazer uma viagem de rede para o seu servidor Redis para cada comando, você pode usar o método `pipeline`. O método `pipeline` aceita um argumento: um fechamento que recebe uma instância do Redis. Você pode emitir todos os seus comandos para esta instância do Redis e eles serão enviados ao servidor do Redis ao mesmo tempo para reduzir as viagens de rede para o servidor. Os comandos ainda serão executados na ordem em que foram emitidos:
 
 ```php
     use Redis;
@@ -342,11 +342,11 @@ composer require predis/predis:^2.0
 ```
 
 <a name="pubsub"></a>
-## Publicação / sub-publicação
+## Bar/Barra
 
- O Laravel disponibiliza uma interface conveniente para os comandos `publish` e `subscribe` do Redis. Estes comandos Redis permitem que você ouça mensagens em um determinado "canal". Você pode publicar mensagens no canal de outra aplicação, ou mesmo usando outra linguagem de programação, permitindo uma comunicação fácil entre aplicações e processos.
+Laravel oferece uma interface conveniente para os comandos Redis 'publish' e 'subscribe'. Esses comandos Redis permitem que você ouça mensagens em um determinado "canal". Você pode publicar mensagens no canal de outro aplicativo ou até mesmo usando outra linguagem de programação, permitindo fácil comunicação entre aplicativos e processos.
 
- Em primeiro lugar, vamos configurar um canal de leitura usando o método `subscribe`. Colocaremos esse pedido de método dentro de um comando [do Artisan](/docs/artisan), uma vez que chamar o método `subscribe` inicia um processo longo-duradouro:
+Primeiro, vamos configurar um ouvinte de canal usando o método 'subscribe'. Colocamos essa chamada do método dentro de um [comando Artisan]( '/docs/artisan') porque chamar o método 'subscribe' inicia um processo demorado:
 
 ```php
     <?php
@@ -384,7 +384,7 @@ composer require predis/predis:^2.0
     }
 ```
 
- Agora podemos publicar mensagens no canal usando o método `publish`:
+Agora podemos publicar mensagens no canal usando o método `publicar`:
 
 ```php
     use Illuminate\Support\Facades\Redis;
@@ -399,9 +399,9 @@ composer require predis/predis:^2.0
 ```
 
 <a name="wildcard-subscriptions"></a>
-#### Assinaturas Wildcards
+#### Assinaturas de wildcard
 
- Usando o método `psubscribe`, você pode se inscrever em um canal de caractere wildcard. Isso é útil para capturar todas as mensagens de todos os canais. O nome do canal será passado como segundo argumento ao fecho fornecido:
+Usando o método `psubscribe`, você pode se inscrever para um canal com asterisco, que pode ser útil para pegar todas as mensagens em todos os canais. O nome do canal será passado como o segundo argumento para a função de retorno de chamada fornecida:
 
 ```php
     Redis::psubscribe(['*'], function (string $message, string $channel) {

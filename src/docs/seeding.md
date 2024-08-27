@@ -1,25 +1,25 @@
-# Base de dados: Semeando
+# Banco de dados: Semeamento
 
 <a name="introduction"></a>
 ## Introdução
 
- O Laravel inclui a capacidade de ativar sua base de dados com dados usando classes de sementes. Todas as classes de sementes são armazenadas no diretório `database/seeders`. Por padrão, uma classe `DatabaseSeeder` é definida para você. A partir dessa classe, você pode usar o método `call` para executar outras classes de sementes, permitindo que controle a ordem de sementeamento.
+Laravel inclui a capacidade de semeia o seu banco de dados com dados usando as classes de sementeira. Todas as classes de sementeiras são armazenadas na pasta "database/seeders". Por padrão, uma classe de DatabaseSeeder é definida para você. A partir desta classe, você pode usar o método "call" para executar outras classes de sementeira, permitindo que você controle a ordem da semeia.
 
- > [!NOTA]
- A proteção contra atribuições em massa (/docs/eloquent#mass-assignment) é automaticamente desativada durante o início de dados do banco de dados.
+> [NOTA]
+> [Proteção de atribuição em massa](/docs/eloquent#mass-assignment) é automaticamente desativado durante o plantio do banco de dados.
 
 <a name="writing-seeders"></a>
-## Escritor de Sementes
+## Redirecionamento de sementes
 
- Para gerar um seeder, execute o comando `make:seeder`. Todos os seaders gerados pelo framework serão colocados no diretório `database/seeders`:
+Para gerar um "Seeder", execute o comando 'make:seeder' [Comando do Artisan] . Todos os "Seeders" gerados pelo framework serão colocados na pasta 'database/seeders':
 
 ```shell
 php artisan make:seeder UserSeeder
 ```
 
- Por padrão, uma classe de semente contém apenas um método: `run`. Esse método é chamado quando o comando [Artisan comandos] (/docs/artisan) é executado. Dentro do método `run`, você pode inserir dados na sua base de dados da maneira que quiser. Você pode usar o [construtor de consultas] (/docs/queries) para inserir manualmente os dados ou usar os fatorias [de modelo Eloquent] (/docs/eloquent-factories).
+Uma classe semente contém apenas um método por padrão: "run". Este método é chamado quando o comando "db:seed" [Artisan command] é executado. Dentro do método "run", você pode inserir dados em seu banco de dados como quiser. Você pode usar o [query builder] para inserir dados manualmente ou usar o [Eloquent model factories].
 
- Como exemplo, vamos modificar o seeder padrão `DatabaseSeeder` e adicionar uma instrução de inserção no método `run`:
+Como exemplo vamos modificar a classe padrão 'DatabaseSeeder' e adicionar um comando de inserção de banco de dados no método 'run':
 
 ```php
     <?php
@@ -47,15 +47,15 @@ php artisan make:seeder UserSeeder
     }
 ```
 
- > [!AVISO]
- [ container de serviço] (/)
+> (!NOTA)
+> Você pode especificar qualquer dependência necessária dentro da assinatura do método "run". Eles serão automaticamente resolvidos via o contêiner de serviços do Laravel [docs / container].
 
 <a name="using-model-factories"></a>
-### Usando ferramentas de fábrica de modelos
+### Usando Model Factory
 
- Claro que especificar manualmente os atributos para cada semente de modelo é demorado. Em vez disso, você pode usar as [fabricas do modelo](/docs/eloquent-factories) para gerar convenientemente grandes quantidades de registros no banco de dados. Primeiro, reveja a documentação da [fabrica do modelo] (/) para saber como definir suas fabrias.
+Claro, especificar manualmente os atributos para cada semente de modelo é um trabalho trabalhoso. Em vez disso, você pode usar [fábricas de modelos] ( /docs /eloquent - fábricas ) para gerar conveniente grandes quantidades de registros do banco de dados . Primeiro , revise a documentação da [fábrica de modelos] ( /docs /eloquent - fábricas ) para aprender como definir suas fábricas .
 
- Por exemplo, vamos criar 50 usuários que cada um tem uma publicação relacionada:
+Por exemplo, vamos criar 50 usuários, cada um com uma publicação relacionada:
 
 ```php
     use App\Models\User;
@@ -73,9 +73,9 @@ php artisan make:seeder UserSeeder
 ```
 
 <a name="calling-additional-seeders"></a>
-### Chamando semeadeiras adicionais
+### Chamando os semeadores extras!
 
- No decorrer da classe `DatabaseSeeder`, você pode usar a metodologia `call` para executar outras classes de semente. O uso da metodologia `call` permite que você organize o processo de semente de banco de dados em vários arquivos, evitando que qualquer classe seja muito grande; a metodologia `call` aceita uma matriz com as classes que devem ser executadas:
+Dentro da classe DatabaseSeeder, você pode usar o método call para executar as classes adicionais de sementes. Usando o método call permite-se dividir seu processo de banco de dados em vários arquivos para que nenhuma classe de sementes se torne muito grande. O método call aceita uma matriz das classes de sementes a serem executadas:
 
 ```php
     /**
@@ -92,9 +92,9 @@ php artisan make:seeder UserSeeder
 ```
 
 <a name="muting-model-events"></a>
-### Silenciando eventos do modelo
+### Ajuste de Níveis Sonoros
 
- Enquanto está a executar as sementes, pode pretender impedir que os modelos enviem eventos. Pode conseguir isso utilizando a tração `WithoutModelEvents`. Quando é utilizado, a tração `WithoutModelEvents` garante que nenhum evento do modelo seja enviado, mesmo que as classes de semente adicionais sejam executadas através da métrica `call`:
+Ao gerar sementes, você pode querer impedir que os modelos enviem eventos. Você pode fazer isso usando o atributo `WithoutModelEvents`. Quando usado, o atributo garante que nenhum evento de modelo é enviado, mesmo se as classes de semente adicionais forem executadas via o método `call`:
 
 ```php
     <?php
@@ -121,9 +121,9 @@ php artisan make:seeder UserSeeder
 ```
 
 <a name="running-seeders"></a>
-## Semeando correndo
+## Semeadores de plantio a jato
 
- Pode executar o comando `db:seed` do Artisan para semeie sua base de dados. Por padrão, o comando `db:seed` executa a classe `Database\Seeders\DatabaseSeeder`, que pode, por sua vez, invocar outras classes de semente. No entanto, você pode usar a opção `--class" para especificar uma classe de semente individualmente:
+Você pode executar o Artisan comando db:seed para semente seu banco de dados. Por padrão, o comando db:seed executa a classe Database\Seeders\DatabaseSeeder, que por sua vez pode invocar outras classes de sementes. No entanto, você pode usar o parâmetro --class para especificar uma classe de semente específica para executar individualmente:
 
 ```shell
 php artisan db:seed
@@ -131,7 +131,7 @@ php artisan db:seed
 php artisan db:seed --class=UserSeeder
 ```
 
- Você também poderá semear sua base de dados usando o comando `migrate:fresh` em combinação com a opção `--seed`, que excluirá todas as tabelas e serão reexecutadas todas suas migrações. Este comando é útil para completamente reconstruir sua base de dados. A opção `--seeder` poderá ser usada para especificar um adicional, o qual será executado:
+Você também pode semente seu banco de dados usando o comando 'migrate:fresh' em combinação com a opção --seed, que vai fazer um reset completo em todas as tabelas e reexecutar todas as suas migrações. Esse comando é útil para reconstruir completamente seu banco de dados. A opção --seeder pode ser usada para especificar um seeder específico para executar.
 
 ```shell
 php artisan migrate:fresh --seed
@@ -140,9 +140,9 @@ php artisan migrate:fresh --seed --seeder=UserSeeder
 ```
 
 <a name="forcing-seeding-production"></a>
-#### Fazer com que os seeders funcionem em produção
+#### Forçando os semeadores a rodar na produção
 
- Algumas operações de sementeamento poderão fazer com que você altere ou perca dados. Para proteger contra a execução de comandos de sementeamento contra o banco de dados de produção, será solicitada confirmação antes do início da operação de sementeamento no ambiente `production`. Se quiser que a operação seja iniciada sem um pedido de confirmação, utilize a bandeira `--force`:
+Algumas operações de sementeamento podem lhe fazer alterar ou perder dados. Para proteger você de executar comandos de sementeamento em seu banco de produção, será solicitado que confirme antes da execução dos sementeiros no ambiente 'production'. Para forçar os sementeadores a serem executados sem um prompt, utilize o parâmetro `--force`:
 
 ```shell
 php artisan db:seed --force

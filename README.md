@@ -58,8 +58,8 @@
     - [Hashing](/src/docs/hashing.md) ✅
     - [Redefinir Senhas](/src/docs/passwords.md) ✅
 - ## Base de dados
-    - [Getting Started](/src/docs/database.md) ⚙️
-    - [Query Builder](/src/docs/queries.md)
+    - [Getting Started](/src/docs/database.md) ✅
+    - [Query Builder](/src/docs/queries.md) ⚙️
     - [Pagination](/src/docs/pagination.md)
     - [Migrations](/src/docs/migrations.md)
     - [Seeding](/src/docs/seeding.md)

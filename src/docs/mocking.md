@@ -1,16 +1,16 @@
-# Zombaria
+# Imitar
 
 <a name="introduction"></a>
 ## Introdução
 
- Ao testar aplicações Laravel, pode ser desejável simular determinados aspetos da sua aplicação para que não sejam executadas na prática durante o teste. Por exemplo, quando testa um controlador que envia um evento, talvez seja conveniente simular os escutadores de evento para que eles não sejam realmente executados no decorrer do teste. Isto permite-lhe testar apenas a resposta HTTP do controlador sem preocupações com a execução dos escutadores de eventos, uma vez que estes podem ser testados em um caso de teste específico.
+Ao testar aplicações Laravel, você pode querer "simular" certos aspectos da sua aplicação de modo que não sejam realmente executados durante um determinado teste. Por exemplo, quando está testando um controlador que despacha um evento, você pode querer simular os ouvintes do evento para que eles não sejam realmente executados durante o teste. Isso permite que você apenas teste a resposta HTTP do controlador sem se preocupar com a execução dos ouvintes do evento, pois estes podem ser testados em seu próprio caso de teste.
 
- O Laravel fornece métodos úteis para simular eventos, tarefas e outros tipos de interfaces, o que simplifica a utilização do Mockery, evitando assim ter de efetuar chamadas manuais complicadas ao Mockery.
+Laravel oferece métodos úteis para simular eventos, trabalhos e outras fachadas de fora da caixa. Esses ajudantes fornecem principalmente uma sobrecarga de conveniência sobre o Mockery para que você não tenha que chamar manualmente chamadas complicadas do Mockery.
 
 <a name="mocking-objects"></a>
-## Zombar de objetos
+## Simulação de Objetos
 
- Quando você estiver usando um objeto que será injetado na sua aplicação através do [conjunto de serviços](/docs/container) da Laravel, precisará vincular a instância falsa ao conjunto como uma vinculação `instance`. Isto instruirá o conjunto para usar a instância falsa desse objeto em vez da construção do próprio objeto:
+Quando zombar de um objeto que será injetado em sua aplicação através do [container de serviço](/docs/{{version}}/container), você precisará vincular a instância simulada ao contêiner como uma 'vinculação de instância'. Isso instruirá o contêiner para usar sua instância simulada do objeto em vez de construir o objeto por si só:
 
 ```php tab=Pest
 use App\Service;
@@ -43,7 +43,7 @@ public function test_something_can_be_mocked(): void
 }
 ```
 
- Para tornar o processo mais conveniente, você pode usar a metodologia `mock` fornecida pela classe de teste de base do Laravel. Por exemplo, o exemplo abaixo é equivalente ao acima:
+Para tornar isso mais conveniente, você pode usar o método mock fornecido pela classe caso de teste base do Laravel. Por exemplo, o seguinte exemplo é equivalente ao exemplo acima:
 
 ```php
     use App\Service;
@@ -54,7 +54,7 @@ public function test_something_can_be_mocked(): void
     });
 ```
 
- É possível usar o método `partialMock` quando é necessário somente falsificar alguns métodos de um objeto. Os métodos que não forem falsificados serão executados normalmente ao ser chamado:
+Você pode usar o método `partialMock` quando você só precisa de simular alguns métodos de um objeto. Os métodos que não são simulados serão executados normalmente, quando chamados.
 
 ```php
     use App\Service;
@@ -65,7 +65,7 @@ public function test_something_can_be_mocked(): void
     });
 ```
 
- Da mesma forma, se você quiser espionar um objeto, a classe de teste base do Laravel oferece uma metodologia `spy` como um wrapper conveniente ao redor da método `Mockery::spy`. Espiões são semelhantes aos mocks; porém, os spies registram qualquer interação entre o espio e o código que está sendo testado, permitindo-lhe fazer asserções depois que o código é executado:
+Assim como, se você quiser [espião](http://docs.mockery.io/en/latest/reference/spies.html) em um objeto, a classe de caso base do Laravel oferece um método `spy` como uma camada conveniente em torno do método `Mockery::spy`. Espiões são semelhantes a mocks; no entanto, espiões registram qualquer interação entre o espião e o código sendo testado, permitindo que você faça afirmações após a execução do código:
 
 ```php
     use App\Service;
@@ -78,9 +78,9 @@ public function test_something_can_be_mocked(): void
 ```
 
 <a name="mocking-facades"></a>
-## Fachadas de zombaria
+## Falso-Faciales
 
- Diferentemente das chamadas de métodos estáticos tradicionais, [facades] (incluindo [facades em tempo real] (/)), podem ser simulados. Isso oferece uma grande vantagem sobre os métodos estáticos tradicionais e concede a você o mesmo grau de testabilidade que teria se você estivesse usando a injeção de dependência tradicional. Durante os testes, muitas vezes você pode querer simular uma chamada para um facade Laravel que ocorre em um de seus controladores. Por exemplo, considere a seguinte ação do controlador:
+Diferentemente de chamadas estáticas tradicionais, [facades](/docs/{{version}}/facades) (incluindo [real-time facades](/docs/{{version}}/facades#real-time-facades)) podem ser simuladas. Isso oferece uma grande vantagem sobre métodos estáticos tradicionais e concede a você a mesma testabilidade que teria se estivesse usando injeção de dependência tradicional. Quando estiver testando, é comum querer simular um chamado para uma Laravel facade que ocorre em um de seus controladores. Por exemplo, considere a seguinte ação do controlador:
 
 ```php
     <?php
@@ -105,7 +105,7 @@ public function test_something_can_be_mocked(): void
     }
 ```
 
- Podemos simular o chamado à interface `Cache`, utilizando o método `shouldReceive`, que devolve uma instância de um mock do [Mockery](https://github.com/padraic/mockery). Uma vez que as interfaces são resolvidas e gerenciadas pelo [conjunto de serviços](/docs/container) do Laravel, eles têm muito mais capacidade de teste do que uma classe estatica típica. Por exemplo, podemos simular o nosso chamado ao método `get` da interface `Cache`:
+Podemos zombar da chamada para o `Cache` fachada usando o método `shouldReceive`, que retornará uma instância de um [Mockery](https://github.com/padraic/mockery) mock. Desde fachadas são realmente resolvidas e gerenciadas pelo Laravel [container de serviço](/docs/{{version}}/container), eles têm muito mais testabilidade do que uma classe estática típica. Por exemplo, vamos zombar a nossa chamada para o `Cache` fachada' método `get`:
 
 ```php tab=Pest
 <?php
@@ -148,13 +148,13 @@ class UserControllerTest extends TestCase
 }
 ```
 
- > [!AVISO]
- [Métodos de teste de HTTP](/docs/http-tests), como `get` e `post`, ao executar seu teste. Do mesmo modo, invocar o método `Config::set` nos seus testes em vez de simular a facade `Config`.
+> [!Aviso]
+> Não deves zombar de qualquer fachada "Request". Em vez disso, passem o input desejado nos [métodos HTTP de teste](https://docs.guzzle.io/3.4/en/master/request-options/#test) como "get" e "post" quando executar o seu teste. Da mesma forma, em vez de zombar da fachada "Config", chamem o método `Config::set` no vosso teste.
 
 <a name="facade-spies"></a>
 ### Espiões da fachada
 
- Se você deseja espionar uma facada (http://docs.mockery.io/en/latest/reference/spies.html), você pode chamar o método `spy` na facada correspondente. As espionagens são semelhantes às asserções; no entanto, elas registram qualquer interação entre a espionagem e o código sendo testado, permitindo que você faça afirmações depois que o código for executado:
+Se você gostaria de [espião](http://docs.mockery.io/en/latest/reference/spies.html) sobre uma fachada, você pode chamar o método `spy` sobre a fachada correspondente. Os espiões são semelhantes aos mocks; no entanto, os espiões registram qualquer interação entre o espião e o código que está sendo testado, permitindo-lhe fazer afirmações após o código é executado:
 
 ```php tab=Pest
 <?php
@@ -188,9 +188,9 @@ public function test_values_are_be_stored_in_cache(): void
 ```
 
 <a name="interacting-with-time"></a>
-## Interagir com o tempo
+## Interação com o Tempo
 
- Durante os testes você pode precisar, ocasionalmente, modificar o tempo retornado por meio de helper como `now` ou `Illuminate\Support\Carbon::now()`. Por sorte, a classe base do Laravel para testes conta com helpers que permitem a manipulação do tempo atual:
+Ao fazer testes, ocasionalmente você precisará modificar o tempo retornado por ajudantes como 'agora' ou 'Illuminate\Support\Carbon::now()'. Felizmente, a classe de teste base do Laravel inclui ajudantes que permitem que você manipule o horário atual:
 
 ```php tab=Pest
 test('time can be manipulated', function () {
@@ -237,7 +237,7 @@ public function test_time_can_be_manipulated(): void
 }
 ```
 
- Você também pode fornecer um closure aos vários métodos de viagem no tempo. O closure será invocado com o tempo congelado na hora especificada. Depois que o closure tiver sido executado, o tempo retornará ao normal:
+Você também pode fornecer um fechamento para os diversos métodos de viagem no tempo. O fechamento será invocado com o tempo congelado na hora especificada. Uma vez que o fechamento tenha sido executado, o tempo retomará sua normalidade:
 
 ```php
     $this->travel(5)->days(function () {
@@ -249,7 +249,7 @@ public function test_time_can_be_manipulated(): void
     });
 ```
 
- O método `freezeTime` pode ser usado para congelar o tempo corrente. De forma semelhante, o método `freezeSecond` irá congelar o tempo corrente, mas no início do segundo corrente:
+O método `freezeTime` pode ser usado para congelar o horário atual. Da mesma forma, o método `freezeSecond` congela o horário atual mas no início do segundo atual.
 
 ```php
     use Illuminate\Support\Carbon;
@@ -265,7 +265,7 @@ public function test_time_can_be_manipulated(): void
     })
 ```
 
- Como é de esperar, todos os métodos discutidos acima são úteis principalmente para testes de comportamentos de aplicações sensíveis ao tempo, como o bloqueio de postagens inativas em fóruns de discussão:
+Como se poderia esperar, todos os métodos discutidos acima são úteis principalmente para testar o comportamento de aplicativos sensíveis ao tempo, como bloquear publicações inativas em um fórum de discussão:
 
 ```php tab=Pest
 use App\Models\Thread;

@@ -3,43 +3,43 @@
 <a name="introduction"></a>
 ## Introdução
 
- O [Laravel Pulse](https://github.com/laravel/pulse) oferece uma visão geral das informações sobre o desempenho e uso de sua aplicação. Com o Pulse, você pode localizar gargalos como trabalhos lentos e endpoints, encontrar seus usuários mais ativos e muito mais.
+O Laravel Pulse (https://github.com/laravel/pulse) fornece um resumo rápido sobre o desempenho e uso de seu aplicativo. Com Pulse, você pode rastrear gargalos como trabalhos lentos e pontos finais, encontrar os usuários mais ativos e muito mais.
 
- Para depuração detalhada de eventos individuais, consulte [Olá, Laravel! - Telescópio] (/docs/telescope)
+Para depuração profunda de eventos individuais, confira o [Laravel Telescope]( /docs/telescope )
 
 <a name="installation"></a>
 ## Instalação
 
- > [ADVERTÊNCIA]
- A implementação de armazenamento interno do Pulse requer atualmente um banco de dados MySQL, MariaDB ou PostgreSQL. Se você estiver usando um motor de banco de dados diferente, será necessário um banco de dados separado MySQL, MariaDB ou PostgreSQL para seus dados do Pulse.
+> [ALERTA]
+> A implementação de armazenamento de primeira parte do Pulse requer atualmente um banco de dados MySQL, MariaDB ou PostgreSQL. Se você estiver usando uma motor de banco de dados diferente, você precisará usar um banco separado de dados MySQL, MariaDB ou PostgreSQL para seus dados do Pulse.
 
- Você pode instalar o Pulse usando o gerenciador de pacotes Composer:
+Você pode instalar o Pulse usando o gerenciador de pacotes composer:
 
 ```sh
 composer require laravel/pulse
 ```
 
- Em seguida, você deve publicar os arquivos de configuração e migração do Pulse usando o comando do artesão `vendor:publish`:
+Em seguida, você deve publicar os arquivos de configuração e migração do Pulse usando o comando Artisan "vendor:publish":
 
 ```shell
 php artisan vendor:publish --provider="Laravel\Pulse\PulseServiceProvider"
 ```
 
- Finalmente, você deve executar o comando "migrate" para criar as tabelas necessárias para armazenar os dados do Pulse:
+Finalmente, você deve executar o comando 'migrate' para criar as tabelas necessárias para armazenar os dados do Pulse:
 
 ```shell
 php artisan migrate
 ```
 
- Depois que as migrações do banco de dados do Pulse forem executadas, você poderá acessar o painel do Pulse pela rota `/pulse`.
+Uma vez que as migrações de banco de dados Pulse estão em execução, você pode acessar a Pulse Dashboard através da rota `/pulse`.
 
- > [!ATENÇÃO]
- [ Especifique uma conexão dedicada ao banco de dados (#usando-um-banco-de-dados-diferente)].
+> Nota:
+> Se não quiser armazenar dados de Pulse no banco de dados principal da sua aplicação, você pode [especificar uma conexão com um banco de dados dedicado](#usando-um-banco-de-dados-diferente).
 
 <a name="configuration"></a>
 ### Configuração
 
- Muitas opções de configuração do Pulse podem ser controladas usando variáveis de ambiente. Para visualizar as opções disponíveis, registrar novos gravadores ou configurar opções avançadas, você poderá publicar o arquivo de configuração `config/pulse.php`:
+Muitas das opções de configuração do Pulso podem ser controladas usando variáveis de ambiente. Para ver as opções disponíveis, registrar novos gravadores ou configurar opções avançadas, você pode publicar o arquivo "config/pulse.php" de configuração:
 
 ```sh
 php artisan vendor:publish --tag=pulse-config
@@ -51,7 +51,7 @@ php artisan vendor:publish --tag=pulse-config
 <a name="dashboard-authorization"></a>
 ### Autorização
 
- O painel do Pulse pode ser acessado através da rota `/pulse`. Por padrão, você somente poderá acessar este painel no ambiente `local`, então é necessário configurar autorizações para seus ambientes de produção customizando o "viewPulse" gate de autorização. Isso pode ser feito no arquivo `app/Providers/AppServiceProvider.php` da aplicação:
+O painel Pulse pode ser acessado via rota `/pulse`. Por padrão, você poderá acessar este painel somente no ambiente `local`, portanto você precisará configurar a autorização para seus ambientes de produção, personalizando o portão de autorização `'viewPulse'`. Você pode realizar isso dentro do arquivo da sua aplicação `app/Providers/AppServiceProvider.php`:
 
 ```php
 use App\Models\User;
@@ -73,13 +73,13 @@ public function boot(): void
 <a name="dashboard-customization"></a>
 ### Personalização
 
- Os gráficos e o layout do painel do Pulse podem ser configurados publicando a visualização de painel. A visualização de painel será publicada em "resources/views/vendor/pulse/dashboard.blade.php":
+O painel dePulse pode ser configurado editando-se os cartões e o layout do painel. A visualização do painel será publicada no arquivo 'resources/views/vendor/pulse/dashboard.blade.php'.
 
 ```sh
 php artisan vendor:publish --tag=pulse-dashboard
 ```
 
- O painel de controle é alimentado pelo [Livewire](https://livewire.laravel.com/) e permite a personalização dos cartões e do layout sem necessidade de reconstruir nenhum ativo JavaScript.
+O painel é alimentado por [Livewire](https://livewire.laravel.com/), e permite personalizar os cartões e o layout sem precisar recriar nenhum ativo do JavaScript.
 
 Within this file, the `<x-pulse>` component is responsible for rendering the dashboard and provides a grid layout for the cards. If you would like the dashboard to span the full width of the screen, you may provide the `full-width` prop to the component:
 
@@ -97,26 +97,26 @@ By default, the `<x-pulse>` component will create a 12 column grid, but you may 
 </x-pulse>
 ```
 
- Cada cartão aceita um atributo `cols` e `rows` para controlar o espaço e posicionamento:
+Cada cartão aceita os atributos "cols" e "rows" para controlar o espaçamento e posicionamento:
 
 ```blade
 <livewire:pulse.usage cols="4" rows="2" />
 ```
 
- A maioria dos cards também aceita o prop `expand` para mostrar o card completo em vez de escanear:
+A maioria das cartas também aceita um "prop expand" para mostrar a carta completa em vez de rolagem:
 
 ```blade
 <livewire:pulse.slow-queries expand />
 ```
 
 <a name="dashboard-resolving-users"></a>
-### Usuários resolvidos
+### Resolvendo Usuários
 
- Para cartões que exibem informações sobre seus usuários, como o "Application Usage" (uso de aplicativos), o Pulse somente irá registrar o ID do usuário. Ao renderizar o dashboard, ele resolve os campos `name` e `email` do modelo padrão de autenticação e exibe avatares utilizando o serviço web Gravatar.
+Para cartões que exibem informações sobre seus usuários, como o Application Usage card, o Pulse irá registrar apenas a ID do usuário. Ao renderizar o painel, ele resolverá os campos 'name' e 'email' de seu modelo padrão 'Authenticatable', e exibirá os avatares usando o serviço web Gravatar.
 
- Você pode personalizar os campos e o avatar chamando o método `Pulse::user` na classe `App\Providers\AppServiceProvider` de sua aplicação.
+Você pode personalizar os campos e avatar invocando o método `Pulse::user` dentro de sua classe `App\Providers\AppServiceProvider`.
 
- O método `user` aceita um closure que receberá o modelo `Authenticatable` a ser exibido e deverá retornar uma matriz contendo informações do nome, extra e avatar para o usuário.
+O método 'user' aceita uma função que receberá o modelo 'Authenticatable' para ser exibido e deverá retornar um array contendo as informações 'name', 'extra' e 'avatar' do usuário:
 
 ```php
 use Laravel\Pulse\Facades\Pulse;
@@ -136,8 +136,8 @@ public function boot(): void
 }
 ```
 
- > [!NOTA]
- [ recipiente de serviço](/docs/container#binding-a-singleton).
+> ¡NOTA!
+> Você pode personalizar completamente como o usuário autenticado é capturado e recuperado ao implementar o contrato 'Laravel\Pulse\Contracts\ResolvesUsers' e vinculá-lo no contêiner de serviço do Laravel [service container](/docs/container#binding-a-singleton).
 
 <a name="dashboard-cards"></a>
 ### Cartões
@@ -147,7 +147,7 @@ public function boot(): void
 
 The `<livewire:pulse.servers />` card displays system resource usage for all servers running the `pulse:check` command. Please refer to the documentation regarding the [servers recorder](#servers-recorder) for more information on system resource reporting.
 
- Se você substituir um servidor em sua infraestrutura, poderá parar de exibir o servidor inativo no painel Pulse após um determinado período. Você pode fazer isso usando a propriedade `ignore-after`, que aceita o número de segundos após os quais os servidores inativos devem ser removidos do painel Pulse. Alternativamente, você pode fornecer uma string de tempo relativo formatada como "1 hora" ou "3 dias e 1 hora":
+Em caso de substituição do servidor na infraestrutura, você pode não desejar que o servidor inativo continue sendo exibido no painel de controle do Pulse após um determinado período. Você pode alcançar isso usando a propriedade 'ignore-after', que aceita um número de segundos após o qual os servidores inativos devem ser removidos do painel de controle do Pulse. Alternativamente, você pode fornecer uma string formatada de tempo relativo, como "1 hora" ou "3 dias e 1 hora":
 
 ```blade
 <livewire:pulse.servers ignore-after="3 hours" />
@@ -158,7 +158,7 @@ The `<livewire:pulse.servers />` card displays system resource usage for all ser
 
 The `<livewire:pulse.usage />` card displays the top 10 users making requests to your application, dispatching jobs, and experiencing slow requests.
 
- Se pretender ver todas as métricas de utilização no ecrã ao mesmo tempo, pode incluir o cartão várias vezes e especificar o atributo `type`:
+Se você deseja visualizar todas as métricas de uso na tela ao mesmo tempo, você pode incluir a carta várias vezes e especificar o atributo 'tipo':
 
 ```blade
 <livewire:pulse.usage type="requests" />
@@ -166,10 +166,10 @@ The `<livewire:pulse.usage />` card displays the top 10 users making requests to
 <livewire:pulse.usage type="jobs" />
 ```
 
- Para saber como personalizar a forma como o Pulse recupera e apresenta informações sobre utilizadores, consulte a nossa documentação em [resolver problemas de utilizadores] (Dashboard_resolving_users).
+Para saber como personalizar a forma de recuperação e exibição das informações do usuário pelo Pulse, consulte nossa documentação sobre [resolução de problemas de usuários](#dashboard-resolving-users).
 
- > [!NOTA]
- [ amostragem (“#sampling”)]. Ver
+> Nota!
+> Se a sua aplicação recebe muitas requisições ou realiza muitos trabalhos, você pode querer habilitar [amostragem](#amostragem). Ver mais informações sobre o [registrador de requisições do usuário](#registrador-de-requisicoes-do-usuario), [registrador de trabalhos do usuário](#registrador-de-trabalhos-do-usuario) e [registrador de trabalhos lentos](#registrador-de-trabalho-lentos).
 
 <a name="exceptions-card"></a>
 #### Exceções
@@ -182,78 +182,78 @@ The `<livewire:pulse.exceptions />` card shows the frequency and recency of exce
 The `<livewire:pulse.queues />` card shows the throughput of the queues in your application, including the number of jobs queued, processing, processed, released, and failed. See the [queues recorder](#queues-recorder) documentation for more information.
 
 <a name="slow-requests-card"></a>
-#### Pedidos lentos
+#### Pedir devagar
 
 The `<livewire:pulse.slow-requests />` card shows incoming requests to your application that exceed the configured threshold, which is 1,000ms by default. See the [slow requests recorder](#slow-requests-recorder) documentation for more information.
 
 <a name="slow-jobs-card"></a>
-#### Empregos Lentos
+#### Empregos lentos
 
 The `<livewire:pulse.slow-jobs />` card shows the queued jobs in your application that exceed the configured threshold, which is 1,000ms by default. See the [slow jobs recorder](#slow-jobs-recorder) documentation for more information.
 
 <a name="slow-queries-card"></a>
-#### Consultas lentas
+#### Consultas Lentas
 
 The `<livewire:pulse.slow-queries />` card shows the database queries in your application that exceed the configured threshold, which is 1,000ms by default.
 
- Por padrão, as consultas lentas são agrupadas com base na consulta de SQL (sem vinculações) e o local onde ocorreu a consulta, mas pode ser que você opte por não capturar o local se desejar agrupar somente a consulta de SQL.
+Por padrão, consultas lentas são agrupadas com base na consulta SQL (sem vinculação) e o local onde ocorreu, mas você pode optar por não capturar a localização se quiser agrupá-las apenas pela consulta SQL.
 
- Se você encontrar problemas de desempenho na renderização devido a consultas SQL extremamente grandes recebendo destaque de sintaxe, você poderá desativar o destaque adicionando a propriedade `without-highlighting`:
+Se você encontrar problemas de desempenho do renderização devido a consultas SQL extremamente grandes recebendo realce de sintaxe, você pode desativar o realce adicionando o `sem-realce`:
 
 ```blade
 <livewire:pulse.slow-queries without-highlighting />
 ```
 
- Consulte a documentação do [registrador de consultas lentas] (#slow-queries-recorder) para mais informações.
+Veja a documentação do [registrador de consultas lentas](#slow-queries-recorder) para mais informações.
 
 <a name="slow-outgoing-requests-card"></a>
-#### Pedidos de saída lentos
+#### Pedidos lentos
 
 The `<livewire:pulse.slow-outgoing-requests />` card shows outgoing requests made using Laravel's [HTTP client](/docs/http-client) that exceed the configured threshold, which is 1,000ms by default.
 
- Por padrão, as entradas serão agrupadas pela URL completa. No entanto, poderá pretender normalizar ou agrupar solicitações de saída semelhantes utilizando expressões regulares. Consulte a documentação [registro de solicitações de saída lentas] (https://kubernetes.io/docs/reference/access-modes/http/#slow-outgoing-requests-recorder) para mais informações.
+Por padrão, as entradas serão agrupadas pela URL completa. No entanto, você pode querer normalizar ou agrupar solicitações semelhantes de saída usando expressões regulares. Consulte a documentação do [registrador de solicitações lentas](#slow-outgoing-requests-recorder) para mais informações.
 
 <a name="cache-card"></a>
-#### Cachecor
+#### Cache
 
 The `<livewire:pulse.cache />` card shows the cache hit and miss statistics for your application, both globally and for individual keys.
 
- Por padrão, as entradas são agrupadas por chave. No entanto, poderá pretender normalizar ou agrupar chaves semelhantes usando expressões regulares. Consulte a documentação sobre [Registador de interações cache] (cache-interactions-recorder) para mais informações.
+Por padrão as entradas serão agrupadas por chave. No entanto, você pode querer normalizar ou agrupar chaves semelhantes usando expressões regulares. Consulte a documentação de [cache interactions recorder](#cache-interactions-recorder) para mais informações.
 
 <a name="capturing-entries"></a>
-## Capturar entradas
+## Captura de Entradas
 
- A maioria dos gravadores Pulse captura automaticamente registros com base em eventos de estruturas enviados pelo Laravel. No entanto, os [Gravadores do servidor](server-recorder) e alguns cartões de terceiros devem pesquisar informações regularmente. Para usar esses cartões, você deve executar o demonio `pulse:check` em todos os seus servidores individuais da aplicação:
+A maioria dos gravadores de pulso irá capturar automaticamente entradas com base em eventos estruturais enviados pelo Laravel. No entanto, o [gravador do servidor](#servers-recorder) e algumas cartas de terceiros devem verificar regularmente as informações. Para usar estas cartas, você deve executar o `pulse:check` daemon em todos os seus servidores de aplicativos individuais:
 
 ```php
 php artisan pulse:check
 ```
 
- > [!ATENÇÃO]
- > Para manter o processo `pulse:check` em execução continuamente no fundo do sistema, você deve usar um gerenciador de processos como o Supervisor para garantir que o comando não seja interrompido.
+> [NOTA]
+> Para manter o processo "pulse:check" em execução permanente em segundo plano, você deve utilizar um monitor de processos como Supervisor para garantir que o comando não pare de executar.
 
- Como o comando "pulse:check" é um processo de longa duração, ele não verá alterações em sua base de código sem que seja reiniciado. É recomendável reiniciar o comando chamando o comando "pulse:restart" durante o processo de implantação da aplicação:
+Como o comando 'pulse:check' é um processo de longa duração, ele não verá as mudanças no seu código sem ser reiniciado. Você deve reiniciar suavemente o comando chamando o comando 'pulse:restart' durante o processo de implantação do seu aplicativo:
 
 ```sh
 php artisan pulse:restart
 ```
 
- > [!OBSERVAÇÃO]
- [ Armazenar sinais de reinício em cache], portanto, certifique-se de que o driver de armazenamento temporário está configurado corretamente para sua aplicação antes de utilizar essa funcionalidade.
+> [NOTA]
+> O Pulse usa o [cache] para armazenar sinais de reinicialização, por isso você deve verificar se um controlador de cache está configurado corretamente para sua aplicação antes de usar esse recurso.
 
 <a name="recorders"></a>
-### Gravadores
+### Registros
 
- Os gravadores são responsáveis pela captura das entradas do seu aplicativo que serão gravadas no banco de dados Pulse. Esses itens estão registrados e configurados na seção "Gravadores" do arquivo de configuração do Pulse (#Configuração).
+Os gravadores são responsáveis por capturar entradas do seu aplicativo a serem gravadas no banco de dados de Pulso. Os gravadores estão registrados e configurados na seção "gravadores" do [arquivo de configuração de Pulso](#configuration).
 
 <a name="cache-interactions-recorder"></a>
-#### Conexão com a cache
+#### Interações de Cache
 
- O registro `CacheInteractions` captura informações sobre os acessos e erros no cache de sua aplicação para exibição na seção do [Cache](/docs/cache).
+O gravador `CacheInteractions` captura informações sobre os acertos e erros de cache em seu aplicativo para exibição na [card](#card) Cache.
 
- Podem ser ajustados opcionalmente a taxa de amostragem (#sampling) e padrões de tecla ignorada.
+Você pode ajustar opcional a [taxa de amostragem](#amostragem) e os padrões ignorados de chave.
 
- Você também pode configurar o agrupamento de chaves para que as chaves semelhantes sejam agrupadas como uma única entrada. Por exemplo, você poderá remover IDs exclusivos das chaves que armazenam informações do mesmo tipo. Os grupos são configurados usando um padrão regex para "encontrar e substituir" partes da chave. Um exemplo está incluído no arquivo de configuração:
+Você também pode agrupar teclas para que as teclas semelhantes sejam agrupadas como uma entrada única. Por exemplo, você pode querer remover IDs exclusivos de chaves armazenando o mesmo tipo de informações. Grupos são configurados usando uma expressão regular para "procurar e substituir" partes da chave. Um exemplo está incluído no arquivo de configuração:
 
 ```php
 Recorders\CacheInteractions::class => [
@@ -264,30 +264,30 @@ Recorders\CacheInteractions::class => [
 ],
 ```
 
- O primeiro padrão que corresponda será utilizado. Se nenhum dos padrões corresponder, a chave será capturada como está.
+O primeiro que se encaixa será usado. Se não houver nenhum que se encaixe o método será capturado como está.
 
 <a name="exceptions-recorder"></a>
 #### Exceções
 
- O gravador de "Exceções" armazena informações sobre exceções que devem ser relatadas no aplicativo para apresentação na folha de rosto "Exceções" (#exceções).
+O gravador de exceções captura informações sobre exceções que ocorrem no seu aplicativo para exibição na [exceções] (card).
 
- O usuário pode, facultativamente, ajustar as [taxas de amostragem](#amostrador) e os padrões dos erros ignorados. Além disso, o usuário pode também configurar se captura ou não a localização da qual ocorreu o erro. A localização capturada é exibida na tela do Pulse, o que pode ajudar no rastreamento do erro; contudo, se o mesmo erro ocorrer em vários locais, será apresentado diversas vezes para cada local único.
+Você pode ajustar opcionalmente a [taxa de amostragem](#amostragem) e os padrões de exceções ignoradas. Você também pode configurar se deseja capturar o local de onde a exceção foi gerada. A localização capturada será exibida no painel do Pulse, que poderá ajudar na localização da origem das exceções; contudo, caso a mesma exceção ocorra em vários locais, ela aparecerá várias vezes para cada local único.
 
 <a name="queues-recorder"></a>
 #### Filas
 
- O gravador de filas regista informações sobre as suas aplicações em fila para exibição na secção [Filas] (#queues-card).
+O gravador 'Filas' capta informações sobre suas filas de aplicativos para exibição na [Filas](#queues-card).
 
- Pode ajustar opcionalmente as definições de taxa de amostragem (#amostragem) e padrões de empregos ignorados.
+Você pode ajustar o [taxa de amostra](#amostragem) e ignorar os padrões de trabalho opcional.
 
 <a name="slow-jobs-recorder"></a>
-#### Empregos Lentos
+#### Empregos de baixa produtividade
 
- O registrador `SlowJobs` captura informações sobre funções lentas em sua aplicação, para exibição no cartão [Slow Jobs (Funções Lentas)] (#slow-jobs-recorder).
+O " SlowJobs" registra informações sobre trabalhos lentos que ocorrem em seu aplicativo para exibição na [card] SlowJobs.[/code]
 
- Opcionalmente, você pode ajustar o limite de tarefas lentas, [taxa de amostragem](#amostragem) e padrões de tarefas ignorados.
+Você pode ajustar opacionalmente a porta de entrada lenta, [taxa de amostra](#amostragem), e padrões de trabalho ignorados.
 
- Algumas tarefas podem demorar mais tempo do que outras e, nesses casos, você poderá configurar limites por tarefa:
+Você pode ter alguns trabalhos que você espera que demorem mais do que outros. Em tais casos, você pode configurar limites por trabalho:
 
 ```php
 Recorders\SlowJobs::class => [
@@ -299,16 +299,16 @@ Recorders\SlowJobs::class => [
 ],
 ```
 
- Se nenhum padrão de expressão regular coincidir com o nome da classe do trabalho, será utilizado o valor por padrão.
+Se nenhum padrão de expressão regular corresponde ao nome da classe do trabalho, então o valor "padrão" será usado.
 
 <a name="slow-outgoing-requests-recorder"></a>
-#### Pedidos de saída lentos
+#### Pedidos lentos
 
- O recurso `SlowOutgoingRequests` captura informações sobre requisições HTTP saídas, feitas com o cliente de HTTP de Laravel, que excedam o limite definido para exibição na carta de [Requisições Saídas Lentas (Slow Outgoing Requests)] ().
+O gravador 'SlowOutgoingRequests' captura informações sobre requisições HTTP que excedem o limite configurado para exibição na [requisição lenta de saída](# slow-outgoing-requests-card).
 
- É possível ajustar opcionalmente o limite mínimo de solicitações saídas lentas, taxa de amostragem e padrões de URL ignorados.
+Você pode ajustar opcional o limite de solicitação lenta de saída, [taxa de amostra](#amostragem) e padrões ignorados da URL.
 
- Você pode ter alguns pedidos em execução com previsão de demora maior do que outros. Nesses casos, você pode configurar limiares por solicitação:
+Você pode ter alguns pedidos de saída que espera levar mais tempo do que outros. Nestes casos você pode configurar limiares por pedido:
 
 ```php
 Recorders\SlowOutgoingRequests::class => [
@@ -320,9 +320,9 @@ Recorders\SlowOutgoingRequests::class => [
 ],
 ```
 
- Se nenhum padrão de expressão regular combinar com a URL da solicitação, será utilizado o valor "padrão".
+Se não houver nenhum padrão de expressão regular correspondendo à URL da solicitação, então o valor "padrão" será usado.
 
- Também é possível configurar o agrupamento de URLs para que URLs semelhantes sejam agrupadas como uma única entrada. Por exemplo, você pode querer remover IDs exclusivos em caminhos de URL ou agrupar por domínio apenas. Os grupos são configurados usando uma expressão regular para "encontrar e substituir" partes da URL. Alguns exemplos estão incluídos no arquivo de configuração:
+Você também pode configurar agrupamento de URLs para agrupar URLs semelhantes como uma entrada única. Por exemplo, você pode querer remover IDs exclusivos de URLs de caminho ou agrupar apenas por domínio. Grupos são configurados usando expressões regulares para "encontrar e substituir" partes do URL. Alguns exemplos estão incluídos no arquivo de configuração:
 
 ```php
 Recorders\SlowOutgoingRequests::class => [
@@ -335,16 +335,16 @@ Recorders\SlowOutgoingRequests::class => [
 ],
 ```
 
- O primeiro padrão que coincidir será usado. Se nenhum padrão coincidir, a URL será capturada tal como está.
+O primeiro padrão que combina será usado. Se não houver padrões correspondentes, o URL será capturado como está.
 
 <a name="slow-queries-recorder"></a>
 #### Consultas lentas
 
- O recurso de registro das consultas lentas grava quaisquer consultas ao banco de dados na aplicação que excedam o limite definido para apresentar no cartão [Consultas Lentas](#slow-queries-card).
+O registrador `SlowQueries` captura qualquer consulta de banco de dados em sua aplicação que exceda o limite configurado para exibição na [páginas] ( Slow Queries ) .
 
- Opcionalmente, pode ajustar os limites de consulta lenta [t taxa de amostragem (#sampling)], os padrões de consulta ignorados e definir se devem ser capturadas as localizações das consultas. A localização capturada é mostrada no painel Pulse, o que permite rastrear a origem da consulta. Se, no entanto, a mesma consulta for efetuada em vários locais, será exibida várias vezes para cada localização única.
+Você pode ajustar de forma opcional o limite de consulta lenta, [taxa de amostra](#samplage), e os padrões de consulta ignorados. Você também pode configurar se deseja capturar a localização da consulta. A localização capturada será exibida no painel Pulse que pode ajudar a rastrear a origem da consulta; no entanto, se a mesma consulta é feita em vários locais, ela aparecerá várias vezes para cada local exclusivo.
 
- Talvez você tenha algumas consultas que sejam mais demoradas que outras. Nesses casos, você pode configurar limites por consulta:
+Você pode ter algumas consultas que espera que demorem mais do que outras. Em tais casos, você pode configurar os limites de consulta por consulta.
 
 ```php
 Recorders\SlowQueries::class => [
@@ -356,16 +356,16 @@ Recorders\SlowQueries::class => [
 ],
 ```
 
- Se nenhum padrão de expressão regular coincidir com a consulta SQL, será utilizado o valor `'default'`.
+Se nenhum dos padrões de expressão regular corresponder à consulta SQL, o 'valor padrão' será usado.
 
 <a name="slow-requests-recorder"></a>
-#### Pedidos lentos
+#### Pedidos Lentos
 
- O gravador de "Solicitações" captura informações sobre as solicitações feitas à sua aplicação, para exibição nas cartas [Solicitações Lentas (#slow-requests-card)] e [Uso da Aplicação (#application-usage-card)].
+O gravador de `Requests` captura informações sobre os pedidos feitos para a sua aplicação, que serão exibidos nos cartões [Slow Requests](#slow-requests-card) e [Application Usage](#application-usage-card).
 
- Você poderá opcionalmente ajustar o limite de rotas lentas, taxa de amostragem e caminhos ignorados.
+Você pode ajustar opcional a limite de rota lenta, [taxa de amostragem](#amostragem) e ignorados caminhos.
 
- Você poderá ter algumas solicitações que você espera serem mais demoradas do que outras. Nesses casos, é possível configurar limites por solicitação:
+Você pode configurar os seus limites de solicitação por solicitação para as que você espera durarem mais do que outros casos.
 
 ```php
 Recorders\SlowRequests::class => [
@@ -377,39 +377,54 @@ Recorders\SlowRequests::class => [
 ],
 ```
 
- Se nenhum padrão de expressão regular correspondente à URL da solicitação, o valor do atributo é definido como `'default'` (padrão).
+Se nenhum padrão de expressão regular corresponder à URL da solicitação, então o valor 'padrão' será utilizado.
 
 <a name="servers-recorder"></a>
 #### Servidores
 
- O gravador "Servidores" captura o uso de CPU, memória e armazenamento dos servidores que alimentam a sua aplicação para ser exibido no cartão [Servidores] (#servers-card). Esse gravador requer que o comando ["pulse:check"](#capturing-entries) esteja sendo executado em cada um dos servidores que você deseja monitorar.
+O gravador "Servidores" captura a utilização da CPU, memória e armazenamento dos servidores que alimentam seu aplicativo para exibição na [tela do servidor] (card). Este gravador requer o comando  [pulser:check] #captura de entradas estar em execução em cada um dos servidores que você deseja monitorar.
 
- Cada servidor de notificação deve ter um nome exclusivo. Por padrão, o Pulse irá utilizar o valor retornado pela função PHP `gethostname`. Se você deseja personalizar isso, pode definir a variável ambiental `PULSE_SERVER_NAME`:
+Cada servidor de relatório deve ter um nome único. Por padrão o Pulse usará o valor retornado pela função 'gethostname' do PHP. Se quiser personalizar isso você pode definir a variável de ambiente 'PULSE_SERVER_NAME':
 
-```
+```env
 PULSE_SERVER_NAME=load-balancer
 ```
 
- O arquivo de configuração do Pulse também permite que você personalize os diretórios que serão monitorados.
+O arquivo de configuração do Pulse permite que você personalize as diretrizes monitoradas.
 
 <a name="user-jobs-recorder"></a>
-#### Funções do utilizador
+#### User Jobs
 
- O gravador de "Usuários" captura informações sobre os usuários que enviam tarefas na sua aplicação para exibição no cartão ["Utilização da Aplicação"] (#utilização-da-aplicação-card).
+O gravador "UserJobs" captura informações sobre os usuários que estão despachando trabalhos em seu aplicativo para exibição na [Utilização do Aplicativo](#application-usage-card).
 
- É possível ajustar opcionalmente a taxa de amostragem (#amostrando) e padrões de tarefa ignorados.
+Você pode ajustar, opcional, a [taxa de amostragem](#amostragem) e os padrões de trabalho ignorados.
 
 <a name="user-requests-recorder"></a>
-#### Pedidos de Utilizador
+#### Requisitos do usuário
 
- O gravador de "Solicitações do Usuário" captura informações sobre os usuários que enviam solicitações para o seu aplicativo para exibição no cartão [Utilização da Aplicação](#application-usage-card).
+O gravador `UserRequests` captura informações sobre os usuários que estão fazendo solicitações para o seu aplicativo para exibição na [Utilização da Aplicação](#application-usage-card).
 
- É possível, opcionalmente, ajustar a taxa de amostragem e padrões de trabalho ignorados.
+Você pode ajustar opcionalmente a [taxa de amostra](#amostragem) e os padrões de trabalho ignorados.
 
 <a name="filtering"></a>
 ### Filtragem
 
- Conforme vimos, muitos [registradores](#recorders) permitem ignorar registros de entrada com base em seus valores através da configuração. Por exemplo, um URL do pedido. No entanto, é possível filtrar os registros com base em outros fatores. Por exemplo, o usuário autenticado atualmente. Para filtrar esses registros, você pode passar um fecho para a metodologia `filter` do Pulse. Normalmente, você deverá invocar a metodologia `filter` no método `boot` do `AppServiceProvider` do seu aplicativo:
+Como vimos, muitos [registradores](#recorders) oferecem a capacidade de, via configuração, "ignorar" entradas que chegam com base em seu valor, como uma URL da solicitação. Mas, às vezes, pode ser útil filtrar registros com base em outros fatores, tais como o usuário atualmente autenticado. Para filtrar esses registros, você pode passar uma função fechada para o método `filter` do Pulse:
+
+```php
+// No AppServiceProvider da sua aplicação...
+
+public function boot()
+{
+    $this->app->bootservices->push(new ServiceProvider());
+
+    Pulse::filter(function ($request) {
+        // ... adicione aqui a lógica de filtragem com base no usuário autenticado ...
+
+        return true; // Retorne verdadeiro se quiser manter o registro, falso para ignorar.
+    });
+}
+```
 
 ```php
 use Illuminate\Support\Facades\Auth;
@@ -433,75 +448,75 @@ public function boot(): void
 <a name="performance"></a>
 ## Desempenho
 
- O Pulse foi concebido para integrar numa aplicação existente sem que seja necessária nenhuma infraestrutura adicional. No entanto, para aplicações de tráfego elevado, existem várias formas de impedir que o Pulse afete o desempenho da sua aplicação.
+Pulse foi projetado para ser facilmente integrado em uma aplicação existente sem exigir nenhuma infraestrutura adicional. Contudo, para aplicações de alto tráfego há várias maneiras de remover o impacto que Pulse pode ter na performance da aplicação.
 
 <a name="using-a-different-database"></a>
-### Usando um banco de dados diferente
+### Usando um Banco de Dados Diferente
 
- Para aplicações de alto tráfego, pode ser mais vantajoso utilizar uma ligação de base de dados dedicada para o Pulse, de modo a evitar impactos na base de dados da aplicação.
+Para aplicações de alto tráfego, você pode preferir usar uma conexão de banco de dados dedicada para o Pulse, evitando assim que o seu banco de dados de aplicação seja afetado.
 
- Você pode personalizar a conexão de banco de dados [usada pelo Pulse](/docs/database#configuration) definindo a variável de ambiente `PULSE_DB_CONNECTION`.
+Você pode personalizar a [conexão de banco de dados](/docs/database#configuration) usado pelo Pulse, definindo a variável de ambiente PULSE_DB_CONNECTION.
 
-```
+```env
 PULSE_DB_CONNECTION=pulse
 ```
 
 <a name="ingest"></a>
-### Redis Ingresso
+### Ingest Redis
 
- > [!AVISO]
- > O Redis Ingest requer o Redis 6.2 ou superior e um `phpredis` ou `predis` como motor de cliente do Redis configurado na aplicação.
+> [¡ALERTA!]
+> A ingestão de Redis requer o Redis 6.2 ou superior e "phpredis" ou "predis" como o driver do cliente Redis configurado para a aplicação.
 
- Por padrão, o Pulse armazena entradas diretamente na [conexão de banco de dados configurada](#usando-um-banco-de-dados-diferente) após a resposta HTTP ter sido enviada ao cliente ou uma tarefa ser processada. No entanto, você pode usar o driver de ingestão do Pulse para enviar entradas para um fluxo Redis em vez disso. Isso pode ser ativado configurando a variável de ambiente `PULSE_INGEST_DRIVER`:
+Por padrão, o Pulse vai armazenar os registros diretamente na [conexão de banco configurada](#usando-um-banco-diferente) depois da resposta HTTP ter sido enviada ao cliente ou um trabalho processado; porém, você pode usar o driver Redis do Pulse para enviar registros para uma stream Redis. Isso pode ser habilitado configurando a variável ambiente `PULSE_INGEST_DRIVER`:
 
 ```
 PULSE_INGEST_DRIVER=redis
 ```
 
- O Pulse usará sua conexão padrão pelo [conector Redis](https://www.pulselms.com/docs/redis#configuration) por padrão, mas você poderá personalizar isso através da variável de ambiente `PULSE_REDIS_CONNECTION`:
+Pulse irá usar sua conexão padrão [Redis] por padrão, mas você pode personalizar isso através do `PULSE_REDIS_CONNECTION`:
 
 ```
 PULSE_REDIS_CONNECTION=pulse
 ```
 
- Ao usar a incorporação do Redis, você precisará executar o comando `pulse:work` para monitorar o fluxo e mover as entradas da tabela de banco de dados do Redis para a base de dados do Pulse.
+Quando usando a ingestão do Redis, você vai precisar executar o comando `pulse:work` para monitorar o fluxo e mover os registros do Redis para as tabelas de banco de dados do Pulse.
 
 ```php
 php artisan pulse:work
 ```
 
- > [!AVISO]
- > Para que o processo `pulse:work` funcione permanentemente em segundo plano, você deve usar um monitor de processos como o Supervisor para garantir que o trabalhador do Pulse não seja interrompido.
+> Nota:
+> Para manter o processo 'pulse: work' em execução em segundo plano sem parar, você deve usar um programa de monitoramento de processos como o Supervisor para garantir que o trabalhador da Pulse continue em execução.
 
- Como o comando `pulse:work` é um processo de longa duração, ele não será atualizado sem que seja reiniciado. É necessário reiniciar o comando durante o processo de implantação do aplicativo chamando o comando `pulse:restart`:
+Como o comando `pulse:work` é um processo de longa vida, ele não verá as alterações no seu código sem ser reiniciado. Você deve reiniciar graciosamente o comando chamando o comando `pulse:restart` durante o processo de implantação do aplicativo:
 
 ```sh
 php artisan pulse:restart
 ```
 
- > [!OBSERVAÇÃO]
- [Cache] (/docs/cache), para armazenar sinais de reinicialização, portanto deve verificar se um driver de cache está configurado adequadamente para sua aplicação antes de utilizar este recurso.
+> !Nota
+> Pulse usa o [cache](/docs/cache) para armazenar sinais de reinicialização, portanto você deve verificar que um driver de cache está configurado corretamente para sua aplicação antes de usar esse recurso.
 
 <a name="sampling"></a>
 ### Amostragem
 
- Por padrão, o Pulse captura todos os eventos relevantes que ocorrem em seu aplicativo. Para aplicações de grande volume de tráfego, isso pode resultar na necessidade de agregar milhões de linhas do banco de dados no painel, especialmente para períodos de tempo maiores.
+Por padrão, o Pulse irá capturar todo evento relevante que ocorre em seu aplicativo. Em aplicativos de alto tráfego, isso pode resultar na necessidade de agregar milhões de linhas de banco de dados no painel, especialmente para períodos mais longos.
 
- Você pode optar por permitir "amostragem" em determinados gravadores de dados do Pulse. Por exemplo, definindo a taxa de amostragem como `0.1` no gravador de solicitações [`User Requests`](#user-requests-recorder), isso significará que você registra apenas aproximadamente 10% das solicitações ao seu aplicativo. No painel, os valores são aumentados e precedidos de um `~` para indicar que se tratam de uma aproximação.
+Você pode escolher habilitar "amostragem" em alguns gravadores de dados Pulse. Por exemplo, definir a taxa de amostragem para `0.1` no [gravador de solicitações do usuário](#user-requests-recorder) significará que você registra aproximadamente 10% das solicitações ao seu aplicativo. No painel de controle, os valores serão dimensionados e precedidos por um `~` para indicar que são uma aproximação.
 
- Em geral, quanto maior o número de valores para uma determinada métrica, menor pode ser a frequência de amostragem sem perda excessiva da exatidão.
+Em geral, quanto mais entradas você tiver para um determinado parâmetro, menor será o nível de amostragem que você pode definir sem sacrificar muita precisão.
 
 <a name="trimming"></a>
-### Recortar
+### Cortar
 
- O Pulse irá, automaticamente, cortar as entradas armazenadas quando estas forem removidas da janela do painel. Este corte ocorre durante a introdução de dados utilizando um sistema lotérico que pode ser personalizado no Pulse (#configuração).
+Pulse irá automaticamente aparar suas entradas armazenadas uma vez que elas estão fora da janela do painel de controle. O corte ocorre quando ingerindo dados usando um sistema de loteria que pode ser personalizado no Pulse [arquivo de configuração] ().
 
 <a name="pulse-exceptions"></a>
-### Gerenciando exceções de pulso
+### Tratando Exceções de Pulso
 
- Se ocorrer uma exceção ao capturar dados do Pulse, por exemplo, não ser possível se conectar à base de dados de armazenamento, o Pulse falhará silenciosamente para evitar impacto na aplicação.
+Se uma exceção ocorrer durante a captura de dados do Pulse, como não conseguir se conectar ao banco de dados de armazenamento, o Pulse falhará silenciosamente para evitar afetar seu aplicativo.
 
- Se pretender personalizar a forma como essas exceções são tratadas, pode fornecer uma função de fecho para o método `handleExceptionsUsing`:
+Se você deseja personalizar como essas exceções são tratadas, você pode fornecer um método de fechamento para o método 'handleExceptionsUsing':
 
 ```php
 use Laravel\Pulse\Facades\Pulse;
@@ -516,14 +531,14 @@ Pulse::handleExceptionsUsing(function ($e) {
 ```
 
 <a name="custom-cards"></a>
-## Cartões personalizados
+## Cartões Personalizados
 
- O Pulse permite a construção de cartões personalizados para exibição de dados relevantes às necessidades específicas do seu aplicativo. O Pulse usa [Livewire](https://livewire.laravel.com/), por isso, você pode querer [verificar sua documentação](https://livewire.laravel.com/docs) antes da construção do primeiro cartão personalizado.
+Pulse permite que você crie cartões personalizados para exibir dados relevantes às necessidades específicas de sua aplicação. Pulse utiliza [Livewire](https://livewire.laravel.com), então talvez você queira [rever seus documentos](https://livewire.laravel.com/docs) antes de construir seu primeiro cartão personalizado.
 
 <a name="custom-card-components"></a>
-### Componentes do cartão
+### Componentes do baralho
 
- Para criar um cartão personalizado no Laravel Pulse, é necessário estender o componente de visualização `Card` e definir uma correspondente vista:
+Criar um cartão personalizado no Laravel Pulse começa com a extensão do componente Livewire `Card` base e definindo uma visão correspondente:
 
 ```php
 namespace App\Livewire\Pulse;
@@ -541,9 +556,9 @@ class TopSellers extends Card
 }
 ```
 
- Ao usar o recurso de [carregamento laxo](https://livewire.laravel.com/docs/lazy) do Livewire, o componente "Cartão" fornecerá automaticamente um marcador que respeitará os atributos `cols` e `rows` passados ao seu componente.
+Ao usar o recurso [lazy loading](https://livewire.laravel.com/docs/lazy) do Livewire, o componente `Card` irá fornecer automaticamente um espaço reservado que respeita os atributos `cols` e `rows` passados para seu componente.
 
- Para escrever a visualização correspondente ao cartão de Pulse, você pode utilizar os componentes do Pulse Blade para uma aparência e comportamento consistentes:
+Ao escrever sua sua visualização de cartão correspondente, você pode aproveitar os componentes da lâmina do Pulse para um aspecto e sensação consistentes:
 
 ```blade
 <x-pulse::card :cols="$cols" :rows="$rows" :class="$class" wire:poll.5s="">
@@ -559,9 +574,9 @@ class TopSellers extends Card
 </x-pulse::card>
 ```
 
- As variáveis `$cols`, `$rows`, `$class` e `$expand` devem ser passadas para seus respectivos componentes Blade, de forma que o layout do cartão possa ser personalizado a partir da tela de administração. Você também pode incluir o atributo `wire:poll.5s=""` na sua visualização para fazer com que o cartão seja automaticamente atualizado.
+As variáveis $cols, $rows, $class e $expand devem ser passadas aos componentes Blade correspondentes, de modo que o layout da tarjeta possa ser personalizado a partir da visão do painel. Você também pode querer incluir o atributo `wire:poll.5s=""` em sua visão para fazer a atualização automática da tarjeta.
 
- Depois de ter definido a sua componente e modelo do Livewire, o cartão pode ser incluído na sua [visão da área de trabalho] (#personalização-da-área-de-trabalho):
+Uma vez que você tenha definido seu componente e modelo do Livewire, o cartão pode ser incluído em sua [visualização do painel](#painel-personalizável):
 
 ```blade
 <x-pulse>
@@ -571,18 +586,18 @@ class TopSellers extends Card
 </x-pulse>
 ```
 
- > [!ATENÇÃO]
- > Se o seu componente estiver incluído em um pacote, você precisará registrar o componente com o Livewire usando o método `Livewire::component`.
+> Nota!
+> Se seu cartão está incluído em um pacote, você precisará registrar o componente com Livewire usando o método `Livewire::component`.
 
 <a name="custom-card-styling"></a>
-### Estilização
+### Estilista
 
- Se o seu cartão exigir um estilo adicional que vai além das classes e componentes incluídos no Pulse, há duas opções para incluir o código CSS personalizado em seus cartões.
+Se o seu cartão requer estilo adicional além das classes e componentes incluídos no Pulse, existem algumas opções para incluir CSS personalizado para as suas cartas.
 
 <a name="custom-card-styling-vite"></a>
 #### Integração com o Laravel Vite
 
- Se o seu cartão personalizado estiver no código da sua aplicação e você estiver usando a integração [Vite do Laravel](/docs/vite), poderá atualizar seu arquivo `vite.config.js` para incluir um ponto inicial de CSS exclusivo para o seu cartão:
+Se sua carteira personalizada vive dentro da base de código de seu aplicativo e você está usando a integração do Laravel's [Vite integration]/docs/vite], você pode atualizar o arquivo `vite.config.js` para incluir um ponto de entrada CSS dedicado para sua carteira:
 
 ```js
 laravel({
@@ -593,7 +608,7 @@ laravel({
 }),
 ```
 
- Você poderá então utilizar a diretiva do Blade `@vite`, na sua [visualização de painel (Dashboard) (#Personalizar o Painel)](@vite), especificando o ponto de entrada do CSS para seu cartão:
+Em seguida você pode usar a diretiva Blade `@vite` em sua [visão do painel](#painel-personalização) especificando o ponto de entrada CSS para seu cartão:
 
 ```blade
 <x-pulse>
@@ -606,7 +621,7 @@ laravel({
 <a name="custom-card-styling-css"></a>
 #### Arquivos CSS
 
- Para outros casos de uso, incluindo cartões do Pulse incluídos em um pacote, você pode instruir o Pulse a carregar folhas de estilos adicionais definindo um método `css` em seu componente Livewire que retorne o caminho completo ao arquivo do CSS:
+Para outros casos de uso, incluindo cartões Pulse contidos dentro de um pacote, você pode instruir o Pulse para carregar folhas de estilo adicionais definindo um método 'css' em seu componente Livewire que retorna o caminho do arquivo da sua folha de estilos.
 
 ```php
 class TopSellers extends Card
@@ -623,9 +638,9 @@ class TopSellers extends Card
 When this card is included on the dashboard, Pulse will automatically include the contents of this file within a `<style>` tag so it does not need to be published to the `public` directory.
 
 <a name="custom-card-styling-tailwind"></a>
-#### O Tailwind CSS
+#### Tailwind CSS
 
- Ao usar o Tailwind CSS, você deve criar um arquivo de configuração dedicado para evitar carregar CSS desnecessário ou entrar em conflito com as classes do Pulse Tailwind:
+Ao utilizar o Tailwind CSS, você deve criar um arquivo de configuração separado do Tailwind para evitar carregar folhas de estilo desnecessárias ou entrar em conflito com as classes do Tailwind do Pulse.
 
 ```js
 export default {
@@ -640,7 +655,7 @@ export default {
 };
 ```
 
- Você pode então especificar o arquivo de configuração no ponto de entrada do seu CSS:
+Em seguida, você pode especificar o arquivo de configuração no seu ponto de entrada do CSS:
 
 ```css
 @config "../../tailwind.top-sellers.config.js";
@@ -649,7 +664,7 @@ export default {
 @tailwind utilities;
 ```
 
- Você também precisará incluir um atributo `id` ou `class` na visualização de seu cartão que corresponda ao selecionador passado à estratégia do selecionador [`important`](https://tailwindcss.com/docs/configuration#selector-strategy):
+Você também precisará incluir um atributo 'id' ou 'class' na sua visualização de cartão que corresponda ao seletor passado para a estratégia de seleção de [importante](https://tailwindcss.com/docs/configuration#selector-strategy) do Tailwind CSS:
 
 ```blade
 <x-pulse::card id="top-sellers" :cols="$cols" :rows="$rows" class="$class">
@@ -658,14 +673,14 @@ export default {
 ```
 
 <a name="custom-card-data"></a>
-### Captação e agregação de dados
+### Captura e agregação de dados
 
- Os cartões personalizados podem obter e exibir dados de qualquer parte; no entanto, você poderá desejar aproveitar o poderoso e eficiente sistema de gravação e agregação de dados do Pulse.
+Cartas personalizadas podem buscar e exibir dados de qualquer lugar; no entanto, você pode querer aproveitar o sistema poderoso e eficiente de registro e agregação de dados do Pulse.
 
 <a name="custom-card-data-capture"></a>
-#### Capturando Entradas
+#### Captura de entradas
 
- O Pulse permite gravar "entrada", usando o método `Pulse::record`:
+Puls permite que você registre "entradas" usando o método `Pulse::record`:
 
 ```php
 use Laravel\Pulse\Facades\Pulse;
@@ -675,23 +690,23 @@ Pulse::record('user_sale', $user->id, $sale->amount)
     ->count();
 ```
 
- O primeiro argumento passado ao método `record` é o `tipo` para a entrada que você está registrando, enquanto o segundo argumento é a `chave` que determina como os dados agregados devem ser agrupados. Para a maioria dos métodos de agregação, você também precisará especificar um valor agregado. No exemplo acima, o valor sendo agregado é `$sale->amount`. Em seguida, pode invocar um ou mais métodos de agregação (como `sum`) para que a Pulse possa capturar valores pré-agregados em "conjuntos" para recuperação eficiente posteriormente.
+A primeira palavra fornecida ao método 'record' é o tipo para o registro que você está registrando, enquanto a segunda palavra é a chave que determina como os dados agregados devem ser agrupados. Para a maioria dos métodos de agregação, também será necessário especificar um valor para ser agregado. No exemplo acima, o valor a ser agregado é "$sale->amount". Você então pode invocar um ou mais métodos de agregação (como "sum") para que Pulse possa capturar valores pré-agregados em "balde" para recuperação eficiente posterior.
 
- Os métodos de agregação disponíveis são:
+Os métodos de agregação disponíveis são:
 
- * `mediana`
- * `contagem`
- * `max`
- * ``min``
- * ``sum``
+Média
+Contar
+* `máximo`
+* 'min'
+* soma
 
- > [!ATENÇÃO]
- [ Personalizações do usuário resolver (#Dashboard resolvendo usuários) feitas na aplicação.
+> Nota:
+> Ao construir um pacote de cartão que captura o ID do usuário atualmente autenticado, você deve usar o método `Pulse::resolveAuthenticatedUserId()`, respeitando qualquer [personalização do solucionador de usuários](#dashboard-resolving-users) feita no aplicativo.
 
 <a name="custom-card-data-retrieval"></a>
-#### Recuperação de dados agregados
+#### Recuperando Dados Agregados
 
- Ao estender o componente do Pulse, "Cartão", ao vivo, você pode usar o método `agregar` para recuperar dados agregados para o período que está sendo visualizado no painel de controle:
+Ao estender o componente Livewire `Pulse::Card`, você pode utilizar o método `aggregate` para recuperar dados agregados para o período em exibição no painel de controle:
 
 ```php
 class TopSellers extends Card
@@ -705,7 +720,7 @@ class TopSellers extends Card
 }
 ```
 
- O método `aggregate` retorna uma coleção de objetos `stdClass` do PHP. Cada objeto conterá a propriedade `key`, capturada anteriormente, juntamente com as chaves para cada agregado solicitado:
+O método 'aggregate' retorna uma coleção de objetos 'stdClass' do PHP. Cada objeto conterá a propriedade 'key', capturada anteriormente, juntamente com as chaves para cada um dos agregados solicitados.
 
 ```php
 @foreach ($topSellers as $seller)
@@ -715,9 +730,9 @@ class TopSellers extends Card
 @endforeach
 ```
 
- O Pulse irá primariamente recuperar dados dos buckets pre-agregados; portanto, os agregados especificados devem ter sido capturados antecipadamente utilizando o método `Pulse::record`. O bucket mais antigo normalmente cairá parcialmente fora do período, então Pulse irá agregar as entradas mais antigas para preencher a lacuna e dar um valor exato para todo o período, sem a necessidade de agrupar todo o período em cada solicitação de pesquisa.
+Pulse irá, em primeiro lugar, recuperar os dados dos balões pré-agregados; portanto, as agregações especificadas devem ter sido capturadas de antemão usando o método `Pulse::record`. O balão mais velho normalmente cairá parcialmente fora do período, então Pulse irá agregar as entradas mais velhas para preencher o espaço e fornecer um valor preciso para todo o período sem precisar agregar o período inteiro em cada solicitação de poll.
 
- Também é possível obter o valor total de um tipo específico usando a metodologia `agregarTotais`. Por exemplo, o código a seguir permitiria que recuperasse as vendas totais feitas por todos os usuários, em vez de agrupar essas informações por usuário.
+Você também pode obter um valor total para um determinado tipo usando o método `aggregateTotal`. Por exemplo, o seguinte método retornaria o total de todas as vendas dos usuários em vez de agrupá-los por usuário.
 
 ```php
 $total = $this->aggregateTotal('user_sale', 'sum');
@@ -726,7 +741,7 @@ $total = $this->aggregateTotal('user_sale', 'sum');
 <a name="custom-card-displaying-users"></a>
 #### Exibindo Usuários
 
- Ao trabalhar com agregados que registram um ID do usuário como chave, você pode resolver as chaves para os registros de usuários usando o método `Pulse::resolveUsers`:
+Quando trabalhando com agregados que armazenam um ID de usuário como chave, você pode resolver as chaves para registros de usuários usando o método `Pulse::resolveUsers`:
 
 ```php
 $aggregates = $this->aggregate('user_sale', ['sum', 'count']);
@@ -749,11 +764,11 @@ The `find` method returns an object containing `name`, `extra`, and `avatar` key
 ```
 
 <a name="custom-recorders"></a>
-#### Gravadores personalizados
+#### Relevadores Personalizados
 
- Os autores de pacotes podem desejar fornecer classes de gravador para permitir que os usuários configurem a captura de dados.
+Os autores de pacotes podem querer fornecer classes gravadoras para permitir aos usuários configurar a captura de dados.
 
- Os gravadores são registrados na seção "gravadores" do arquivo de configuração `config/pulse.php`:
+Os gravadores são registrados na seção ``recorders'' do arquivo de configuração ``config/pulse.php''.
 
 ```php
 [
@@ -768,7 +783,7 @@ The `find` method returns an object containing `name`, `extra`, and `avatar` key
 ]
 ```
 
- Os gravadores podem ouvir eventos através da especificação de uma propriedade `$listen`. O Pulse regista automaticamente os ouvintes e chama a função de gravação do recurso:
+Os gravadores podem ouvir eventos especificando uma propriedade `$listen`. A Pulse irá automaticamente registrar os ouvintes e chamar o método `record` dos gravadores:
 
 ```php
 <?php

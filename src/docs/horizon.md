@@ -1,30 +1,30 @@
-# Laravel Horizonte
+# Laravel Horizon
 
 <a name="introduction"></a>
 ## Introdução
 
- > [!AVISO]
- [Serviços de filas](/docs/queues) O Horizon expande o sistema de fila do Laravel com recursos adicionais que podem ser confusos se você ainda não estiver familiarizado com os recursos básicos oferecidos pelo Laravel.
+> Nota!
+> Antes de mergulhar no Horizon, você deve se familiarizar com o [serviço de fila](docs/queues) básico do Laravel. O Horizon adiciona recursos adicionais à fila do Laravel que podem ser confusos se você ainda não estiver familiarizado com os recursos básicos da fila oferecidos pelo Laravel.
 
- O Horizontes do Laravel (https://github.com/laravel/horizon) disponibiliza uma bela dashboard e configuração com base em código para seus [filas Redis](/docs/queues). Com o Horizontes, você pode monitorar facilmente métricas chave de seu sistema de filas, tais como tráfego, tempo de execução e falhas do trabalho.
+O [Laravel Horizon](https://github.com/laravel/horizon) fornece um belo painel e uma configuração baseada em código para sua fila Redis alimentada por Laravel. O Horizon permite que você monitore facilmente métricas-chave de seu sistema de filas, como taxa de throughput de trabalhos, tempo de execução, e falhas de trabalhos.
 
- Ao usar o Horizon, toda a configuração do trabalhador de fila é armazenada em um único arquivo de configuração simples. Ao definir a configuração de trabalhadores da aplicação em um arquivo controlado por versão, você pode facilmente dimensionar ou modificar os trabalhadores de filas quando for implantar sua aplicação.
+Ao usar o Horizon, toda sua configuração do trabalho de fila é armazenada em um único arquivo de configuração simples. Ao definir sua configuração do trabalho de aplicativos em um arquivo controlado por versão, você pode facilmente dimensionar ou modificar seus trabalhadores da fila ao implantar seu aplicativo.
 
 <img src="https://laravel.com/img/docs/horizon-example.png">
 
 <a name="installation"></a>
 ## Instalação
 
- > [!AVISO]
- [Redis] (https://redis.io) para alimentar sua fila. Portanto, você deve garantir que a conexão da sua fila está definida como "redis" no arquivo de configuração `config/queue.php` do aplicativo.
+> [ALERTA]
+> O Laravel Horizon exige que você utilize [Redis](https://redis.io) para alimentar sua fila. Por isso, é importante garantir que a conexão da fila esteja definida como 'redis' no arquivo de configuração `config/queue.php` do seu aplicativo.
 
- Você pode instalar o Horizon no seu projeto usando o gerenciador de pacotes Composer da seguinte maneira:
+Você pode instalar o Horizon em seu projeto usando o Composer package manager:
 
 ```shell
 composer require laravel/horizon
 ```
 
- Depois de instalar o Horizon, publique seus ativos usando a ordem do artesão `horizon:install`:
+Depois da instalação do Horizon, publique seus ativos usando o comando 'horizon:install':
 
 ```shell
 php artisan horizon:install
@@ -33,15 +33,15 @@ php artisan horizon:install
 <a name="configuration"></a>
 ### Configuração
 
- Após publicar os recursos do Horizon, seu arquivo de configuração primário estará localizado em `config/horizon.php`. Esse arquivo de configuração permite configurar as opções de funcionamento da fila para o aplicativo. Cada opção de configuração inclui uma descrição sobre a finalidade, por isso certifique-se de explorá-lo detalhadamente.
+Depois de publicar os ativos do Horizonte, seu arquivo de configuração primário estará localizado em 'config/horizon.php'. Esse arquivo de configuração permite que você configure as opções para o trabalhador da fila para sua aplicação. Cada opção de configuração inclui uma descrição de sua finalidade, então tenha certeza de explorar totalmente este arquivo.
 
- > [!ATENÇÃO]
- > O Horizon usa, internamente, uma conexão Redis chamada "horizon". Esse nome de conexão está reservado e não deve ser atribuído a outra conexão Redis no arquivo de configuração `database.php` ou como o valor da opção `use` no arquivo de configuração `horizon.php`.
+> [Aviso]
+> O Horizon usa uma conexão interna Redis chamada "horizon". Este nome de conexão Redis é reservado e não deve ser atribuído a outra conexão Redis no arquivo de configuração "database.php" ou como valor da opção "use" no arquivo de configuração "horizon.php".
 
 <a name="environments"></a>
-#### Ambientes
+#### Ambiente
 
- Após a instalação, é importante conhecer o opção de configuração principal do Horizon que você deve familiarizar-se com. Esse recurso é a opção de configuração `environments`. Essa opção de configuração é um conjunto de ambientes nos quais sua aplicação funciona e define as opções de processo de trabalhador para cada ambiente. Por padrão, essa entrada contém os ambientes de "produção" e "local". No entanto, você pode adicionar mais ambientes conforme necessário:
+Depois da instalação, a configuração Horizon principal com a qual você deve se familiarizar é a opção de configuração "meios". Esta opção de configuração é um array de ambientes em que seu aplicativo executa e define as opções do processo trabalhador para cada ambiente. Por padrão, esta entrada contém um "ambiente de produção" e "local". No entanto, você está livre para adicionar mais ambientes conforme necessário:
 
 ```php
     'environments' => [
@@ -61,7 +61,7 @@ php artisan horizon:install
     ],
 ```
 
- Você também pode definir um ambiente de "sinalizador" (asterisco `*`), que será usado quando nenhum outro ambiente correspondente for encontrado:
+Você também pode definir um ambiente de caractere curinga (`` *'') que será usado quando nenhum outro ambiente correspondente é encontrado:
 
 ```php
     'environments' => [
@@ -75,22 +75,22 @@ php artisan horizon:install
     ],
 ```
 
- Quando você iniciar o Horizon, ele usará as opções de configuração do processo trabalhador para o ambiente que seu aplicativo está executando. Normalmente, o ambiente é determinado pelo valor da variável ambiental `APP_ENV`. Por exemplo, o ambiente Horizon padrão "local" está configurado para iniciar três processos de trabalho e equilibrar automaticamente o número de processos de trabalho atribuídos a cada fila. O ambiente Horizon padrão "produção" está configurado para iniciar, no máximo, dez processos de trabalho e equilibrar automaticamente o número de processos de trabalho atribuídos a cada fila.
+Ao iniciar o Horizon, ele vai utilizar as opções de configuração do processo trabalhador para o ambiente em que seu aplicativo está rodando. Geralmente, o ambiente é determinado pelo valor da variável `APP_ENV` [variável de ambiente]/docs/configuration#determining-the-current-environment]. Por exemplo, o ambiente padrão "local" do Horizon é configurado para iniciar três processos trabalhadores e equilibrar automaticamente os processos trabalhadores atribuídos a cada fila. O ambiente padrão "produção" do Horizon é configurado para iniciar um número máximo de 10 processos trabalhadores e equilibrar automaticamente os processos trabalhadores atribuídos a cada fila.
 
- > [AVERTISSEMENT]
- O ambiente [Meio ambiente](/docs/configuration#environment-configuration) no qual você pretende executar o Horizon.
+> [AVERTÊNCIA]
+> Você deve garantir que a parte de "ambiente" do arquivo de configuração de seu "horizonte" contém uma entrada para cada [ambiente]/docs/configuration#ambiente-configuração em que você planeja executar o Horizon.
 
 <a name="supervisors"></a>
 #### Supervisores
 
- Como pode ver no ficheiro de configuração padrão do Horizon, cada ambiente pode conter um ou vários "supervisores". Por defeito, o ficheiro de configuração define este supervisor como `supervisor-1`. No entanto, é possível designar os seus próprios nomes aos supervisores. Cada supervisor é essencialmente responsável por "supervisionar" um grupo de processos de trabalhadores e zela pelo equilíbrio dos processos de trabalhador através das filas.
+Como você pode ver no arquivo de configuração padrão do Horizon, cada ambiente pode conter um ou mais "supervisores". Por padrão, o arquivo de configuração define este supervisor como `supervisor-1`, mas você é livre para dar a ele qualquer nome que quiser. Cada supervisor é responsável fundamentalmente por "supervisionar" um grupo de processos trabalhistas e cuidar de equilibrar os processos trabalhistas entre as filas.
 
- Pode adicionar supervisores adicionais a um determinado ambiente, se pretender definir um novo grupo de processos de trabalho que devem ser executados nesse ambiente. Tal pode ser útil para definir uma estratégia de equilíbrio diferente ou o número de processos de trabalho para determinada fila utilizada na aplicação.
+Você pode adicionar mais supervisores a um determinado ambiente, se quiser definir um novo grupo de processos de trabalho que devem ser executados nesse ambiente. Você pode optar por fazer isso se quiser definir uma estratégia diferente ou número de processos de trabalho para uma determinada fila usada pelo seu aplicativo.
 
 <a name="maintenance-mode"></a>
 #### Modo de Manutenção
 
- Enquanto o seu aplicativo estiver em [modo de manutenção](/docs/configuration#maintenance-mode), os trabalhos pendentes não serão processados pelo Horizon, a menos que a opção `force` do supervisor seja definida como `true` no ficheiro de configuração do Horizon:
+Enquanto seu aplicativo estiver em [modo de manutenção](/docs/configuration#maintenance-mode), trabalhos enfileirados não serão processados por Horizon a menos que a opção force do supervisor seja definida como true no arquivo de configuração do Horizon.
 
 ```php
     'environments' => [
@@ -104,22 +104,22 @@ php artisan horizon:install
 ```
 
 <a name="default-values"></a>
-#### Valores por padrão
+#### Valores padrão
 
- No arquivo de configuração padrão do Horizon, você verá uma opção de configuração chamada `defaults`. Essa opção especifica os valores padrão para [supervisores] da aplicação. Os valores de configuração padrão do supervisor serão mesclados com a configuração do supervisor para cada ambiente, evitando repetições desnecessárias na definição dos supervisores.
+Dentro do arquivo padrão de configuração de Horizon, você notará uma opção de configuração "padrão". Esta opção de configuração especifica os valores padrão para seus aplicativos [supervisores](#supervisors). Os valores padrão da configuração do supervisor serão mesclados com a configuração do supervisor para cada ambiente, permitindo que você evite repetições desnecessárias ao definir seus supervisores.
 
 <a name="balancing-strategies"></a>
-### Estratégias de equilíbrio
+### Estratégias de Equilíbrio
 
- Diferente do sistema de fila padrão do Laravel, o Horizon permite escolher entre três estratégias de balanceamento de trabalhadores: `simple`, `auto` e `false`. A estratégia `simple` divide os trabalhos recebidos igualmente pelos processos trabalhadores:
+Diferente do sistema de filas padrão do Laravel, o Horizon permite escolher entre três estratégias de balanceamento de trabalho: "simple", "auto" e "false". A estratégia "simple" divide as tarefas recebidas igualmente entre os processos de trabalho.
 
 ```php
     'balance' => 'simple',
 ```
 
- A estratégia "auto", que é a predefinida do arquivo de configuração, ajusta o número de processos de trabalho por fila com base na carga de trabalho atual da fila. Por exemplo, se sua fila "notificações" tiver 1000 pedidos pendentes e sua fila "render" estiver vazia, o Horizon alocará mais processos de trabalho para a fila "notificações", até que esta esteja vazia.
+A estratégia "auto", que é o padrão no arquivo de configuração, ajusta o número de processos trabalhadores por fila com base na carga de trabalho atual da fila. Por exemplo, se a sua fila "notificações" tiver 1.000 trabalhos pendentes enquanto a sua fila "renderização" estiver vazia, o Horizon irá alocar mais trabalhadores para a sua fila "notificações" até que a fila esteja vazia.
 
- Ao utilizar a estratégia "auto", pode definir as opções de configuração "minProcesses" e "maxProcesses" para controlar o número mínimo e máximo de processos de trabalhadores com os quais Horizon irá escalonar up and down:
+Ao usar a estratégia 'auto', você pode definir as opções de configuração 'minProcesses' e 'maxProcesses' para controlar o número mínimo e máximo de processos do trabalhador que o horizonte deve escalar para cima ou para baixo:
 
 ```php
     'environments' => [
@@ -139,16 +139,16 @@ php artisan horizon:install
     ],
 ```
 
- O valor da configuração `autoScalingStrategy` determina se o Horizon atribuirá mais processos de trabalho aos ficheiros de saída com base na quantidade total de tempo necessário para limpar os ficheiros de saída (`time` estratégia) ou no número total de tarefas nos ficheiros de saída (`size` estratégia).
+O valor da configuração `autoScalingStrategy` determina se o Horizon atribuirá mais processos de trabalho às filas com base na quantidade total de tempo que levará para limpar a fila (Estratégia de Tempo) ou por conta do número total de trabalhos na fila (Estratégia de Tamanho).
 
- Os valores `balanceMaxShift` e `balanceCooldown` determinam a rapidez com que o Horizon se adapta à procura dos trabalhadores. No exemplo acima, um novo processo será criado ou destruído no máximo uma vez a cada três segundos. Pode modificar estes valores de acordo com as necessidades da sua aplicação.
+Os valores de configuração `balanceMaxShift` e `balanceCooldown` determinam como o Horizon irá se dimensionar para atender à demanda do trabalhador. No exemplo acima, um máximo de um novo processo será criado ou destruído a cada três segundos. Você é livre para ajustar esses valores conforme necessário com base nas necessidades da sua aplicação.
 
- Quando a opção `balance` é definida como `false`, será utilizado o comportamento padrão do Laravel, onde as filas são processadas na ordem em que estão listadas na sua configuração.
+Quando a opção 'balance' é definida como 'false', o comportamento padrão do Laravel será utilizado, no qual as filas serão processadas na ordem em que elas são listadas em sua configuração.
 
 <a name="dashboard-authorization"></a>
-### Autorização no Painel de Controle
+### Autorização do Painel de Controle
 
- O painel do Horizon pode ser acessado por meio da rota `/horizon`. Por padrão, você somente poderá acessar esse painel no ambiente `local`. No entanto, em seu arquivo `app/Providers/HorizonServiceProvider.php`, há uma definição de [porta de autorização](/docs/authorization#gates). Essa porta de autorização controla o acesso ao Horizon em ambientes **não-locais**. Você pode modificar essa porta conforme necessário para restringir o acesso à sua instalação do Horizon:
+O painel de controle do Horizon pode ser acessado via rota `/horizon`. Por padrão, você só poderá acessar este painel no ambiente `local`. No entanto, dentro do arquivo `app/Providers/HorizonServiceProvider.php`, há uma definição de [porta de autorização](/docs/authorization#gates). Esta porta autoriza o acesso ao Horizon em ambientes **não-locais**. Você pode modificar essa porta conforme necessário para restringir o acesso à sua instalação do Horizon:
 
 ```php
     /**
@@ -167,14 +167,14 @@ php artisan horizon:install
 ```
 
 <a name="alternative-authentication-strategies"></a>
-#### Estratégias alternativas de autenticação
+#### Estratégias de Autenticação Alternativas
 
- Lembre-se de que o Laravel injeta automaticamente o usuário autenticado no closure do gate. Se a aplicação estiver fornecendo segurança para Horizon por meio de outro método, como restrições de IP, pode não ser necessária uma "entrada" dos seus usuários. Sendo assim, você precisará alterar a assinatura do closure acima de `function (User $user)` para `function (User $user = null)`, para forçar o Laravel a não solicitar autenticação.
+Lembre-se que o Laravel injeta automaticamente o usuário autenticado no fechamento do portão. Se o seu aplicativo estiver fornecendo segurança Horizon através de outro método, como restrições por IP, então os seus usuários Horizon podem não precisar "entrar". Portanto, você vai precisar mudar a assinatura da função `function  (User  $user)`: acima para `function  (User  $user  = null)` para forçar o Laravel a não exigir autenticação.
 
 <a name="silenced-jobs"></a>
-### Empregos silenciados
+### O Silenciado do Trabalho
 
- Às vezes, você pode não ter interesse em visualizar certos trabalhos distribuídos por seu aplicativo ou pacotes de terceiros. Em vez disso, eles ocuparem espaço na lista "Trabalhos concluídos", você poderá silenciar essas tarefas. Para começar, adicione o nome da classe do trabalho à opção de configuração `silenced` do arquivo de configuração do seu aplicativo:
+Às vezes você pode não estar interessado em ver determinados trabalhos enviados pelo seu aplicativo ou por pacotes de terceiros. Em vez de esses trabalhos tomarem espaço na sua lista de trabalhos concluídos, você pode silenciá-los. Para começar, adicione o nome da classe do trabalho à opção "silenciada" no arquivo de configuração "horizon" do seu aplicativo:
 
 ```php
     'silenced' => [
@@ -182,7 +182,7 @@ php artisan horizon:install
     ],
 ```
 
- Em alternativa, o trabalho que você deseja silenciar pode implementar a interface `Laravel\Horizon\Contracts\Silenced`. Se um trabalho implementa essa interface, ele será automaticamente silenciado, mesmo se não estiver presente no array de configuração `silenced`:
+Alternativamente, o trabalho que você deseja silenciar pode implementar a interface `Laravel\Horizon\Contracts\Silenced`. Se um trabalho implementa esta interface, ele será automaticamente silenciada, mesmo se não estiver presente na matriz de configurações "silenciadas":
 
 ```php
     use Laravel\Horizon\Contracts\Silenced;
@@ -196,20 +196,20 @@ php artisan horizon:install
 ```
 
 <a name="upgrading-horizon"></a>
-## Atingindo um horizonte superior
+## Upgrade Horizon
 
- Ao fazer o upgrade para uma nova versão principal do Horizon, é importante que você analise [este guia de upgrade](https://github.com/laravel/horizon/blob/master/UPGRADE.md) cuidadosamente.
+Ao atualizar para uma nova versão principal do Horizon, é importante revisar cuidadosamente [o guia de atualização](https://github.com/laravel/horizon/blob/master/UPGRADE.md).
 
 <a name="running-horizon"></a>
-## Cenário correndo
+## Horizonte de Corrida
 
- Depois de configurar os supervisores e trabalhadores no arquivo de configuração do aplicativo `config/horizon.php`, você pode iniciar o Horizon usando o comando de Arquiteto `horizon`. Este único comando iniciará todos os processos de trabalho da área atual configurados:
+Uma vez que você configurou seus supervisores e trabalhadores no arquivo de configuração do seu aplicativo em 'config/horizon.php', você pode iniciar o Horizon usando o comando Artisan 'horizon'. Este único comando iniciará todos os processos dos trabalhadores configurados para o ambiente atual.
 
 ```shell
 php artisan horizon
 ```
 
- Você pode pausar o processo do Horizon e instrui-lo a continuar processando os trabalhos usando as ordens do Artesão `horizon:pause` e `horizon:continue`:
+Você pode pausar o processo do horizonte e instruí-lo a continuar processando trabalhos usando os comandos artisan `horizon:pause` e `horizon:continue`:
 
 ```shell
 php artisan horizon:pause
@@ -217,7 +217,7 @@ php artisan horizon:pause
 php artisan horizon:continue
 ```
 
- Você também pode interromper e continuar supervisores específicos do Horizon, usando os comandos de Arquitetura "horizon:pause-supervisor" e "horizon:continue-supervisor":
+Você também pode pausar e continuar supervisores específicos do Horizontes usando os comandos Artisan `horizon:pause-supervisor` e `horizon:continue-supervisor`:
 
 ```shell
 php artisan horizon:pause-supervisor supervisor-1
@@ -225,45 +225,45 @@ php artisan horizon:pause-supervisor supervisor-1
 php artisan horizon:continue-supervisor supervisor-1
 ```
 
- Pode verificar o estado atual do processo de Horizon utilizando a ordem mágica `horizon:status`:
+Você pode verificar o estado atual do processo Horizon usando o comando Artisan `horizon:status`:
 
 ```shell
 php artisan horizon:status
 ```
 
- Você pode encerrar o processo do Horizon com graça usando o comando `horizon:terminate`. Todas as tarefas que estiverem sendo executadas serão concluídas, e então o Horizon deixará de ser executado:
+Você pode graciosamente terminar o processo do horizonte usando o comando artisan 'horizon:terminate'. Quaisquer trabalhos que estão atualmente sendo processados por ele serão concluídos e então o horizonte irá parar de executar:
 
 ```shell
 php artisan horizon:terminate
 ```
 
 <a name="deploying-horizon"></a>
-### Implementar o Horizon
+### Deslocando o Horizonte
 
- Quando estiver pronto para implantar o Horizon no servidor da aplicação, deve configurar um processo de monitorização para controlar o comando `php artisan horizon` e reiniciá-lo se ele sair inesperadamente. Não se preocupe, vamos discutir como instalar um processo de monitorização abaixo.
+Quando estiver pronto para implantar o Horizon no servidor real da sua aplicação, configure um monitor de processos para monitorar o comando `php artisan horizon` e reiniciá-lo caso ele encerre inesperadamente. Não se preocupe, vamos discutir como instalar um monitor de processos abaixo.
 
- Durante o processo de implantação do seu aplicativo, você deve instruir o processo do Horizon a terminar para que ele seja reiniciado por seu supervisor de processos e receba suas alterações de código:
+Durante o processo de implantação da sua aplicação, você deve instruir o processo de horizonte para terminar, para que ele seja reiniciado pelo seu monitor de processos e receber suas alterações de código:
 
 ```shell
 php artisan horizon:terminate
 ```
 
 <a name="installing-supervisor"></a>
-#### Instalando o Supervisor
+#### Instalação do Supervisor
 
- O Supervisor é um monitor de processos para o sistema operacional Linux e reinicia automaticamente seu processo `horizon` se ele parar de executar. Para instalar o Supervisor no Ubuntu, você pode usar o comando a seguir. Se você não estiver usando o Ubuntu, provavelmente poderá instalar o Supervisor usando o gerenciador de pacotes do seu sistema operacional:
+Supervisor é um monitor de processos para o sistema operacional Linux e irá reiniciar automaticamente seu processo `horizon` caso ele pare de executar. Para instalar o Supervisor no Ubuntu, você pode usar o seguinte comando. Se não estiver usando o Ubuntu, provavelmente pode instalar o Supervisor usando o gerenciador de pacotes do seu sistema operacional:
 
 ```shell
 sudo apt-get install supervisor
 ```
 
- > [!ATENÇÃO]
- O [Laravel Forge](https://forge.laravel.com), que irá instalar e configurar automaticamente o Supervisor para os seus projetos Laravel.
+> Nota!
+> Se configurar o Supervisor por conta própria parece ser avassalador, considere usar [Laravel Forge](https://forge.laravel.com), que instalará e configurará automaticamente o Supervisor para seus projetos Laravel.
 
 <a name="supervisor-configuration"></a>
-#### Configuração do supervisor
+#### Configuração do Supervisor
 
- Os arquivos de configuração do Supervisor são normalmente armazenados na pasta `/etc/supervisor/conf.d` do seu servidor. Nessa pasta, você pode criar diversos arquivos de configuração que indicam ao Supervisor como os processos devem ser monitorados. Por exemplo, vamos criar um arquivo `horizon.conf` para iniciar e monitorar o processo `horizon`:
+Arquivos de configuração do Supervisor são tipicamente armazenados dentro da pasta `/etc/supervisor/conf.d` do seu servidor. Dentro dessa pasta você pode criar um número arbitrário de arquivos de configuração que instruem o supervisor em como seus processos devem ser monitorados. Por exemplo, vamos criar um arquivo `horizon.conf` que inicia e monitora um processo `horizon`:
 
 ```ini
 [program:horizon]
@@ -277,15 +277,15 @@ stdout_logfile=/home/forge/example.com/horizon.log
 stopwaitsecs=3600
 ```
 
- Ao definir a sua configuração do supervisor, certifique-se de que o valor do `stopwaitsecs` é superior ao número de segundos consumidos pelo seu trabalho em execução mais longo. Caso contrário, poderá ocorrer o fecho do processo antes de terminar o processamento.
+Ao definir sua configuração do Supervisor, você deve garantir que o valor de 'stopwaitsecs' é maior do que o número de segundos consumidos pelo seu trabalho mais longo em execução. Caso contrário, o Supervisor pode matar o trabalho antes de terminar a processar.
 
- > [!AVISO]
- > Embora os exemplos acima sejam válidos para servidores baseados no Ubuntu, o local e a extensão de arquivo esperados dos arquivos de configuração do Supervisor podem variar em outros sistemas operacionais de servidor. Consulte a documentação do seu servidor para mais informações.
+> [AVISO]
+> Enquanto os exemplos acima são válidos para servidores baseados em Ubuntu, a localização e a extensão do arquivo esperados dos arquivos de configuração do Supervisor podem variar entre outros sistemas operacionais de servidor. Consulte sua documentação do servidor para mais informações.
 
 <a name="starting-supervisor"></a>
-#### Gerente de início
+#### Iniciante em supervisão
 
- Uma vez criado o arquivo de configuração, você pode atualizar a configuração do Supervisor e iniciar os processos monitorados usando os seguintes comandos:
+Uma vez que o arquivo de configuração tenha sido criado, você pode atualizar a configuração do Supervisor e iniciar os processos monitorados usando os seguintes comandos:
 
 ```shell
 sudo supervisorctl reread
@@ -295,13 +295,13 @@ sudo supervisorctl update
 sudo supervisorctl start horizon
 ```
 
- > [!NOTA]
- [Documentação do Supervisor.](http://supervisord.org/index.html)
+> Nota:
+> Para mais informações sobre como executar o Supervisor, veja a [documentação do Supervisor](http://supervisord.org/index.html).
 
 <a name="tags"></a>
 ## Tags
 
- O Horizon permite que você atribua "etiquetas" aos trabalhos, incluindo material enviável por e-mail, eventos de transmissão, notificações e escutas de evento em fila. Na verdade, o Horizon irá etiquetar inteligentemente e automaticamente a maioria dos trabalhos de acordo com os modelos Eloquent que estiverem vinculados ao trabalho. Por exemplo, confira o seguinte trabalho:
+O horizonte permite que você atribua "tags" a trabalhos, incluindo eventos de correio, eventos de transmissão, notificações e ouvintes em fila. Na verdade, o Horizon marcará com inteligência e automaticamente a maioria dos trabalhos dependendo do Eloquent modelos anexados ao trabalho. Por exemplo, veja o seguinte trabalho:
 
 ```php
     <?php
@@ -336,7 +336,7 @@ sudo supervisorctl start horizon
     }
 ```
 
- Se este trabalho estiver pendentemente com uma instância de `App\Models\Video` que tenha um atributo `id` de `1`, receberá automaticamente a etiqueta `App\Models\Video:1`. Isso ocorre porque Horizon procurará as propriedades do trabalho em busca de qualquer modelo Eloquent. Se forem encontrados modelos Eloquent, Horizon irá inteligentemente etiquetar o trabalho usando o nome da classe e a chave primária do modelo:
+Se este trabalho é fila com uma instância `App\Models\Video` que tem um atributo 'id' de '1', ele receberá automaticamente a tag 'App\Models\Video:1'. Isso porque o Horizon pesquisará as propriedades do trabalho para qualquer modelo Eloquent. Se modelos Eloquent forem encontrados, o Horizon marcará o trabalho com inteligência usando o nome da classe e a chave primária do modelo:
 
 ```php
     use App\Jobs\RenderVideo;
@@ -348,9 +348,9 @@ sudo supervisorctl start horizon
 ```
 
 <a name="manually-tagging-jobs"></a>
-#### Marcação manual de trabalhos
+#### Marcando manualmente as tarefas
 
- Se desejar definir manualmente as tags para um de seus objetos com capacidade de fila, você poderá definir um método `tags` na classe:
+Se você gostaria de definir manualmente os rótulos para um dos seus objetos que são enfileiráveis, você pode definir um método 'tags' na classe:
 
 ```php
     class RenderVideo implements ShouldQueue
@@ -368,9 +368,9 @@ sudo supervisorctl start horizon
 ```
 
 <a name="manually-tagging-event-listeners"></a>
-#### Marcação manual de eventos para escuta
+#### Tag de ouvinte de eventos manualmente
 
- Ao recuperar as tags para um evento agendado de um listener, o Horizon passará automaticamente a instância do evento ao método `tags`, permitindo que você adicione dados de eventos às tags:
+Ao recuperar as tags para um ouvinte de eventos em fila, o Horizon irá automaticamente passar a instância do evento para o método "tags", permitindo que você adicione dados de eventos às tags.
 
 ```php
     class SendRenderNotifications implements ShouldQueue
@@ -390,10 +390,10 @@ sudo supervisorctl start horizon
 <a name="notifications"></a>
 ## Notificações
 
- > [ADVERTÊNCIA]
- [Pré-requisitos para a notificação relevante do canal](/docs/notifications).
+> ¡ADVERTENCIA!
+> Quando configurando o Horizon para enviar notificações do Slack ou SMS, você deve revisar os [requisitos pré-requisitos para o canal de notificação relevante]/docs/notificações.
 
- Se deseja ser notificado quando uma das suas filas apresentar tempo de espera elevado, pode utilizar as funções `Horizon::routeMailNotificationsTo`, `Horizon::routeSlackNotificationsTo` e `Horizon::routeSmsNotificationsTo`. Pode chamar estas funções no método `boot` do seu aplicativo `App\Providers\HorizonServiceProvider`:
+Se você gostaria de ser notificado quando um de seus filas tem um tempo longo de espera, você pode usar o método 'Horizon::routeMailNotificationsTo', 'Horizon::routeSlackNotificationsTo', e 'Horizon::routeSmsNotificationsTo'. Você pode chamar esses métodos do método 'boot' de seu provedor 'App\Providers\HorizonServiceProvider':
 
 ```php
     /**
@@ -410,9 +410,9 @@ sudo supervisorctl start horizon
 ```
 
 <a name="configuring-notification-wait-time-thresholds"></a>
-#### Configurar limiares de tempo de espera para notificação
+#### Configurando os Limites de Tempo de Aguardo da Notificação
 
- Pode configurar o número de segundos considerados como "espera demorada" no ficheiro de configuração `config/horizon.php` da aplicação. A opção de configuração `waits`, neste ficheiro, permite controlar o limiar para espera demorada de cada combinação ligação/fila. As combinações de ligação/fila não definidas terão um limiar para espera demorada padrão de 60 segundos:
+Você pode configurar quantos segundos são considerados um "tempo de espera" no seu arquivo de configuração do 'config/horizon.php' em sua aplicação. A opção de configuração "waits" neste arquivo permite que você controle o limite para um tempo de espera longo, para cada combinação de conexão/fila. Qualquer combinação não definida de conexão/fila será definida como um limite de tempo de espera de 60 segundos:
 
 ```php
     'waits' => [
@@ -423,9 +423,9 @@ sudo supervisorctl start horizon
 ```
 
 <a name="metrics"></a>
-## Metas
+## Metrês
 
- O Horizon inclui um painel de métricas que fornece informações sobre o tempo de espera do trabalho e da fila, bem como o rendimento. Para preencher esse painel, você deve configurar o comando snaphot Artisan do Horizon para ser executado a cada cinco minutos no arquivo `routes/console.php` do aplicativo:
+O painel de métricas fornece informações sobre o seu trabalho e tempos de espera na fila e a taxa de saída. Para preencher este painel, você deve configurar o comando 'snapshot' do Artisan para ser executado toda vez que cinco minutos em seu arquivo 'routes/console.php':
 
 ```php
     use Illuminate\Support\Facades\Schedule;
@@ -433,24 +433,24 @@ sudo supervisorctl start horizon
     Schedule::command('horizon:snapshot')->everyFiveMinutes();
 ```
 <a name="deleting-failed-jobs"></a>
-## Excluir tarefas com falha
+## Excluindo Trabalhos Falhados
 
- Se desejar eliminar um trabalho falhado, pode usar o comando `horizon:forget`. O comando `horizon:forget` aceita o ID ou o UUID do trabalho falhado como único argumento:
+Se você deseja excluir um trabalho falho, pode usar o comando 'horizon:forget'. O comando 'horizon:forget' aceita como seu único argumento a ID ou UUID do trabalho falho.
 
 ```shell
 php artisan horizon:forget 5
 ```
 
 <a name="clearing-jobs-from-queues"></a>
-## Limpar tarefas das filas
+## Limpeza de trabalhos nas filas
 
- Se você desejar excluir todos os trabalhos da fila padrão de seu aplicativo, poderá fazer isso usando o comando `horizon:clear` do módulo Artisan:
+Se você gostaria de excluir todos os trabalhos da fila padrão do seu aplicativo, você pode fazer isso usando o comando artisan `horizon:clear`:
 
 ```shell
 php artisan horizon:clear
 ```
 
- Você pode fornecer a opção `queue` para apagar tarefas de uma fila específica:
+Você pode fornecer a opção 'fila' para excluir trabalhos de uma fila específica:
 
 ```shell
 php artisan horizon:clear --queue=emails

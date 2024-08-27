@@ -3,63 +3,63 @@
 <a name="introduction"></a>
 ## Introdução
 
- [Laravel Sail](https://github.com/laravel/sail) é uma interface de linha de comando leve para interação com o ambiente de desenvolvimento padrão do Laravel no Docker. O Sail fornece um excelente ponto de partida para construir uma aplicação Laravel usando PHP, MySQL e Redis, sem exigir experiência prévia em Docker.
+[Laravel Sail](https://github.com/laravel/sail) é uma interface de linha de comando leve para interagir com o ambiente de desenvolvimento padrão do Docker no Laravel. O Sail fornece um ótimo ponto de partida para a construção de aplicativos Laravel usando PHP, MySQL e Redis sem exigir que você tenha experiência anterior no Docker.
 
- O Sail é basicamente o ficheiro `docker-compose.yml` e o script `sail` que está armazenado na raiz do seu projeto. O script `sail` fornece uma interface de linha de comando (CLI) com métodos convenientes para interagir com os contêineres Docker definidos no ficheiro `docker-compose.yml`.
+Na sua essência, Sail é o arquivo docker-compose.yml e o script sail armazenados na raiz do seu projeto. O script sail fornece um CLI com métodos convenientes para interagir com os contêineres do Docker definidos pelo arquivo docker-compose.yml.
 
- O Laravel Sail é compatível com macOS, Linux e Windows (através do [WSL2](https://docs.microsoft.com/pt-br/windows/wsl/about)).
+Laravel Sail é suportado no macOS, Linux e Windows (através do [WSL2](https://docs.microsoft.com/en-us/windows/wsl/about/)).
 
 <a name="installation"></a>
-## Instalação e configuração
+## Instalação e Configuração
 
- O Laravel Sail é instalado automaticamente em todas as novas aplicações Laravel para que você possa começar a utilizá-lo imediatamente. Para saber como criar uma nova aplicação Laravel, consulte a [documentação de instalação](/docs/installation#docker-installation-using-sail) do Laravel para o seu sistema operativo. Durante a instalação, será solicitado que você escolha quais os serviços suportados pelo Sail com os quais sua aplicação irá interagir.
+O Laravel Sail está automaticamente instalado com todos os novos aplicativos Laravel, para que você possa usá-lo imediatamente. Para aprender como criar um novo aplicativo Laravel, consulte a documentação de instalação do Laravel's [instalação documentação](/docs/installation#docker-installation-using-sail) para o seu sistema operacional. Durante a instalação, você será solicitado a escolher quais serviços Sail suportados seu aplicativo interagir com.
 
 <a name="installing-sail-into-existing-applications"></a>
-### Instalação de Sail em aplicações existentes
+### Instalar Sails em Aplicações Existentes
 
- Se você estiver interessado em usar o Sail com um aplicativo existente do Laravel, pode simplesmente instalar o Sail usando o gerenciador de pacotes Composer. É claro que esses passos pressupõem que o seu ambiente de desenvolvimento local permita a instalação das dependências do Composer:
+Se você estiver interessado em usar o Sail com um aplicativo Laravel existente, você pode instalar o Sail usando o gerenciador de pacotes Composer. É claro que esses passos pressupõem que seu ambiente de desenvolvimento local atual permita instalar dependências do Composer:
 
 ```shell
 composer require laravel/sail --dev
 ```
 
- Depois de instalado o Sail, você pode executar o comando `sail:install` do Artisan. Esse comando publicará o arquivo `docker-compose.yml` do Sail para a raiz de seu aplicativo e modificará seu arquivo `.env` com as variáveis ambientais necessárias para se conectar aos serviços Docker:
+Após a instalação do After Sail, você pode executar o comando `sail:install` Artisan. Este comando irá publicar o arquivo `docker-compose.yml` do After Sail na raiz de sua aplicação e modificar o arquivo `.env` com as variáveis de ambiente necessárias para se conectar aos serviços Docker.
 
 ```shell
 php artisan sail:install
 ```
 
- Por último, você pode iniciar o programa Sail. Para continuar aprendendo a utilizar o Sail, leia o restante desta documentação:
+Finalmente, você pode começar a usar o Sail. Para continuar aprendendo como usar o Sail, por favor continue lendo o restante da documentação:
 
 ```shell
 ./vendor/bin/sail up
 ```
 
- > [!AVISO]
- > Se estiver a utilizar o Docker Desktop para Linux, deve utilizar o contexto do Docker padrão executando o seguinte comando: `docker context use default`.
+> [!AVISO]
+> Se você estiver usando o Docker Desktop para Linux, deve usar o contexto padrão do Docker executando o seguinte comando: 'docker context use default'.
 
 <a name="adding-additional-services"></a>
-#### Adicionando serviços adicionais
+#### Adicionando Serviços Adicionais
 
- Se desejar adicionar um serviço a uma instalação existente do Sail, você pode executar o comando de artesanato `sail:add`:
+Se você gostaria de adicionar um serviço adicional à sua instalação existente do Sail, você pode executar o comando 'sail:add' Artisan:
 
 ```shell
 php artisan sail:add
 ```
 
 <a name="using-devcontainers"></a>
-#### Usando o Devcontainer
+#### Usando o Devcontainers
 
- Se pretender desenvolver numa [Devcontainer](https://code.visualstudio.com/docs/remote/containers), pode fornecer a opção `--devcontainer` ao comando `sail:install`. A opção `--devcontainer` instrui o comando `sail:install` para publicar um ficheiro `.devcontainer/devcontainer.json` padrão na raiz da aplicação:
+Se quiser desenvolver dentro de um [Devcontainer](https://code.visualstudio.com/docs/remote/containers), pode fornecer o parâmetro `--devcontainer` do comando `sail:install`. O parâmetro `--devcontainer` instruirá o comando `sail:install` a publicar um arquivo padrão `.devcontainer/devcontainer.json` na raiz da sua aplicação:
 
 ```shell
 php artisan sail:install --devcontainer
 ```
 
 <a name="rebuilding-sail-images"></a>
-### Reconstruindo imagens de veleiros
+### Reconstruindo a Imagem do veleiro
 
- Por vezes, poderá pretender reconstruir totalmente as imagens do Sail para garantir que todos os pacotes e software da imagem estão atualizados. Pode fazer isto usando o comando "build":
+Às vezes, você pode querer reconstruir completamente suas imagens do Sail para garantir que todos os pacotes e softwares de uma imagem estejam atualizados. Você pode fazer isso usando o comando "build":
 
 ```shell
 docker compose down -v
@@ -70,59 +70,59 @@ sail up
 ```
 
 <a name="configuring-a-shell-alias"></a>
-### Configurar um alias de shell
+### Configurar um Aliás do Shell
 
- Por padrão, os comandos do Sail são chamados usando o script `vendor/bin/sail` que está incluído em todas as novas aplicações Laravel:
+Por padrão, os comandos do "Sail" são invocados através da utilização do arquivo "vendor/bin/sail" que é incluído com todos os novos aplicativos do Laravel:
 
 ```shell
 ./vendor/bin/sail up
 ```
 
- No entanto, em vez de digitar repetidamente `vendor/bin/sail` para executar comandos do Sail, pode configurar um alias de shell que permita executar os commandos do Sail com mais facilidade.
+No entanto, em vez de digitar repetidamente o comando "vendor/bin/sail" para executar comandos do Sail, você pode configurar um shell alias que lhe permite executar os comandos do Sail com mais facilidade.
 
 ```shell
 alias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'
 ```
 
- Para garantir que este recurso está sempre disponível, você pode adicioná-lo ao seu arquivo de configuração do shell em seu diretório pessoal, como `.zshrc` ou `.bashrc`, e então reiniciar o seu shell.
+Para ter certeza que isso está sempre disponível, você pode adicionar isto ao arquivo de configuração do seu shell na sua pasta inicial, tal como "~/.zshrc" ou "~/.bashrc", e então reiniciar o seu shell.
 
- Após a configuração do alias da shell, você poderá executar comandos do Sail simplesmente digiteando "sail". O resto dos exemplos desta documentação presumirão que o seu alias foi configurado corretamente.
+Uma vez configurado o alias do shell, você pode executar os comandos sail digitando `sail`. As demais instruções deste documento serão baseadas no fato de que este alias já tenha sido configurado:
 
 ```shell
 sail up
 ```
 
 <a name="starting-and-stopping-sail"></a>
-## Acaritar e deixar de usar vela
+## Iniciança e Paradas de vela
 
- O arquivo docker-compose.yml do Laravel Sail define vários contêineres Docker que trabalham em conjunto para ajudar a criar aplicativos Laravel. Cada um desses contêineres é uma entrada na configuração `services` do seu arquivo docker-compose.yml. O contêiner laravel.test é o contêiner de aplicativo principal, responsável por servir sua aplicação.
+O arquivo 'docker-compose.yml' do Laravel Sail define uma variedade de contêineres Docker que trabalham juntos para ajudá-lo a construir aplicativos Laravel. Cada um desses contêineres é um item na configuração dos 'services' em seu arquivo 'docker-compose.yml'. O contêiner 'laravel.test' é o contêiner principal da aplicação, que servirá como sua aplicação.
 
- Antes de iniciar o Sail, deve certificar-se que não existem outros servidores web ou bases de dados a funcionar no seu computador local. Para iniciar todos os contêineres Docker definidos no ficheiro `docker-compose.yml` da sua aplicação, deve executar o comando `up`:
+Antes de iniciar o "Sail", você deve ter certeza que nenhum outro servidor ou banco de dados estão em execução na sua máquina local. Para iniciar todos os contêineres Docker definidos no arquivo do seu aplicativo' `docker-compose.yml`, você deve executar o comando 'up':
 
 ```shell
 sail up
 ```
 
- Para iniciar todos os contêineres de Docker no segundo plano, você pode iniciar o Sail no modo "desanexado":
+Para começar todos os contêineres do Docker em segundo plano, você pode iniciar o "Sail" no modo "detachado":
 
 ```shell
 sail up -d
 ```
 
- Depois que os contêineres do aplicativo forem iniciados, você poderá acessar o projeto no seu navegador na URL: http://localhost.
+Uma vez que os contêineres da aplicação tenham sido iniciados, você pode acessar o projeto em seu navegador web no seguinte endereço: http://localhost.
 
- Para parar todos os contêineres, você pode pressionar o comando "Ctrl+C" para interromper a execução do contêiner. Se os contêineres estiverem rodando em segundo plano, é possível usar o comando `stop`:
+Para parar todos os contêineres você pode simplesmente pressionar Control + C para parar o contêiner em execução. Ou se os contêineres estão rodando em segundo plano, você pode usar a ordem 'stop':
 
 ```shell
 sail stop
 ```
 
 <a name="executing-sail-commands"></a>
-## Executar comandos
+## Executando Comandos
 
- Ao usar o Laravel Sail, sua aplicação está sendo executada dentro de um contêiner do Docker e está isolada de seu computador local. No entanto, o Sail fornece uma maneira conveniente de executar vários comandos contra a aplicação, como comandos PHP arbitrários, comandos Artisan, comandos Composer e comandos Node/NPM.
+Ao utilizar o Laravel Sail, seu aplicativo executa dentro de um contêiner Docker e é isolado do computador local. No entanto, o Sail fornece uma maneira conveniente de executar vários comandos contra seu aplicativo, como comandos PHP arbitrários, Artisan, Composer e Node / NPM.
 
- **Ao ler a documentação do Laravel, você verá frequentemente referências ao Composer, Artisan e comandos Node/NPM que não se referem ao Sail.** Esses exemplos assumem que essas ferramentas estão instaladas em seu computador local. Se você estiver usando o Sail para seu ambiente de desenvolvimento Laravel local, deve executar esses comandos usando o Sail:
+**Ao ler a documentação do Laravel você verá muitas referências ao Composer, Artisan e os comandos Node/NPM que não se referem ao Sail.** Esses exemplos assumem que essas ferramentas estão instaladas em sua máquina local. Se você estiver usando o Sail para seu ambiente de desenvolvimento local do Laravel, você deve executar esses comandos usando o Sail:
 
 ```shell
 # Running Artisan commands locally...
@@ -133,9 +133,9 @@ sail artisan queue:work
 ```
 
 <a name="executing-php-commands"></a>
-### Executando comandos PHP
+### Executando Comandos PHP
 
- Os comandos do PHP podem ser executados usando o comando `php`. Claro, estes comandos vão ser executados usando a versão do PHP que está configurada para sua aplicação. Para saber mais sobre as versões do PHP disponíveis no Laravel Sail, consulte a [documentação da versão do PHP](#sail-php-versions):
+Os comandos PHP podem ser executados usando o comando `php`. Claro, esses comandos serão executados usando a versão do PHP configurada para sua aplicação. Para aprender mais sobre as versões do PHP disponíveis no Laravel Sail, consulte a [documentação da versão do PHP](#sail-php-versions):
 
 ```shell
 sail php --version
@@ -144,20 +144,20 @@ sail php script.php
 ```
 
 <a name="executing-composer-commands"></a>
-### Executando comandos do Composer
+### Executando Comandos do Composer
 
- Os comandos do Composer podem ser executados usando o comando `composer`. O contêiner de aplicação do Laravel Sail inclui uma instalação do Composer:
+Os comandos de Composer podem ser executados usando o comando `composer`. A aplicação do Laravel Sail inclui uma instalação de Composer:
 
-```
+```nothing
 sail composer require laravel/sanctum
 ```
 
 <a name="installing-composer-dependencies-for-existing-projects"></a>
-#### Instalando dependências do Composer em aplicações já existentes
+#### Instalando Dependências do Compositor para Aplicações Existentes
 
- Se você estiver desenvolvendo um aplicativo com uma equipe, pode não ser o responsável por criar inicialmente a aplicação Laravel. Portanto, nenhuma das dependências do Composer da aplicação, incluindo Sail, será instalada depois que você clonar o repositório da aplicação para seu computador local.
+Se você está desenvolvendo uma aplicação com um time, talvez não seja você quem cria a aplicação Laravel inicial. Portanto, nenhuma das dependências do Composer da aplicação, incluindo Sail, será instalada depois de você clonar o repositório da aplicação em seu computador local.
 
- É possível instalar as dependências do aplicativo navegando até o diretório dele e executando o comando a seguir. Este comando utiliza um pequeno contêiner Docker, que inclui PHP e Composer para instalar as dependências do aplicativo:
+Você pode instalar as dependências do aplicativo navegando até o diretório do aplicativo e executando o seguinte comando. Este comando usa um pequeno contêiner Docker contendo PHP e Composer para instalar as dependências do aplicativo:
 
 ```shell
 docker run --rm \
@@ -168,21 +168,21 @@ docker run --rm \
     composer install --ignore-platform-reqs
 ```
 
- Ao usar a imagem "`laravelsail/phpXX-composer" você deve utilizar a mesma versão do PHP que pretende utilizar para a sua aplicação ("`80", "`81", "`82" ou "`83").
+Ao utilizar a imagem 'laravelsail/phpXX-composer' você deve usar a mesma versão de PHP que planeja usar para sua aplicação (80, 81, 82 ou 83).
 
 <a name="executing-artisan-commands"></a>
-### Executar comandos de artesão
+### Executando Comandos Artesanais
 
- Os comandos do Laravel Artisan podem ser executados usando o comando "artisan":
+Comandos Laravel Artisan podem ser executados usando o comando `artesan`:
 
 ```shell
 sail artisan queue:work
 ```
 
 <a name="executing-node-npm-commands"></a>
-### Executando comandos do Node/NPM
+### Executando Comandos do Node / NPM
 
- Os comandos de Node podem ser executados usando o comando `node`, enquanto os comandos do NPM podem ser executados usando o comando `npm`:
+Os comandos de Node podem ser executados usando o comando `node` enquanto os comandos do NPM podem ser executados usando o comando `npm`:
 
 ```shell
 sail node --version
@@ -190,44 +190,44 @@ sail node --version
 sail npm run dev
 ```
 
- Se desejar, você pode usar o Yarn em vez do NPM.
+Se você desejar, pode usar Yarn em vez de npm:
 
 ```shell
 sail yarn
 ```
 
 <a name="interacting-with-sail-databases"></a>
-## Interagindo com bases de dados
+## Interação com Banco de Dados
 
 <a name="mysql"></a>
 ### MySQL
 
- Como você deve ter notado, o arquivo `docker-compose.yml` da sua aplicação contém uma entrada para um container MySQL. Este container usa um [volume do Docker](https://docs.docker.com/storage/volumes/) para que os dados armazenados em seu banco de dados sejam preservados quando você interromper e reiniciar seus contêineres.
+Como você provavelmente notou, o arquivo `docker-compose.yml` do seu aplicativo contém uma entrada para um contêiner MySQL. Este contêiner utiliza um [volume Docker](https://docs.docker.com/storage/volumes/) para que os dados armazenados em sua base de dados sejam persistidos mesmo ao parar e reiniciar seus contêineres.
 
- Além disso, quando o container MySQL iniciar pela primeira vez, ele criará dois bancos de dados para você. O primeiro é nomeado com base no valor da variável de ambiente `DB_DATABASE` e serve para seu desenvolvimento local. O segundo é um banco de dados dedicado para testes denominado `testing`, o que garante que seus testes não interfiram nos dados de desenvolvimento.
+Além disso, na primeira vez que o MySQL contêiner iniciar, ele criará duas bases de dados para você. A primeira base de dados é nomeada usando o valor da sua variável de ambiente `DB_DATABASE` e é para seu desenvolvimento local. A segunda é uma base de dados dedicada de teste chamada `testing`, que assegura que seus testes não interferem em seus dados de desenvolvimento.
 
- Depois de iniciar seus contêineres, você pode conectar sua aplicação ao servidor MySQL definindo a variável de ambiente `DB_HOST` para `mysql`, localizado no arquivo `.env` da aplicação.
+Uma vez que você tenha iniciado seus contêineres, você pode se conectar ao seu caso MySQL dentro do seu aplicativo por definir sua variável de ambiente `DB_HOST` dentro do arquivo `.env` do seu aplicativo para `mysql`.
 
- Para se conectar ao banco de dados MySQL da sua aplicação a partir do seu computador local, você pode usar um aplicativo gráfico de gerenciamento de bancos de dados como o [TablePlus](https://tableplus.com). Por padrão, o banco de dados MySQL está disponível em `localhost` port 3306 e as credenciais de acesso correspondem aos valores das suas variáveis de ambiente `DB_USERNAME` e `DB_PASSWORD`. Ou você pode se conectar como o usuário `root`, que também utiliza o valor da sua variável de ambiente `DB_PASSWORD` como sua senha.
+Para conectar o seu banco MySQL da sua aplicação do seu computador local, você pode usar um aplicativo de gerenciamento de banco gráfico como [TablePlus](https://tableplus.com). Por padrão, o banco MySQL é acessível na porta 3306 em `localhost` e as credenciais de acesso correspondem aos valores de suas variáveis ​​de ambiente `DB_USERNAME` e `DB_PASSWORD`. Ou você pode se conectar como o usuário `root`, que também usa o valor de sua variável ​​de ambiente `DB_PASSWORD` como senha.
 
 <a name="redis"></a>
-### O que é o Redis?
+### Redis
 
- O arquivo do aplicativo `docker-compose.yml` também contém uma entrada para um container [Redis](https://redis.io). Este container usa um volume [Docker](https://docs.docker.com/storage/volumes/) de modo que os dados armazenados em seu Redis sejam preservados mesmo ao parar e reiniciar seus contêineres. Depois de iniciado o contêiner, você pode se conectar à instância do Redis dentro da sua aplicação configurando a variável de ambiente `REDIS_HOST` da sua aplicação no arquivo `.env`.
+O arquivo 'docker-compose.yml' da sua aplicação também contém uma entrada para um contêiner de [Redis](https://redis.io). Esse contêiner utiliza um volume do Docker, para que os dados armazenados na instância Redis persistam mesmo ao parar e reiniciar seus contêineres. Depois de iniciar seu contêiner, você pode se conectar à instância do Redis dentro da sua aplicação configurando a variável de ambiente `REDIS_HOST` no arquivo '.env' da sua aplicação para 'redis'.
 
- Para se conectar ao banco de dados do Redis da sua aplicação a partir de uma máquina local, você poderá usar um aplicativo gráfico de gerenciamento de bancos de dados como o [TablePlus](https://tableplus.com). Por padrão, o banco de dados do Redis é acessível por meio da porta `localhost` no número 6379.
+Para se conectar ao banco de dados Redis da sua aplicação do seu computador local, você pode usar um aplicativo de gerenciamento de banco de dados gráfico como o [TablePlus](https://tableplus.com). Por padrão, o banco de dados Redis está acessível na porta localhost 6379.
 
 <a name="meilisearch"></a>
-### O que é Meilist?
+### Meilisearch
 
- Se você escolheu instalar o serviço [Meilisearch] (https://www.meilisearch.com) ao instalar Sail, o arquivo de `docker-compose.yml` da sua aplicação conterá uma entrada para este poderoso motor de busca integrado com o [Laravel Scout](/docs/scout). Uma vez iniciados os contêineres, você pode se conectar à instância do Meilisearch na sua aplicação configurando a variável de ambiente `MEILISEARCH_HOST` como `http://meilisearch:7700`.
+Se você escolher instalar o serviço [Meilisearch](https://www.meilisearch.com) quando estiver instalando o Sail, seu arquivo 'docker-compose.yml' conterá um link para este poderoso mecanismo de pesquisa integrado ao Laravel Scout. Uma vez que você tenha iniciado seus contêineres, você pode se conectar com a instância do Meilisearch em sua aplicação configurando o seu ambiente variável 'MEILISEARCH_HOST' para ser igual à 'http://meilisearch:7700'.
 
- A partir da sua máquina local, pode aceder ao painel de administração baseado na Web do Meilisearch navegando para `http://localhost:7700` no seu navegador da Web.
+A partir do seu computador local, você pode acessar o painel de administração baseado na web do Meilisearch navegando para `http://localhost:7700` em seu navegador da web.
 
 <a name="typesense"></a>
 ### Typesense
 
- Se você escolheu instalar o serviço do [Typesense](https://typesense.org) quando instalou o Sail, o arquivo de `docker-compose.yml` da sua aplicação conterá uma entrada para esse motor de busca open source extremamente rápido e integrado nativamente ao [Laravel Scout](/docs/scout#typesense). Uma vez iniciados seus contêineres, você poderá se conectar à instância do Typesense dentro da sua aplicação definindo as variáveis de ambiente a seguir:
+Se você escolher instalar o serviço [Typesense](https://typesense.org) ao instalar o Sail, seu arquivo `docker-compose.yml` conterá uma entrada para este motor de busca super rápido e de código aberto que é integrado nativamente com o Laravel Scout (/docs/scout#typesense). Depois de iniciar seus contêineres, você pode se conectar à instância do Typesense dentro de sua aplicação definindo as seguintes variáveis de ambiente:
 
 ```ini
 TYPESENSE_HOST=typesense
@@ -236,14 +236,14 @@ TYPESENSE_PROTOCOL=http
 TYPESENSE_API_KEY=xyz
 ```
 
- Da sua máquina local, você pode acessar a API do Typesense por meio de "http://localhost:8108".
+A partir de sua máquina local, você pode acessar a API do Typesense através de http://localhost:8108 .
 
 <a name="file-storage"></a>
 ## Armazenamento de arquivos
 
- Se pretender utilizar o Amazon S3 para armazenar ficheiros durante a execução da aplicação no ambiente de produção, poderá optar por instalar o serviço [MinIO](https://min.io) ao instalar o Sail. O MinIO fornece uma API compatível com o S3 que pode utilizar para desenvolver localmente, usando o driver de armazenamento de ficheiros `s3` do Laravel sem criar "teste" cestas de armazenamento no ambiente de produção do S3. Se optar por instalar o MinIO ao instalar o Sail, será adicionada uma secção de configuração do MinIO ao ficheiro `docker-compose.yml` da aplicação.
+Se você planeja usar o Amazon S3 para armazenar arquivos enquanto executa sua aplicação em seu ambiente de produção, talvez você queira instalar o serviço [MinIO](https://min.io) quando estiver instalando Sail. MinIO fornece uma API compatível com S3 que você pode usar para desenvolver localmente usando o driver de armazenamento 's3' do Laravel sem criar "cestos de teste" no seu ambiente de produção S3. Se optar por instalar o MinIO ao instalar o Sail, uma seção de configuração do MinIO será adicionada ao arquivo `docker-compose.yml` da sua aplicação.
 
- Por padrão, o arquivo de configuração do `sistema de ficheiros` da sua aplicação já contém uma configuração de disco para o `disco s3`. Além de utilizar este disco para interagir com a Amazon S3, pode utilizá-lo para interagir com qualquer serviço de armazenamento de ficheiros compatível com o S3, como o MinIO. Para isso, deve modificar as variáveis ambiente associadas à sua configuração. Por exemplo, quando utiliza o MinIO, a configuração da variável ambiental do sistema de ficheiros deve ser definida do seguinte modo:
+Por padrão, o arquivo de configuração 'filesystems' da sua aplicação já contém uma configuração para o disco 's3'. Além de usar esse disco para interagir com Amazon S3, você pode usá-lo para interagir com qualquer serviço compatível com S3 de armazenamento de arquivos, como MinIO, apenas modificando as variáveis ambientais associadas que controlam sua configuração. Por exemplo, ao usar MinIO, a configuração de variável ambiental do seu sistema de arquivos deve ser definida da seguinte forma:
 
 ```ini
 FILESYSTEM_DISK=s3
@@ -255,21 +255,21 @@ AWS_ENDPOINT=http://minio:9000
 AWS_USE_PATH_STYLE_ENDPOINT=true
 ```
 
- Para que a integração do Laravel com o Flysystem gerencie URLs adequadas ao usar o MinIO, você deve definir a variável de ambiente `AWS_URL` para que ela combine com a URL local da sua aplicação e inclui o nome do bucket no caminho da URL:
+Para que a integração do Laravel com o Flysystem gere URLs apropriadas ao usar o MinIO, você deve definir a variável de ambiente 'AWS_URL' para corresponder à sua URL local e incluir o nome do balde no caminho da URL.
 
 ```ini
 AWS_URL=http://localhost:9000/local
 ```
 
- Pode criar lote de maneira direta na consola do MinIO. A consola está disponível em "http://localhost:8900". O nome de utilizador predefinido para a consola do MinIO é "sail" e a senha predefinida é "password".
+Você pode criar balde por meio do console de MinIO, que está disponível em http://localhost:8900. O nome de usuário padrão para o console de MinIO é "náutico" enquanto a senha padrão é "senha".
 
- > [AVISO]
- > A geração de URLs temporárias de armazenamento através do método `temporaryUrl` não é suportada ao usar o MinIO.
+> [ALERTA]
+> Gerar URLs de armazenamento temporário usando o método `temporaryUrl` não é suportado ao usar o MinIO.
 
 <a name="running-tests"></a>
-## Execução de testes
+## Teste de corrida
 
- O Laravel disponibiliza um suporte fantástico para testes, e pode utilizar o comando `test` da Sail para executar os seus comandos [de funcionalidade e de unidade do teste] (/docs/testing). Pode também passar quaisquer opções da linha de comando que sejam aceites pelo Pest / PHPUnit ao comando `test`:
+O Laravel oferece suporte incrível para testes, e você pode usar o comando 'test' do Sail para executar seus aplicativos [tests de recursos e testes unitários](/docs/testing). Qualquer opção CLI que seja aceita pelo Pest ou PHPUnit também pode ser passada para o comando 'test':
 
 ```shell
 sail test
@@ -277,13 +277,13 @@ sail test
 sail test --group orders
 ```
 
- O comando Sail test é equivalente ao comando Artisan test executado:
+O comando "test" é equivalente a executar o comando 'Artisan test':
 
 ```shell
 sail artisan test
 ```
 
- Por padrão, o Sail cria um banco de dados dedicado chamado "testing" para que os testes não interfiram no estado atual do seu banco de dados. Além disso, durante uma instalação padrão do Laravel, o Sail também configura o arquivo `phpunit.xml` para usar esse banco de dados quando for executar os testes:
+Por padrão, o Sail criará um banco de dados dedicado para testes, de forma que seus testes não interfiram no estado atual do seu banco de dados. Em uma instalação padrão do Laravel, o Sail também configurará seu arquivo phpunit.xml para usar este banco de dados ao executar seus testes:
 
 ```xml
 <env name="DB_DATABASE" value="testing"/>
@@ -292,7 +292,7 @@ sail artisan test
 <a name="laravel-dusk"></a>
 ### Laravel Dusk
 
- O [Laravel Dusk](//docs/dusk) fornece uma API de automação e teste de navegador fácil de usar e expressiva. Graças ao Sail, você pode executar esses testes sem nunca instalar o Selenium ou outros ferramentas em seu computador local. Para começar, desmarque o serviço do Selenium no arquivo `docker-compose.yml` do aplicativo:
+O Laravel Dusk (/docs/dusk) fornece uma interface de API expressiva e fácil de usar para automatização e testes de navegador. Com o Sail, você pode executar esses testes sem nunca instalar o Selenium ou outros ferramentas no seu computador local. Para começar, basta descomentar o serviço do Selenium no arquivo docker-compose.yml da sua aplicação:
 
 ```yaml
 selenium:
@@ -305,7 +305,7 @@ selenium:
         - sail
 ```
 
- Próximo, certifique-se de que o serviço `laravel.test` no arquivo `docker-compose.yml` da sua aplicação tenha uma entrada para `selenium`, como mostrado a seguir:
+Em seguida, garanta que o serviço 'laravel.test' no arquivo docker-compose.yml do seu aplicativo tenha uma entrada 'depends_on' para 'selenium':
 
 ```yaml
 depends_on:
@@ -314,16 +314,16 @@ depends_on:
     - selenium
 ```
 
- Por último, pode executar a sua unidade de teste Dusk iniciando o Sail e executando o comando `dusk`:
+Finalmente você pode executar sua suíte de testes do dusk ao iniciar o sail e executar o comando 'dusk':
 
 ```shell
 sail dusk
 ```
 
 <a name="selenium-on-apple-silicon"></a>
-#### Selenium em equipamento Apple Silicon
+#### Selenium na Apple Silicon
 
- Se sua máquina local tiver um processador Apple Silicon, seu serviço "selenium" deve usar a imagem "seleniarm/standalone-chromium":
+Se a sua máquina local contiver um "Apple Silicon" chip, o seu serviço de 'selenium' deve usar a imagem: 'seleniarm/standalone-chromium':
 
 ```yaml
 selenium:
@@ -337,9 +337,9 @@ selenium:
 ```
 
 <a name="previewing-emails"></a>
-## Antecipar os e-mails
+## Visualizando e-mails
 
- O arquivo padrão `docker-compose.yml` do Laravel Sail contém uma entrada de serviço para o [Mailpit](https://github.com/axllent/mailpit). O Mailpit intercepiona e-mails enviados por sua aplicação durante o desenvolvimento local, fornecendo uma interface web conveniente para que você possa visualizar suas mensagens de email em seu navegador. Ao usar Sail, o host padrão do Mailpit é `mailpit` e está disponível na porta 1025:
+A arquivo padrão de Laravel Sail 'docker-compose.yml', contém uma entrada de serviço para [Mailpit](https://github.com/axllent/mailpit). O Mailpit intercepta emails enviados pelo seu aplicativo durante o desenvolvimento local e fornece uma interface conveniente na web, para que você possa visualizar suas mensagens de email no navegador. Ao utilizar Sail, a host padrão do Mailpit é 'mailpit' e está disponível via porta 1025:
 
 ```ini
 MAIL_HOST=mailpit
@@ -347,12 +347,12 @@ MAIL_PORT=1025
 MAIL_ENCRYPTION=null
 ```
 
- Quando o Sail está em execução, você poderá acessar a Web Interface do MailPit no endereço: HTTP://LOCALHOST:8025
+Quando o Sail estiver rodando você pode acessar a interface da web do Mailpit em: http://localhost:8025
 
 <a name="sail-container-cli"></a>
-## CLI do Contêiner
+## CLI do contêiner
 
- Às vezes, poderá pretender iniciar uma sessão Bash dentro do seu contêiner de aplicação. Pode utilizar o comando `shell` para se conectar ao seu contêiner de aplicação e, deste modo, inspecionar os seus ficheiros e serviços instalados, bem como executar comandos shell arbitrários dentro do contêiner:
+Às vezes você pode querer iniciar uma sessão bash dentro do seu aplicativo contêiner. Você pode usar o comando 'shell' para conectar ao seu contêiner de aplicativos, permitindo que inspecione seus arquivos e serviços instalados, bem como executar comandos de shell arbitrários dentro do contêiner:
 
 ```shell
 sail shell
@@ -360,7 +360,7 @@ sail shell
 sail root-shell
 ```
 
- Para iniciar uma nova sessão de [Tinker do Laravel](https://github.com/laravel/tinker), você pode executar o comando "tinker":
+Para iniciar uma nova sessão [Laravel Tinker](https://github.com/laravel/tinker), você pode executar o comando 'tinker':
 
 ```shell
 sail tinker
@@ -369,7 +369,7 @@ sail tinker
 <a name="sail-php-versions"></a>
 ## Versões do PHP
 
- Atualmente o Sail suporta a execução da sua aplicação com PHP 8.3, 8.2, 8.1 ou PHP 8.0. A versão padrão de PHP utilizada pelo Sail é atualmente o PHP 8.3. Para alterar a versão do PHP que é utilizada para servir a sua aplicação, deve atualizar a definição `build` do contenedor `laravel.test` no ficheiro `docker-compose.yml`, da sua aplicação:
+A vela atualmente suporta o serviço da sua aplicação através do PHP 8.3, 8.2, 8.1 ou PHP 8.0. A versão padrão do PHP usada pela vela é atualmente o PHP 8.3. Para alterar a versão do PHP que é usado para servir a sua aplicação, você deve atualizar a definição de "construção" do recipiente "laravel.test" no seu arquivo "docker-compose.yml":
 
 ```yaml
 # PHP 8.3
@@ -385,13 +385,13 @@ context: ./vendor/laravel/sail/runtimes/8.1
 context: ./vendor/laravel/sail/runtimes/8.0
 ```
 
- Além disso, você pode querer atualizar o nome de sua imagem para refletir a versão do PHP que está sendo usada pelo seu aplicativo. Essa opção também é definida no arquivo `docker-compose.yml` da aplicação:
+Além disso, você pode querer atualizar o nome do seu 'imagem' para refletir a versão de PHP sendo usado pelo seu aplicativo. Essa opção também é definida no arquivo 'docker-compose.yml' do seu aplicativo:
 
 ```yaml
 image: sail-8.2/app
 ```
 
- Após atualizar o arquivo de seu aplicativo, você deve reconstruir as imagens de seus containers:
+Depois de atualizar o arquivo 'docker-compose.yml' da sua aplicação, você deve reconstruir suas imagens:
 
 ```shell
 sail build --no-cache
@@ -400,9 +400,9 @@ sail up
 ```
 
 <a name="sail-node-versions"></a>
-## Versões do Node
+## Node Versões
 
- O Sail instala o Node 20 por padrão. Para alterar a versão do Node que é instalada ao criar as suas imagens, pode atualizar a definição de `build.args` do serviço `laravel.test`, no ficheiro `docker-compose.yml` da aplicação:
+O Sail instala o Node 20 por padrão. Para mudar a versão do Node que é instalada ao construir suas imagens, você pode atualizar a definição do build.args de serviço laravel.test no arquivo docker-compose.yml da sua aplicação:
 
 ```yaml
 build:
@@ -411,7 +411,7 @@ build:
         NODE_VERSION: '18'
 ```
 
- Depois de atualizar o arquivo `docker-compose.yml` do seu aplicativo, você deve reconstruir as imagens do contêiner:
+Depois de atualizar o arquivo docker-compose.yml do seu aplicativo, você deve reconstruir as suas imagens de contêineres:
 
 ```shell
 sail build --no-cache
@@ -422,13 +422,13 @@ sail up
 <a name="sharing-your-site"></a>
 ## Compartilhando seu site
 
- Às vezes você pode precisar compartilhar seu site publicamente para que um colega possa visualizá-lo ou testar integrações de webhook com sua aplicação. Para compartilhar seu site, você poderá usar o comando `share`. Após executar este comando, você receberá uma URL aleatória do tipo `laravel-sail.site` que poderá ser usada para acessar sua aplicação:
+Às vezes você pode precisar compartilhar seu site publicamente para visualizar seu site para um colega ou testar integrações webhook com sua aplicação. Para compartilhar seu site, você pode usar o comando 'share'. Depois de executar este comando, você será emitido uma URL aleatória 'laravel-sail.site' que você pode usar para acessar sua aplicação:
 
 ```shell
 sail share
 ```
 
- Ao partilhar o seu site através do comando "share", deverá configurar os proxies confiáveis da sua aplicação utilizando a metodologia `trustProxies` no arquivo `bootstrap/app.php` da aplicação. Caso contrário, as ferramentas de ajuda na geração de URLs como "url" e "route", não conseguirão determinar o host HTTP correto que deve ser utilizado durante a geração de URL:
+Ao compartilhar seu site via o comando "share", você deve configurar os proxies confiáveis de sua aplicação usando a middleware 'trustProxies' no arquivo bootstrap/app.php de sua aplicação. Caso contrário, os ajudantes de geração de URLs, como 'url' e 'route', não poderão determinar o host HTTP correto a ser utilizado durante a geração da URL:
 
 ```php
     ->withMiddleware(function (Middleware $middleware) {
@@ -438,27 +438,27 @@ sail share
     })
 ```
 
- Se pretender escolher o subdomínio para o seu sítio partilhado, pode preencher a opção `subdomain` quando efetua o comando `share`:
+Se você gostaria de escolher o subdomínio para seu site compartilhado, você pode fornecer a opção 'subdomínio' quando executar o comando 'compartilhar':
 
 ```shell
 sail share --subdomain=my-sail-site
 ```
 
- > [!ATENÇÃO]
- [Exposição](https://github.com/beyondcode/expose), um serviço de tunelamento open-source por
+> Nota!
+> O comando `share` é alimentado por [ Expose](https://github.com/beyondcode/expose), um serviço de túnel de código aberto da [BeyondCode](https://beyondco.de).
 
 <a name="debugging-with-xdebug"></a>
-## Depuração com o Xdebug
+## Depuração com Xdebug
 
- O Docker do Laravel Sail inclui suporte para o [Xdebug](https://xdebug.org/), um depurador popular e poderoso para PHP. Para habilitar o Xdebug, é necessário adicionar algumas variáveis ao arquivo `.env` da aplicação para [configurar o Xdebug](https://xdebug.org/docs/step_debug#mode). Para ativar o Xdebug, você deve definir(s) a(s) modo(s) apropriado(s) antes de iniciar o Sail:
+A configuração do Laravel Sail para Docker inclui suporte ao [Xdebug](https://xdebug.org/), um popular e poderoso depurador para PHP. Para habilitar o Xdebug, você precisará adicionar algumas variáveis no arquivo `.env` da sua aplicação para [configurar o Xdebug](https://xdebug.org/docs/step_debug#mode). Para habilitar o Xdebug você deve definir a(s) configuração(s) apropriada(s) antes de iniciar o Sail:
 
 ```ini
 SAIL_XDEBUG_MODE=develop,debug,coverage
 ```
 
-#### Configuração de endereços IP do host do Linux
+#### Configuração de Host do Linux
 
- Internamente, a variável de ambiente `XDEBUG_CONFIG` é definida como `client_host=host.docker.internal` para que o Xdebug seja configurado corretamente para Mac e Windows (WSL2). Se você estiver usando um computador Linux local, deve ter certeza de que está executando o Docker Engine 17.06.0+ e Compose 1.16.0+. Caso contrário, será necessário definir manualmente essa variável de ambiente como mostrado abaixo.
+Internamente, a variável de ambiente `XDEBUG_CONFIG` é definida como `client_host=host.docker.internal` para que o Xdebug seja configurado corretamente para Mac e Windows (WSL2). Se sua máquina local estiver rodando Linux, você deve garantir que está rodando Docker Engine 17.06.0+ e Compose 1.16.0+. Caso contrário, você precisará definir manualmente esta variável de ambiente conforme mostrado abaixo.
 
 First, you should determine the correct host IP address to add to the environment variable by running the following command. Typically, the `<container-name>` should be the name of the container that serves your application and often ends with `_laravel.test_1`:
 
@@ -466,7 +466,7 @@ First, you should determine the correct host IP address to add to the environmen
 docker inspect -f {{range.NetworkSettings.Networks}}{{.Gateway}}{{end}} <container-name>
 ```
 
- Depois de obter o endereço IP do servidor correto, você deve definir a variável `SAIL_XDEBUG_CONFIG` no arquivo do seu aplicativo `.env`:
+Uma vez que você tenha obtido o endereço de IP do host correto, você deve definir a variável `SAIL_XDEBUG_CONFIG` dentro do arquivo `.env` da sua aplicação:
 
 ```ini
 SAIL_XDEBUG_CONFIG="client_host=<host-ip-address>"
@@ -475,7 +475,7 @@ SAIL_XDEBUG_CONFIG="client_host=<host-ip-address>"
 <a name="xdebug-cli-usage"></a>
 ### Uso da linha de comando do Xdebug
 
- Pode ser utilizado o comando `debug sail` para iniciar uma sessão de depuração quando se executa um comando do Artisan.
+Um comando ` sail debug` pode ser usado para iniciar uma sessão de depuração ao executar um comando Artisan:
 
 ```shell
 # Run an Artisan command without Xdebug...
@@ -486,25 +486,25 @@ sail debug migrate
 ```
 
 <a name="xdebug-browser-usage"></a>
-### Uso do Xdebug em um navegador
+### Uso do navegador de depuração de Xdebug
 
- Para depurar sua aplicação enquanto interage com a aplicação através de um navegador, siga as [instruções fornecidas pelo Xdebug](https://xdebug.org/docs/step_debug#web-application) para iniciar uma sessão do Xdebug no navegador da Web.
+Para depurar sua aplicação enquanto interage com ela através de um navegador da internet, siga as [instruções fornecidas por Xdebug](https://xdebug.org/docs/step_debug#web-application) para iniciar uma sessão do Xdebug a partir do navegador da internet.
 
- Se você estiver usando o PhpStorm, por favor revise a documentação da JetBrains sobre [depuração sem configuração](https://www.jetbrains.com/help/phpstorm/zero-configuration-debugging.html).
+Se estiver usando o PhpStorm, por favor revise a documentação da JetBrains sobre [Depuração sem configuração](https://www.jetbrains.com/help/phpstorm/zero-configuration-debugging.html).
 
- > [AVERIGÜEME!]
- > O Laravel Sail utiliza o comando `artisan serve` para servir a aplicação. A partir da versão 8.53.0, o comando `artisan serve` só aceita as variáveis `XDEBUG_CONFIG` e `XDEBUG_MODE`. As versões anteriores do Laravel (8.52.0 ou inferior) não suportam estas variáveis e por isso, não vão aceitar conexões de depuração.
+> [AVISO]
+> Laravel Sail depende de 'artisan serve' para atender sua aplicação. O comando 'artisan serve' apenas aceita as variáveis 'XDEBUG_CONFIG' e 'XDEBUG_MODE' a partir da versão 8.53.0 do Laravel. As versões mais antigas do Laravel (8.52.0 ou inferior) não suportam essas variáveis e não aceitarão conexões de depuração.
 
 <a name="sail-customization"></a>
 ## Personalização
 
- Como o Sail é apenas um módulo do Docker, você pode personalizar quase tudo nele. Para publicar os próprios Dockerfiles do Sail, você pode executar o comando `sail:publish`:
+Como o "Sail" é apenas um "Docker", você está livre para personalizar tudo sobre ele. Para publicar os arquivos do "Docker" do próprio "Sail", você pode executar o comando `sail:publish`:
 
 ```shell
 sail artisan sail:publish
 ```
 
- Depois de executar este comando, os Dockerfiles e outros arquivos de configuração usados pelo Laravel Sail serão colocados dentro de um diretório "docker" no diretório raiz da sua aplicação. Depois de personalizar a instalação do Sail, você poderá optar por alterar o nome da imagem para o contêiner da aplicação no arquivo `docker-compose.yml` da sua aplicação. Após fazer isso, recompile os contêineres da sua aplicação usando o comando "build". É particularmente importante atribuir um nome exclusivo à imagem da aplicação se você estiver usando Sail para desenvolver várias aplicações Laravel em uma mesma máquina:
+Depois de executar este comando, os Dockerfiles e outros arquivos de configuração usados pelo Laravel Sail serão colocados dentro de um diretório `docker` no diretório raiz da sua aplicação. Depois de personalizar a instalação do Sail, você pode querer mudar o nome da imagem para o contêiner da aplicação no arquivo `docker-compose.yml` na sua aplicação. Depois de fazer isso, reconstrua os contêineres da sua aplicação usando o comando `build`. Atribuir um nome exclusivo à imagem da aplicação é particularmente importante se você estiver usando o Sail para desenvolver várias aplicações Laravel em uma única máquina:
 
 ```shell
 sail build --no-cache
