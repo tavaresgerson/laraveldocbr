@@ -53,12 +53,12 @@
 - ## Segurança
     - [Autenticação](/src/docs/authentication.md) ✅
     - [Autorização](/src/docs/authorization.md) ✅
-    - [Verificação de Email](/src/docs/verification.md)
+    - [Verificação de Email](/src/docs/verification.md) ✅
     - [Encriptação](/src/docs/encryption.md) ✅
-    - [Hashing](/src/docs/hashing.md) ⚙️
-    - [Redefinir Senhas](/src/docs/passwords.md)
+    - [Hashing](/src/docs/hashing.md) ✅
+    - [Redefinir Senhas](/src/docs/passwords.md) ✅
 - ## Base de dados
-    - [Getting Started](/src/docs/database.md)
+    - [Getting Started](/src/docs/database.md) ⚙️
     - [Query Builder](/src/docs/queries.md)
     - [Pagination](/src/docs/pagination.md)
     - [Migrations](/src/docs/migrations.md)
