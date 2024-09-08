@@ -63,9 +63,9 @@
     - [Paginação](/src/docs/pagination.md) ✅
     - [Migrações](/src/docs/migrations.md) ✅
     - [Semear](/src/docs/seeding.md) ✅
-    - [Redis](/src/docs/redis.md) ⚙️
+    - [Redis](/src/docs/redis.md) ✅
 - ## Eloquent ORM
-    - [Getting Started](/src/docs/eloquent.md)
+    - [Getting Started](/src/docs/eloquent.md) ⚙️
     - [Relationships](/src/docs/eloquent-relationships.md)
     - [Collections](/src/docs/eloquent-collections.md)
     - [Mutators / Casts](/src/docs/eloquent-mutators.md)

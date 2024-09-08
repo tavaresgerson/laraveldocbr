@@ -5,58 +5,58 @@
 
 Laravel inclui o Eloquent, um mapeador relacional de objeto (ORM) que torna a interação com sua base de dados agradável. Ao usar o Eloquent, cada tabela do banco de dados tem um "Modelo" correspondente usado para interagir com essa tabela. Além de obter registros da tabela do banco de dados, os modelos Eloquent permitem inserir, atualizar e excluir registros dessa tabela também.
 
-> Nota:
-> Antes de começar, certifique-se de configurar uma conexão de banco de dados no seu arquivo de configuração do `config/database.php`. Para mais informações sobre a configuração do seu banco de dados, consulte [a documentação da configuração do banco de dados](/docs/database#configuration).
+::: info Nota
+Antes de começar, certifique-se de configurar uma conexão de banco de dados no seu arquivo de configuração do `config/database.php`. Para mais informações sobre a configuração do seu banco de dados, consulte [a documentação da configuração do banco de dados](/docs/database#configuration).
 
 #### Laravel Bootcamp
 
-Se você é novo no Laravel, sinta-se à vontade para mergulhar na [bootcamp do Laravel](https://bootcamp.laravel.com). O bootcamp do Laravel o guiará para construir seu primeiro aplicativo Laravel usando Eloquent. É uma ótima maneira de ter um passeio em tudo que o Laravel e o Eloquent têm a oferecer.
+Se você é novo no Laravel, sinta-se à vontade para mergulhar no [bootcamp do Laravel](https://bootcamp.laravel.com). O bootcamp do Laravel o guiará para construir seu primeiro aplicativo Laravel usando Eloquent. É uma ótima maneira de ter um passeio em tudo que o Laravel e o Eloquent têm a oferecer.
 
 <a name="generating-model-classes"></a>
 ## Geração de Classes de Modelo
 
-Para começar, vamos criar um modelo Eloquent. Os modelos geralmente vivem na pasta "app/Models" e estendem a classe "Illuminate\Database\Eloquent\Model". Você pode usar o comando "make:model" do Artisan para gerar um novo modelo:
+Para começar, vamos criar um modelo Eloquent. Os modelos geralmente estão na pasta `app/Models` e estendem a classe `Illuminate\Database\Eloquent\Model`. Você pode usar o comando `make:model` do Artisan para gerar um novo modelo:
 
 ```shell
 php artisan make:model Flight
 ```
 
-Se você gostaria de gerar um [migração de banco de dados]/docs/migrations quando gerar o modelo, você pode usar a opção `--migration` ou `-m`:
+Se você desejar gerar uma [migração de banco de dados](/docs/migrations) quando gerar o modelo, você pode usar a opção `--migration` ou `-m`:
 
 ```shell
 php artisan make:model Flight --migration
 ```
 
-Você pode gerar outros tipos de classe quando criando um modelo como fábricas, semeadores, políticas, controladores e formulários de solicitação. Além disso, essas opções podem ser combinadas para criar várias classes a uma só vez:
+Você pode gerar outros tipos de classe quando estiver criando um modelo como fábricas, *seeds*, políticas, controladores e formulários de solicitação. Além disso, essas opções podem ser combinadas para criar várias classes de uma só vez:
 
 ```shell
-# Generate a model and a FlightFactory class...
+# Gere um modelo e uma classe FlightFactory...
 php artisan make:model Flight --factory
 php artisan make:model Flight -f
 
-# Generate a model and a FlightSeeder class...
+# Gere um modelo e uma classe FlightSeeder...
 php artisan make:model Flight --seed
 php artisan make:model Flight -s
 
-# Generate a model and a FlightController class...
+# Gerar um modelo e uma classe FlightController...
 php artisan make:model Flight --controller
 php artisan make:model Flight -c
 
-# Generate a model, FlightController resource class, and form request classes...
+# Gerar um modelo, classe de recurso FlightController e classes de solicitação de formulário...
 php artisan make:model Flight --controller --resource --requests
 php artisan make:model Flight -crR
 
-# Generate a model and a FlightPolicy class...
+# Gerar um modelo e uma classe FlightPolicy...
 php artisan make:model Flight --policy
 
-# Generate a model and a migration, factory, seeder, and controller...
+# Gerar um modelo e uma migração, fábrica, semeador e controlador...
 php artisan make:model Flight -mfsc
 
-# Shortcut to generate a model, migration, factory, seeder, policy, controller, and form requests...
+# Atalho para gerar um modelo, migração, fábrica, semeador, política, controlador e solicitações de formulário...
 php artisan make:model Flight --all
 php artisan make:model Flight -a
 
-# Generate a pivot model...
+# Gerar um modelo de pivô...
 php artisan make:model Member --pivot
 php artisan make:model Member -p
 ```
@@ -64,16 +64,16 @@ php artisan make:model Member -p
 <a name="inspecting-models"></a>
 #### Inspecionando modelos
 
-Às vezes pode ser difícil determinar todos os atributos e as relações de um modelo apenas olhando para o código. Em vez disso, tente usar o comando Artisan 'model:show', que fornece uma visão geral conveniente dos atributos e das relações do seu modelo:
+Às vezes pode ser difícil determinar todos os atributos e as relações de um modelo apenas olhando para o código. Em vez disso, tente usar o comando Artisan `model:show`, que fornece uma visão geral conveniente dos atributos e das relações do seu modelo:
 
 ```shell
 php artisan model:show Flight
 ```
 
 <a name="eloquent-model-conventions"></a>
-## Convenções Modelo Eloquentes
+## Convenções em Modelos Eloquent
 
-Modelos gerados pelo comando make:model serão colocados no diretório app/Models. Vamos analisar uma classe básica de modelo e discutir algumas das convenções-chave do Eloquent:
+Modelos gerados pelo comando `make:model` serão colocados no diretório `app/Models`. Vamos analisar uma classe básica de modelo e discutir algumas das convenções-chave do Eloquent:
 
 ```php
     <?php
