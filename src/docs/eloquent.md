@@ -7,6 +7,7 @@ Laravel inclui o Eloquent, um mapeador relacional de objeto (ORM) que torna a in
 
 ::: info Nota
 Antes de começar, certifique-se de configurar uma conexão de banco de dados no seu arquivo de configuração do `config/database.php`. Para mais informações sobre a configuração do seu banco de dados, consulte [a documentação da configuração do banco de dados](/docs/database#configuration).
+:::
 
 #### Laravel Bootcamp
 
