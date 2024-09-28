@@ -65,8 +65,8 @@
     - [Semear](/src/docs/seeding.md) ✅
     - [Redis](/src/docs/redis.md) ✅
 - ## Eloquent ORM
-    - [Getting Started](/src/docs/eloquent.md) ⚙️
-    - [Relationships](/src/docs/eloquent-relationships.md)
+    - [Getting Started](/src/docs/eloquent.md) ✅
+    - [Relationships](/src/docs/eloquent-relationships.md) ⚙️
     - [Collections](/src/docs/eloquent-collections.md)
     - [Mutators / Casts](/src/docs/eloquent-mutators.md)
     - [API Resources](/src/docs/eloquent-resources.md)
