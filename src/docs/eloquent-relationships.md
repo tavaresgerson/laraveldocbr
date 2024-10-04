@@ -892,7 +892,7 @@ A seguir, examinemos as definições do modelo necessárias para construir essa 
     class Image extends Model
     {
         /**
-         * Get the parent imageable model (user or post).
+         * Obtenha o modelo de imagem pai (usuário ou postagem).
          */
         public function imageable(): MorphTo
         {
@@ -906,7 +906,7 @@ A seguir, examinemos as definições do modelo necessárias para construir essa 
     class Post extends Model
     {
         /**
-         * Get the post's image.
+         * Obtenha a imagem da postagem.
          */
         public function image(): MorphOne
         {
@@ -920,7 +920,7 @@ A seguir, examinemos as definições do modelo necessárias para construir essa 
     class User extends Model
     {
         /**
-         * Get the user's image.
+         * Obtenha a imagem do usuário.
          */
         public function image(): MorphOne
         {
@@ -932,7 +932,7 @@ A seguir, examinemos as definições do modelo necessárias para construir essa 
 <a name="one-to-one-polymorphic-retrieving-the-relationship"></a>
 #### Restaurando o relacionamento
 
-Uma vez que sua tabela de banco de dados e seus modelos estejam definidos, você pode acessar os relacionamentos através dos modelos. Por exemplo, para recuperar a imagem de um post, nós podemos acessar a propriedade do relacionamento dinâmico "image":
+Uma vez que sua tabela de banco de dados e seus modelos estejam definidos, você pode acessar os relacionamentos através dos modelos. Por exemplo, para recuperar a imagem de um post, nós podemos acessar a propriedade do relacionamento dinâmico `image`:
 
 ```php
     use App\Models\Post;
@@ -942,7 +942,7 @@ Uma vez que sua tabela de banco de dados e seus modelos estejam definidos, você
     $image = $post->image;
 ```
 
-Pode recuperar o elemento pai do modelo polimórfico acedendo ao nome do método que efetua a chamada para `morphTo`. Neste caso, trata-se do método `imageable` no modelo `Image`, por conseguinte, acederemos a esse método como uma propriedade de relação dinâmica:
+Você pode recuperar o elemento pai do modelo polimórfico acedendo ao nome do método que efetua a chamada para `morphTo`. Neste caso, trata-se do método `imageable` no modelo `Image`, por conseguinte, acessaremos esse método como uma propriedade de relação dinâmica:
 
 ```php
     use App\Models\Image;
@@ -952,16 +952,16 @@ Pode recuperar o elemento pai do modelo polimórfico acedendo ao nome do método
     $imageable = $image->imageable;
 ```
 
-O relacionamento `imageable` no modelo `Image` devolverá uma instância de `Post` ou `User`, dependendo do tipo de modelo proprietário da imagem.
+A relação `imageable` no modelo `Image` retornará uma instância `Post` ou `User`, dependendo de qual tipo de modelo possui a imagem.
 
 <a name="morph-one-to-one-key-conventions"></a>
 #### Convenções fundamentais
 
-Se necessário, pode especificar o nome das colunas "id" e "type" utilizadas pelo seu modelo filho polimórfico. Se fizer isso, assegure-se de que passa sempre o nome da relação como primeiro argumento para o método `morphTo`. Normalmente, este valor corresponde ao nome do método, podendo utilizar a constante PHP `__FUNCTION__`:
+Se necessário, você pode especificar o nome das colunas "id" e "type" utilizadas pelo seu modelo filho polimórfico. Se fizer isso, assegure-se de que passa sempre o nome da relação como primeiro argumento para o método `morphTo`. Normalmente, este valor corresponde ao nome do método, podendo utilizar a constante PHP `__FUNCTION__`:
 
 ```php
     /**
-     * Get the model that the image belongs to.
+     * Obtenha o modelo ao qual a imagem pertence.
      */
     public function imageable(): MorphTo
     {
@@ -975,7 +975,7 @@ Se necessário, pode especificar o nome das colunas "id" e "type" utilizadas pel
 <a name="one-to-many-polymorphic-table-structure"></a>
 #### Estrutura de Tabela
 
-Uma relação polimórfica "um para muitos" é semelhante à típica relação "um para muitos"; entretanto, o modelo filho pode pertencer a mais de um tipo de modelo usando uma única associação. Por exemplo, imagine que os usuários do seu aplicativo possam fazer "comentários" em posts e vídeos. Usando relações polimórficas, você pode usar uma tabela de comentários para conter os comentários tanto para posts quanto vídeos. Primeiro, vamos examinar a estrutura da tabela necessária para construir esta relação:
+Uma relação polimórfica "um para muitos" é semelhante à típica relação "um para muitos"; entretanto, o modelo filho pode pertencer a mais de um tipo de modelo usando uma única associação. Por exemplo, imagine que os usuários do seu aplicativo possam fazer "comentários" em posts e vídeos. Usando relações polimórficas, você pode usar uma tabela `comments` para conter os comentários tanto para posts quanto vídeos. Primeiro, vamos examinar a estrutura da tabela necessária para construir esta relação:
 
 ```
     posts
@@ -1011,7 +1011,7 @@ Em seguida, vamos examinar as definições de modelos necessárias para criar es
     class Comment extends Model
     {
         /**
-         * Get the parent commentable model (post or video).
+         * Obtenha o modelo comentável dos pais (postagem ou vídeo).
          */
         public function commentable(): MorphTo
         {
@@ -1025,7 +1025,7 @@ Em seguida, vamos examinar as definições de modelos necessárias para criar es
     class Post extends Model
     {
         /**
-         * Get all of the post's comments.
+         * Receba todos os comentários da postagem.
          */
         public function comments(): MorphMany
         {
@@ -1039,7 +1039,7 @@ Em seguida, vamos examinar as definições de modelos necessárias para criar es
     class Video extends Model
     {
         /**
-         * Get all of the video's comments.
+         * Receba todos os comentários do vídeo.
          */
         public function comments(): MorphMany
         {
@@ -1063,7 +1063,7 @@ Uma vez que sua tabela de banco de dados e seus modelos estejam definidos, você
     }
 ```
 
-Pode também recuperar o pai de um modelo filho polimórfico acedendo ao nome do método que efetua a chamada para `morphTo`. Neste caso, esse método é o `commentable` no modelo `Comment`. Por isso, iremos aceder a esse método como uma propriedade de relação dinâmica para acessar o modelo pai do comentário:
+Você pode também recuperar o pai de um modelo filho polimórfico acedendo ao nome do método que efetua a chamada para `morphTo`. Neste caso, esse método é o `commentable` no modelo `Comment`. Por isso, iremos aceder a esse método como uma propriedade de relação dinâmica para acessar o modelo pai do comentário:
 
 ```php
     use App\Models\Comment;
@@ -1076,13 +1076,13 @@ Pode também recuperar o pai de um modelo filho polimórfico acedendo ao nome do
 O relacionamento `commentable` no modelo de `Comentário` devolverá uma instância do tipo `Post` ou `Vídeo`, dependendo do tipo do modelo que for o progenitor do comentário.
 
 <a name="one-of-many-polymorphic-relations"></a>
-### Um entre muitos (polimórficos).
+### Um de muitos (polimórficos).
 
-Por vezes, um modelo pode ter muitos modelos relacionados e pretende recuperar facilmente o "mais recente" ou o mais antigo modelo relacionado da relação. Por exemplo, um modelo de `User` (utilizador) pode estar associado a vários modelos de `Image` (imagens), mas pretende definir uma maneira conveniente de interagir com a imagem mais recente que o utilizador carregou.
+Por vezes, um modelo pode ter muitos modelos relacionados e você pode pretender recuperar facilmente o "mais recente" ou o mais antigo modelo relacionado da relação. Por exemplo, um modelo de `User` pode estar associado a vários modelos de `Image`, mas você pretende definir uma maneira conveniente de interagir com a imagem mais recente que o utilizador carregou.
 
 ```php
 /**
- * Get the user's most recent image.
+ * Obtenha a imagem mais recente do usuário.
  */
 public function latestImage(): MorphOne
 {
@@ -1094,7 +1094,7 @@ Além disso, você pode definir um método para recuperar o modelo relacionado "
 
 ```php
 /**
- * Get the user's oldest image.
+ * Obtenha a imagem mais antiga do usuário.
  */
 public function oldestImage(): MorphOne
 {
@@ -1102,13 +1102,13 @@ public function oldestImage(): MorphOne
 }
 ```
 
-Por defeito, os métodos `latestOfMany` e `oldestOfMany` recuperam o último ou mais antigo modelo relacionado com base na chave primária do modelo, que deve ser ordenável. No entanto, por vezes pode pretender recuperar um único modelo a partir de uma relação maior utilizando um critério de classificação diferente.
+Por padrão, os métodos `latestOfMany` e `oldestOfMany` recuperam o último ou mais antigo modelo relacionado com base na chave primária do modelo, que deve ser ordenável. No entanto, por vezes você pode pretender recuperar um único modelo a partir de uma relação maior utilizando um critério de classificação diferente.
 
-Por exemplo, usando o método `ofMany`, você pode recuperar a imagem mais "curtida" do usuário. O método `ofMany` aceita a coluna classificável como seu primeiro argumento e qual função de agregação (`min` ou `max`) será aplicada ao consultar o modelo relacionado:
+Por exemplo, usando o método `ofMany`, você pode recuperar a imagem mais "curtida" do usuário. O método `ofMany` aceita a coluna classificável como seu primeiro argumento e funções de agregação (`min` ou `max`) será aplicada ao consultar o modelo relacionado:
 
 ```php
 /**
- * Get the user's most popular image.
+ * Obtenha a imagem mais popular do usuário.
  */
 public function bestImage(): MorphOne
 {
@@ -1116,8 +1116,9 @@ public function bestImage(): MorphOne
 }
 ```
 
-> [!IMPORTANTE]
-> É possível construir relações "uma de muitas" mais complexas. Para obter mais informações, consulte a documentação sobre [tem uma de várias](#advanced-has-one-of-many-relationships).
+::: info NOTA
+É possível construir relações "um para muitos" mais complexas. Para obter mais informações, consulte a documentação sobre [one of many](#advanced-has-one-of-many-relationships).
+:::
 
 <a name="many-to-many-polymorphic-relations"></a>
 ### Muitos para muitos (polimórfico)
@@ -1125,7 +1126,7 @@ public function bestImage(): MorphOne
 <a name="many-to-many-polymorphic-table-structure"></a>
 #### Estrutura da tabela
 
-As relações polimórficas de muitos para muitos são ligeiramente mais complicadas do que as relações "morph one" e "morph many". Por exemplo, um modelo `Post` e um modelo `Video` poderiam partilhar uma relação polimórfica com um modelo `Tag`. Utilizar uma relação polimórfica de muitos para muitos nesta situação permitiria à sua aplicação ter uma única tabela de tags exclusivas que podem estar associadas a posts ou vídeos. Em primeiro lugar, vamos examinar a estrutura da tabela necessária para criar esta relação:
+As relações polimórficas de muitos para muitos são ligeiramente mais complicadas do que as relações "_morph one_" e "_morph many_". Por exemplo, um modelo `Post` e um modelo `Video` poderiam partilhar uma relação polimórfica com um modelo `Tag`. Utilizar uma relação polimórfica de muitos para muitos nesta situação permitiria à sua aplicação ter uma única tabela de tags exclusivas que podem estar associadas a posts ou vídeos. Em primeiro lugar, vamos examinar a estrutura da tabela necessária para criar esta relação:
 
 ```
     posts
@@ -1146,15 +1147,16 @@ As relações polimórficas de muitos para muitos são ligeiramente mais complic
         taggable_type - string
 ```
 
-> [NOTA]
-> Antes de mergulhar em relações múltiplas polimórficas, talvez seja útil ler a documentação sobre as típicas relações [de muitos para muitos](#many-to-many).
+::: info NOTA
+Antes de mergulhar em relações múltiplas polimórficas, talvez seja útil ler a documentação sobre as típicas relações [de muitos para muitos](#many-to-many).
+:::
 
 <a name="many-to-many-polymorphic-model-structure"></a>
 #### Estrutura do modelo
 
-Em seguida, estamos prontos para definir as relações nos modelos. Os modelos de "Post" e "Vídeo" contêm um método "tags" que chama o método "morphToMany" fornecido pela classe base do modelo Eloquent.
+Em seguida, estamos prontos para definir as relações nos modelos. Os modelos de `Post` e `Video` contêm um método `tags` que chama o método `morphToMany` fornecido pela classe base do modelo Eloquent.
 
-O método `morphToMany` aceita o nome do modelo relacionado bem como um “nome de relação”. Com base no nome que atribuímos à nossa tabela intermediária e às chaves contidas, vamos nos referir a relação como “taggable”:
+O método `morphToMany` aceita o nome do modelo relacionado bem como um "nome de relação". Com base no nome que atribuímos à nossa tabela intermediária e às chaves contidas, vamos nos referir a relação como "taggable":
 
 ```php
     <?php
@@ -1167,7 +1169,7 @@ O método `morphToMany` aceita o nome do modelo relacionado bem como um “nome 
     class Post extends Model
     {
         /**
-         * Get all of the tags for the post.
+         * Obtenha todas as tags para a postagem.
          */
         public function tags(): MorphToMany
         {
@@ -1179,9 +1181,9 @@ O método `morphToMany` aceita o nome do modelo relacionado bem como um “nome 
 <a name="many-to-many-polymorphic-defining-the-inverse-of-the-relationship"></a>
 #### Definindo o inverso da relação
 
-Em seguida, no modelo "Tag", você deve definir um método para cada um dos seus possíveis modelos pais. Neste exemplo, nós definiremos os métodos "posts" e "videos". Ambos estes métodos deverão retornar o resultado do método "morphedByMany".
+Em seguida, no modelo `Tag`, você deve definir um método para cada um dos seus possíveis modelos pais. Neste exemplo, nós definiremos os métodos `posts` e `videos`. Ambos estes métodos deverão retornar o resultado do método `morphedByMany`.
 
-O método `morphedByMany` aceita o nome do modelo relacionado e também o "nome do relacionamento". Baseado no nome que atribuímos ao nosso nome da tabela intermediária e as chaves contidas, chamaremos de "taggable" a nossa relação:
+O método `morphedByMany` aceita o nome do modelo relacionado e também o "nome do relacionamento". Baseado no nome que atribuímos ao nosso nome da tabela intermediária e as chaves contidas, chamaremos de "taggable":
 
 ```php
     <?php
@@ -1194,7 +1196,7 @@ O método `morphedByMany` aceita o nome do modelo relacionado e também o "nome 
     class Tag extends Model
     {
         /**
-         * Get all of the posts that are assigned this tag.
+         * Obtenha todas as postagens que receberam esta tag.
          */
         public function posts(): MorphToMany
         {
@@ -1202,7 +1204,7 @@ O método `morphedByMany` aceita o nome do modelo relacionado e também o "nome 
         }
 
         /**
-         * Get all of the videos that are assigned this tag.
+         * Obtenha todos os vídeos que receberam esta tag.
          */
         public function videos(): MorphToMany
         {
@@ -1259,7 +1261,7 @@ Por exemplo, ao invés de usar os nomes do modelo como o “tipo”, podemos usa
 
 Você pode chamar o método `enforceMorphMap` no método `boot` de sua classe `App\Providers\AppServiceProvider` ou criar um provedor de serviços separado, se preferir.
 
-Pode determinar o alias de morfologia de um modelo específico em tempo de execução utilizando o método `getMorphClass` do modelo. Por outro lado, pode determinar o nome da classe totalmente qualificada associado a um alias de morfologia usando o método `Relation::getMorphedModel`:
+Você pode determinar o alias de morfologia de um modelo específico em tempo de execução utilizando o método `getMorphClass` do modelo. Por outro lado, você pode determinar o nome da classe totalmente qualificada associado a um alias de morfologia usando o método `Relation::getMorphedModel`:
 
 ```php
     use Illuminate\Database\Eloquent\Relations\Relation;
@@ -1269,8 +1271,9 @@ Pode determinar o alias de morfologia de um modelo específico em tempo de execu
     $class = Relation::getMorphedModel($alias);
 ```
 
-> [!AVISO]
-> Ao adicionar um "mapa de morfologia" ao seu pedido existente, cada valor da coluna do tipo `*_type` morfologável no banco de dados que ainda contenha uma classe totalmente qualificada precisará ser convertido para o respectivo nome "map".
+::: warning ATENÇÃO
+Ao adicionar um "mapa de morfologia" ao seu pedido existente, cada valor da coluna do tipo `*_type` _morphable_ no banco de dados que ainda contenha uma classe totalmente qualificada precisará ser convertido para o respectivo nome "_map_".
+:::
 
 <a name="dynamic-relationships"></a>
 ### Relações dinâmicas
@@ -1288,8 +1291,9 @@ O método `resolveRelationUsing` aceita o nome do relacionamento desejado como s
     });
 ```
 
-> [!ADVERTÊNCIA]
-> Ao definir relações dinâmicas, forneça sempre argumentos explícitos de nomes de chaves para os métodos de relação do Eloquent.
+::: warning ATENÇÃO
+Ao definir relações dinâmicas, forneça sempre argumentos explícitos de nomes de chaves para os métodos de relação do Eloquent.
+:::
 
 <a name="querying-relations"></a>
 ## Consulta de relações
@@ -1309,7 +1313,7 @@ Por exemplo, imagine um aplicativo de blog no qual um modelo `User` tenha muitos
     class User extends Model
     {
         /**
-         * Get all of the posts for the user.
+         * Obtenha todas as postagens do usuário.
          */
         public function posts(): HasMany
         {
@@ -1318,7 +1322,7 @@ Por exemplo, imagine um aplicativo de blog no qual um modelo `User` tenha muitos
     }
 ```
 
-Pode consultar a relação de `posts` e adicionar restrições adicionais à relação, desta forma:
+Você pode consultar a relação de `posts` e adicionar restrições adicionais à relação, desta forma:
 
 ```php
     use App\Models\User;
@@ -1350,7 +1354,7 @@ from posts
 where user_id = ? and active = 1 or votes >= 100
 ```
 
-Na maioria dos casos, deve utilizar [grupos lógicos](/docs/queries#logical-grouping) para agrupar as verificações condicionais entre parênteses:
+Na maioria dos casos, deve-se utilizar [grupos lógicos](/docs/queries#logical-grouping) para agrupar as verificações condicionais entre parênteses:
 
 ```php
     use Illuminate\Database\Eloquent\Builder;
@@ -1372,7 +1376,7 @@ where user_id = ? and (active = 1 or votes >= 100)
 ```
 
 <a name="relationship-methods-vs-dynamic-properties"></a>
-### Métodos de relacionamento versus propriedades dinâmicas
+### Métodos de relacionamento vs. propriedades dinâmicas
 
 Se você não precisar adicionar restrições adicionais a uma consulta de relacionamento Eloquent, poderá acessar o relacionamento como se fosse uma propriedade. Por exemplo, continuando a usar nossos modelos de exemplo `User` e `Post`, podemos acessar todos os posts de um usuário da seguinte forma:
 
@@ -1391,26 +1395,26 @@ As propriedades de relacionamento dinâmicas efetuam o "carregamento preguiçoso
 <a name="querying-relationship-existence"></a>
 ### Consulta de existência do relacionamento
 
-Ao recuperar registos de modelos, poderá pretender limitar os resultados com base na existência de uma relação. Por exemplo, imagine que deseja recuperar todos os posts de blogue que tenham pelo menos um comentário. Para tal, pode passar o nome da relação para os métodos `has` e `orHas`:
+Ao recuperar registos de modelos, você poderá pretender limitar os resultados com base na existência de uma relação. Por exemplo, imagine que você deseja recuperar todos os posts do blog que tenham pelo menos um comentário. Para tal, você pode passar o nome da relação para os métodos `has` e `orHas`:
 
 ```php
     use App\Models\Post;
 
-    // Retrieve all posts that have at least one comment...
+    // Recuperar todas as postagens que tenham pelo menos um comentário...
     $posts = Post::has('comments')->get();
 ```
 
 Também é possível especificar um operador e um valor de contagem para personalizar ainda mais a consulta.
 
 ```php
-    // Retrieve all posts that have three or more comments...
+    // Recuperar todas as postagens que tenham três ou mais comentários...
     $posts = Post::has('comments', '>=', 3)->get();
 ```
 
-As declarações `has` aninhadas podem ser construídas utilizando a notação de "ponto". Por exemplo, você pode recuperar todos os posts que tenham pelo menos um comentário que tenha pelo menos uma imagem:
+As declarações `has` aninhadas podem ser construídas utilizando a notação de "ponto". Por exemplo, você pode recuperar todos os posts que tenham pelo menos um comentário e que tenha pelo menos uma imagem:
 
 ```php
-    // Retrieve posts that have at least one comment with images...
+    // Recuperar postagens que tenham pelo menos um comentário com imagens...
     $posts = Post::has('comments.images')->get();
 ```
 
@@ -1419,24 +1423,25 @@ Se você precisar de ainda mais poder, pode usar os métodos `whereHas` e `orWhe
 ```php
     use Illuminate\Database\Eloquent\Builder;
 
-    // Retrieve posts with at least one comment containing words like code%...
+    // Recupere postagens com pelo menos um comentário contendo palavras como code%...
     $posts = Post::whereHas('comments', function (Builder $query) {
         $query->where('content', 'like', 'code%');
     })->get();
 
-    // Retrieve posts with at least ten comments containing words like code%...
+    // Recupere postagens com pelo menos dez comentários contendo palavras como code%...
     $posts = Post::whereHas('comments', function (Builder $query) {
         $query->where('content', 'like', 'code%');
     }, '>=', 10)->get();
 ```
 
-> [!AVISO]
-> Atualmente, o Eloquent não oferece suporte à consulta de relacionamentos entre bancos de dados. As relações precisam estar na mesma base de dados.
+::: warning ATENÇÃO
+Atualmente, o Eloquent não oferece suporte à consulta de relacionamentos entre bancos de dados. As relações precisam estar na mesma base de dados.
+:::
 
 <a name="inline-relationship-existence-queries"></a>
-#### Consultas de existência de relacionamento em linha
+#### Consultas de existência de relacionamento *inline*
 
-Se pretender obter uma relação através de uma condição simples e única ligada à consulta da relação, pode optar por utilizar os métodos `whereRelation`, `orWhereRelation`, `whereMorphRelation` e `orWhereMorphRelation`. Por exemplo, podemos obter todos os artigos que têm comentários não aprovados:
+Se você pretender obter uma relação através de uma condição simples e única ligada à consulta da relação, poderá optar por utilizar os métodos `whereRelation`, `orWhereRelation`, `whereMorphRelation` e `orWhereMorphRelation`. Por exemplo, podemos obter todos os artigos que têm comentários não aprovados:
 
 ```php
     use App\Models\Post;
@@ -1454,7 +1459,7 @@ Claro que, assim como os chamados ao método `where` do construtor de consultas,
 <a name="querying-relationship-absence"></a>
 ### Consultando a ausência de relacionamento
 
-Quando você recupera registros de modelo, pode ser útil limitar os resultados com base na ausência de um relacionamento. Por exemplo, suponha que você deseja recuperar todas as postagens do blog que **não** tenham nenhum comentário. Para fazer isso, você pode passar o nome do relacionamento para os métodos `doesntHave` e `orDoesntHave`.
+Quando você recupera registros do modelo, pode ser útil limitar os resultados com base na ausência de um relacionamento. Por exemplo, suponha que você deseja recuperar todas as postagens do blog que **não** tenham comentário. Para fazer isso, você pode passar o nome do relacionamento para os métodos `doesntHave` e `orDoesntHave`.
 
 ```php
     use App\Models\Post;
@@ -1472,7 +1477,7 @@ Se você precisar de ainda mais potência, poderá utilizar os métodos `whereDo
     })->get();
 ```
 
-Pode usar a notação "ponto" para executar uma consulta numa relação aninhada. Por exemplo, a seguinte consulta recupera todas as publicações sem comentários; contudo, incluirá as publicações que têm comentários de autores não banidos:
+Pode-se usar a notação de "ponto" para executar uma consulta numa relação aninhada. Por exemplo, a seguinte consulta recupera todas as publicações sem comentários; contudo, incluirá as publicações que têm comentários de autores não banidos:
 
 ```php
     use Illuminate\Database\Eloquent\Builder;
@@ -1483,9 +1488,9 @@ Pode usar a notação "ponto" para executar uma consulta numa relação aninhada
 ```
 
 <a name="querying-morph-to-relationships"></a>
-### Consultando Morfologia para Relações
+### Consulta Morfológica para Relações
 
-Para consultar a existência de relações "morph to", você pode usar os métodos `whereHasMorph` e `whereDoesntHaveMorph`. Estes métodos aceitam o nome do relacionamento como primeiro argumento. Em seguida, os métodos aceitam os nomes dos modelos associados que você deseja incluir na consulta. Por último, você pode fornecer um *closure* que personaliza a consulta de relação:
+Para consultar a existência de relações "*morph to*", você pode usar os métodos `whereHasMorph` e `whereDoesntHaveMorph`. Estes métodos aceitam o nome do relacionamento como primeiro argumento. Em seguida, os métodos aceitam os nomes dos modelos associados que você deseja incluir na consulta. Por último, você pode fornecer um *closure* que personaliza a consulta de relação:
 
 ```php
     use App\Models\Comment;
@@ -1493,7 +1498,7 @@ Para consultar a existência de relações "morph to", você pode usar os métod
     use App\Models\Video;
     use Illuminate\Database\Eloquent\Builder;
 
-    // Retrieve comments associated to posts or videos with a title like code%...
+    // Recupere comentários associados a postagens ou vídeos com um título como code%...
     $comments = Comment::whereHasMorph(
         'commentable',
         [Post::class, Video::class],
@@ -1502,7 +1507,7 @@ Para consultar a existência de relações "morph to", você pode usar os métod
         }
     )->get();
 
-    // Retrieve comments associated to posts with a title not like code%...
+    // Recuperar comentários associados a postagens com um título diferente de code%...
     $comments = Comment::whereDoesntHaveMorph(
         'commentable',
         Post::class,
@@ -1512,7 +1517,7 @@ Para consultar a existência de relações "morph to", você pode usar os métod
     )->get();
 ```
 
-Ocasionalmente, poderá ser necessário adicionar restrições de pesquisa baseadas no "tipo" do modelo polimórfico relacionado. O fecho passado ao método `whereHasMorph` pode receber um valor `$type` como segundo argumento. Este argumento permite analisar o "tipo" da consulta que está a ser criada:
+Ocasionalmente, poderá ser necessário adicionar restrições de pesquisa baseadas no "tipo" do modelo polimórfico relacionado. O _closure_ passado ao método `whereHasMorph` pode receber um valor `$type` como segundo argumento. Este argumento permite analisar o "tipo" da consulta que está a ser criada:
 
 ```php
     use Illuminate\Database\Eloquent\Builder;
@@ -1531,7 +1536,7 @@ Ocasionalmente, poderá ser necessário adicionar restrições de pesquisa basea
 <a name="querying-all-morph-to-related-models"></a>
 #### Consultando todos os modelos relacionados
 
-Em vez de passar um array com os possíveis modelos polimórficos, você pode utilizar `*` como um valor wildcard (campo selvagem). Isso instruirá o Laravel a recuperar todos os tipos polimórficos disponíveis no banco de dados. Para executar essa operação, o Laravel fará uma consulta adicional:
+Em vez de passar um _array_ com os possíveis modelos polimórficos, você pode utilizar `*` como um valor wildcard. Isso instruirá o Laravel a recuperar todos os tipos polimórficos disponíveis no banco de dados. Para executar essa operação, o Laravel fará uma consulta adicional:
 
 ```php
     use Illuminate\Database\Eloquent\Builder;
@@ -1547,7 +1552,7 @@ Em vez de passar um array com os possíveis modelos polimórficos, você pode ut
 <a name="counting-related-models"></a>
 ### Contagem de Modelos Relacionados
 
-Por vezes pode ser necessário contar o número de modelos relacionados para uma determinada relação sem efetivamente carregar os modelos. Para tal, pode utilizar o método `withCount`. O método `withCount` colocará um atributo `{relation}_count` nos modelos resultantes:
+Por vezes pode ser necessário contar o número de modelos relacionados para uma determinada relação sem efetivamente carregar os modelos. Para tal, pode-se utilizar o método `withCount`. O método `withCount` colocará um atributo `{relation}_count` nos modelos resultantes:
 
 ```php
     use App\Models\Post;
@@ -1559,7 +1564,7 @@ Por vezes pode ser necessário contar o número de modelos relacionados para uma
     }
 ```
 
-Ao passar um array para o método `withCount`, você pode adicionar os "contagem" de múltiplas relações, bem como adicionar restrições adicionais às consultas:
+Ao passar um *array* para o método `withCount`, você pode adicionar as "contagem" de múltiplas relações, bem como adicionar restrições adicionais às consultas:
 
 ```php
     use Illuminate\Database\Eloquent\Builder;
@@ -1589,9 +1594,9 @@ Você também pode usar um alias para o resultado da contagem de relacionamentos
 ```
 
 <a name="deferred-count-loading"></a>
-#### Carregamento em espera do número
+#### Carregamento de contagem adiada
 
-Utilizando o método "loadCount", você pode carregar uma contagem de relacionamento após o modelo pai já ter sido recuperado:
+Utilizando o método `loadCount`, você pode carregar uma contagem de relacionamento após o modelo pai já ter sido recuperado:
 
 ```php
     $book = Book::first();
@@ -1599,7 +1604,7 @@ Utilizando o método "loadCount", você pode carregar uma contagem de relacionam
     $book->loadCount('genres');
 ```
 
-Se você precisar definir restrições adicionais para a consulta na contagem, poderá passar um array ordenado pelas relações que deseja contar. Os valores do array devem ser fechamentos que recebem a instância do criador da consulta:
+Se você precisar definir restrições adicionais para a consulta na contagem, poderá passar um *array* ordenado pelas relações que deseja contar. Os valores do *array* devem ser _closures_ que recebem a instância do criador da consulta:
 
 ```php
     $book->loadCount(['reviews' => function (Builder $query) {
@@ -1608,7 +1613,7 @@ Se você precisar definir restrições adicionais para a consulta na contagem, p
 ```
 
 <a name="relationship-counting-and-custom-select-statements"></a>
-#### Contagem de relacionamento e declarações de seleção personalizadas
+#### Contagem de relacionamento e seleção personalizadas
 
 Se você estiver combinando o `withCount` com uma declaração `select`, certifique-se de chamar o `withCount` após o método `select`:
 
@@ -1619,7 +1624,7 @@ Se você estiver combinando o `withCount` com uma declaração `select`, certifi
 ```
 
 <a name="other-aggregate-functions"></a>
-### Outras funções agregadas
+### Outras funções agregadoras
 
 Para além do método `withCount`, o Eloquent fornece os métodos `withMin`, `withMax`, `withAvg`, `withSum` e `withExists`. Estes métodos irão colocar um atributo `{relation}_{function}_{column}` nos respetivos modelos:
 
@@ -1651,7 +1656,7 @@ Tal como o método `loadCount`, também estão disponíveis versões diferidas d
     $post->loadSum('comments', 'votes');
 ```
 
-Se combinar estes métodos de agregação com uma declaração `select`, deve garantir que chama os métodos de agregação após o método `select`.
+Se combinar estes métodos de agregação com uma declaração `select`, você deve garantir que chama os métodos de agregação após o método `select`.
 
 ```php
     $posts = Post::select(['title', 'body'])
@@ -1662,9 +1667,9 @@ Se combinar estes métodos de agregação com uma declaração `select`, deve ga
 <a name="counting-related-models-on-morph-to-relationships"></a>
 ### Contando modelos relacionados em Morph para relações
 
-Se você quiser carregar antecipadamente um relacionamento "morph to", bem como as contagens de modelos relacionados para as várias entidades que podem ser retornadas por esse relacionamento, poderá utilizar o método `with` em conjunto com o método `morphWithCount` do relacionamento `morphTo`.
+Se você quiser carregar antecipadamente um relacionamento "*morph to*", bem como as contagens de modelos relacionados para as várias entidades que podem ser retornadas por esse relacionamento, poderá utilizar o método `with` em conjunto com o método `morphWithCount` do relacionamento `morphTo`.
 
-Neste exemplo, assumimos que os modelos de Foto e Post podem criar modelos de FeedDeAtividades. Assumiremos também que o modelo de FeedDeAtividades define uma relação "morph to" chamada parentable que nos permite recuperar o modelo pai, Foto ou Post, para determinado exemplo do FeedDeAtividades. Além disso, assumimos que os modelos Foto "têm muitas" Tags e os modelos Post "têm muitos" Comentários.
+Neste exemplo, assumimos que os modelos de `Photo` e `Post` podem criar modelos de `ActivityFeed`. Assumiremos também que o modelo de `ActivityFeed` define uma relação "*morph to*" chamada `parentable` que nos permite recuperar o modelo pai, `Photo` ou `Post`, para determinado exemplo do `ActivityFeed`. Além disso, assumimos que os modelos `Photo` "têm muitas" `Tag`s e os modelos `Post` "têm muitos" `Comments`.
 
 Agora, vamos imaginar que queremos recuperar instâncias do `ActivityFeed` e carregar previamente os modelos `parentable` dos pais para cada instância de `ActivityFeed`. Além disso, queremos recuperar o número de tags associadas a cada foto parental e o número de comentários associados a cada post parental:
 
@@ -1683,7 +1688,7 @@ Agora, vamos imaginar que queremos recuperar instâncias do `ActivityFeed` e car
 <a name="morph-to-deferred-count-loading"></a>
 #### Carregamento de contagem diferido
 
-Vamos supor que já recuperámos um conjunto de modelos `ActivityFeed` e agora gostaríamos de carregar as contagens de relacionamentos aninhados para os vários modelos `parentable` associados aos feeds de atividade. Pode utilizar o método `loadMorphCount` para executar esta operação:
+Vamos supor que já recuperámos um conjunto de modelos `ActivityFeed` e agora gostaríamos de carregar as contagens de relacionamentos aninhados para os vários modelos `parentable` associados aos feeds de atividade. Você pode utilizar o método `loadMorphCount` para executar esta operação:
 
 ```php
     $activities = ActivityFeed::with('parentable')->get();
@@ -1695,9 +1700,9 @@ Vamos supor que já recuperámos um conjunto de modelos `ActivityFeed` e agora g
 ```
 
 <a name="eager-loading"></a>
-## Carregamento ávido
+## Carregamento prévio
 
-Ao aceder às relações Eloquent como propriedades, os modelos relacionados são "carregados por demanda". Isto significa que os dados da relação não são carregados efetivamente até que aceda pela primeira vez a propriedade. No entanto, o Eloquent pode carregar as relações "por demanda" aquando do pedido ao modelo pai. O carregamento por demanda alivia o problema de consultas N+1. Para ilustrar o problema de consultas N+1, considere um modelo `Book` que pertence a um modelo `Author`:
+Ao aceder às relações Eloquent como propriedades, os modelos relacionados são "carregados por demanda". Isto significa que os dados da relação não são carregados efetivamente até que acesse pela primeira vez a propriedade. No entanto, o Eloquent pode carregar as relações "por demanda" quando for solicitado ao modelo pai. O carregamento por demanda alivia o problema de consultas N+1. Para ilustrar o problema de consultas N+1, considere um modelo `Book` que pertence a um modelo `Author`:
 
 ```php
     <?php
@@ -1710,7 +1715,7 @@ Ao aceder às relações Eloquent como propriedades, os modelos relacionados sã
     class Book extends Model
     {
         /**
-         * Get the author that wrote the book.
+         * Encontre o autor que escreveu o livro.
          */
         public function author(): BelongsTo
         {
@@ -1733,7 +1738,7 @@ Agora, vamos recuperar todos os livros e seus autores:
 
 Este loop irá executar uma consulta para recuperar todos os livros na tabela de base de dados e depois outra consulta para cada livro, para recuperar o autor do mesmo. Assim, se existirem 25 livros, o código acima executaria 26 consultas: uma para o livro original e mais 25 para recuperar o autor de cada livro.
 
-Felizmente, podemos usar o carregamento ansioso para reduzir esta operação para apenas duas consultas. Ao construir uma consulta, você pode especificar quais relacionamentos devem ser carregados por antecipação utilizando o método `with`:
+Felizmente, podemos usar o carregamento ansioso para reduzir esta operação para apenas duas consultas. Ao construir uma consulta, você pode especificar quais relacionamentos devem ser carregados antecipadamente utilizando o método `with`:
 
 ```php
     $books = Book::with('author')->get();
@@ -1763,13 +1768,13 @@ Por vezes pode ser necessário carregar várias relações diferentes de imediat
 <a name="nested-eager-loading"></a>
 #### Carregamento antecipado aninhado
 
-Para carregar ansiosamente os relacionamentos de um relacionamento, você pode usar a sintaxe "ponto". Por exemplo, vamos carregar ansiosamente todos os autores do livro e todos os contatos pessoais do autor:
+Para carregar previamente os registros de um relacionamento, você pode usar a sintaxe de "ponto". Por exemplo, vamos carregar antecipadamente todos os autores do livro e todos os contatos pessoais do autor:
 
 ```php
     $books = Book::with('author.contacts')->get();
 ```
 
-Como alternativa, você pode especificar relações carregadas ansiosas aninhadas fornecendo um array aninhado ao método `with`, o que pode ser conveniente quando várias relações aninhadas forem carregadas ansiosamente:
+Como alternativa, você pode especificar relações carregadas previamente de forma aninhadas fornecendo um *array* aninhado ao método `with`, o que pode ser conveniente quando várias relações aninhadas forem carregadas ansiosamente:
 
 ```php
     $books = Book::with([
@@ -1783,7 +1788,7 @@ Como alternativa, você pode especificar relações carregadas ansiosas aninhada
 <a name="nested-eager-loading-morphto-relationships"></a>
 #### Carregamento Antecipado de Relações Embutidas `morphTo`
 
-Se você quiser carregar avidamente um relacionamento `morphTo`, bem como os relacionamentos aninhados nas várias entidades que podem ser retornadas por esse relacionamento, é possível usar o método `with` em combinação com o método `morphWith` do relacionamento `morphTo`. Para ajudar a ilustrar esse método, considere o seguinte modelo:
+Se você quiser carregar previamente um relacionamento `morphTo`, bem como os relacionamentos aninhados nas várias entidades que podem ser retornadas por esse relacionamento, é possível usar o método `with` em combinação com o método `morphWith` do relacionamento `morphTo`. Para ajudar a ilustrar esse método, considere o seguinte modelo:
 
 ```php
     <?php
@@ -1794,7 +1799,7 @@ Se você quiser carregar avidamente um relacionamento `morphTo`, bem como os rel
     class ActivityFeed extends Model
     {
         /**
-         * Get the parent of the activity feed record.
+         * Obtenha o pai do registro do feed de atividades.
          */
         public function parentable(): MorphTo
         {
@@ -1803,7 +1808,7 @@ Se você quiser carregar avidamente um relacionamento `morphTo`, bem como os rel
     }
 ```
 
-Neste exemplo, vamos supor que os modelos `Evento`, `Foto` e `Publicação` podem criar modelos `Feed de Atividades`. Além disso, vamos assumir que os modelos `Evento` pertencem a um modelo `Calendário`, os modelos `Foto` estão associados com modelos `Tag` e os modelos `Publicação` pertencem a um modelo `Autor`.
+Neste exemplo, vamos supor que os modelos `Event`, `Photo` e `Post` podem criar modelos `ActivityFeed`. Além disso, vamos assumir que os modelos `Event` pertencem a um modelo `Calendar`, os modelos `Photo` estão associados com modelos `Tag` e os modelos `POst` pertencem a um modelo `Author`.
 
 Usando essas definições e relações de modelo, podemos recuperar instâncias do modelo `ActivityFeed` e carregá-las instantaneamente em todos os modelos `parentable` e suas respectivas relações aninhadas:
 
@@ -1821,7 +1826,7 @@ Usando essas definições e relações de modelo, podemos recuperar instâncias 
 ```
 
 <a name="eager-loading-specific-columns"></a>
-#### Carregamento ansioso de colunas específicas
+#### Carregamento prévio de colunas específicas
 
 Pode ser que você nem sempre precise de todas as colunas nas relações recuperadas. Por esse motivo, o Eloquent permite especificar quais colunas da relação deseja recuperar:
 
@@ -1829,13 +1834,14 @@ Pode ser que você nem sempre precise de todas as colunas nas relações recuper
     $books = Book::with('author:id,name,book_id')->get();
 ```
 
-> [! ATENÇÃO]
-> Quando utiliza esta funcionalidade, deve incluir sempre a coluna "id" e quaisquer colunas de chaves estrangeiras relevantes na lista de colunas que pretende recuperar.
+::: warning ATENÇÃO
+Quando utilizar esta funcionalidade, vocÊ deve incluir sempre a coluna `id` e quaisquer colunas de chaves estrangeiras relevantes na lista de colunas que pretende recuperar.
+:::
 
 <a name="eager-loading-by-default"></a>
-#### Carregamento ávido por omissão
+#### Carregamento prévio por padrão
 
-Por vezes, pode pretender sempre carregar algumas relações quando recupera um modelo. Para o efeito, poderá definir uma propriedade `$with` no modelo:
+Às vezes, você pode querer sempre carregar alguns relacionamentos ao recuperar um modelo. Para fazer isso, você pode definir uma propriedade `$with` no modelo:
 
 ```php
     <?php
@@ -1848,14 +1854,14 @@ Por vezes, pode pretender sempre carregar algumas relações quando recupera um 
     class Book extends Model
     {
         /**
-         * The relationships that should always be loaded.
+         * Os relacionamentos que sempre devem ser carregados.
          *
          * @var array
          */
         protected $with = ['author'];
 
         /**
-         * Get the author that wrote the book.
+         * Encontre o autor que escreveu o livro.
          */
         public function author(): BelongsTo
         {
@@ -1863,7 +1869,7 @@ Por vezes, pode pretender sempre carregar algumas relações quando recupera um 
         }
 
         /**
-         * Get the genre of the book.
+         * Obtenha o gênero do livro.
          */
         public function genre(): BelongsTo
         {
@@ -1885,9 +1891,9 @@ Se você quiser substituir todos os itens dentro da propriedade `$with` para uma
 ```
 
 <a name="constraining-eager-loads"></a>
-### Constrangendo as Cargas Impacientes
+### Restringindo os carregamento prévios
 
-Por vezes, pode pretender carregar um relacionamento de forma eficiente, mas também especificar condições de consulta adicionais para a consulta de carregamento eficiente. Pode executar esta operação ao passar um array de relações ao método `with`, em que a chave do array é o nome da relação e o valor do array é um fecho que acrescenta restrições adicionais à consulta de carregamento eficiente:
+Por vezes, você pode pretender carregar um relacionamento de forma eficiente, mas também especificar condições de consulta adicionais para a consulta de carregamento prévio. Você pode executar esta operação ao passar um *array* de relações ao método `with`, em que a chave do *array* é o nome da relação e o valor do *array* é um _closure_ que acrescenta restrições adicionais à consulta de carregamento prévio:
 
 ```php
     use App\Models\User;
@@ -1898,7 +1904,7 @@ Por vezes, pode pretender carregar um relacionamento de forma eficiente, mas tam
     }])->get();
 ```
 
-Neste exemplo, o Eloquent somente fará um carregamento avidamente dos posts onde a coluna `title` (título em português) do post contém a palavra "código". Você pode chamar outros métodos [gerador de consultas](/docs/queries) para personalizar ainda mais a operação de carregamento avidamente:
+Neste exemplo, o Eloquent somente fará um carregamento prévio dos posts onde a coluna `title` do post contém a palavra `code`. Você pode chamar outros métodos [gerador de consultas](/docs/queries) para personalizar ainda mais a operação de carregamento:
 
 ```php
     $users = User::with(['posts' => function (Builder $query) {
@@ -1907,9 +1913,9 @@ Neste exemplo, o Eloquent somente fará um carregamento avidamente dos posts ond
 ```
 
 <a name="constraining-eager-loading-of-morph-to-relationships"></a>
-#### Restringindo a carga ansiosa de relacionamentos `morphTo`
+#### Restringindo o carregamento prévio de relacionamentos `morphTo`
 
-Se você estiver ansioso para carregar um relacionamento de "morphTo", o Eloquent fará várias consultas para recuperar cada tipo de modelo relacionado. Você pode adicionar restrições extras a cada uma dessas consultas usando o método constrain da relação de "MorphTo":
+Se você estiver ansioso para carregar um relacionamento de "*morphTo*", o Eloquent fará várias consultas para recuperar cada tipo de modelo relacionado. Você pode adicionar restrições extras a cada uma dessas consultas usando o método `constrain` da relação de `MorphTo`:
 
 ```php
     use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -1929,9 +1935,9 @@ Se você estiver ansioso para carregar um relacionamento de "morphTo", o Eloquen
 Neste exemplo, o Eloquent somente fará o carregamento antecipado de posts que não foram ocultados e de vídeos cujo valor de `type` é "educacional".
 
 <a name="constraining-eager-loads-with-relationship-existence"></a>
-#### Restringindo carregamentos ávidos com a existência de relacionamento
+#### Restringindo carregamentos prévio com a existência de relacionamento
 
-Por vezes, pode ser necessário verificar a existência de um relacionamento e simultaneamente carregá-lo com base nas mesmas condições. Por exemplo, pode pretender apenas recuperar modelos `User` que tenham modelos filhos `Post` que correspondam a uma determinada condição de pesquisa e ao mesmo tempo carregar os posts correspondentes na operação inicial. Pode realizar isto utilizando o método `withWhereHas`.
+Por vezes, pode ser necessário verificar a existência de um relacionamento e simultaneamente carregá-lo com base nas mesmas condições. Por exemplo, você pode pretender apenas recuperar modelos `User` que tenham modelos filhos `Post` que correspondam a uma determinada condição de pesquisa e ao mesmo tempo carregar os posts correspondentes na operação inicial. Você pode realizar isto utilizando o método `withWhereHas`.
 
 ```php
     use App\Models\User;
@@ -1942,9 +1948,9 @@ Por vezes, pode ser necessário verificar a existência de um relacionamento e s
 ```
 
 <a name="lazy-eager-loading"></a>
-### Carregamento preguiçoso e ansioso
+### Carregamento preguiçoso e prévio
 
-Algumas vezes pode ser necessário carregar uma relação de forma avida após o modelo pai já ter sido recuperado. Por exemplo, isto pode ser útil se você precisar decidir dinamicamente se deve carregar os modelos relacionados:
+Algumas vezes pode ser necessário carregar uma relação de forma antecipada após o modelo pai já ter sido recuperado. Por exemplo, isto pode ser útil se você precisar decidir dinamicamente se deve carregar os modelos relacionados:
 
 ```php
     use App\Models\Book;
@@ -1956,7 +1962,7 @@ Algumas vezes pode ser necessário carregar uma relação de forma avida após o
     }
 ```
 
-Se você precisar definir restrições de consulta adicionais para a consulta de carregamento antecipado, pode passar um array contendo as chaves das relações que deseja carregar. Os valores do array devem ser instâncias de closure que recebam a instância da consulta:
+Se você precisar definir restrições de consulta adicionais para a consulta de carregamento antecipado, pode-se passar um *array* contendo as chaves das relações que deseja carregar. Os valores do *array* devem ser instâncias de *closure* que recebam a instância da consulta:
 
 ```php
     $author->load(['books' => function (Builder $query) {
@@ -1971,11 +1977,11 @@ Para carregar um relacionamento somente quando ele ainda não tiver sido carrega
 ```
 
 <a name="nested-lazy-eager-loading-morphto"></a>
-#### Carregamento preguiçoso e otimizado aninhado e o `morphTo`
+#### Aninhamento de carregamento preguiçoso e prévio `morphTo`
 
-Se você quiser carregar ansiosamente um relacionamento `morphTo`, bem como os relacionamentos aninhados nas várias entidades que podem ser retornadas por esse relacionamento, você pode usar o método `loadMorph`.
+Se você quiser carregar previamente um relacionamento `morphTo`, bem como os relacionamentos aninhados nas várias entidades que podem ser retornadas por esse relacionamento, você pode usar o método `loadMorph`.
 
-Este método aceita o nome do relacionamento `morphTo` como primeiro argumento e um array de pares modelo/relação como segundo argumento. Para ajudar na ilustração deste método, vamos considerar o seguinte modelo:
+Este método aceita o nome do relacionamento `morphTo` como primeiro argumento e um *array* de pares modelo/relação como segundo argumento. Para ajudar na ilustração deste método, vamos considerar o seguinte modelo:
 
 ```php
     <?php
@@ -1986,7 +1992,7 @@ Este método aceita o nome do relacionamento `morphTo` como primeiro argumento e
     class ActivityFeed extends Model
     {
         /**
-         * Get the parent of the activity feed record.
+         * Obtenha o pai do registro do feed de atividades.
          */
         public function parentable(): MorphTo
         {
@@ -1995,9 +2001,9 @@ Este método aceita o nome do relacionamento `morphTo` como primeiro argumento e
     }
 ```
 
-Neste exemplo, vamos assumir que os modelos Evento, Foto e Postagem podem criar modelos AtividadeFeed. Adicionalmente, vamos supor que os modelos Evento pertencem a um modelo Calendário, as fotos são associadas com os modelos de tag e as postagens pertencem ao modelo Autor.
+Neste exemplo, vamos assumir que os modelos `Event`, `Photo`, e `Post` podem criar modelos `ActivityFeed`. Adicionalmente, vamos supor que os modelos `Event` pertencem a um modelo `Calendar`, as `Photo` são associadas com os modelos de `Tag` e as `Post` pertencem ao modelo `Author`.
 
-Usando essas definições de modelo e relacionamentos, podemos recuperar instâncias do modelo `ActivityFeed` e carregar ansiosamente todos os modelos `parentables`, bem como seus respectivos relacionamentos aninhados:
+Usando essas definições de modelo e relacionamentos, podemos recuperar instâncias do modelo `ActivityFeed` e carregar previamente todos os modelos `parentables`, bem como seus respectivos relacionamentos aninhados:
 
 ```php
     $activities = ActivityFeed::with('parentable')
@@ -2010,9 +2016,9 @@ Usando essas definições de modelo e relacionamentos, podemos recuperar instân
 ```
 
 <a name="preventing-lazy-loading"></a>
-### Impedindo a preguiçosa carga
+### Impedindo o carregamento preguiçoso
 
-Como discutido anteriormente, as relações de loading ansioso muitas vezes podem fornecer benefícios significativos ao desempenho da sua aplicação. Portanto, se você quiser, pode instruir o Laravel para evitar sempre o carregamento preguiçoso das relações. Para fazer isso, você pode invocar o método `preventLazyLoading` oferecido pela classe de modelo básico Eloquent. Normalmente, você deve chamar esse método no método `boot` da sua classe `AppServiceProvider`.
+Como discutido anteriormente, as relações de carregamento ansioso muitas vezes podem fornecer benefícios significativos ao desempenho da sua aplicação. Portanto, se você quiser, pode instruir o Laravel para evitar sempre o carregamento preguiçoso das relações. Para fazer isso, você pode invocar o método `preventLazyLoading` oferecido pela classe base de modelo Eloquent. Normalmente, você deve chamar esse método no método `boot` da sua classe `AppServiceProvider`.
 
 O método `preventLazyLoading` aceita um argumento booleano opcional que indica se o carregamento preguiçoso deve ser impedido. Por exemplo, você pode desejar desabilitar apenas o carregamento preguiçoso em ambientes que não são de produção para que seu ambiente de produção continue funcionando normalmente mesmo se uma relação carregada preguiçosamente estiver presente acidentalmente no código de produção:
 
@@ -2020,7 +2026,7 @@ O método `preventLazyLoading` aceita um argumento booleano opcional que indica 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Bootstrap any application services.
+ * Inicialize qualquer serviço de aplicativo.
  */
 public function boot(): void
 {
@@ -2030,7 +2036,7 @@ public function boot(): void
 
 Depois de impedir o carregamento preguiçoso, o Eloquent lançará uma exceção `Illuminate\Database\LazyLoadingViolationException` quando sua aplicação tenta carregar preguiçosamente qualquer relacionamento com Eloquent.
 
-Pode personalizar o comportamento das violações de carregamento progressivo usando o método `handleLazyLoadingViolationsUsing`. Por exemplo, com este método, pode instruir as violações de carregamento progressivo para serem apenas registadas em vez de interromper a execução da aplicação com exceções:
+Você pode personalizar o comportamento de violações de carregamento lento usando o método `handleLazyLoadingViolationsUsing`. Por exemplo, usando esse método, você pode instruir violações de carregamento lento a serem somente registradas em vez de interromper a execução do aplicativo com exceções:
 
 ```php
 Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation) {
@@ -2044,7 +2050,7 @@ Model::handleLazyLoadingViolationUsing(function (Model $model, string $relation)
 ## Inserindo e Atualizando Modelos Relacionados
 
 <a name="the-save-method"></a>
-### O método "save"
+### O método `save`
 
 O Eloquent fornece métodos convenientes para adicionar novos modelos a relacionamentos. Por exemplo, talvez você precise adicionar um novo comentário em uma postagem. Em vez de definir manualmente o atributo `post_id` no modelo `Comment`, você pode inserir o comentário usando o método `save` do relacionamento:
 
@@ -2072,7 +2078,7 @@ Se você precisar salvar vários modelos relacionados, poderá usar o método `s
     ]);
 ```
 
-Os métodos `save` e `saveMany` irão persistir as instâncias de modelo dadas mas não adicionarão os modelos recém-persistentes a nenhuma relação na memória que esteja já carregada no modelo pai. Se pretender aceder à relação após utilizar os métodos `save` ou `saveMany`, poderá utilizar o método `refresh` para carregar novamente o modelo e as respetivas relações:
+Os métodos `save` e `saveMany` irão persistir as instâncias de modelo dadas mas não adicionarão os modelos recém-persistentes a nenhuma relação na memória que esteja já carregada no modelo pai. Se pretender aceder à relação após utilizar os métodos `save` ou `saveMany`, poderá utilizar o método `refresh` para carregar novamente o modelo e as respectivas relações:
 
 ```php
     $post->comments()->save($comment);
@@ -2086,7 +2092,7 @@ Os métodos `save` e `saveMany` irão persistir as instâncias de modelo dadas m
 <a name="the-push-method"></a>
 #### Salvando modelos e relacionamentos de forma recursiva
 
-Se você quiser "salvar" o seu modelo e todos os seus relacionamentos associados, poderá usar o método "push". Neste exemplo, o modelo de `Post` será salvo, assim como seus comentários e os autores dos comentários:
+Se você quiser salvar o seu modelo e todos os seus relacionamentos associados, poderá usar o método `push`. Neste exemplo, o modelo de `Post` será salvo, assim como seus comentários e os autores dos comentários:
 
 ```php
     $post = Post::find(1);
@@ -2104,9 +2110,9 @@ O método `pushQuietly` pode ser utilizado para guardar um modelo e as suas asso
 ```
 
 <a name="the-create-method"></a>
-### O método "create" (criar)
+### O método `create`
 
-Além dos métodos `save` e `saveMany`, você também pode usar o método `create`, que aceita um array de atributos, cria um modelo e o inserta no banco de dados. A diferença entre `save` e `create` é que `save` aceita uma instância completa do modelo Eloquent enquanto `create` aceita um simples array PHP. O novo modelo criado será devolvido pelo método `create`.
+Além dos métodos `save` e `saveMany`, você também pode usar o método `create`, que aceita um *array* de atributos, cria um modelo e o insere no banco de dados. A diferença entre `save` e `create` é que `save` aceita uma instância completa do modelo Eloquent enquanto `create` aceita um simples *array* PHP. O novo modelo criado será devolvido pelo método `create`.
 
 ```php
     use App\Models\Post;
@@ -2146,13 +2152,14 @@ Os métodos `createQuietly` e `createManyQuietly` podem ser utilizados para cria
 
 Você também pode usar os métodos `findOrNew`, `firstOrNew`, `firstOrCreate` e `updateOrCreate` para [criar e atualizar modelos em relacionamentos](/docs/eloquent#upserts).
 
-> [!NOTA]
-> Antes de usar o método `create`, revise a documentação sobre [atribuição em massa](/docs/eloquent#mass-assignment).
+::: info NOTA
+Antes de usar o método `create`, revise a documentação sobre [atribuição em massa](/docs/eloquent#mass-assignment).
+:::
 
 <a name="updating-belongs-to-relationships"></a>
-### Pertence a relações
+### Relacionamentos BelongsTo
 
-Se quiser atribuir um modelo de criança para um novo modelo pai, pode utilizar o método "associate". Neste exemplo, o modelo `User` define uma relação `belongsTo` para o modelo `Account`. Este método `associate` irá definir a chave estrangeira no modelo filho:
+Se quiser atribuir um modelo filho para um novo modelo pai, você pode utilizar o método `associate`. Neste exemplo, o modelo `User` define uma relação `belongsTo` para o modelo `Account`. Este método `associate` irá definir a chave estrangeira no modelo filho:
 
 ```php
     use App\Models\Account;
@@ -2164,7 +2171,7 @@ Se quiser atribuir um modelo de criança para um novo modelo pai, pode utilizar 
     $user->save();
 ```
 
-Para remover um modelo pai de um filho, pode usar o método `dissociate`. Este método irá definir a chave estrangeira da relação como `NULL`:
+Para remover um modelo pai de um filho, você pode usar o método `dissociate`. Este método irá definir a chave estrangeira da relação como `NULL`:
 
 ```php
     $user->account()->dissociate();
@@ -2173,7 +2180,7 @@ Para remover um modelo pai de um filho, pode usar o método `dissociate`. Este m
 ```
 
 <a name="updating-many-to-many-relationships"></a>
-### Muitas relações múltiplas
+### Relacionamento ManyToMany
 
 <a name="attaching-detaching"></a>
 #### Fixação/Desfixação
@@ -2197,10 +2204,10 @@ Ao associar um relacionamento a um modelo, você também pode passar uma matriz 
 Às vezes pode ser necessário remover um papel de um usuário. Para remover um registro de muitos para muitos, use o método `detach`. O método `detach` exclui o registro apropriado da tabela intermediária; no entanto, ambos os modelos permanecerão no banco de dados.
 
 ```php
-    // Detach a single role from the user...
+    // Desanexe uma única função do usuário...
     $user->roles()->detach($roleId);
 
-    // Detach all roles from the user...
+    // Desanexe todas as funções do usuário...
     $user->roles()->detach();
 ```
 
@@ -2220,13 +2227,13 @@ Por conveniência, `attach` e `detach` também aceitam matrizes de IDs como entr
 <a name="syncing-associations"></a>
 #### Associações de sincronização
 
-Pode igualmente utilizar o método `sync` para construir associações de muitos para muitos. O método `sync` aceita uma matriz de identificadores a colocar na tabela intermédia. Todos os IDs que não estejam nesta matriz serão removidos da tabela intermédia. Assim, após a conclusão desta operação, só existirão na tabela intermédia os identificadores presentes na matriz fornecida:
+Pode igualmente utilizar o método `sync` para construir associações de muitos para muitos. O método `sync` aceita uma matriz de identificadores para colocar na tabela intermédia. Todos os IDs que não estejam nesta matriz serão removidos da tabela intermédia. Assim, após a conclusão desta operação, só existirão na tabela intermédia os identificadores presentes na matriz fornecida:
 
 ```php
     $user->roles()->sync([1, 2, 3]);
 ```
 
-Pode também passar outros valores de tabelas intermédias com os respetivos ID's:
+Você também pode passar outros valores de tabelas intermédias com os respetivos ID's:
 
 ```php
     $user->roles()->sync([1 => ['expires' => true], 2, 3]);
@@ -2238,7 +2245,7 @@ Se você quiser inserir os mesmos valores da tabela intermediária em cada uma d
     $user->roles()->syncWithPivotValues([1, 2, 3], ['active' => true]);
 ```
 
-Se você não deseja remover os IDs existentes que estejam faltando no array dado, poderá usar o método `syncWithoutDetaching`:
+Se você não deseja remover os IDs existentes que estejam faltando no *array* dado, poderá usar o método `syncWithoutDetaching`:
 
 ```php
     $user->roles()->syncWithoutDetaching([1, 2, 3]);
@@ -2247,13 +2254,13 @@ Se você não deseja remover os IDs existentes que estejam faltando no array dad
 <a name="toggling-associations"></a>
 #### Alternar associações
 
-O relacionamento de muitos para muitos também fornece um método "toggle" que altera o status do acessório dos IDs de modelo relacionados. Se o ID dado estiver atualmente anexado, ele será desconectado. Da mesma forma, se estiver atualmente desconectado, ele será conectado:
+O relacionamento muitos-para-muitos também fornece um método `toggle` que "alterna" o status de anexo dos IDs de modelo relacionados fornecidos. Se o ID fornecido estiver atualmente anexado, ele será desanexado. Da mesma forma, se estiver atualmente desanexado, ele será anexado:
 
 ```php
     $user->roles()->toggle([1, 2, 3]);
 ```
 
-Também pode passar valores de tabela intermédios adicionais com os ID:
+Você também pode passar valores de tabela intermédiarias adicionais com os ID:
 
 ```php
     $user->roles()->toggle([
@@ -2265,7 +2272,7 @@ Também pode passar valores de tabela intermédios adicionais com os ID:
 <a name="updating-a-record-on-the-intermediate-table"></a>
 #### Atualizando um Registo na Tabela Intermédia
 
-Se você precisar atualizar uma linha existente na tabela intermediária do seu relacionamento, poderá utilizar o método `updateExistingPivot`. Esse método aceita a chave estrangeira do registro intermediário e um array de atributos para serem atualizados:
+Se você precisar atualizar uma linha existente na tabela intermediária do seu relacionamento, poderá utilizar o método `updateExistingPivot`. Esse método aceita a chave estrangeira do registro intermediário e um *array* de atributos para serem atualizados:
 
 ```php
     $user = User::find(1);
@@ -2276,11 +2283,11 @@ Se você precisar atualizar uma linha existente na tabela intermediária do seu 
 ```
 
 <a name="touching-parent-timestamps"></a>
-## Tocando nas marcas de tempo do pai
+## Atualizando o timestamps do modelo pai
 
-Quando um modelo define uma relação "belongsTo" ou "belongsToMany" para outro modelo, como é o caso de um "Comment" que pertence a um "Post", por vezes é útil atualizar o timestamp do elemento pai quando o elemento filho for actualizado.
+Quando um modelo define uma relação `belongsTo` ou `belongsToMany` para outro modelo, como é o caso de um `Comment` que pertence a um `Post`, por vezes é útil atualizar o timestamp do elemento pai quando o elemento filho for atualizado.
 
-Por exemplo, quando um modelo `Comment` é atualizado, você pode querer automaticamente "tocar" o carimbo de tempo `updated_at` do `Post` proprietário para que seja definido na data e hora correntes. Para fazer isso, você pode adicionar uma propriedade `touches` ao seu modelo filho contendo os nomes dos relacionamentos que devem ter seus carimbos de tempo `updated_at` atualizados quando o modelo filho for atualizado:
+Por exemplo, quando um modelo `Comment` é atualizado, você pode querer automaticamente "tocar" no timestamp de `updated_at` do `Post` proprietário para que seja definido na data e hora correntes. Para fazer isso, você pode adicionar uma propriedade `touches` ao seu modelo filho contendo os nomes dos relacionamentos que devem ter seus carimbos de tempo `updated_at` atualizados quando o modelo filho for atualizado:
 
 ```php
     <?php
@@ -2293,14 +2300,14 @@ Por exemplo, quando um modelo `Comment` é atualizado, você pode querer automat
     class Comment extends Model
     {
         /**
-         * All of the relationships to be touched.
+         * Todos os relacionamentos a serem tocados.
          *
          * @var array
          */
         protected $touches = ['post'];
 
         /**
-         * Get the post that the comment belongs to.
+         * Obtenha a postagem à qual o comentário pertence.
          */
         public function post(): BelongsTo
         {
@@ -2309,5 +2316,6 @@ Por exemplo, quando um modelo `Comment` é atualizado, você pode querer automat
     }
 ```
 
-> [!ATENÇÃO]
-> Os timestamps do modelo pai somente serão atualizados se o modelo filho for atualizado utilizando o método `save` do Eloquent.
+::: warning ATENÇÃO
+Os timestamps do modelo pai somente serão atualizados se o modelo filho for atualizado utilizando o método `save` do Eloquent.
+:::
