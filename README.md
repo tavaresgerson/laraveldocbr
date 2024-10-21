@@ -19,7 +19,7 @@
     - [Roteamento](/src/docs/routing.md) ✅
     - [Middleware](/src/docs/middleware.md) ✅
     - [CSRF Protection](/src/docs/csrf.md) ✅
-    - [Controllers](/src/docs/controllers.md) ✅
+    - [Controladores](/src/docs/controllers.md) ✅
     - [Requisições](/src/docs/requests.md) ✅
     - [Respostas](/src/docs/responses.md) ✅
     - [Views (visualizações)](/src/docs/views.md) ✅
@@ -69,9 +69,9 @@
     - [Relacionamentos](/src/docs/eloquent-relationships.md) ✅
     - [Coleções](/src/docs/eloquent-collections.md) ✅
     - [Mutators/Casts](/src/docs/eloquent-mutators.md) ✅
-    - [API Resources](/src/docs/eloquent-resources.md) ⚙️
-    - [Serialization](/src/docs/eloquent-serialization.md)
-    - [Factories](/src/docs/eloquent-factories.md)
+    - [Recursos da API](/src/docs/eloquent-resources.md) ✅
+    - [Serialization](/src/docs/eloquent-serialization.md) ✅
+    - [Factories](/src/docs/eloquent-factories.md) ⚙️
 - ## Teste
     - [Getting Started](/src/docs/testing.md)
     - [HTTP Tests](/src/docs/http-tests.md)
