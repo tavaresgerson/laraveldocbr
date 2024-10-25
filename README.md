@@ -73,8 +73,8 @@
     - [Serialização](/src/docs/eloquent-serialization.md) ✅
     - [Fábricas](/src/docs/eloquent-factories.md) ✅
 - ## Teste
-    - [Getting Started](/src/docs/testing.md) ⚙️
-    - [HTTP Tests](/src/docs/http-tests.md)
+    - [Getting Started](/src/docs/testing.md) ✅
+    - [HTTP Tests](/src/docs/http-tests.md) ⚙️
     - [Console Tests](/src/docs/console-tests.md)
     - [Browser Tests](/src/docs/dusk.md)
     - [Database](/src/docs/database-testing.md)
