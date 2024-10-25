@@ -70,10 +70,10 @@
     - [Coleções](/src/docs/eloquent-collections.md) ✅
     - [Mutators/Casts](/src/docs/eloquent-mutators.md) ✅
     - [Recursos da API](/src/docs/eloquent-resources.md) ✅
-    - [Serialization](/src/docs/eloquent-serialization.md) ✅
-    - [Factories](/src/docs/eloquent-factories.md) ⚙️
+    - [Serialização](/src/docs/eloquent-serialization.md) ✅
+    - [Fábricas](/src/docs/eloquent-factories.md) ✅
 - ## Teste
-    - [Getting Started](/src/docs/testing.md)
+    - [Getting Started](/src/docs/testing.md) ⚙️
     - [HTTP Tests](/src/docs/http-tests.md)
     - [Console Tests](/src/docs/console-tests.md)
     - [Browser Tests](/src/docs/dusk.md)
