@@ -14,7 +14,7 @@ Embora você possa usar esses kits iniciais, eles não são obrigatórios. Você
 
 A camada de visualização padrão do Laravel Breeze é composta de [modelos Blade](/docs/blade) simples estilizados com [Tailwind CSS](https://tailwindcss.com). Além disso, o Breeze fornece opções de andaimes baseadas em [Livewire](https://livewire.laravel.com) ou [Inertia](https://inertiajs.com), com a opção de usar Vue ou React para o andaime baseado em Inertia.
 
-<img src="https://laravel.com/img/docs/breeze-register.png">
+<img src="/docs/assets/breeze-register.png">
 
 #### Laravel Bootcamp
 

@@ -1482,6 +1482,7 @@ Para mais informações, [veja a documentação do Paddle sobre crédito](https:
 ::: warning AVISO
 Os créditos só podem ser aplicados para transações coletadas manualmente. As transações coletadas automaticamente são creditadas pelo próprio Paddle.
 :::
+
 <a name="transactions"></a>
 ## Transações
 
