@@ -75,18 +75,18 @@
 - ## Teste
     - [Getting Started](/src/docs/testing.md) ✅
     - [HTTP Tests](/src/docs/http-tests.md) ✅
-    - [Console Tests](/src/docs/console-tests.md) ⚙️
-    - [Browser Tests](/src/docs/dusk.md)
-    - [Database](/src/docs/database-testing.md)
-    - [Mocking](/src/docs/mocking.md)
+    - [Console Tests](/src/docs/console-tests.md) ✅
+    - [Browser Tests](/src/docs/dusk.md) ✅
+    - [Database](/src/docs/database-testing.md) ✅
+    - [Mocking](/src/docs/mocking.md) ✅
 - ## Pacotes
-    - [Breeze](/src/docs/starter-kits#laravel-breeze.md)
-    - [Cashier (Stripe.md)](/src/docs/billing.md)
-    - [Cashier (Paddle.md)](/src/docs/cashier-paddle.md)
-    - [Dusk](/src/docs/dusk.md)
-    - [Envoy](/src/docs/envoy.md)
-    - [Fortify](/src/docs/fortify.md)
-    - [Folio](/src/docs/folio.md)
+    - [Breeze](/src/docs/starter-kits#laravel-breeze.md) ✅
+    - [Cashier (Stripe.md)](/src/docs/billing.md) ✅
+    - [Cashier (Paddle.md)](/src/docs/cashier-paddle.md) ✅
+    - [Dusk](/src/docs/dusk.md) ✅
+    - [Envoy](/src/docs/envoy.md) ✅
+    - [Fortify](/src/docs/fortify.md) ✅
+    - [Folio](/src/docs/folio.md) ⚙️
     - [Homestead](/src/docs/homestead.md)
     - [Horizon](/src/docs/horizon.md)
     - [Jetstream](https://jetstream.laravel.com.md)

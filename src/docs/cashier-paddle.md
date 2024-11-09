@@ -3,62 +3,64 @@
 <a name="introduction"></a>
 ## Introdução
 
-> [!ALERTA]
-> Esta documentação é para a integração do Cashier Paddle com o paddle faturamento se você ainda usa o paddle clássico use [cashier paddle 1.x](https://github.com/laravel/cashier-paddle/tree/1.x)
+::: warning AVISO
+Esta documentação é para a integração do Cashier Paddle 2.x com o Paddle Billing. Se você ainda estiver usando o Paddle Classic, você deve usar o [Cashier Paddle 1.x](https://github.com/laravel/cashier-paddle/tree/1.x).
+:::
 
-O [Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle) fornece uma interface fluente e expressiva para os serviços de cobrança por assinatura do [Paddle](https://paddle.com). Ele manipula a maior parte do código de cobrança por assinatura que você está temendo. Além da gestão básica de assinaturas, o Cashier pode lidar com: troca de assinaturas, "quantidades" de assinatura, pausa de assinaturas, períodos de cancelamento, e muito mais.
+[O Laravel Cashier Paddle](https://github.com/laravel/cashier-paddle) fornece uma interface expressiva e fluente para os serviços de cobrança de assinatura do [Paddle](https://paddle.com). Ele lida com quase todo o código de cobrança de assinatura clichê que você está temendo. Além do gerenciamento básico de assinatura, o Cashier pode lidar com: troca de assinaturas, "quantidades" de assinatura, pausa de assinatura, períodos de carência de cancelamento e muito mais.
 
-Antes de usar a Caneta do Caixa, recomendamos que também revise os [Guia Conceituais](https://developer.paddle.com/concepts/overview) e a documentação da [API](https://developer.paddle.com/api-reference/overview) do Paddle.
+Antes de se aprofundar no Cashier Paddle, recomendamos que você também revise os [guias de conceito](https://developer.paddle.com/concepts/overview) e a [documentação da API](https://developer.paddle.com/api-reference/overview) do Paddle.
 
 <a name="upgrading-cashier"></a>
-## Estoque de Caixa
+## Atualizando o Cashier
 
-Ao fazer o Upgrade para uma nova versão do Cashier, é importante que você revise atentamente [a documentação do Upgrade](https://github.com/laravel/cashier-paddle/blob/master/UPGRADE.md).
+Ao atualizar para uma nova versão do Cashier, é importante que você revise cuidadosamente [o guia de atualização](https://github.com/laravel/cashier-paddle/blob/master/UPGRADE.md).
 
 <a name="installation"></a>
 ## Instalação
 
-Primeiro instale o pacote do "Cashier" para o Paddle usando o Composer Package Manager:
+Primeiro, instale o pacote Cashier para Paddle usando o gerenciador de pacotes Composer:
 
 ```shell
 composer require laravel/cashier-paddle
 ```
 
-Em seguida, você deve publicar os arquivos de migração do Cashier usando o comando Artisan 'vendor:publish':
+Em seguida, você deve publicar os arquivos de migração do Cashier usando o comando Artisan `vendor:publish`:
 
 ```shell
 php artisan vendor:publish --tag="cashier-migrations"
 ```
 
-Em seguida você deve executar as migrações do seu banco de dados de sua aplicação. As migrações do Cashier irão criar uma nova tabela chamada 'customers'. Além disso, novas tabelas 'subscriptions' e 'subscription_items' serão criadas para armazenar todas as assinaturas dos seus clientes. Finalmente, uma nova tabela 'transactions' será criada para armazenar todas transações do Paddle associadas aos seus clientes:
+Então, você deve executar as migrações de banco de dados do seu aplicativo. As migrações do Cashier criarão uma nova tabela `customers`. Além disso, novas tabelas `subscriptions` e `subscription_items` serão criadas para armazenar todas as assinaturas do seu cliente. Por fim, uma nova tabela `transactions` será criada para armazenar todas as transações do Paddle associadas aos seus clientes:
 
 ```shell
 php artisan migrate
 ```
 
-> (!AVISO)
-> Para garantir que o Contador de Dinheiro manipule corretamente todos os eventos do Paddle, lembre-se de configurar a [manipulação de webhook do Contador de Dinheiro](#configurando-o-contador-de-dinheiro)
+::: warning AVISO
+Para garantir que o Cashier manipule corretamente todos os eventos do Paddle, lembre-se de [configurar o tratamento do webhook do Cashier](#handling-paddle-webhooks).
+:::
 
 <a name="paddle-sandbox"></a>
-### Pădle sandbox
+### Paddle Sandbox
 
-Durante o desenvolvimento local e de palco, você deve [registrar uma conta SandBox do Paddle](https://sandbox-login.paddle.com/signup). Esta conta fornecerá um ambiente sandbox para testar e desenvolver seus aplicativos sem fazer pagamentos reais. Você pode usar os números da [cartão de teste] do Paddle para simular vários cenários de pagamento.
+Durante o desenvolvimento local e de preparação, você deve [registrar uma conta do Paddle Sandbox](https://sandbox-login.paddle.com/signup). Esta conta fornecerá um ambiente de sandbox para testar e desenvolver seus aplicativos sem fazer pagamentos reais. Você pode usar os [números de cartão de teste](https://developer.paddle.com/concepts/payment-methods/credit-debit-card) do Paddle para simular vários cenários de pagamento.
 
-Ao usar o ambiente Paddle Sandbox, você deve definir a variável de ambiente PADDLE_SANDBOX para "verdadeiro" dentro do arquivo .env da sua aplicação:
+Ao usar o ambiente Paddle Sandbox, você deve definir a variável de ambiente `PADDLE_SANDBOX` como `true` no arquivo `.env` do seu aplicativo:
 
 ```ini
 PADDLE_SANDBOX=true
 ```
 
-Após você terminar de desenvolver sua aplicação, você pode [pedir uma conta Paddle](https://paddle.com). Antes da sua aplicação entrar em produção, o Paddle precisará aprovar seu domínio de aplicação.
+Após terminar de desenvolver seu aplicativo, você pode [solicitar uma conta de fornecedor Paddle](https://paddle.com). Antes que seu aplicativo seja colocado em produção, o Paddle precisará aprovar o domínio do seu aplicativo.
 
 <a name="configuration"></a>
 ## Configuração
 
 <a name="billable-model"></a>
-### Modelo faturável
+### Modelo Faturável
 
-Antes de usar o Checkout, você precisa adicionar o atributo `Billable` à sua definição do modelo do usuário. Este atributo fornece vários métodos para permitir que você execute tarefas comuns de cobrança, como criar assinaturas e atualizar informações sobre métodos de pagamento:
+Antes de usar o Cashier, você deve adicionar o traço `Billable` à definição do seu modelo de usuário. Este traço fornece vários métodos para permitir que você execute tarefas comuns de cobrança, como criar assinaturas e atualizar informações de método de pagamento:
 
 ```php
     use Laravel\Paddle\Billable;
@@ -69,7 +71,7 @@ Antes de usar o Checkout, você precisa adicionar o atributo `Billable` à sua d
     }
 ```
 
-Se você tiver entidades cobráveis que não sejam usuários, você também pode adicionar a traça para essas classes:
+Se você tiver entidades faturáveis ​​que não sejam usuários, você também pode adicionar o traço a essas classes:
 
 ```php
     use Illuminate\Database\Eloquent\Model;
@@ -84,7 +86,7 @@ Se você tiver entidades cobráveis que não sejam usuários, você também pode
 <a name="api-keys"></a>
 ### Chaves de API
 
-Em seguida, você deve configurar suas chaves do Paddle em seu arquivo .env de sua aplicação. Você pode buscar as chaves da API do Paddle no painel de controle do Paddle:
+Em seguida, você deve configurar suas chaves do Paddle no arquivo `.env` do seu aplicativo. Você pode recuperar suas chaves de API do Paddle no painel de controle do Paddle:
 
 ```ini
 PADDLE_CLIENT_SIDE_TOKEN=your-paddle-client-side-token
@@ -94,14 +96,14 @@ PADDLE_WEBHOOK_SECRET="your-paddle-webhook-secret"
 PADDLE_SANDBOX=true
 ```
 
-A variável de ambiente `PADDLE_SANDBOX` deve ser definida como `true` quando estiver usando [ambiente de Sandbox do Paddle](#paddle-sandbox). A variável `PADDLE_SANDBOX` deve ser definida como `false` se você estiver implantando seu aplicativo para produção e for usar o ambiente de fornecedor ao vivo do Paddle.
+A variável de ambiente `PADDLE_SANDBOX` deve ser definida como `true` quando você estiver usando [o ambiente Sandbox do Paddle](#paddle-sandbox). A variável `PADDLE_SANDBOX` deve ser definida como `false` se você estiver implantando seu aplicativo em produção e estiver usando o ambiente de fornecedor ativo do Paddle.
 
-O 'PADDLE_RETAIN_KEY' é opcional e só deve ser definido se estiver usando o Paddle com [Retain] (https://developer.paddle.com/paddlejs/retain).
+O `PADDLE_RETAIN_KEY` é opcional e só deve ser definido se você estiver usando o Paddle com [Retain](https://developer.paddle.com/paddlejs/retain).
 
 <a name="paddle-js"></a>
-### Remo JS
+### Paddle JS
 
-Paddle relies on its own JavaScript library to initiate the Paddle checkout widget. You can load the JavaScript library by placing the `@paddleJS` Blade directive right before your application layout's closing `</head>` tag:
+O Paddle depende de sua própria biblioteca JavaScript para iniciar o widget de checkout do Paddle. Você pode carregar a biblioteca JavaScript colocando a diretiva Blade `@paddleJS` logo antes da tag `</head>` de fechamento do layout do seu aplicativo:
 
 ```blade
 <head>
@@ -114,19 +116,20 @@ Paddle relies on its own JavaScript library to initiate the Paddle checkout widg
 <a name="currency-configuration"></a>
 ### Configuração de moeda
 
-Você pode especificar um idioma a ser usado quando estiver formatando valores monetários para serem exibidos em notas fiscais. Internamente, o Cashier utiliza a classe [NumberFormatter](https://www.php.net/manual/en/class.numberformatter.php) do PHP para definir o local da moeda:
+Você pode especificar uma localidade a ser usada ao formatar valores monetários para exibição em faturas. Internamente, o Cashier utiliza [a classe `NumberFormatter` do PHP](https://www.php.net/manual/en/class.numberformatter.php) para definir a localidade da moeda:
 
 ```ini
 CASHIER_CURRENCY_LOCALE=nl_BE
 ```
 
-> [AVISO]
-> Para usar idiomas que não sejam o inglês ("en"), garanta que a extensão "ext-intl" esteja instalada e configurada no servidor.
+::: warning AVISO
+Para usar localidades diferentes de `en`, certifique-se de que a extensão PHP `ext-intl` esteja instalada e configurada no seu servidor.
+:::
 
 <a name="overriding-default-models"></a>
-### Substituindo modelos padrão.
+### Substituindo modelos padrão
 
-Você está livre para estender os modelos usados internamente pelo Caixa por definir seu próprio modelo e estender o modelo correspondente do Caixa.
+Você tem liberdade para estender os modelos usados ​​internamente pelo Cashier definindo seu próprio modelo e estendendo o modelo correspondente do Cashier:
 
 ```php
     use Laravel\Paddle\Subscription as CashierSubscription;
@@ -137,14 +140,14 @@ Você está livre para estender os modelos usados internamente pelo Caixa por de
     }
 ```
 
-Depois de definir seu modelo, você pode instruir o Caixa para usar seu modelo personalizado através da classe 'Laravel\Paddle\Cashier'. Tipicamente, você deve informar ao Caixa sobre seus modelos personalizados no método 'boot' da classe 'App\Providers\AppServiceProvider' do seu aplicativo.
+Após definir seu modelo, você pode instruir o Cashier a usar seu modelo personalizado por meio da classe `Laravel\Paddle\Cashier`. Normalmente, você deve informar o Cashier sobre seus modelos personalizados no método `boot` da classe `App\Providers\AppServiceProvider` do seu aplicativo:
 
 ```php
     use App\Models\Cashier\Subscription;
     use App\Models\Cashier\Transaction;
 
     /**
-     * Bootstrap any application services.
+     * Inicialize qualquer serviço de aplicativo.
      */
     public function boot(): void
     {
@@ -154,17 +157,18 @@ Depois de definir seu modelo, você pode instruir o Caixa para usar seu modelo p
 ```
 
 <a name="quickstart"></a>
-## Início Rápido
+## Início rápido
 
 <a name="quickstart-selling-products"></a>
-### Vender Produtos
+### Vendendo produtos
 
-> Nota:
-> Antes de utilizar o checkout do Paddle, você deve definir produtos com preços fixos em seu painel do Paddle. Além disso, você deve [configurar a manipulação dos webhooks do Paddle](#configurando-a-manipulação-dos-webhooks-do-paddle).
+::: info NOTA
+Antes de utilizar o Paddle Checkout, você deve definir produtos com preços fixos no seu painel Paddle. Além disso, você deve [configurar o tratamento de webhook do Paddle](#handling-paddle-webhooks).
+:::
 
-Oferta de faturamento de produtos e assinaturas por meio do seu aplicativo pode ser intimidante. No entanto, graças ao Caixeiro e [Checkout Overlay Paddle](https://www.paddle.com/billing/checkout), você pode facilmente criar integrações de pagamento modernas e robustas.
+Oferecer faturamento de produtos e assinaturas por meio do seu aplicativo pode ser intimidador. No entanto, graças ao Cashier e ao [Paddle's Checkout Overlay](https://www.paddle.com/billing/checkout), você pode facilmente criar integrações de pagamento modernas e robustas.
 
-Para cobrar clientes para produtos de pagamento único, não recorrentes, vamos utilizar o Cashier para cobrar os clientes com o Paddle Checkout Overlay, onde eles fornecerão seus detalhes de pagamento e confirmarão sua compra. Uma vez que o pagamento foi feito através do Checkout Overlay, o cliente será redirecionado a uma URL de sucesso de sua escolha dentro do seu aplicativo:
+Para cobrar clientes por produtos não recorrentes e de cobrança única, utilizaremos o Cashier para cobrar clientes com o Paddle's Checkout Overlay, onde eles fornecerão seus detalhes de pagamento e confirmarão sua compra. Depois que o pagamento for feito por meio do Checkout Overlay, o cliente será redirecionado para uma URL de sucesso de sua escolha em seu aplicativo:
 
 ```php
     use Illuminate\Http\Request;
@@ -177,11 +181,11 @@ Para cobrar clientes para produtos de pagamento único, não recorrentes, vamos 
     })->name('checkout');
 ```
 
-Como você pode ver no exemplo acima, utilizaremos o método de checkout fornecido pelo Caixa para criar um objeto de checkout que apresentará a sobreposição de checkout do Paddle ao cliente para um determinado "identificador de preço". Ao usar o Paddle, "preços" referem-se aos [ preços definidos para produtos específicos](https://developer.paddle.com/build/products/create-products-prices).
+Como você pode ver no exemplo acima, utilizaremos o método `checkout` fornecido pelo Cashier para criar um objeto de checkout para apresentar ao cliente o Paddle Checkout Overlay para um determinado "identificador de preço". Ao usar o Paddle, "preços" referem-se a [preços definidos para produtos específicos](https://developer.paddle.com/build/products/create-products-prices).
 
-Se necessário, o `checkout` método irá criar automaticamente um cliente em Paddle e conectar esse registro de cliente Paddle com o usuário correspondente no banco de dados do seu aplicativo. Após concluir a sessão de checkout, o cliente será redirecionado para uma página de sucesso dedicada onde você pode exibir uma mensagem informativa ao cliente.
+Se necessário, o método `checkout` criará automaticamente um cliente no Paddle e conectará esse registro de cliente do Paddle ao usuário correspondente no banco de dados do seu aplicativo. Após concluir a sessão de checkout, o cliente será redirecionado para uma página de sucesso dedicada, onde você pode exibir uma mensagem informativa para o cliente.
 
-Na `compra` visão, incluiremos um botão para exibir a sobreposição de checkout. O componente Blade `paddle-button` é incluído com o Cashier Paddle; no entanto, você também pode [renderizar manualmente uma sobreposição de checkout](#renderização manual de uma sobreposição de checkout):
+Na visualização `buy`, incluiremos um botão para exibir a sobreposição de checkout. O componente Blade `paddle-button` está incluído no Cashier Paddle; no entanto, você também pode [renderizar manualmente um checkout de sobreposição](#manually-rendering-an-overlay-checkout):
 
 ```html
 <x-paddle-button :checkout="$checkout" class="px-8 py-4">
@@ -190,11 +194,11 @@ Na `compra` visão, incluiremos um botão para exibir a sobreposição de checko
 ```
 
 <a name="providing-meta-data-to-paddle-checkout"></a>
-#### Fornecendo dados Meta para Paddle Checkout
+#### Fornecendo Metadados para Paddle Checkout
 
-Ao vender produtos, é comum rastrear pedidos concluídos e itens comprados através de modelos 'Cart' e 'Order', definidos pelo seu próprio aplicativo. Ao redirecionar os clientes para a sobreposição de checkout do Paddle para concluir uma compra, você pode precisar fornecer um identificador de pedido existente para que possa associar a compra concluída ao pedido correspondente quando o cliente for redirecionado de volta ao seu aplicativo.
+Ao vender produtos, é comum manter o controle de pedidos concluídos e produtos comprados por meio dos modelos `Cart` e `Order` definidos pelo seu próprio aplicativo. Ao redirecionar clientes para o Paddle's Checkout Overlay para concluir uma compra, pode ser necessário fornecer um identificador de pedido existente para que você possa associar a compra concluída ao pedido correspondente quando o cliente for redirecionado de volta para seu aplicativo.
 
-Para isso, você pode fornecer um array de dados personalizados ao método "checkout". Vamos imaginar que uma "pedido" em "pendente" é criada dentro do nosso aplicativo quando o usuário inicia o processo de checkout. Lembre-se, os modelos "Cart" e "Order" neste exemplo são apenas ilustrativos e não fornecidos pelo Cashier. Você pode implementar esses conceitos a partir das necessidades do seu próprio aplicativo:
+Para fazer isso, você pode fornecer uma matriz de dados personalizados para o método `checkout`. Vamos imaginar que um `Order` pendente é criado em nosso aplicativo quando um usuário inicia o processo de checkout. Lembre-se, os modelos `Cart` e `Order` neste exemplo são ilustrativos e não fornecidos pelo Cashier. Você é livre para implementar esses conceitos com base nas necessidades do seu próprio aplicativo:
 
 ```php    
     use App\Models\Cart;
@@ -215,11 +219,11 @@ Para isso, você pode fornecer um array de dados personalizados ao método "chec
     })->name('checkout');
 ```
 
-Como você pode ver no exemplo acima, quando um usuário começa o processo de checkout, forneceremos todos os identificadores de preço do Paddle associados ao carrinho / pedido para o método de checkout. É claro que seu aplicativo é responsável por associar esses itens com o "carrinho" ou pedido à medida que eles são adicionados pelo cliente. Também fornecemos o ID do pedido para a sobreposição de checkout do Paddle através do método customData .
+Como você pode ver no exemplo acima, quando um usuário inicia o processo de checkout, forneceremos todos os identificadores de preço Paddle associados ao carrinho/pedido para o método `checkout`. Claro, seu aplicativo é responsável por associar esses itens ao "carrinho de compras" ou pedido conforme um cliente os adiciona. Também fornecemos o ID do pedido para o Paddle Checkout Overlay por meio do método `customData`.
 
-Claro, provavelmente você vai querer marcar o pedido como completo uma vez que o cliente tenha finalizado o processo de checkout. Para isso, você pode escutar os webhooks enviados pelo Paddle e acionados via eventos por Cashier para armazenar as informações do pedido em seu banco de dados.
+Claro, você provavelmente desejará marcar o pedido como "concluído" assim que o cliente tiver concluído o processo de checkout. Para fazer isso, você pode ouvir os webhooks despachados pelo Paddle e gerados por meio de eventos pelo Cashier para armazenar informações do pedido em seu banco de dados.
 
-Para começar, escute o evento 'TransactionCompleted' enviado pelo atendente de caixa. Normalmente você deve registrar o ouvinte do evento no método 'boot' do 'AppServiceProvider' da sua aplicação:
+Para começar, ouça o evento `TransactionCompleted` despachado pelo Cashier. Normalmente, você deve registrar o ouvinte de eventos no método `boot` do `AppServiceProvider` do seu aplicativo:
 
 ```php
     use App\Listeners\CompleteOrder;
@@ -227,7 +231,7 @@ Para começar, escute o evento 'TransactionCompleted' enviado pelo atendente de 
     use Laravel\Paddle\Events\TransactionCompleted;
 
     /**
-     * Bootstrap any application services.
+     * Inicialize qualquer serviço de aplicativo.
      */
     public function boot(): void
     {
@@ -235,7 +239,7 @@ Para começar, escute o evento 'TransactionCompleted' enviado pelo atendente de 
     }
 ```
 
-Em este exemplo o ouvinte `CompleteOrder` talvez pareça assim:
+Neste exemplo, o ouvinte `CompleteOrder` pode se parecer com o seguinte:
 
 ```php
     namespace App\Listeners;
@@ -247,7 +251,7 @@ Em este exemplo o ouvinte `CompleteOrder` talvez pareça assim:
     class CompleteOrder
     {
         /**
-         * Handle the incoming Cashier webhook event.
+         * Manipule o evento de webhook do Caixa de entrada.
          */
         public function handle(TransactionCompleted $event): void
         {
@@ -260,19 +264,20 @@ Em este exemplo o ouvinte `CompleteOrder` talvez pareça assim:
     }
 ```
 
-Por favor, verifique a documentação do Paddle para mais informações sobre o [dados contidos no evento 'transaction.completed'].
+Consulte a documentação do Paddle para obter mais informações sobre os [dados contidos pelo evento `transaction.completed`](https://developer.paddle.com/webhooks/transactions/transaction-completed).
 
 <a name="quickstart-selling-subscriptions"></a>
-### Vender Assinaturas
+### Vendendo assinaturas
 
-> [!Nota]
-> Antes de utilizar o checkout com Paddle, você deve definir os produtos com preços fixos no painel do Paddle. Além disso, você deve configurar [o tratamento de webhooks do Paddle](#Tratamento_de_Webhooks_do_Paddle)
+::: info NOTA
+Antes de utilizar o Paddle Checkout, você deve definir produtos com preços fixos no seu painel do Paddle. Além disso, você deve [configurar o tratamento de webhook do Paddle](#handling-paddle-webhooks).
+:::
 
-Oferecer cobrança de produtos e assinaturas através de seu aplicativo pode ser intimidante. No entanto, graças ao Cashier e o [Checkout Overlay da Paddle](https://www.paddle.com/billing/checkout), você pode criar integrações modernas e robustas de pagamento facilmente.
+Oferecer faturamento de produtos e assinaturas por meio do seu aplicativo pode ser intimidador. No entanto, graças ao Cashier e ao [Paddle's Checkout Overlay](https://www.paddle.com/billing/checkout), você pode facilmente criar integrações de pagamento modernas e robustas.
 
-Para aprender como vender assinaturas usando Cashier e Paddle' Checkout Overlay, vamos considerar um cenário simples de um serviço de assinatura com planos mensais ( `price_basic_monthly`) e anuais ( `price_basic_yearly`). Esses dois preços poderiam ser agrupados em um "Produto Básico" ( `pro_basic`) no painel do Paddle. Além disso, nosso serviço de assinatura pode oferecer um plano "Especialista" como o `pro_expert`.
+Para aprender a vender assinaturas usando o Cashier e o Paddle's Checkout Overlay, vamos considerar o cenário simples de um serviço de assinatura com um plano mensal básico (`price_basic_monthly`) e anual (`price_basic_yearly`). Esses dois preços podem ser agrupados em um produto "Básico" (`pro_basic`) em nosso painel Paddle. Além disso, nosso serviço de assinatura pode oferecer um plano Expert como `pro_expert`.
 
-Primeiro, vamos descobrir como um cliente pode se inscrever para nossos serviços. Claro, você pode imaginar que o cliente pode clicar em um botão "assinar" no plano Básico na página de preços da nossa aplicação. Este botão invocará uma sobreposição Paddle Checkout para seu plano escolhido. Para começar, vamos iniciar uma sessão de checkout via o método `checkout`:
+Primeiro, vamos descobrir como um cliente pode assinar nossos serviços. Claro, você pode imaginar que o cliente pode clicar em um botão "assinar" para o plano Básico na página de preços do nosso aplicativo. Este botão invocará um Paddle Checkout Overlay para o plano escolhido. Para começar, vamos iniciar uma sessão de checkout por meio do método `checkout`:
 
 ```php
     use Illuminate\Http\Request;
@@ -285,7 +290,7 @@ Primeiro, vamos descobrir como um cliente pode se inscrever para nossos serviço
     })->name('subscribe');
 ```
 
-No `subscribe` a exibição, incluiremos um botão para exibir o Checkout Overlay. O componente da lâmina `paddle-button` é incluído com Paddle Caixeiro; no entanto, você também pode [manualmente renderizar uma sobreposição de checkout](#manualmente-renderizando-uma-sobreposição-de-checkout):
+Na visualização `subscribe`, incluiremos um botão para exibir a sobreposição de checkout. O componente Blade `paddle-button` está incluído no Cashier Paddle; no entanto, você também pode [renderizar manualmente um checkout de sobreposição](#manually-rendering-an-overlay-checkout):
 
 ```html
 <x-paddle-button :checkout="$checkout" class="px-8 py-4">
@@ -293,9 +298,9 @@ No `subscribe` a exibição, incluiremos um botão para exibir o Checkout Overla
 </x-paddle-button>
 ```
 
-Agora, quando o botão "Assinar" é clicado, o cliente será capaz de inserir seus dados para pagamento e iniciar sua assinatura. Para saber quando a assinatura começou (desde que alguns métodos de pagamento exigem alguns segundos para processar), você também deve configurar a [manipulação do webhook do caixa](# manipulação-de-webhooks-do-paddles).
+Agora, quando o botão Subscribe for clicado, o cliente poderá inserir seus detalhes de pagamento e iniciar sua assinatura. Para saber quando sua assinatura realmente começou (já que alguns métodos de pagamento exigem alguns segundos para serem processados), você também deve [configurar o tratamento do webhook do Cashier](#handling-paddle-webhooks).
 
-Agora que os clientes podem iniciar assinaturas, precisamos restringir certas partes de nosso aplicativo para que apenas usuários inscritos possam acessá-las. Claro, podemos sempre determinar o estado atual da assinatura de um usuário usando o método `subscribed` fornecido pela característica `Billable` do Cashier.
+Agora que os clientes podem iniciar assinaturas, precisamos restringir certas partes do nosso aplicativo para que apenas usuários inscritos possam acessá-las. Claro, sempre podemos determinar o status de assinatura atual de um usuário por meio do método `subscribed` fornecido pelo traço `Billable` do Cashier:
 
 ```blade
 @if ($user->subscribed())
@@ -303,7 +308,7 @@ Agora que os clientes podem iniciar assinaturas, precisamos restringir certas pa
 @endif
 ```
 
-Podemos até determinar facilmente se um usuário está assinando um produto ou preço específico:
+Podemos até determinar facilmente se um usuário está inscrito em um produto ou preço específico:
 
 ```blade
 @if ($user->subscribedToProduct('pro_basic'))
@@ -316,9 +321,9 @@ Podemos até determinar facilmente se um usuário está assinando um produto ou 
 ```
 
 <a name="quickstart-building-a-subscribed-middleware"></a>
-#### Construção de Middleware Assinado
+#### Construindo um Middleware Assinado
 
-Para conveniência, você pode criar um [middleware](/docs/{{version}}/middleware) que determina se o pedido de entrada é de um usuário inscrito. Depois de ter definido esse middleware, você pode facilmente atribuí-lo a uma rota para impedir que usuários não inscritos acessem a rota:
+Por conveniência, você pode criar um [middleware](/docs/middleware) que determina se a solicitação de entrada é de um usuário inscrito. Depois que esse middleware for definido, você pode facilmente atribuí-lo a uma rota para impedir que usuários não inscritos acessem a rota:
 
 ```php
     <?php
@@ -332,12 +337,12 @@ Para conveniência, você pode criar um [middleware](/docs/{{version}}/middlewar
     class Subscribed
     {
         /**
-         * Handle an incoming request.
+         * Lidar com uma solicitação recebida.
          */
         public function handle(Request $request, Closure $next): Response
         {
             if (! $request->user()?->subscribed()) {
-                // Redirect user to billing page and ask them to subscribe...
+                // Redirecione o usuário para a página de cobrança e peça para ele assinar...
                 return redirect('/subscribe');
             }
 
@@ -346,7 +351,7 @@ Para conveniência, você pode criar um [middleware](/docs/{{version}}/middlewar
     }
 ```
 
-Uma vez que o middleware tenha sido definido, você pode atribuí-lo a uma rota:
+Depois que o middleware for definido, você pode atribuí-lo a uma rota:
 
 ```php
     use App\Http\Middleware\Subscribed;
@@ -357,9 +362,9 @@ Uma vez que o middleware tenha sido definido, você pode atribuí-lo a uma rota:
 ```
 
 <a name="quickstart-allowing-customers-to-manage-their-billing-plan"></a>
-#### Permite que os Clientes gerenciem seus planos de cobrança
+#### Permitindo que os clientes gerenciem seu plano de cobrança
 
-Claro, os clientes podem querer mudar seu plano de assinatura por outro produto ou “nível”. No nosso exemplo acima, queremos permitir que o cliente troque seu plano de uma assinatura mensal para uma anual. Para isso você precisará implementar algo como um botão que leva a rota abaixo:
+É claro que os clientes podem querer alterar seu plano de assinatura para outro produto ou "nível". Em nosso exemplo acima, gostaríamos de permitir que o cliente alterasse seu plano de uma assinatura mensal para uma assinatura anual. Para isso, você precisará implementar algo como um botão que leva à rota abaixo:
 
 ```php
     use Illuminate\Http\Request;
@@ -371,7 +376,7 @@ Claro, os clientes podem querer mudar seu plano de assinatura por outro produto 
     })->name('subscription.swap');
 ```
 
-Além de trocar planos você também precisa permitir que seus clientes cancelem suas assinaturas. Assim como nas trocas de planos, forneça um botão que leva para o seguinte caminho:
+Além de trocar planos, você também precisará permitir que seus clientes cancelem suas assinaturas. Assim como na troca de planos, forneça um botão que leva à seguinte rota:
 
 ```php
     use Illuminate\Http\Request;
@@ -385,20 +390,21 @@ Além de trocar planos você também precisa permitir que seus clientes cancelem
 
 E agora sua assinatura será cancelada no final do período de cobrança.
 
-> Nota!
-> Desde que você tenha configurado o tratamento de webhook do Cashier, o Cashier manterá automaticamente suas tabelas de banco de dados relacionadas ao Cashier em sincronia inspecionando os webhooks entrante do Paddle. Assim, por exemplo, quando você cancela uma assinatura de um cliente através do painel do Paddle, o Cashier receberá o webhook correspondente e marcará a assinatura como "cancelada" no banco de dados da sua aplicação.
+::: info NOTA
+Contanto que você tenha configurado o tratamento de webhook do Cashier, o Cashier manterá automaticamente as tabelas de banco de dados relacionadas ao Cashier do seu aplicativo em sincronia, inspecionando os webhooks de entrada do Paddle. Então, por exemplo, quando você cancela a assinatura de um cliente por meio do painel do Paddle, o Cashier receberá o webhook correspondente e marcará a assinatura como "cancelada" no banco de dados do seu aplicativo.
+:::
 
 <a name="checkout-sessions"></a>
-## Check-out Sessões
+## Sessões de Checkout
 
-A maioria das operações de cobrança ao cliente são realizadas usando "checkouts" via Paddle's [Checkout Overlay widget](https://developer.paddle.com/build/checkout/build-overlay-checkout) ou por meio da utilização de  [inline checkout](https://developer.paddle.com/build/checkout/build-branded-inline-checkout).
+A maioria das operações para faturar clientes é realizada usando "checkouts" via [widget Checkout Overlay](https://developer.paddle.com/build/checkout/build-overlay-checkout) do Paddle ou utilizando [checkout inline](https://developer.paddle.com/build/checkout/build-branded-inline-checkout).
 
-Antes de processar os pagamentos do checkout usando Paddle, você deve definir o [link padrão da pagamento](https://developer.paddle.com/build/transactions/default-payment-link#set-default-link) da sua aplicação em sua página do painel de configurações do checkout.
+Antes de processar pagamentos de checkout usando o Paddle, você deve definir o [link de pagamento padrão](https://developer.paddle.com/build/transactions/default-payment-link#set-default-link) do seu aplicativo no painel de configurações de checkout do Paddle.
 
 <a name="overlay-checkout"></a>
-### Checkout com sobreposição
+### Checkout Overlay
 
-Antes de exibir o widget Checkout Overlay, você precisa gerar uma sessão de checkout usando o Cashier. Uma sessão de checkout informará o widget de checkout sobre a operação de faturamento que deve ser executada:
+Antes de exibir o widget Checkout Overlay, você deve gerar uma sessão de checkout usando o Cashier. Uma sessão de checkout informará o widget de checkout sobre a operação de cobrança que deve ser realizada:
 
 ```php
     use Illuminate\Http\Request;
@@ -411,7 +417,7 @@ Antes de exibir o widget Checkout Overlay, você precisa gerar uma sessão de ch
     });
 ```
 
-Caixa inclui um botão "Paddle" [componente da lâmina]/. Você pode passar a sessão de checkout para este componente como uma "prop". Então, quando esse botão é clicado, o widget de checkout do Paddle será exibido:
+O caixa inclui um `paddle-button` [componente Blade](/docs/blade#components). Você pode passar a sessão de checkout para este componente como um "prop". Então, quando este botão for clicado, o widget de checkout do Paddle será exibido:
 
 ```html
 <x-paddle-button :checkout="$checkout" class="px-8 py-4">
@@ -419,7 +425,7 @@ Caixa inclui um botão "Paddle" [componente da lâmina]/. Você pode passar a se
 </x-paddle-button>
 ```
 
-Por padrão, isso exibirá o widget usando o estilo padrão do Paddle. Você pode personalizar o widget adicionando atributos suportados pelo Paddle como o atributo 'data-theme=light' ao componente:
+Por padrão, isso exibirá o widget usando o estilo padrão do Paddle. Você pode personalizar o widget adicionando [atributos suportados pelo Paddle](https://developer.paddle.com/paddlejs/html-data-attributes) como o atributo `data-theme='light'` ao componente:
 
 ```html
 <x-paddle-button :url="$payLink" class="px-8 py-4" data-theme="light">
@@ -427,15 +433,16 @@ Por padrão, isso exibirá o widget usando o estilo padrão do Paddle. Você pod
 </x-paddle-button>
 ```
 
-O check out do paddle é asincrono. Uma vez que o usuário cria uma assinatura dentro do widget, o paddle enviará seu aplicativo um webhook para atualizar a assinatura no banco de dados do aplicativo. Portanto, é importante configurar corretamente [webhooks do paddle](# lidando com webhooks) para acomodar alterações de estado do paddle.
+O widget de checkout do Paddle é assíncrono. Depois que o usuário cria uma assinatura dentro do widget, o Paddle enviará um webhook ao seu aplicativo para que você possa atualizar corretamente o estado da assinatura no banco de dados do seu aplicativo. Portanto, é importante que você [configure os webhooks](#handling-paddle-webhooks) corretamente para acomodar as mudanças de estado do Paddle.
 
-> [Aviso!]
-> Após uma alteração no estado da assinatura, o atraso para receber o webhook correspondente é tipicamente mínimo mas você deve considerar isso em sua aplicação por considerar que a assinatura do seu usuário não pode estar imediatamente disponível após completar o checkout.
+::: warning AVISO
+Após uma mudança de estado da assinatura, o atraso para receber o webhook correspondente é normalmente mínimo, mas você deve levar isso em conta no seu aplicativo, considerando que a assinatura do seu usuário pode não estar imediatamente disponível após a conclusão do checkout.
+:::
 
 <a name="manually-rendering-an-overlay-checkout"></a>
-#### Renderizando manualmente um Overlay Checkout
+#### Renderizando manualmente um checkout de sobreposição
 
-Você também pode renderizar manualmente uma sobreposição de checkout sem usar os componentes Blade internos do Laravel. Para começar, gere a sessão de checkout [como mostrado nos exemplos anteriores](#overlay-checkout):
+Você também pode renderizar manualmente um checkout de sobreposição sem usar os componentes Blade integrados do Laravel. Para começar, gere a sessão de checkout [conforme demonstrado nos exemplos anteriores](#overlay-checkout):
 
 ```php
     use Illuminate\Http\Request;
@@ -448,7 +455,7 @@ Você também pode renderizar manualmente uma sobreposição de checkout sem usa
     });
 ```
 
-A seguir, você pode usar Paddle.js para inicializar o checkout. Neste exemplo, criaremos um link com a classe 'paddle_button'. O Paddle.js irá detectar esta classe e mostrará uma sobreposição de checkout quando o link for clicado:
+Em seguida, você pode usar o Paddle.js para inicializar o checkout. Neste exemplo, criaremos um link que é atribuído à classe `paddle_button`. O Paddle.js detectará essa classe e exibirá o checkout de sobreposição quando o link for clicado:
 
 ```blade
 <?php
@@ -470,11 +477,11 @@ $custom = $checkout->getCustomData();
 ```
 
 <a name="inline-checkout"></a>
-### Comprar Agora
+### Checkout em linha
 
-Se você não quiser usar o "overlay" do Paddle checkout widget, ele também fornece a opção de exibir o widget embutido na página da loja. Embora esta abordagem não permita ajustar os campos HTML do checkout, ela permite que você embuta o widget no seu aplicativo.
+Se você não quiser usar o widget de checkout estilo "overlay" do Paddle, o Paddle também fornece a opção de exibir o widget em linha. Embora essa abordagem não permita que você ajuste nenhum dos campos HTML do checkout, ela permite que você incorpore o widget em seu aplicativo.
 
-Para facilitar o início com o pagamento de rodapé, o Caixeiro inclui um componente "Blade" chamado "Paddle Checkout". Para começar, você deve [gerar uma sessão de checkout](#overlay-checkout):
+Para facilitar o início do checkout em linha, o Cashier inclui um componente Blade `paddle-checkout`. Para começar, você deve [gerar uma sessão de checkout](#overlay-checkout):
 
 ```php
     use Illuminate\Http\Request;
@@ -487,7 +494,7 @@ Para facilitar o início com o pagamento de rodapé, o Caixeiro inclui um compon
     });
 ```
 
-Então, você pode passar a sessão de check-out para o atributo 'checkout' do componente:
+Então, você pode passar a sessão de checkout para o atributo `checkout` do componente:
 
 ```blade
 <x-paddle-checkout :checkout="$checkout" class="w-full" />
@@ -499,12 +506,12 @@ Para ajustar a altura do componente de checkout em linha, você pode passar o at
 <x-paddle-checkout :checkout="$checkout" class="w-full" height="500" />
 ```
 
-Para mais detalhes sobre as opções de personalização do Checkout Inline, por favor consulte o [Guia do Paddle para Checkout Inline](https://developer.paddle.com/build/checkout/build-branded-inline-checkout) e o [Configurações disponíveis para Checkout](https://developer.paddle.com/build/checkout/set-up-checkout-default-settings).
+Consulte o [guia sobre checkout em linha](https://developer.paddle.com/build/checkout/build-branded-inline-checkout) e as [configurações de checkout disponíveis](https://developer.paddle.com/build/checkout/set-up-checkout-default-settings) do Paddle para obter mais detalhes sobre as opções de personalização do checkout em linha.
 
 <a name="manually-rendering-an-inline-checkout"></a>
-#### Renderização manual de um checkout inline
+#### Renderizando manualmente um checkout em linha
 
-Você também pode renderizar manualmente um checkout embutido sem usar componentes pré-construídos de Laravel. Para começar, gere a sessão do checkout [como demonstrado nos exemplos anteriores](#checkout-embutido):
+Você também pode renderizar manualmente um checkout em linha sem usar os componentes Blade integrados do Laravel. Para começar, gere a sessão de checkout [conforme demonstrado nos exemplos anteriores](#inline-checkout):
 
 ```php
     use Illuminate\Http\Request;
@@ -517,7 +524,7 @@ Você também pode renderizar manualmente um checkout embutido sem usar componen
     });
 ```
 
-Em seguida, você pode usar o Paddle.js para inicializar o checkout. Neste exemplo, vamos demonstrar isso usando [Alpine.js](https://github.com/alpinejs/alpine); no entanto, você é livre para modificar este exemplo para sua própria pilha de front-end:
+Em seguida, você pode usar Paddle.js para inicializar o checkout. Neste exemplo, demonstraremos isso usando [Alpine.js](https://github.com/alpinejs/alpine); no entanto, você está livre para modificar este exemplo para sua própria pilha de frontend:
 
 ```blade
 <?php
@@ -534,9 +541,9 @@ $options['settings']['frameInitialHeight'] = 366;
 ```
 
 <a name="guest-checkouts"></a>
-### Sair com o hóspede
+### Checkouts de convidados
 
-Às vezes, você pode precisar criar uma sessão de checkout para usuários que não necessitam de um perfil com seu aplicativo. Para tanto, você pode usar o método `guest`:
+Às vezes, pode ser necessário criar uma sessão de checkout para usuários que não precisam de uma conta com seu aplicativo. Para fazer isso, você pode usar o método `guest`:
 
 ```php
     use Illuminate\Http\Request;
@@ -550,12 +557,12 @@ $options['settings']['frameInitialHeight'] = 366;
     });
 ```
 
-Então você pode fornecer a sessão de checkout para o componente da lâmina [Paddle button](#overlay-checkout) ou [inline checkout](#inline-checkout).
+Então, você pode fornecer a sessão de checkout para os componentes [botão Paddle](#overlay-checkout) ou [checkout inline](#inline-checkout) Blade.
 
 <a name="price-previews"></a>
-## Previsões de Preços
+## Prévias de preço
 
-O Paddle permite que você personalize os preços por moeda, essencialmente permitindo que você configure diferentes preços para diferentes países. O caixa do Paddle permite que você recupere todos esses preços usando o método "previewPrices". Este método aceita os IDs de preço que você deseja recuperar os preços para:
+O Paddle permite que você personalize preços por moeda, essencialmente permitindo que você configure preços diferentes para países diferentes. O Cashier Paddle permite que você recupere todos esses preços usando o método `previewPrices`. Este método aceita os IDs de preço para os quais você deseja recuperar preços:
 
 ```php
     use Laravel\Paddle\Cashier;
@@ -563,7 +570,7 @@ O Paddle permite que você personalize os preços por moeda, essencialmente perm
     $prices = Cashier::previewPrices(['pri_123', 'pri_456']);
 ```
 
-A moeda será determinada com base no endereço IP da solicitação; no entanto, você pode fornecer de forma opcional um país específico para obter os preços:
+A moeda será determinada com base no endereço IP da solicitação; no entanto, você pode opcionalmente fornecer um país específico para recuperar preços para:
 
 ```php
     use Laravel\Paddle\Cashier;
@@ -574,7 +581,7 @@ A moeda será determinada com base no endereço IP da solicitação; no entanto,
     ]]);
 ```
 
-Depois de obter os preços, você pode mostrá-los como quiser.
+Após recuperar os preços, você pode exibi-los como desejar:
 
 ```blade
 <ul>
@@ -584,7 +591,7 @@ Depois de obter os preços, você pode mostrá-los como quiser.
 </ul>
 ```
 
-Você pode também exibir o preço parcial e o valor do imposto separadamente:
+Você também pode exibir o preço do subtotal e o valor do imposto separadamente:
 
 ```blade
 <ul>
@@ -594,12 +601,12 @@ Você pode também exibir o preço parcial e o valor do imposto separadamente:
 </ul>
 ```
 
-Para mais informações, [verifique a documentação da API do Paddle sobre preço de pré-visualização](https://developer.paddle.com/api-reference/pricing-preview/preview-prices).
+Para mais informações, [confira a documentação da API do Paddle sobre as prévias de preços](https://developer.paddle.com/api-reference/pricing-preview/preview-prices).
 
 <a name="customer-price-previews"></a>
-### Preços de clientes à vista
+### Prévias de preços do cliente
 
-Se um usuário já for um cliente e você gostaria de exibir os preços que se aplicam a esse cliente, pode fazê-lo recuperando os preços diretamente da instância do cliente.
+Se um usuário já for um cliente e você quiser exibir os preços que se aplicam a esse cliente, você pode fazer isso recuperando os preços diretamente da instância do cliente:
 
 ```php
     use App\Models\User;
@@ -607,12 +614,12 @@ Se um usuário já for um cliente e você gostaria de exibir os preços que se a
     $prices = User::find(1)->previewPrices(['pri_123', 'pri_456']);
 ```
 
-Internamente, o caixa usará o ID do cliente para recuperar os preços em sua moeda. Por exemplo, um usuário que mora nos Estados Unidos verá os preços em dólares americanos enquanto um usuário na Bélgica verá os preços em euros. Se nenhuma moeda correspondente puder ser encontrada, a moeda padrão do produto será usada. Você pode personalizar todos os preços de um produto ou plano de assinatura no painel de controle da Paddle.
+Internamente, o Cashier usará o ID do cliente do usuário para recuperar os preços em sua moeda. Então, por exemplo, um usuário que mora nos Estados Unidos verá os preços em dólares americanos, enquanto um usuário na Bélgica verá os preços em euros. Se nenhuma moeda correspondente for encontrada, a moeda padrão do produto será usada. Você pode personalizar todos os preços de um produto ou plano de assinatura no painel de controle do Paddle.
 
 <a name="price-discounts"></a>
 ### Descontos
 
-Você também pode optar por exibir os preços após um desconto. Ao chamar o método `previewPrices`, você fornece a ID do desconto usando o parâmetro "discount_id":
+Você também pode escolher exibir os preços após um desconto. Ao chamar o método `previewPrices`, você fornece o ID do desconto por meio da opção `discount_id`:
 
 ```php
     use Laravel\Paddle\Cashier;
@@ -622,7 +629,7 @@ Você também pode optar por exibir os preços após um desconto. Ao chamar o m�
     ]);
 ```
 
-Então, mostre os preços calculados:
+Então, exiba os preços calculados:
 
 ```blade
 <ul>
@@ -636,13 +643,13 @@ Então, mostre os preços calculados:
 ## Clientes
 
 <a name="customer-defaults"></a>
-### Cliente em falta
+### Padrões do cliente
 
-O Cashier permite que você defina alguns valores padrão para seus clientes ao criar sessões de checkout. Ao definir esses padrões, o endereço e o nome do cliente são preenchidos automaticamente para permitir uma transição rápida para a etapa de pagamento do widget de checkout. Você pode definir esses padrões sobrescrevendo os seguintes métodos no seu modelo cobrável:
+O Cashier permite que você defina alguns padrões úteis para seus clientes ao criar sessões de checkout. Definir esses padrões permite que você preencha previamente o endereço de e-mail e o nome de um cliente para que ele possa passar imediatamente para a parte de pagamento do widget de checkout. Você pode definir esses padrões substituindo os seguintes métodos em seu modelo faturável:
 
 ```php
     /**
-     * Get the customer's name to associate with Paddle.
+     * Obtenha o nome do cliente para associar ao Paddle.
      */
     public function paddleName(): string|null
     {
@@ -650,7 +657,7 @@ O Cashier permite que você defina alguns valores padrão para seus clientes ao 
     }
 
     /**
-     * Get the customer's email address to associate with Paddle.
+     * Obtenha o endereço de e-mail do cliente para associar ao Paddle.
      */
     public function paddleEmail(): string|null
     {
@@ -658,12 +665,12 @@ O Cashier permite que você defina alguns valores padrão para seus clientes ao 
     }
 ```
 
-Estes padrões serão usados para cada ação no Caixa que gera um [sessão de checkout](#sessao-de-checkout).
+Esses padrões serão usados ​​para cada ação no Cashier que gera uma [sessão de checkout](#checkout-sessions).
 
 <a name="retrieving-customers"></a>
-### Recuperando Clientes
+### Recuperando clientes
 
-Você pode recuperar um cliente pelo seu ID do Paddle usando o método `Cashier::findBillable`. Este método retornará uma instância do modelo faturável:
+Você pode recuperar um cliente pelo ID do cliente Paddle usando o método `Cashier::findBillable`. Este método retornará uma instância do modelo faturável:
 
 ```php
     use Laravel\Cashier\Cashier;
@@ -672,15 +679,15 @@ Você pode recuperar um cliente pelo seu ID do Paddle usando o método `Cashier:
 ```
 
 <a name="creating-customers"></a>
-### Criando Clientes
+### Criando clientes
 
-Ocasionalmente, você pode desejar criar um cliente Paddle sem iniciar uma assinatura. Você pode realizar isso usando o método `createAsCustomer`:
+Ocasionalmente, você pode desejar criar um cliente Paddle sem iniciar uma assinatura. Você pode fazer isso usando o método `createAsCustomer`:
 
 ```php
     $customer = $user->createAsCustomer();
 ```
 
-Uma instância de 'Laravel\Paddle\Customer' é retornada. Uma vez que o cliente tenha sido criado no Paddle, você pode começar uma assinatura em uma data posterior. Você pode fornecer um array opcional `$options` para passar quaisquer parâmetros adicionais [da criação do cliente compatíveis com a API do Paddle](https://developer.paddle.com/api-reference/customers/create-customer):
+Uma instância de `Laravel\Paddle\Customer` é retornada. Depois que o cliente for criado no Paddle, você pode iniciar uma assinatura em uma data posterior. Você pode fornecer um array opcional `$options` para passar quaisquer [parâmetros de criação de clientes adicionais que sejam suportados pela API Paddle](https://developer.paddle.com/api-reference/customers/create-customer):
 
 ```php
     $customer = $user->createAsCustomer($options);
@@ -692,7 +699,7 @@ Uma instância de 'Laravel\Paddle\Customer' é retornada. Uma vez que o cliente 
 <a name="creating-subscriptions"></a>
 ### Criando Assinaturas
 
-Para criar uma assinatura, primeiro recupere um instância do seu modelo faturável a partir do seu banco de dados, que normalmente será um instância de “App\Models\User”. Depois de recuperar o modelo, você pode usar o método “subscribe” para criar a sessão de checkout do modelo.
+Para criar uma assinatura, primeiro recupere uma instância do seu modelo faturável do seu banco de dados, que normalmente será uma instância de `App\Models\User`. Depois de recuperar a instância do modelo, você pode usar o método `subscribe` para criar a sessão de checkout do modelo:
 
 ```php
     use Illuminate\Http\Request;
@@ -705,9 +712,9 @@ Para criar uma assinatura, primeiro recupere um instância do seu modelo faturá
     });
 ```
 
-O primeiro argumento dado ao método "subscribe" é o preço específico pelo qual o usuário está se inscrevendo. Este valor deve corresponder à identificação do preço no Paddle. O método "returnTo" aceita uma URL a que seu usuário será redirecionado após concluir com sucesso o checkout. O segundo argumento passado para o método "subscribe" deve ser o tipo interno de assinatura. Se seu aplicativo oferece apenas uma assinatura, você pode chamá-lo de "padrao" ou "principal". Este tipo de assinatura é apenas para uso interno do aplicativo e não deve ser exibido aos usuários. Além disso, ele não deve conter espaços e nunca deve ser alterado após a criação da assinatura.
+O primeiro argumento fornecido ao método `subscribe` é o preço específico que o usuário está assinando. Este valor deve corresponder ao identificador do preço no Paddle. O método `returnTo` aceita uma URL para a qual seu usuário será redirecionado após concluir com sucesso o checkout. O segundo argumento passado para o método `subscribe` deve ser o "tipo" interno da assinatura. Se seu aplicativo oferecer apenas uma única assinatura, você pode chamar isso de `default` ou `primary`. Este tipo de assinatura é apenas para uso interno do aplicativo e não deve ser exibido aos usuários. Além disso, ele não deve conter espaços e nunca deve ser alterado após a criação da assinatura.
 
-Você também pode fornecer uma matriz de metadados personalizados em relação à assinatura usando o método `customData`:
+Você também pode fornecer uma matriz de metadados personalizados sobre a assinatura usando o método `customData`:
 
 ```php
     $checkout = $request->user()->subscribe($premium = 12345, 'default')
@@ -715,7 +722,7 @@ Você também pode fornecer uma matriz de metadados personalizados em relação 
         ->returnTo(route('home'));
 ```
 
-Uma vez que uma sessão de checkout tenha sido criada, ela pode ser fornecida ao botão "paga-botão" [componente do Blade] que é incluído com o Cashier Paddle.
+Depois que uma sessão de checkout de assinatura for criada, a sessão de checkout pode ser fornecida ao `paddle-button` [componente Blade](#overlay-checkout) que está incluído no Cashier Paddle:
 
 ```blade
 <x-paddle-button :checkout="$checkout" class="px-8 py-4">
@@ -723,12 +730,12 @@ Uma vez que uma sessão de checkout tenha sido criada, ela pode ser fornecida ao
 </x-paddle-button>
 ```
 
-Após o usuário concluir sua compra, a plataforma Paddle enviará um webhook “subscription_created”. O Cashier receberá este webhook e configurará a assinatura do cliente. Para garantir que todos os webhooks sejam adequadamente recebidos e processados pelo seu aplicativo, certifique-se de configurar corretamente [a manipulação de webhooks da Paddle](#manipulacao-de-webhooks-da-paddle).
+Após o usuário concluir o checkout, um webhook `subscription_created` será despachado do Paddle. O caixa receberá este webhook e configurará a assinatura para seu cliente. Para garantir que todos os webhooks sejam recebidos e manipulados adequadamente por seu aplicativo, certifique-se de ter [configurado o manuseio do webhook](#handling-paddle-webhooks) adequadamente.
 
 <a name="checking-subscription-status"></a>
-### Verificando status de assinatura.
+### Verificando o status da assinatura
 
-Uma vez que um usuário está inscrito em seu aplicativo, você pode verificar seu estado de inscrição usando uma variedade de métodos convenientes. Primeiro, o método " subscribed" retorna 'verdadeiro' se o usuário tiver uma assinatura válida, mesmo que a assinatura esteja atualmente em período de teste:
+Depois que um usuário é inscrito em seu aplicativo, você pode verificar o status da assinatura usando uma variedade de métodos convenientes. Primeiro, o método `subscribed` retorna `true` se o usuário tiver uma assinatura válida, mesmo que a assinatura esteja atualmente dentro do período de teste:
 
 ```php
     if ($user->subscribed()) {
@@ -736,7 +743,7 @@ Uma vez que um usuário está inscrito em seu aplicativo, você pode verificar s
     }
 ```
 
-Se seu aplicativo oferece múltiplas assinaturas, você pode especificar a assinatura ao invocar o método 'assinado':
+Se seu aplicativo oferece várias assinaturas, você pode especificar a assinatura ao invocar o método `subscribed`:
 
 ```php
     if ($user->subscribed('default')) {
@@ -744,7 +751,7 @@ Se seu aplicativo oferece múltiplas assinaturas, você pode especificar a assin
     }
 ```
 
-O método 'subscribed' também é uma excelente candidata para um [roteiro middleware](/docs/{{version}}/middleware), permitindo filtrar o acesso aos roteiros e controladores com base no estado de assinatura do usuário:
+O método `subscribed` também é um ótimo candidato para um [middleware de rota](/docs/middleware), permitindo que você filtre o acesso a rotas e controladores com base no status da assinatura do usuário:
 
 ```php
     <?php
@@ -758,14 +765,14 @@ O método 'subscribed' também é uma excelente candidata para um [roteiro middl
     class EnsureUserIsSubscribed
     {
         /**
-         * Handle an incoming request.
+         * Lidar com uma solicitação recebida.
          *
          * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
          */
         public function handle(Request $request, Closure $next): Response
         {
             if ($request->user() && ! $request->user()->subscribed()) {
-                // This user is not a paying customer...
+                // Este usuário não é um cliente pagante...
                 return redirect('billing');
             }
 
@@ -774,7 +781,7 @@ O método 'subscribed' também é uma excelente candidata para um [roteiro middl
     }
 ```
 
-Se você gostaria de determinar se um usuário ainda está em seu período experimental, você pode usar o método ``onTrial``. Este método pode ser útil para determinar se você deve exibir uma mensagem de aviso para o usuário que eles ainda estão em seu período experimental:
+Se você quiser determinar se um usuário ainda está dentro do período de teste, você pode usar o método `onTrial`. Este método pode ser útil para determinar se você deve exibir um aviso ao usuário de que ele ainda está no período de teste:
 
 ```php
     if ($user->subscription()->onTrial()) {
@@ -782,7 +789,7 @@ Se você gostaria de determinar se um usuário ainda está em seu período exper
     }
 ```
 
-O método `subscribedToPrice` pode ser usado para determinar se o usuário está subscrito a um plano específico com base em uma determinada identificação de preço do Paddle. Neste exemplo, vamos determinar se a assinatura padrão do usuário está ativa e subscrita ao preço mensal:
+O método `subscribedToPrice` pode ser usado para determinar se o usuário está inscrito em um determinado plano com base em um determinado ID de preço do Paddle. Neste exemplo, determinaremos se a assinatura `default` do usuário está ativamente inscrita no preço mensal:
 
 ```php
     if ($user->subscribedToPrice($monthly = 'pri_123', 'default')) {
@@ -790,7 +797,7 @@ O método `subscribedToPrice` pode ser usado para determinar se o usuário está
     }
 ```
 
-O método "recurring" pode ser usado para determinar se o usuário está atualmente com uma assinatura ativa e não mais dentro de seu período de teste ou período de carência.
+O método `recurring` pode ser usado para determinar se o usuário está atualmente em uma assinatura ativa e não está mais em seu período de teste ou em um período de carência:
 
 ```php
     if ($user->subscription()->recurring()) {
@@ -799,9 +806,9 @@ O método "recurring" pode ser usado para determinar se o usuário está atualme
 ```
 
 <a name="canceled-subscription-status"></a>
-#### Status de Assinatura Cancelada
+#### Status de assinatura cancelada
 
-Para determinar se o usuário era uma vez um assinante ativo mas cancelou sua assinatura, você pode usar o método `cancelado`:
+Para determinar se o usuário já foi um assinante ativo, mas cancelou sua assinatura, você pode usar o método `canceled`:
 
 ```php
     if ($user->subscription()->canceled()) {
@@ -809,7 +816,7 @@ Para determinar se o usuário era uma vez um assinante ativo mas cancelou sua as
     }
 ```
 
-Você também pode determinar se um usuário cancelou a assinatura, mas ainda está no seu "período de carência" até que a assinatura expire totalmente. Por exemplo, se um usuário cancelar uma assinatura em 5 de março que foi originalmente programado para expirar em 10 de março, o usuário está no seu "período de carência" até 10 de março. Além disso, o `assinado` método ainda retornará verdadeiro durante esse tempo:
+Você também pode determinar se um usuário cancelou sua assinatura, mas ainda está em seu "período de carência" até que a assinatura expire completamente. Por exemplo, se um usuário cancelar uma assinatura em 5 de março que estava originalmente programada para expirar em 10 de março, o usuário estará em seu "período de carência" até 10 de março. Além disso, o método `subscribed` ainda retornará `true` durante esse período:
 
 ```php
     if ($user->subscription()->onGracePeriod()) {
@@ -818,9 +825,9 @@ Você também pode determinar se um usuário cancelou a assinatura, mas ainda es
 ```
 
 <a name="past-due-status"></a>
-#### Status de pagamento atrasado
+#### Status de vencido
 
-Se uma assinatura falhar para uma cobrança, ela será marcada como 'passado o prazo'. Quando sua assinatura está nesse estado, ele não estará ativo até que o cliente tenha atualizado suas informações de pagamento. Você pode determinar se uma assinatura está atrasada usando o método 'pastDue' na instância da assinatura:
+Se um pagamento falhar para uma assinatura, ele será marcado como `past_due`. Quando sua assinatura estiver neste estado, ela não estará ativa até que o cliente atualize suas informações de pagamento. Você pode determinar se uma assinatura está vencida usando o método `pastDue` na instância da assinatura:
 
 ```php
     if ($user->subscription()->pastDue()) {
@@ -828,15 +835,15 @@ Se uma assinatura falhar para uma cobrança, ela será marcada como 'passado o p
     }
 ```
 
-Quando um usuário tem uma assinatura atrasada, você deve instruí-lo a [atualizar suas informações de pagamento](#atualizando-informações-de-pagamento).
+Quando uma assinatura está vencida, você deve instruir o usuário a [atualizar suas informações de pagamento](#updating-payment-information).
 
-Se você quiser que as assinaturas ainda sejam consideradas válidas quando estão "pagas", você pode usar o método `keepPastDueSubscriptionsActive` fornecido peloCashier. Normalmente, este método deve ser chamado no método `register` de sua `AppServiceProvider`:
+Se você quiser que as assinaturas ainda sejam consideradas válidas quando estiverem `past_due`, você pode usar o método `keepPastDueSubscriptionsActive` fornecido pelo Cashier. Normalmente, esse método deve ser chamado no método `register` do seu `AppServiceProvider`:
 
 ```php
     use Laravel\Paddle\Cashier;
 
     /**
-     * Register any application services.
+     * Registre quaisquer serviços de aplicação.
      */
     public function register(): void
     {
@@ -844,23 +851,24 @@ Se você quiser que as assinaturas ainda sejam consideradas válidas quando est�
     }
 ```
 
-> [Aviso]
-> Quando uma assinatura está em um estado "past-due", não pode ser alterada até que as informações de pagamento sejam atualizadas. Portanto, os métodos 'swap' e 'updateQuantity' lançam uma exceção quando a assinatura está em um estado "past-due".
+::: warning ATENÇÃO
+Quando uma assinatura está em um estado `past_due`, ela não pode ser alterada até que as informações de pagamento sejam atualizadas. Portanto, os métodos `swap` e `updateQuantity` lançarão uma exceção quando a assinatura estiver em um estado `past_due`.
+:::
 
 <a name="subscription-scopes"></a>
-#### Assinaturas de escopos
+#### Escopos de assinatura
 
-A maioria dos estados de assinatura também estão disponíveis como escopos de consulta para que você possa facilmente consultar seu banco de dados para assinaturas que são em um determinado estado.
+A maioria dos estados de assinatura também estão disponíveis como escopos de consulta para que você possa consultar facilmente seu banco de dados para assinaturas que estão em um determinado estado:
 
 ```php
-    // Get all valid subscriptions...
+    // Obtenha todas as assinaturas válidas...
     $subscriptions = Subscription::query()->valid()->get();
 
-    // Get all of the canceled subscriptions for a user...
+    // Obtenha todas as assinaturas canceladas de um usuário...
     $subscriptions = $user->subscriptions()->canceled()->get();
 ```
 
-Uma lista completa de escopos disponíveis está disponível abaixo.
+Uma lista completa de escopos disponíveis está disponível abaixo:
 
 ```php
     Subscription::query()->valid();
@@ -881,28 +889,28 @@ Uma lista completa de escopos disponíveis está disponível abaixo.
 ```
 
 <a name="subscription-single-charges"></a>
-### Assinaturas Únicas de Carga
+### Cobranças únicas de assinatura
 
-Cargas de assinatura permitem que você carregue assinantes com uma cobrança única, além de suas assinaturas. Você deve fornecer um ou vários IDs de preço ao invocar o método 'carga':
+As cobranças únicas de assinatura permitem que você cobre dos assinantes uma cobrança única sobre suas assinaturas. Você deve fornecer um ou vários IDs de preço ao invocar o método `charge`:
 
 ```php
-    // Charge a single price...
+    // Cobrar um preço único...
     $response = $user->subscription()->charge('pri_123');
 
-    // Charge multiple prices at once...
+    // Cobrar vários preços de uma só vez...
     $response = $user->subscription()->charge(['pri_123', 'pri_456']);
 ```
 
-O método 'charge' não vai realmente cobrar o cliente até que o próximo intervalo de cobrança da sua assinatura. Se você quer faturar o cliente imediatamente, você pode usar o método 'chargeAndInvoice' em vez disso:
+O método `charge` não cobrará realmente o cliente até o próximo intervalo de cobrança de sua assinatura. Se você quiser cobrar o cliente imediatamente, você pode usar o método `chargeAndInvoice` em vez disso:
 
 ```php
     $response = $user->subscription()->chargeAndInvoice('pri_123');
 ```
 
 <a name="updating-payment-information"></a>
-### Atualização de informações de pagamento
+### Atualizando informações de pagamento
 
-O pagamento sempre salva um método de pagamento por assinatura. Se você quiser atualizar o método de pagamento padrão para uma assinatura, você deve redirecionar o cliente para a página de atualização do método de pagamento hospedado usando o `redirectToUpdatePaymentMethod` na assinatura do modelo:
+O Paddle sempre salva um método de pagamento por assinatura. Se você quiser atualizar o método de pagamento padrão para uma assinatura, você deve redirecionar seu cliente para a página de atualização do método de pagamento hospedado do Paddle usando o método `redirectToUpdatePaymentMethod` no modelo de assinatura:
 
 ```php
     use Illuminate\Http\Request;
@@ -914,12 +922,12 @@ O pagamento sempre salva um método de pagamento por assinatura. Se você quiser
     });
 ```
 
-Quando um usuário tem terminado de atualizar as suas informações, uma webhook 'subscription_updated' será enviada pelo Paddle e os detalhes da assinatura serão atualizados no seu banco de dados.
+Quando um usuário terminar de atualizar suas informações, um webhook `subscription_updated` será despachado pelo Paddle e os detalhes da assinatura serão atualizados no banco de dados do seu aplicativo.
 
 <a name="changing-plans"></a>
-### Mudando de planos
+### Alterando Planos
 
-Depois que o usuário se inscrever em seu aplicativo, eles podem ocasionalmente querer trocar para um novo plano de assinatura. Para atualizar o plano de assinatura de um usuário, você deve passar a identificação do preço da Paddle para o método 'swap' da assinatura:
+Depois que um usuário assina seu aplicativo, ele pode ocasionalmente querer mudar para um novo plano de assinatura. Para atualizar o plano de assinatura de um usuário, você deve passar o identificador do preço do Paddle para o método `swap` da assinatura:
 
 ```php
     use App\Models\User;
@@ -929,7 +937,7 @@ Depois que o usuário se inscrever em seu aplicativo, eles podem ocasionalmente 
     $user->subscription()->swap($premium = 'pri_456');
 ```
 
-Se você gostaria de trocar planos e imediatamente faturar o usuário em vez de esperar por seu próximo ciclo de cobrança, você pode usar o método `swapAndInvoice`:
+Se você quiser trocar de plano e faturar o usuário imediatamente em vez de esperar pelo próximo ciclo de cobrança, você pode usar o método `swapAndInvoice`:
 
 ```php
     $user = User::find(1);
@@ -938,63 +946,63 @@ Se você gostaria de trocar planos e imediatamente faturar o usuário em vez de 
 ```
 
 <a name="prorations"></a>
-#### Ressarcimentos
+#### Prorrateios
 
-Por padrão, o Paddle repõe as cobranças quando se passa de um plano para outro. O método 'noProrate' pode ser usado para atualizar as assinaturas sem repassar as cobranças:
+Por padrão, o Paddle rateia as cobranças ao alternar entre planos. O método `noProrate` pode ser usado para atualizar as assinaturas sem ratear as cobranças:
 
 ```php
     $user->subscription('default')->noProrate()->swap($premium = 'pri_456');
 ```
 
-Se você quiser desativar a proração e faturar os clientes imediatamente, você pode usar o método 'swapAndInvoice' em combinação com 'noProrate':
+Se você quiser desabilitar o rateio e faturar os clientes imediatamente, você pode usar o método `swapAndInvoice` em combinação com `noProrate`:
 
 ```php
     $user->subscription('default')->noProrate()->swapAndInvoice($premium = 'pri_456');
 ```
 
-Ou, para não faturar ao cliente por uma alteração de assinatura, você pode utilizar o método `doNotBill`:
+Ou, para não cobrar seu cliente por uma alteração de assinatura, você pode utilizar o método `doNotBill`:
 
 ```php
     $user->subscription('default')->doNotBill()->swap($premium = 'pri_456');
 ```
 
-Para mais informações sobre as políticas de proração do Paddle, veja a documentação da proração do [prorazamento] (https://desenvolvedor.paddle.com/Conceitos/assinaturas/proração) .
+Para mais informações sobre as políticas de rateio do Paddle, consulte a [documentação de rateio](https://developer.paddle.com/concepts/subscriptions/proration) do Paddle.
 
 <a name="subscription-quantity"></a>
-### Quantidade de Assinatura
+### Quantidade de assinatura
 
-Às vezes as assinaturas são afetadas pela "quantidade". Por exemplo, um aplicativo de gerenciamento de projetos pode cobrar $ 10 por mês por projeto. Para incrementar ou decrementar facilmente a quantidade da sua assinatura, use os métodos `incrementQuantity` e `decrementQuantity`:
+Às vezes, as assinaturas são afetadas pela "quantidade". Por exemplo, um aplicativo de gerenciamento de projetos pode cobrar US$ 10 por mês por projeto. Para aumentar ou diminuir facilmente a quantidade da sua assinatura, use os métodos `incrementQuantity` e `decrementQuantity`:
 
 ```php
     $user = User::find(1);
 
     $user->subscription()->incrementQuantity();
 
-    // Add five to the subscription's current quantity...
+    // Adicione cinco à quantidade atual da assinatura...
     $user->subscription()->incrementQuantity(5);
 
     $user->subscription()->decrementQuantity();
 
-    // Subtract five from the subscription's current quantity...
+    // Subtraia cinco da quantidade atual da assinatura...
     $user->subscription()->decrementQuantity(5);
 ```
 
-Alternativamente, você pode definir uma quantidade específica usando o método 'updateQuantity':
+Alternativamente, você pode definir uma quantidade específica usando o método `updateQuantity`:
 
 ```php
     $user->subscription()->updateQuantity(10);
 ```
 
-O método 'noProrate' pode ser usado para atualizar a quantidade da assinatura sem prorratar as cobranças:
+O método `noProrate` pode ser usado para atualizar a quantidade da assinatura sem ratear as cobranças:
 
 ```php
     $user->subscription()->noProrate()->updateQuantity(10);
 ```
 
 <a name="quantities-for-subscription-with-multiple-products"></a>
-#### Quantidades para Assinaturas com Produtos Múltiplos
+#### Quantidades para assinaturas com vários produtos
 
-Se sua assinatura é um [assinatura com vários produtos](#assinaturas-com-varios-produtos) você deve passar o ID do preço de quantia que deseja aumentar ou diminuir como segundo argumento no método incrementar / diminuir.
+Se sua assinatura for uma [assinatura com vários produtos](#subscriptions-with-multiple-products), você deve passar o ID do preço cuja quantidade você deseja aumentar ou diminuir como o segundo argumento para os métodos de incremento/decremento:
 
 ```php
     $user->subscription()->incrementQuantity(1, 'price_chat');
@@ -1003,9 +1011,9 @@ Se sua assinatura é um [assinatura com vários produtos](#assinaturas-com-vario
 <a name="subscriptions-with-multiple-products"></a>
 ### Assinaturas com vários produtos
 
-[Inscrição com vários produtos](https://developer.paddle.com/build/subscriptions/add-remove-products-prices-addons) permitem atribuir vários produtos de cobrança a uma única assinatura. Por exemplo, imagine que você está construindo um aplicativo "helpdesk" de atendimento ao cliente que oferece um preço base de assinatura de US$ 10 por mês, mas também oferece um produto suplementar de bate-papo em tempo real pelo valor adicional de US$ 15 por mês.
+[Assinatura com vários produtos](https://developer.paddle.com/build/subscriptions/add-remove-products-prices-addons) permite que você atribua vários produtos de cobrança a uma única assinatura. Por exemplo, imagine que você está criando um aplicativo de "helpdesk" de atendimento ao cliente que tem um preço de assinatura base de US$ 10 por mês, mas oferece um produto complementar de chat ao vivo por US$ 15 adicionais por mês.
 
-Ao criar sessões de check-out de assinatura você pode especificar vários produtos para uma determinada assinatura passando um array de preços como o primeiro argumento do método 'subscribe':
+Ao criar sessões de checkout de assinatura, você pode especificar vários produtos para uma determinada assinatura passando uma matriz de preços como o primeiro argumento para o método `subscribe`:
 
 ```php
     use Illuminate\Http\Request;
@@ -1020,7 +1028,7 @@ Ao criar sessões de check-out de assinatura você pode especificar vários prod
     });
 ```
 
-No exemplo acima, o cliente terá dois preços anexados à sua assinatura padrão. Ambos os preços serão cobrados em seus intervalos de faturamento respectivos. Se necessário, você pode passar uma matriz associativa com pares de chave / valor para indicar uma quantidade específica para cada preço:
+No exemplo acima, o cliente terá dois preços anexados à sua assinatura `default`. Ambos os preços serão cobrados em seus respectivos intervalos de cobrança. Se necessário, você pode passar uma matriz associativa de pares de chave/valor para indicar uma quantidade específica para cada preço:
 
 ```php
     $user = User::find(1);
@@ -1028,7 +1036,7 @@ No exemplo acima, o cliente terá dois preços anexados à sua assinatura padrã
     $checkout = $user->subscribe('default', ['price_monthly', 'price_chat' => 5]);
 ```
 
-Se você deseja acrescentar outro preço a um subscroção existente, você deve utilizar o método 'swap' da assinatura. Ao invocar o método 'swap', você também deve incluir os preços e quantidades atuais da assinatura:
+Se você quiser adicionar outro preço a uma assinatura existente, você deve usar o método `swap` da assinatura. Ao invocar o método `swap`, você também deve incluir os preços e quantidades atuais da assinatura:
 
 ```php
     $user = User::find(1);
@@ -1036,27 +1044,28 @@ Se você deseja acrescentar outro preço a um subscroção existente, você deve
     $user->subscription()->swap(['price_chat', 'price_original' => 2]);
 ```
 
-O exemplo acima acrescentará o novo preço, mas o cliente não será cobrado até a próxima data de cobrança. Se você gostaria que cobrasse o cliente imediatamente você pode usar o método 'swapAndInvoice':
+O exemplo acima adicionará o novo preço, mas o cliente não será cobrado por ele até o próximo ciclo de cobrança. Se você quiser cobrar o cliente imediatamente, você pode usar o método `swapAndInvoice`:
 
 ```php
     $user->subscription()->swapAndInvoice(['price_chat', 'price_original' => 2]);
 ```
 
-Você pode remover preços de assinaturas usando o método 'swap' e omitindo o preço que você deseja remover:
+Você pode remover preços de assinaturas usando o método `swap` e omitindo o preço que você quer remover:
 
 ```php
     $user->subscription()->swap(['price_original' => 2]);
 ```
 
-> [!ALERTA]
-> Você não pode remover o último preço de uma assinatura. Em vez disso, você deve simplesmente cancelar a assinatura.
+::: warning AVISO
+Você não pode remover o último preço de uma assinatura. Em vez disso, você deve simplesmente cancelar a assinatura.
+:::
 
 <a name="multiple-subscriptions"></a>
-### Assinaturas Múltiplas
+### Assinaturas múltiplas
 
-O Paddle permite que seus clientes tenham múltiplas assinaturas ao mesmo tempo. Por exemplo, você pode gerenciar uma academia que oferece um plano de natação e um plano de musculação, cada um com preços diferentes. Claro, os clientes devem ser capazes de se inscrever em qualquer ou ambos os planos.
+O Paddle permite que seus clientes tenham várias assinaturas simultaneamente. Por exemplo, você pode administrar uma academia que oferece uma assinatura de natação e uma assinatura de levantamento de peso, e cada assinatura pode ter preços diferentes. Claro, os clientes devem ser capazes de assinar um ou ambos os planos.
 
-Ao sua aplicação criar assinaturas, você pode fornecer o tipo da assinatura para a função subscribe como segundo argumento. O tipo pode ser qualquer string que represente o tipo de assinatura o usuário está iniciando:
+Quando seu aplicativo cria assinaturas, você pode fornecer o tipo da assinatura para o método `subscribe` como o segundo argumento. O tipo pode ser qualquer string que represente o tipo de assinatura que o usuário está iniciando:
 
 ```php
     use Illuminate\Http\Request;
@@ -1068,20 +1077,20 @@ Ao sua aplicação criar assinaturas, você pode fornecer o tipo da assinatura p
     });
 ```
 
-Neste exemplo, começamos um plano de associação mensal para o cliente. No entanto, eles podem querer mudar para uma associação anual em algum momento posterior. Ao ajustar a associação do cliente, podemos simplesmente trocar o preço na associação "natação":
+Neste exemplo, iniciamos uma assinatura mensal de natação para o cliente. No entanto, eles podem querer trocar para uma assinatura anual mais tarde. Ao ajustar a assinatura do cliente, podemos simplesmente trocar o preço da assinatura `natação`:
 
 ```php
     $user->subscription('swimming')->swap($swimmingYearly = 'pri_456');
 ```
 
-Claro, também pode cancelar a assinatura de vez:
+Claro, você também pode cancelar a assinatura completamente:
 
 ```php
     $user->subscription('swimming')->cancel();
 ```
 
 <a name="pausing-subscriptions"></a>
-### Atrasos em Assinaturas
+### Pausando Assinaturas
 
 Para pausar uma assinatura, chame o método `pause` na assinatura do usuário:
 
@@ -1089,9 +1098,9 @@ Para pausar uma assinatura, chame o método `pause` na assinatura do usuário:
     $user->subscription()->pause();
 ```
 
-Quando uma assinatura é pausada, o Cashier irá automaticamente definir a coluna `paused_at` no seu banco de dados. Esta coluna é usada para determinar quando o método `paused` deve começar a retornar `true`. Por exemplo, se um cliente pausa uma assinatura em 1º de março, mas a assinatura não foi programada para recorrer até 5 de março, o método `paused` continuará retornando `false` até 5 de março. Isto é porque normalmente é permitido que os usuários utilizem a aplicação até o fim do seu ciclo faturamento.
+Quando uma assinatura é pausada, o Cashier define automaticamente a coluna `paused_at` no seu banco de dados. Esta coluna é usada para determinar quando o método `paused` deve começar a retornar `true`. Por exemplo, se um cliente pausar uma assinatura em 1º de março, mas a assinatura não estava programada para ocorrer novamente até 5 de março, o método `paused` continuará a retornar `false` até 5 de março. Isso ocorre porque um usuário normalmente tem permissão para continuar usando um aplicativo até o final do ciclo de cobrança.
 
-Por padrão, o pausa acontece no próximo intervalo de cobrança para que o cliente possa usar o restante do período pelo qual pagou. Se quiser pausar uma assinatura imediatamente, você pode usar o método 'pauseNow':
+Por padrão, a pausa acontece no próximo intervalo de cobrança para que o cliente possa usar o restante do período pelo qual pagou. Se você quiser pausar uma assinatura imediatamente, você pode usar o método `pauseNow`:
 
 ```php
     $user->subscription()->pauseNow();
@@ -1103,13 +1112,13 @@ Usando o método `pauseUntil`, você pode pausar a assinatura até um momento es
     $user->subscription()->pauseUntil(now()->addMonth());
 ```
 
-Ou, você pode usar o método `pauseNowUntil` para imediatamente pausar o subscricão até um ponto de tempo especificado:
+Ou você pode usar o método `pauseNowUntil` para pausar imediatamente a assinatura até um determinado ponto no tempo:
 
 ```php
     $user->subscription()->pauseNowUntil(now()->addMonth());
 ```
 
-Você pode determinar se um usuário pausou sua assinatura, mas ainda está no "período de carência" usando o método `onPausedGracePeriod`:
+Você pode determinar se um usuário pausou sua assinatura, mas ainda está em seu "período de carência" usando o método `onPausedGracePeriod`:
 
 ```php
     if ($user->subscription()->onPausedGracePeriod()) {
@@ -1117,27 +1126,28 @@ Você pode determinar se um usuário pausou sua assinatura, mas ainda está no "
     }
 ```
 
-Para retomar uma assinatura em pausa, você pode invocar o método `resume` na assinatura:
+Para retomar uma assinatura pausada, você pode invocar o método `resume` na assinatura:
 
 ```php
     $user->subscription()->resume();
 ```
 
-> ¡ADVERTENCIA!
-> Uma assinatura não pode ser modificada enquanto estiver em pausa. Se quiser alternar para um plano diferente ou atualizar as quantidades, você deve primeiro retomar a assinatura.
+::: warning AVISO
+Uma assinatura não pode ser modificada enquanto estiver pausada. Se você quiser trocar para um plano diferente ou atualizar quantidades, você deve retomar a assinatura primeiro.
+:::
 
 <a name="canceling-subscriptions"></a>
-### Cancelamento de Assinaturas
+### Cancelando Assinaturas
 
-Para cancelar uma assinatura, chame o método 'cancel' na assinatura do usuário:
+Para cancelar uma assinatura, chame o método `cancel` na assinatura do usuário:
 
 ```php
     $user->subscription()->cancel();
 ```
 
-Quando uma assinatura é cancelada, o Caixa automaticamente define a coluna `ends_at` no seu banco de dados. Esta coluna é usada para determinar quando o método 'assinado' deve começar a retornar 'falso'. Por exemplo, se um cliente cancelar sua assinatura em 1o de março, mas a assinatura não estava programada para terminar até 5 de março, o método 'assinado' continuará a retornar 'verdadeiro' até 5 de março. Isto é feito porque um usuário geralmente pode continuar usando uma aplicação até o final do seu ciclo de cobrança.
+Quando uma assinatura é cancelada, o Cashier definirá automaticamente a coluna `ends_at` no seu banco de dados. Esta coluna é usada para determinar quando o método `subscribed` deve começar a retornar `false`. Por exemplo, se um cliente cancelar uma assinatura em 1º de março, mas a assinatura não estava programada para terminar até 5 de março, o método `subscribed` continuará a retornar `true` até 5 de março. Isso é feito porque um usuário normalmente tem permissão para continuar usando um aplicativo até o final do seu ciclo de cobrança.
 
-Você pode determinar se um usuário cancelou sua assinatura mas ainda está no período de carência usando o método `onGracePeriod`:
+Você pode determinar se um usuário cancelou sua assinatura, mas ainda está em seu "período de carência" usando o método `onGracePeriod`:
 
 ```php
     if ($user->subscription()->onGracePeriod()) {
@@ -1145,28 +1155,29 @@ Você pode determinar se um usuário cancelou sua assinatura mas ainda está no 
     }
 ```
 
-Se você deseja cancelar uma assinatura imediatamente, pode chamar o método 'cancelNow' na assinatura:
+Se você deseja cancelar uma assinatura imediatamente, você pode chamar o método `cancelNow` na assinatura:
 
 ```php
     $user->subscription()->cancelNow();
 ```
 
-Para parar um assinatura em seu período de carência de cancelamento, você pode invocar o método `stopCancelation`:
+Para impedir que uma assinatura em seu período de carência seja cancelada, você pode invocar o método `stopCancelation`:
 
 ```php
     $user->subscription()->stopCancelation();
 ```
 
-> [!Alerta]
-> As assinaturas da Paddle não podem ser retomadas após a cancelamento. Se o cliente quiser retomar sua assinatura, ele terá que criar uma nova.
+::: warning AVISO
+As assinaturas do Paddle não podem ser retomadas após o cancelamento. Se seu cliente deseja retomar sua assinatura, ele terá que criar uma nova assinatura.
+:::
 
 <a name="subscription-trials"></a>
 ## Testes de assinatura
 
 <a name="with-payment-method-up-front"></a>
-### Com Método de Pagamento Antecipado
+### Com método de pagamento adiantado
 
-Se você gostaria de oferecer períodos de teste para seus clientes e ainda coletar informações sobre o método de pagamento antecipadamente, você deve configurar um período de teste na tela do Paddle no preço ao qual seu cliente está se inscrevendo. Em seguida, inicie a sessão de checkout como de costume:
+Se você quiser oferecer períodos de teste aos seus clientes enquanto ainda coleta informações sobre o método de pagamento adiantado, você deve usar o tempo de teste definido no painel do Paddle no preço que seu cliente está assinando. Em seguida, inicie a sessão de checkout normalmente:
 
 ```php
     use Illuminate\Http\Request;
@@ -1179,12 +1190,13 @@ Se você gostaria de oferecer períodos de teste para seus clientes e ainda cole
     });
 ```
 
-Quando seu aplicativo recebe o evento "subscription_created", o Cashier irá definir a data de término do período de teste no registro da assinatura dentro do banco de dados do seu aplicativo e instruirá o Paddle a não iniciar a cobrança do cliente até após essa data.
+Quando seu aplicativo receber o evento `subscription_created`, o Cashier definirá a data de término do período de teste no registro de assinatura no banco de dados do seu aplicativo, bem como instruirá o Paddle a não começar a cobrar o cliente até depois dessa data.
 
-> ¡¡ALERTA!
-> Se o cliente não cancelar sua assinatura antes da data final do teste eles serão cobrados assim que o teste expirar, então você deve ter certeza de notificar seus usuários sobre a data final do teste.
+::: warning AVISO
+Se a assinatura do cliente não for cancelada antes da data de término do teste, ele será cobrado assim que o teste expirar, então você deve ter certeza de notificar seus usuários sobre a data de término do teste.
+:::
 
-Você pode determinar se o usuário está no período de teste usando tanto o método 'onTrial' da instância do usuário ou o método 'onTrial' da instância da assinatura. As duas exemplos abaixo são equivalentes:
+Você pode determinar se o usuário está em seu período de teste usando o método `onTrial` da instância do usuário ou o método `onTrial` da instância da assinatura. Os dois exemplos abaixo são equivalentes:
 
 ```php
     if ($user->onTrial()) {
@@ -1196,7 +1208,7 @@ Você pode determinar se o usuário está no período de teste usando tanto o m�
     }
 ```
 
-Para determinar se um teste existente já expirou, você pode usar o método `hasExpiredTrial`:
+Para determinar se um teste existente expirou, você pode usar os métodos `hasExpiredTrial`:
 
 ```php
     if ($user->hasExpiredTrial()) {
@@ -1208,7 +1220,7 @@ Para determinar se um teste existente já expirou, você pode usar o método `ha
     }
 ```
 
-Para determinar se um usuário está em teste para um tipo de assinatura específico, você pode fornecer o tipo ao método `onTrial` ou `hasExpiredTrial`:
+Para determinar se um usuário está em teste para um tipo de assinatura específico, você pode fornecer o tipo para os métodos `onTrial` ou `hasExpiredTrial`:
 
 ```php
     if ($user->onTrial('default')) {
@@ -1221,9 +1233,9 @@ Para determinar se um usuário está em teste para um tipo de assinatura especí
 ```
 
 <a name="without-payment-method-up-front"></a>
-### Sem Método de Pagamento Antecipado
+### Sem método de pagamento adiantado
 
-Se quiser oferecer períodos de teste sem coletar informações sobre o método de pagamento do usuário antes, você pode definir a coluna 'trial_ends_at' no registro do cliente vinculado ao seu usuário para a data desejada do término do período de teste. Isso geralmente é feito durante o registro do usuário:
+Se você quiser oferecer períodos de teste sem coletar as informações do método de pagamento do usuário adiantado, você pode definir a coluna `trial_ends_at` no registro do cliente anexado ao seu usuário para a data de término do teste desejada. Isso normalmente é feito durante o registro do usuário:
 
 ```php
     use App\Models\User;
@@ -1237,15 +1249,15 @@ Se quiser oferecer períodos de teste sem coletar informações sobre o método 
     ]);
 ```
 
-O "Cashier" refere-se a este tipo de teste como um "teste genérico", pois ele não está vinculado a nenhuma assinatura existente. O método "onTrial" na instância "User" retornará "true" se a data atual for inferior ao valor de "trial_ends_at":
+O Casher se refere a esse tipo de teste como um "teste genérico", já que não está vinculado a nenhuma assinatura existente. O método `onTrial` na instância `User` retornará `true` se a data atual não for posterior ao valor de `trial_ends_at`:
 
 ```php
     if ($user->onTrial()) {
-        // User is within their trial period...
+        // O usuário está dentro do período de teste...
     }
 ```
 
-Uma vez que você está pronto para criar uma assinatura real para o usuário, você pode usar o método 'subscribe' como de costume:
+Quando estiver pronto para criar uma assinatura real para o usuário, você pode usar o método `subscribe` como de costume:
 
 ```php
     use Illuminate\Http\Request;
@@ -1258,7 +1270,7 @@ Uma vez que você está pronto para criar uma assinatura real para o usuário, v
     });
 ```
 
-Para recuperar a data de término da versão experimental do usuário, você pode usar o método 'trialEndsAt'. Este método retornará uma instância de Carbon se um usuário estiver em um teste ou 'null' se não estiver. Você também pode passar um parâmetro opcional tipo de assinatura se quiser obter a data de término da versão experimental para uma assinatura específica, além da padrão:
+Para recuperar a data de término do teste do usuário, você pode usar o método `trialEndsAt`. Este método retornará uma instância de data Carbon se um usuário estiver em um teste ou `null` se não estiver. Você também pode passar um parâmetro de tipo de assinatura opcional se quiser obter a data de término do teste para uma assinatura específica diferente da padrão:
 
 ```php
     if ($user->onTrial('default')) {
@@ -1266,53 +1278,54 @@ Para recuperar a data de término da versão experimental do usuário, você pod
     }
 ```
 
-Você pode usar o método 'onGenericTrial' se quiser saber especificamente que o usuário está dentro de seu período de "teste genérico" e não criou uma assinatura real ainda:
+Você pode usar o método `onGenericTrial` se quiser saber especificamente que o usuário está dentro do período de teste "genérico" e ainda não criou uma assinatura real:
 
 ```php
     if ($user->onGenericTrial()) {
-        // User is within their "generic" trial period...
+        // O usuário está dentro do período de teste "genérico"...
     }
 ```
 
 <a name="extend-or-activate-a-trial"></a>
-### Estender ou Ativar um Teste Gratuito
+### Estender ou ativar um teste
 
-Você pode estender um período de teste existente em uma assinatura invocando o método `extendTrial` e especificando o momento no tempo que o teste deve terminar.
+Você pode estender um período de teste existente em uma assinatura invocando o método `extendTrial` e especificando o momento em que o teste deve terminar:
 
 ```php
     $user->subscription()->extendTrial(now()->addDays(5));
 ```
 
-Ou você pode ativar imediatamente uma assinatura terminando seu teste por chamar o método 'ativar' na assinatura:
+Ou você pode ativar imediatamente uma assinatura encerrando seu teste chamando o método `activate` na assinatura:
 
 ```php
     $user->subscription()->activate();
 ```
 
 <a name="handling-paddle-webhooks"></a>
-## Manipulando Webhooks do Paddle
+## Lidando com webhooks do Paddle
 
-O Paddle pode notificar seu aplicativo de uma variedade de eventos através de Webhooks. Por padrão, uma rota que aponta para o controlador do webhook do Cashier é registrada pelo provedor do serviço do Cashier. Este controlador irá lidar com todas as solicitações do webhook recebidas.
+O Paddle pode notificar seu aplicativo sobre uma variedade de eventos por meio de webhooks. Por padrão, uma rota que aponta para o controlador de webhook do Cashier é registrada pelo provedor de serviços do Cashier. Este controlador manipulará todas as solicitações de webhook recebidas.
 
-Por padrão, este controlador irá lidar automaticamente com cancelamentos de assinaturas que têm cobranças falhadas repetidas, atualizações de assinatura e alterações do método de pagamento; no entanto, como descobriremos logo abaixo, você pode estender esse controlador para lidar com qualquer evento webhook da Paddle que você deseja.
+Por padrão, este controlador manipulará automaticamente o cancelamento de assinaturas que tenham muitas cobranças com falha, atualizações de assinatura e alterações de método de pagamento; no entanto, como descobriremos em breve, você pode estender esse controlador para manipular qualquer evento de webhook do Paddle que desejar.
 
-Para garantir que seu aplicativo possa lidar com webhooks do Paddle, certifique-se de [configurar a URL do webhook no painel de controle do Paddle](https://vendors.paddle.com/alerts-webhooks). Por padrão, o controlador do webhook do Cashier responde ao caminho da URL `/paddle/webhook`. A lista completa de todos os webhooks que você deve habilitar no painel de controle do Paddle são:
+Para garantir que seu aplicativo possa manipular webhooks do Paddle, certifique-se de [configurar a URL do webhook no painel de controle do Paddle](https://vendors.paddle.com/alerts-webhooks). Por padrão, o controlador de webhook do Cashier responde ao caminho da URL `/paddle/webhook`. A lista completa de todos os webhooks que você deve habilitar no painel de controle do Paddle são:
 
-Cliente Atualizado
-- Transação Concluída
-- Transação Atualizada
-- Assinatura Criada
-- Assinatura Atualizada
+- Cliente atualizado
+- Transação concluída
+- Transação atualizada
+- Assinatura criada
+- Assinatura atualizada
 - Assinatura pausada
-Assinatura Cancelada
+- Assinatura cancelada
 
-> [!AVISO]
-> Tenha certeza de que você protege as requisições com a verificação de assinatura do webhook do Caixeiro [verificando assinaturas de webhook]/docs/{{version}}/.
+::: warning AVISO
+Certifique-se de proteger as solicitações recebidas com o middleware [verificação de assinatura de webhook](/docs/cashier-paddle#verifying-webhook-signatures) incluído do Cashier.
+:::
 
 <a name="webhooks-csrf-protection"></a>
-#### Webhooks e Proteção CSRF
+#### Webhooks e proteção CSRF
 
-Como os webhooks do Paddle precisam contornar a proteção [CSRF] do Laravel (/docs/{{version}}/csrf), você deve garantir que o Laravel não tente verificar o token CSRF para os webhooks do Paddle. Para fazer isso, você deve excluir `paddle/*` da proteção CSRF no arquivo `bootstrap/app.php` do seu aplicativo:
+Como os webhooks do Paddle precisam ignorar a [proteção CSRF](/docs/csrf) do Laravel, você deve garantir que o Laravel não tente verificar o token CSRF para webhooks Paddle de entrada. Para fazer isso, você deve excluir `paddle/*` da proteção CSRF no arquivo `bootstrap/app.php` do seu aplicativo:
 
 ```php
     ->withMiddleware(function (Middleware $middleware) {
@@ -1323,19 +1336,19 @@ Como os webhooks do Paddle precisam contornar a proteção [CSRF] do Laravel (/d
 ```
 
 <a name="webhooks-local-development"></a>
-#### Webhooks e Desenvolvimento Local
+#### Webhooks e desenvolvimento local
 
-Para que a Paddle possa enviar seus webhooks de aplicativo durante o desenvolvimento local, você precisará expor seu aplicativo por meio de um serviço compartilhador de sites, como [Ngrok](https://ngrok.com/) ou [Expose](https://expose.dev/docs/introduction). Se você estiver desenvolvendo seu aplicativo localmente usando [Laravel Sail](/docs/{{version}}/sail), você pode usar o comando de compartilhamento de site do Sail ([site sharing command](/docs/{{version}}/sail#sharing-your-site)).
+Para que o Paddle possa enviar os webhooks do seu aplicativo durante o desenvolvimento local, você precisará expor seu aplicativo por meio de um serviço de compartilhamento de sites, como [Ngrok](https://ngrok.com/) ou [Expose](https://expose.dev/docs/introduction). Se você estiver desenvolvendo seu aplicativo localmente usando [Laravel Sail](/docs/sail), você pode usar o [comando de compartilhamento de site](/docs/sail#sharing-your-site) do Sail.
 
 <a name="defining-webhook-event-handlers"></a>
-### Definindo Webhooks de Manipulação de Eventos
+### Definindo manipuladores de eventos de webhook
 
-O atendente de caixa lida automaticamente com a anulação da assinatura no caso de cobrança fracassada e outros eventos comuns do Paddle. No entanto, se você tiver eventos webhooks adicionais que gostaria de lidar, pode fazê-lo ouvindo os seguintes eventos enviados pelo atendente de caixa:
+O Cashier manipula automaticamente o cancelamento de assinaturas em cobranças com falha e outros webhooks comuns do Paddle. No entanto, se você tiver eventos de webhook adicionais que gostaria de manipular, você pode fazer isso ouvindo os seguintes eventos que são despachados pelo Cashier:
 
-- 'Laravel\Paddle\Events\WebhookReceived'
+- `Laravel\Paddle\Events\WebhookReceived`
 - `Laravel\Paddle\Events\WebhookHandled`
 
-Ambos os eventos contêm o payload completo do webhook Paddle. Por exemplo, se você quiser lidar com o webhook 'transaction.billed', você pode registrar um [ouvinte](/docs/{{version}}/events#definição de ouvintes) que irá lidar com o evento:
+Ambos os eventos contêm a carga útil completa do webhook do Paddle. Por exemplo, se você deseja manipular o webhook `transaction.billed`, você pode registrar um [listener](/docs/events#defining-listeners) que manipulará o evento:
 
 ```php
     <?php
@@ -1347,51 +1360,51 @@ Ambos os eventos contêm o payload completo do webhook Paddle. Por exemplo, se v
     class PaddleEventListener
     {
         /**
-         * Handle received Paddle webhooks.
+         * Manipule os webhooks Paddle recebidos.
          */
         public function handle(WebhookReceived $event): void
         {
             if ($event->payload['event_type'] === 'transaction.billed') {
-                // Handle the incoming event...
+                // Lidar com o evento de entrada...
             }
         }
     }
 ```
 
-O caixa também emite eventos dedicados ao tipo do webhook recebido. Além da carga completa do Paddle, eles também contêm os modelos relevantes que foram usados para processar o webhook, como o modelo de cobrança, a assinatura ou a recibo.
+O caixa também emite eventos dedicados ao tipo de webhook recebido. Além da carga útil completa do Paddle, eles também contêm os modelos relevantes que foram usados ​​para processar o webhook, como o modelo faturável, a assinatura ou o recibo:
 
 <div class="content-list" markdown="1">
 
-- 'Laravel\Paddle\Events\CustomerUpdated'
-- `Laravel/Paddle/Events/TransactionCompleted`
-Laravel/Paddle/Events/TransactionUpdated
-"Laravel/Paddle/Events/SubscriptionCreated"
-- 'Laravel/Paddle/Events/SubscriptionUpdated'
-- 'Laravel/Paddle/Events/SubscriptionPaused'
-Laravel/Paddle/Events/SubscriptionCanceled
+- `Laravel\Paddle\Events\CustomerUpdated`
+- `Laravel\Paddle\Events\TransactionCompleted`
+- `Laravel\Paddle\Events\TransactionUpdated`
+- `Laravel\Paddle\Events\SubscriptionCreated`
+- `Laravel\Paddle\Events\SubscriptionUpdated`
+- `Laravel\Paddle\Events\SubscriptionPaused`
+- `Laravel\Paddle\Events\SubscriptionCanceled`
 
 </div>
 
-Você também pode substituir a rota padrão do webhook interna por definir a variável de ambiente "CASHIER_WEBHOOK" no arquivo ".env" da sua aplicação. Esse valor deve ser a URL completa para a rota do webhook e precisa corresponder à URL configurada no painel de controle do Paddle:
+Você também pode substituir a rota padrão do webhook integrado definindo a variável de ambiente `CASHIER_WEBHOOK` no seu aplicativo Arquivo `.env`. Este valor deve ser a URL completa para sua rota de webhook e precisa corresponder à URL definida no seu painel de controle do Paddle:
 
 ```ini
 CASHIER_WEBHOOK=https://example.com/my-paddle-webhook-url
 ```
 
 <a name="verifying-webhook-signatures"></a>
-### Verificando assinaturas de Webhooks
+### Verificando assinaturas de webhook
 
-Para garantir suas Webhooks, você pode usar as [Assinaturas de Webhook do Paddle](https://developer.paddle.com/webhook-reference/verifying-webhooks). Para mais conveniência, o Cashier automaticamente inclui um middleware que valida se a solicitação de webhook do Paddle que está chegando é válida.
+Para proteger seus webhooks, você pode usar [as assinaturas de webhook do Paddle](https://developer.paddle.com/webhook-reference/verifying-webhooks). Para sua conveniência, o Cashier inclui automaticamente um middleware que valida se a solicitação de webhook do Paddle recebida é válida.
 
-Para habilitar a verificação de webhook, certifique-se de definir a variável de ambiente 'PADDLE_WEBHOOK_SECRET' no arquivo '.env' do seu aplicativo. O segredo do webhook pode ser obtido da sua conta Paddle dashboard.
+Para habilitar a verificação de webhook, certifique-se de que a variável de ambiente `PADDLE_WEBHOOK_SECRET` esteja definida no arquivo `.env` do seu aplicativo. O segredo do webhook pode ser recuperado do painel da sua conta do Paddle.
 
 <a name="single-charges"></a>
-## Cargas Únicas
+## Cobranças Únicas
 
 <a name="charging-for-products"></a>
-### Empréstimo de Produtos
+### Cobrança por Produtos
 
-Se você quiser iniciar uma compra de produto para um cliente, pode usar o método "checkout" em uma instância de modelo cobrável para gerar uma sessão de checkout para a compra. O método "checkout" aceita um ou vários IDs de preço. Se necessário, uma matriz associativa pode ser usada para fornecer a quantidade do produto sendo comprado:
+Se você quiser iniciar uma compra de produto para um cliente, você pode usar o método `checkout` em uma instância de modelo faturável para gerar uma sessão de checkout para a compra. O método `checkout` aceita um ou vários IDs de preço. Se necessário, uma matriz associativa pode ser usada para fornecer a quantidade do produto que está sendo comprado:
 
 ```php
     use Illuminate\Http\Request;
@@ -1403,7 +1416,7 @@ Se você quiser iniciar uma compra de produto para um cliente, pode usar o méto
     });
 ```
 
-Depois de gerar a sessão de pagamento, você pode usar o botão fornecido pelo Caixa para permitir que o usuário veja o widget do Pagamento e conclua a compra:
+Após gerar a sessão de checkout, você pode usar o `paddle-button` fornecido pelo Cashier [componente Blade](#overlay-checkout) para permitir que o usuário visualize o widget de checkout Paddle e conclua a compra:
 
 ```blade
 <x-paddle-button :checkout="$checkout" class="px-8 py-4">
@@ -1411,7 +1424,7 @@ Depois de gerar a sessão de pagamento, você pode usar o botão fornecido pelo 
 </x-paddle-button>
 ```
 
-Uma sessão de checkout tem um método `customData`, permitindo que você passe qualquer dados personalizado desejado para a criação subjacente da transação. Por favor consulte [a documentação do Paddle](https://developer.paddle.com/build/transactions/custom-data) para aprender mais sobre as opções disponíveis para você quando passando dados personalizados:
+Uma sessão de checkout tem um método `customData`, permitindo que você passe quaisquer dados personalizados que desejar para a criação da transação subjacente. Consulte [a documentação do Paddle](https://developer.paddle.com/build/transactions/custom-data) para saber mais sobre as opções disponíveis para você ao passar dados personalizados:
 
 ```php
     $checkout = $user->checkout('pri_tshirt')
@@ -1421,11 +1434,11 @@ Uma sessão de checkout tem um método `customData`, permitindo que você passe 
 ```
 
 <a name="refunding-transactions"></a>
-### Refundações de Transações
+### Transações de Reembolso
 
-Ao realizar o reembolso de uma transação, o valor será devolvido para o método de pagamento do cliente que foi utilizado no momento da compra. Se você precisa reembolsar uma transação Paddle, você pode utilizar a 'refund' em um modelo 'Cashier\Paddle\Transaction'. Esse método aceita o motivo como o primeiro argumento, um ou mais IDs de preços para reembolso com valores opcionais em uma matriz associativa. Você pode recuperar as transações de um modelo cobrável específico usando o método 'transactions'.
+As transações de reembolso retornarão o valor reembolsado para o método de pagamento do seu cliente que foi usado no momento da compra. Se você precisar reembolsar uma compra do Paddle, poderá usar o método `refund` em um modelo `Cashier\Paddle\Transaction`. Este método aceita um motivo como o primeiro argumento, um ou mais IDs de preço para reembolsar com valores opcionais como uma matriz associativa. Você pode recuperar as transações para um determinado modelo faturável usando o método `transactions`.
 
-Por exemplo, imagine que queremos estornar uma transação específica para os preços 'pri_123' e 'pri_456'. Queremos estornar totalmente o 'pri_123', mas apenas devolver 2 dólares para o 'pri_456':
+Por exemplo, imagine que queremos reembolsar uma transação específica para os preços `pri_123` e `pri_456`. Queremos reembolsar integralmente `pri_123`, mas reembolsar apenas dois dólares para `pri_456`:
 
 ```php
     use App\Models\User;
@@ -1435,43 +1448,44 @@ Por exemplo, imagine que queremos estornar uma transação específica para os p
     $transaction = $user->transactions()->first();
 
     $response = $transaction->refund('Accidental charge', [
-        'pri_123', // Fully refund this price...
-        'pri_456' => 200, // Only partially refund this price...
+        'pri_123', // Reembolsar integralmente esse preço...
+        'pri_456' => 200, // Reembolsar apenas parcialmente este preço...
     ]);
 ```
 
-O exemplo acima reembolsa itens específicos em uma transação. Se você deseja reembolsar a transação inteira, basta fornecer um motivo:
+O exemplo acima reembolsa itens de linha específicos em uma transação. Se você quiser reembolsar a transação inteira, basta fornecer um motivo:
 
 ```php
     $response = $transaction->refund('Accidental charge');
 ```
 
-Para mais informações sobre os reembolsos, por favor consulte [a documentação de reembolso do Paddle](https://developer.paddle.com/build/transactions/create-transaction-adjustments).
+Para obter mais informações sobre reembolsos, consulte [a documentação de reembolso do Paddle](https://developer.paddle.com/build/transactions/create-transaction-adjustments).
 
-> [AVISO]
-> Os reembolsos devem ser sempre aprovados pela Paddle antes de processar completamente.
+::: warning AVISO
+Os reembolsos devem sempre ser aprovados pelo Paddle antes do processamento completo.
+:::
 
 <a name="crediting-transactions"></a>
-### Transações de crédito
+### Creditando Transações
 
-Assim como em reembolsos, você também pode fazer a liberação de transações. A liberação de transações acrescenta os fundos no saldo do cliente para que ele possa ser utilizado para compras futuras. A liberação de transações só pode ser feita para transações coletadas manualmente e não para transações coletadas automaticamente (como assinaturas) porque o Paddle libera as assinaturas automaticamente:
+Assim como o reembolso, você também pode creditar transações. Creditar transações adicionará os fundos ao saldo do cliente para que ele possa ser usado em compras futuras. Creditar transações só pode ser feito para transações coletadas manualmente e não para transações coletadas automaticamente (como assinaturas), pois o Paddle lida com créditos de assinatura automaticamente:
 
 ```php
     $transaction = $user->transactions()->first();
 
-    // Credit a specific line item fully...
+    // Creditar totalmente um item de linha específico...
     $response = $transaction->credit('Compensation', 'pri_123');
 ```
 
-Para mais informações, veja a documentação do Paddle sobre créditos (https://developer.paddle.com/build/transactions/create-transaction-adjustments).
+Para mais informações, [veja a documentação do Paddle sobre crédito](https://developer.paddle.com/build/transactions/create-transaction-adjustments).
 
-> [AVERTÊNCIA]
-> Os créditos só podem ser aplicados manualmente para transações coletadas manualmente. As transações coletadas automaticamente são creditadas pelo próprio Paddle.
-
+::: warning AVISO
+Os créditos só podem ser aplicados para transações coletadas manualmente. As transações coletadas automaticamente são creditadas pelo próprio Paddle.
+:::
 <a name="transactions"></a>
 ## Transações
 
-Você pode facilmente recuperar uma matriz de transações de um modelo cobrável através da propriedade "transações":
+Você pode recuperar facilmente uma matriz de transações de um modelo faturável por meio da propriedade `transactions`:
 
 ```php
     use App\Models\User;
@@ -1481,9 +1495,9 @@ Você pode facilmente recuperar uma matriz de transações de um modelo cobráve
     $transactions = $user->transactions;
 ```
 
-Transações representam pagamentos para seus produtos e compras e são acompanhadas de notas fiscais. Apenas as transações concluídas são armazenadas no banco de dados do seu aplicativo.
+As transações representam pagamentos para seus produtos e compras e são acompanhadas por faturas. Apenas transações concluídas são armazenadas no banco de dados do seu aplicativo.
 
-Quando estiver listando as transações de um cliente, você pode usar os métodos da classe Transaction para exibir as informações pagas. Por exemplo, você talvez queira listar todas as transações em uma tabela, permitindo ao usuário baixar facilmente qualquer um dos recibos:
+Ao listar as transações para um cliente, você pode usar os métodos da instância da transação para exibir as informações de pagamento relevantes. Por exemplo, você pode desejar listar todas as transações em uma tabela, permitindo que o usuário baixe facilmente qualquer uma das faturas:
 
 ```html
 <table>
@@ -1498,19 +1512,21 @@ Quando estiver listando as transações de um cliente, você pode usar os métod
 </table>
 ```
 
-A rota de download-fatura pode parecer o seguinte:
+A rota `download-invoice` pode se parecer com o seguinte:
 
+```php
 use Illuminate\Http\Request;
 use Laravel\Cashier\Transaction;
 
-Route::get('/download-invoice/{transação}', função (Solicitação $solicitação, Transação $transação) {
+Route::get('/download-invoice/{transaction}', function (Request $request, Transaction $transaction) {
 return $transaction->redirectToInvoicePdf();
-}->nome('download-invoice');
+})->name('download-invoice');
+```
 
 <a name="past-and-upcoming-payments"></a>
-### Pagamentos Passados e Futuros
+### Pagamentos Passados ​​e Futuros
 
-Você pode usar os métodos lastPayment e nextPayment para recuperar e exibir pagamentos passados ou futuros de assinaturas recorrentes.
+Você pode usar os métodos `lastPayment` e `nextPayment` para recuperar e exibir os pagamentos passados ​​ou futuros de um cliente para assinaturas recorrentes:
 
 ```php
     use App\Models\User;
@@ -1523,7 +1539,7 @@ Você pode usar os métodos lastPayment e nextPayment para recuperar e exibir pa
     $nextPayment = $subscription->nextPayment();
 ```
 
-Ambos os métodos retornam uma instância de Laravel\Paddle\Payment; No entanto, "lastPayment" retornará um valor nulo quando as transações ainda não tiverem sido sincronizadas pelo webhook, enquanto "nextPayment" retornará um valor nulo quando o ciclo de cobrança tiver terminado (como quando uma assinatura é cancelada):
+Ambos os métodos retornarão uma instância de `Laravel\Paddle\Payment`; no entanto, `lastPayment` retornará `null` quando as transações ainda não tiverem sido sincronizadas por webhooks, enquanto `nextPayment` retornará `null` quando o ciclo de cobrança tiver terminado (como quando uma assinatura foi cancelada):
 
 ```blade
 Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->format('d/m/Y') }}
@@ -1532,6 +1548,6 @@ Next payment: {{ $nextPayment->amount() }} due on {{ $nextPayment->date()->forma
 <a name="testing"></a>
 ## Teste
 
-Ao testar, você deve testar manualmente o fluxo de cobrança para ter certeza de que a integração funciona conforme esperado.
+Ao testar, você deve testar manualmente seu fluxo de cobrança para garantir que sua integração funcione conforme o esperado.
 
-Para testes automatizados, incluindo aqueles executados dentro de um ambiente CI, você pode usar [Laravel' HTTP Client](/docs/{{version}}/http-client#testing) para simular chamadas HTTP feitas ao Paddle. Embora isso não teste as respostas reais do Paddle, fornece uma maneira de testar seu aplicativo sem realmente chamar a API do Paddle.
+Para testes automatizados, incluindo aqueles executados em um ambiente de CI, você pode usar [o cliente HTTP do Laravel](/docs/http-client#testing) para falsificar chamadas HTTP feitas ao Paddle. Embora isso não teste as respostas reais do Paddle, ele fornece uma maneira de testar seu aplicativo sem realmente chamar a API do Paddle.
