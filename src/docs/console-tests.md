@@ -1,38 +1,40 @@
-# Teste do console
+# Testes de console
 
 <a name="introduction"></a>
 ## Introdução
 
- Além de simplificar os testes do HTTP, o Laravel oferece uma API simples para testar comandos personalizados do console da aplicação.
+Além de simplificar os testes de HTTP, o Laravel fornece uma API simples para testar os [comandos de console personalizados](/docs/{{version}}/artisan) do seu aplicativo.
 
 <a name="success-failure-expectations"></a>
-## Esperanças de sucesso/fracasso
+## Expectativas de sucesso/falha
 
- Para começar, vamos explorar como fazer afirmações referentes ao código de saída de um comando Artisan. Para isso, usaremos o método `artisan` para invocar um comando do Artisan em nosso teste. Então, usaremos o método `assertExitCode` para garantir que o comando foi concluído com um determinado código de saída:
+Para começar, vamos explorar como fazer afirmações sobre o código de saída de um comando Artisan. Para fazer isso, usaremos o método `artisan` para invocar um comando Artisan do nosso teste. Então, usaremos o método `assertExitCode` para afirmar que o comando foi concluído com um código de saída fornecido:
 
-```php tab=Pest
+::: code-group
+```php [Pest]
 test('console command', function () {
     $this->artisan('inspire')->assertExitCode(0);
 });
 ```
 
-```php tab=PHPUnit
+```php [PHPUnit]
 /**
- * Test a console command.
+ * Teste um comando de console.
  */
 public function test_console_command(): void
 {
     $this->artisan('inspire')->assertExitCode(0);
 }
 ```
+:::
 
- Você pode usar o método `assertNotExitCode` para garantir que o comando não saiu com um determinado código de saída:
+Você pode usar o método `assertNotExitCode` para afirmar que o comando não saiu com um código de saída fornecido:
 
 ```php
     $this->artisan('inspire')->assertNotExitCode(1);
 ```
 
- Obviamente, todos os comandos de terminal normalmente saem com um código de status `0` (é bem-sucedido) e um código de saída diferente de zero quando é inválido. Portanto, para conveniência, você pode utilizar as afirmações `assertSuccessful` e `assertFailed` para garantir que determinado comando saiu com um código de status bem-sucedido ou não:
+É claro que todos os comandos de terminal normalmente saem com um código de status `0` quando são bem-sucedidos e um código de saída diferente de zero quando não são bem-sucedidos. Portanto, para sua conveniência, você pode utilizar as asserções `assertSuccessful` e `assertFailed` para afirmar que um determinado comando saiu com um código de saída bem-sucedido ou não:
 
 ```php
     $this->artisan('inspire')->assertSuccessful();
@@ -41,9 +43,9 @@ public function test_console_command(): void
 ```
 
 <a name="input-output-expectations"></a>
-## Espera de Entrada/Saída
+## Expectativas de entrada/saída
 
- O Laravel permite-lhe "mockar" facilmente a entrada de utilizador nos comandos do console através do método `expectsQuestion`. Além disso, pode especificar o código de saída e texto esperado para ser emitido pelo comando do console utilizando os métodos `assertExitCode` e `expectsOutput`. Por exemplo:
+O Laravel permite que você "zombe" facilmente da entrada do usuário para seus comandos de console usando o método `expectsQuestion`. Além disso, você pode especificar o código de saída e o texto que espera que sejam emitidos pelo comando de console usando os métodos `assertExitCode` e `expectsOutput`. Por exemplo, considere o seguinte comando de console:
 
 ```php
     Artisan::command('question', function () {
@@ -59,9 +61,10 @@ public function test_console_command(): void
     });
 ```
 
- É possível verificar este comando com o seguinte teste:
+Você pode testar este comando com o seguinte teste:
 
-```php tab=Pest
+::: code-group
+```php [Pest]
 test('console command', function () {
     $this->artisan('question')
          ->expectsQuestion('What is your name?', 'Taylor Otwell')
@@ -72,9 +75,9 @@ test('console command', function () {
 });
 ```
 
-```php tab=PHPUnit
+```php [PHPUnit]
 /**
- * Test a console command.
+ * Teste um comando de console.
  */
 public function test_console_command(): void
 {
@@ -86,10 +89,12 @@ public function test_console_command(): void
          ->assertExitCode(0);
 }
 ```
+:::
 
- Você também poderá assegurar que um comando de console não gera nenhum resultado utilizando o método `doesntExpectOutput`:
+Você também pode afirmar que um comando de console não gera nenhuma saída usando o método `doesntExpectOutput`:
 
-```php tab=Pest
+::: code-group
+```php [Pest]
 test('console command', function () {
     $this->artisan('example')
          ->doesntExpectOutput()
@@ -97,9 +102,9 @@ test('console command', function () {
 });
 ```
 
-```php tab=PHPUnit
+```php [PHPUnit]
 /**
- * Test a console command.
+ * Teste um comando de console.
  */
 public function test_console_command(): void
 {
@@ -108,10 +113,12 @@ public function test_console_command(): void
             ->assertExitCode(0);
 }
 ```
+:::
 
- Os métodos `expectsOutputToContain` e `doesntExpectOutputToContain` podem ser utilizados para fazer asserções em relação a uma parte do resultado da execução.
+Os métodos `expectsOutputToContain` e `doesntExpectOutputToContain` podem ser usados ​​para fazer afirmações contra uma parte da saída:
 
-```php tab=Pest
+::: code-group
+```php [Pest]
 test('console command', function () {
     $this->artisan('example')
          ->expectsOutputToContain('Taylor')
@@ -119,9 +126,9 @@ test('console command', function () {
 });
 ```
 
-```php tab=PHPUnit
+```php [PHPUnit]
 /**
- * Test a console command.
+ * Teste um comando de console.
  */
 public function test_console_command(): void
 {
@@ -130,11 +137,12 @@ public function test_console_command(): void
             ->assertExitCode(0);
 }
 ```
+:::
 
 <a name="confirmation-expectations"></a>
-#### Esperanças de confirmação
+#### Expectativas de confirmação
 
- Ao escrever um comando que espera uma confirmação na forma de uma resposta "sim" ou "não", você pode utilizar o método `expectsConfirmation`:
+Ao escrever um comando que espera confirmação na forma de uma resposta "sim" ou "não", você pode utilizar o método `expectsConfirmation`:
 
 ```php
     $this->artisan('module:import')
@@ -143,9 +151,9 @@ public function test_console_command(): void
 ```
 
 <a name="table-expectations"></a>
-#### Expectativas da tabela
+#### Expectativas de tabela
 
- Se o comando exibir uma tabela de informações usando o método `table` do Artisan, pode ser complicado escrever expectativas de saída para toda a tabela. Em vez disso, você pode usar o método `expectsTable`. Este método aceita os cabeçalhos da tabela como seu primeiro argumento e os dados da tabela como segundo argumento:
+Se seu comando exibir uma tabela de informações usando o método `table` do Artisan, pode ser trabalhoso escrever expectativas de saída para a tabela inteira. Em vez disso, você pode usar o método `expectsTable`. Este método aceita os cabeçalhos da tabela como seu primeiro argumento e os dados da tabela como seu segundo argumento:
 
 ```php
     $this->artisan('users:all')
@@ -159,11 +167,12 @@ public function test_console_command(): void
 ```
 
 <a name="console-events"></a>
-## Eventos da consola
+## Eventos do console
 
- Por padrão, os eventos Illuminate\Console\Events\CommandStarting e Illuminate\Console\Events\CommandFinished não são disparados enquanto a aplicação está em execução. No entanto, pode ativar estes eventos para uma determinada classe de teste, adicionando o traço Illuminate\Foundation\Testing\WithConsoleEvents à mesma:
+Por padrão, os eventos `Illuminate\Console\Events\CommandStarting` e `Illuminate\Console\Events\CommandFinished` não são despachados durante a execução dos testes do seu aplicativo. No entanto, você pode habilitar esses eventos para uma determinada classe de teste adicionando o traço `Illuminate\Foundation\Testing\WithConsoleEvents` à classe:
 
-```php tab=Pest
+::: code-group
+```php [Pest]
 <?php
 
 use Illuminate\Foundation\Testing\WithConsoleEvents;
@@ -173,7 +182,7 @@ uses(WithConsoleEvents::class);
 // ...
 ```
 
-```php tab=PHPUnit
+```php [PHPUnit]
 <?php
 
 namespace Tests\Feature;
@@ -188,3 +197,4 @@ class ConsoleEventTest extends TestCase
     // ...
 }
 ```
+:::

@@ -1,16 +1,17 @@
-# Teste de Banco de Dados
+# Teste de banco de dados
 
 <a name="introduction"></a>
 ## Introdução
 
-O framework Laravel oferece uma variedade de ferramentas e afirmações para facilitar a teste dos aplicativos guiados por banco de dados. Além disso, os modelos e "seeders" do Laravel model factories facilitam muito criar registros de testes usando seus Eloquent models e relacionamentos em sua aplicação. Discutiremos todas essas funcionalidades poderosas na documentação seguinte.
+O Laravel fornece uma variedade de ferramentas e asserções úteis para facilitar o teste de seus aplicativos baseados em banco de dados. Além disso, as fábricas de modelos e seeders do Laravel facilitam a criação de registros de banco de dados de teste usando os modelos e relacionamentos Eloquent do seu aplicativo. Discutiremos todos esses recursos poderosos na documentação a seguir.
 
 <a name="resetting-the-database-after-each-test"></a>
-### Reiniciando o Banco de Dados Após Cada Teste
+### Redefinindo o banco de dados após cada teste
 
-Antes de prosseguir, vamos discutir como redefinir seu banco de dados após cada um dos seus testes para que os dados de um teste anterior não interfiram nos testes subsequentes. O Laravel's included `Illuminate\Foundation\Testing\RefreshDatabase` trait cuidará disso para você. Basta usar o trait na sua classe de teste:
+Antes de prosseguir muito mais, vamos discutir como redefinir seu banco de dados após cada um dos seus testes para que os dados de um teste anterior não interfiram nos testes subsequentes. O trait `Illuminate\Foundation\Testing\RefreshDatabase` incluído no Laravel cuidará disso para você. Basta usar o traço na sua classe de teste:
 
-```php tab=Pest
+::: code-group
+```php [Pest]
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,7 +25,7 @@ test('basic example', function () {
 });
 ```
 
-```php tab=PHPUnit
+```php [PHPUnit]
 <?php
 
 namespace Tests\Feature;
@@ -37,7 +38,7 @@ class ExampleTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * A basic functional test example.
+     * Um exemplo básico de teste funcional.
      */
     public function test_basic_example(): void
     {
@@ -47,19 +48,21 @@ class ExampleTest extends TestCase
     }
 }
 ```
+:::
 
-A trait 'Illuminate\Foundation\Testing\RefreshDatabase' não migra seu banco de dados se o esquema estiver atualizado. Em vez disso, ele executará apenas a consulta dentro de uma transação de banco de dados. Portanto, qualquer registro adicionado ao banco de dados por testes que não utilizam esta trait pode ainda existir no banco de dados.
+O traço `Illuminate\Foundation\Testing\RefreshDatabase` não migra seu banco de dados se seu esquema estiver atualizado. Em vez disso, ele executará o teste somente dentro de uma transação de banco de dados. Portanto, quaisquer registros adicionados ao banco de dados por casos de teste que não usam esse traço ainda podem existir no banco de dados.
 
-Se você quiser redefinir o banco de dados totalmente, você pode usar os traços `Illuminate\Foundation\Testing\DatabaseMigrations` ou `Illuminate\Foundation\Testing\DatabaseTruncation`, mas ambas as opções são significativamente mais lentas do que o traço `RefreshDatabase`.
+Se você quiser redefinir totalmente o banco de dados, você pode usar os traços `Illuminate\Foundation\Testing\DatabaseMigrations` ou `Illuminate\Foundation\Testing\DatabaseTruncation`. No entanto, ambas as opções são significativamente mais lentas do que o traço `RefreshDatabase`.
 
 <a name="model-factories"></a>
-## Fábricas de Modelo
+## Fábricas de Modelos
 
-Ao testar, você pode precisar inserir alguns registros no seu banco de dados antes de executar sua prova. Em vez de especificar manualmente o valor de cada coluna ao criar esses dados de prova, Laravel permite que você defina um conjunto de atributos padrão para cada um dos seus [modelos Eloquent](/docs/{{version}}/eloquent) usando [fábricas de modelos](/docs/{{version}}/eloquent-factories).
+Ao testar, você pode precisar inserir alguns registros em seu banco de dados antes de executar seu teste. Em vez de especificar manualmente o valor de cada coluna ao criar esses dados de teste, o Laravel permite que você defina um conjunto de atributos padrão para cada um dos seus [modelos Eloquent](/docs/eloquent) usando [model factories](/docs/eloquent-factories).
 
-Para aprender mais sobre o modelo de fábricas e modelos para criar modelos, consulte [documentação completa da fábrica do modelo](/docs/ {{versão}} /eloquent -fábricas) . Depois que você definiu um modelo de fábrica, você pode usar a fábrica dentro seu teste para criar modelos:
+Para saber mais sobre como criar e utilizar model factories para criar modelos, consulte a [documentação completa do model factory](/docs/eloquent-factories). Depois de definir um model factory, você pode utilizar o factory dentro do seu teste para criar modelos:
 
-```php tab=Pest
+::: code-group
+```php [Pest]
 use App\Models\User;
 
 test('models can be instantiated', function () {
@@ -69,7 +72,7 @@ test('models can be instantiated', function () {
 });
 ```
 
-```php tab=PHPUnit
+```php [PHPUnit]
 use App\Models\User;
 
 public function test_models_can_be_instantiated(): void
@@ -79,13 +82,15 @@ public function test_models_can_be_instantiated(): void
     // ...
 }
 ```
+:::
 
 <a name="running-seeders"></a>
-## Seeding
+## Executando Seeders
 
-Se você gostaria de usar o [semeadores de banco de dados](/docs/{{version}}/seeding) para povoar seu banco de dados durante um teste de recurso, você pode invocar o método "seed". Por padrão, o método "seed" irá executar o "DatabaseSeeder", que deve executar todos os seus outros semeadores. Em alternativa, passe um nome de classe específico do semeador ao método "seed":
+Se você quiser usar [database seeders](/docs/seeding) para preencher seu banco de dados durante um teste de recurso, você pode invocar o método `seed`. Por padrão, o método `seed` executará o `DatabaseSeeder`, que deve executar todos os seus outros seeders. Como alternativa, você passa um nome de classe de seeder específico para o método `seed`:
 
-```php tab=Pest
+::: code-group
+```php [Pest]
 <?php
 
 use Database\Seeders\OrderStatusSeeder;
@@ -95,15 +100,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 test('orders can be created', function () {
-    // Run the DatabaseSeeder...
+    // Execute o DatabaseSeeder...
     $this->seed();
 
-    // Run a specific seeder...
+    // Execute um semeador específico...
     $this->seed(OrderStatusSeeder::class);
 
     // ...
 
-    // Run an array of specific seeders...
+    // Execute uma série de seeders específicos...
     $this->seed([
         OrderStatusSeeder::class,
         TransactionStatusSeeder::class,
@@ -112,7 +117,7 @@ test('orders can be created', function () {
 });
 ```
 
-```php tab=PHPUnit
+```php [PHPUnit]
 <?php
 
 namespace Tests\Feature;
@@ -127,19 +132,19 @@ class ExampleTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * Test creating a new order.
+     * Teste a criação de um novo pedido.
      */
     public function test_orders_can_be_created(): void
     {
-        // Run the DatabaseSeeder...
+        // Execute o DatabaseSeeder...
         $this->seed();
 
-        // Run a specific seeder...
+        // Execute um semeador específico...
         $this->seed(OrderStatusSeeder::class);
 
         // ...
 
-        // Run an array of specific seeders...
+        // Execute uma série de seeders específicos...
         $this->seed([
             OrderStatusSeeder::class,
             TransactionStatusSeeder::class,
@@ -148,8 +153,9 @@ class ExampleTest extends TestCase
     }
 }
 ```
+:::
 
-Alternativamente, você pode instruir o Laravel para semeia de banco de dados automaticamente antes cada teste que usa a característica 'RefreshDatabase'. Você pode fazer isso definindo uma propriedade '$seed' sua classe de teste base.
+Como alternativa, você pode instruir o Laravel a semear automaticamente o banco de dados antes de cada teste que usa o trait `RefreshDatabase`. Você pode fazer isso definindo uma propriedade `$seed` na sua classe de teste base:
 
 ```php
     <?php
@@ -161,7 +167,7 @@ Alternativamente, você pode instruir o Laravel para semeia de banco de dados au
     abstract class TestCase extends BaseTestCase
     {
         /**
-         * Indicates whether the default seeder should run before each test.
+         * Indica se o semeador padrão deve ser executado antes de cada teste.
          *
          * @var bool
          */
@@ -169,13 +175,13 @@ Alternativamente, você pode instruir o Laravel para semeia de banco de dados au
     }
 ```
 
-Quando o `seed` é definido como 'verdadeiro', o teste irá executar a classe `Database\Seeders\DatabaseSeeder` antes de cada teste que utiliza o trait `RefreshDatabase`. No entanto, você pode especificar um seeder específico para ser executado definindo uma propriedade `$seeder` na sua classe de teste:
+Quando a propriedade `$seed` for `true`, o teste executará a classe `Database\Seeders\DatabaseSeeder` antes de cada teste que usa o trait `RefreshDatabase`. No entanto, você pode especificar um seeder específico que deve ser executado definindo uma propriedade `$seeder` na sua classe de teste:
 
 ```php
     use Database\Seeders\OrderStatusSeeder;
 
     /**
-     * Run a specific seeder before each test.
+     * Execute um semeador específico antes de cada teste.
      *
      * @var string
      */
@@ -183,14 +189,14 @@ Quando o `seed` é definido como 'verdadeiro', o teste irá executar a classe `D
 ```
 
 <a name="available-assertions"></a>
-## Averões disponíveis
+## Asserções disponíveis
 
-Laravel fornece diversas afirmações de banco para seus testes de recursos [Pest](https://pestphp.com) ou [PHPUnit](https://phpunit.de). Discutiremos cada um dessas afirmações abaixo.
+O Laravel fornece várias asserções de banco de dados para seus testes de recursos [Pest](https://pestphp.com) ou [PHPUnit](https://phpunit.de). Discutiremos cada uma dessas asserções abaixo.
 
 <a name="assert-database-count"></a>
 #### assertDatabaseCount
 
-Afirmar que uma tabela no banco de dados contém o número dado de registros:
+Afirma que uma tabela no banco de dados contém o número fornecido de registros:
 
 ```php
     $this->assertDatabaseCount('users', 5);
@@ -199,7 +205,7 @@ Afirmar que uma tabela no banco de dados contém o número dado de registros:
 <a name="assert-database-has"></a>
 #### assertDatabaseHas
 
-Afirme que uma tabela no banco de dados contém registros correspondentes às restrições da consulta de chave / valor fornecida:
+Afirma que uma tabela no banco de dados contém registros que correspondem às restrições de consulta de chave/valor fornecidas:
 
 ```php
     $this->assertDatabaseHas('users', [
@@ -210,7 +216,7 @@ Afirme que uma tabela no banco de dados contém registros correspondentes às re
 <a name="assert-database-missing"></a>
 #### assertDatabaseMissing
 
-Afirmar que uma tabela no banco de dados não contém registros correspondentes às restrições de consulta do par chave/valor especificado:
+Afirma que uma tabela no banco de dados não contém registros que correspondem às restrições de consulta de chave/valor fornecidas:
 
 ```php
     $this->assertDatabaseMissing('users', [
@@ -221,7 +227,7 @@ Afirmar que uma tabela no banco de dados não contém registros correspondentes 
 <a name="assert-deleted"></a>
 #### assertSoftDeleted
 
-O método assertSoftDeleted pode ser usado para afirmar que um modelo Eloquent foi "deletado suavemente":
+O método `assertSoftDeleted` pode ser usado para afirmar uma determinada O modelo Eloquent foi "removido":
 
 ```php
     $this->assertSoftDeleted($user);
@@ -230,16 +236,16 @@ O método assertSoftDeleted pode ser usado para afirmar que um modelo Eloquent f
 <a name="assert-not-deleted"></a>
 #### assertNotSoftDeleted
 
-O método `assertNotSoftDeleted` pode ser usado para afirmar que um modelo Eloquent específico não tem sido "soft deleted":
+O método `assertNotSoftDeleted` pode ser usado para afirmar que um determinado modelo Eloquent não foi "removido":
 
 ```php
     $this->assertNotSoftDeleted($user);
 ```
 
 <a name="assert-model-exists"></a>
-#### assertModeloExiste
+#### assertModelExists
 
-Afirme que um modelo dado existe no banco de dados:
+Afirme que um determinado modelo existe no banco de dados:
 
 ```php
     use App\Models\User;
@@ -252,7 +258,7 @@ Afirme que um modelo dado existe no banco de dados:
 <a name="assert-model-missing"></a>
 #### assertModelMissing
 
-Afirmar que um determinado modelo não existe no banco de dados:
+Afirme que um determinado modelo não existe no banco de dados:
 
 ```php
     use App\Models\User;
@@ -265,12 +271,12 @@ Afirmar que um determinado modelo não existe no banco de dados:
 ```
 
 <a name="expects-database-query-count"></a>
-#### espera-se DatabaseQueryCount
+#### expectsDatabaseQueryCount
 
-O método "expectsDatabaseQueryCount" pode ser invocado no início do seu teste para especificar o número total de consultas ao banco de dados que você espera serem executadas durante o teste. Se a quantidade real de consultas executadas não corresponder exatamente esta expectativa, o teste falhará:
+O método `expectsDatabaseQueryCount` pode ser invocado no início do seu teste para especificar o número total de consultas de banco de dados que você espera que sejam executadas durante o teste. Se o número real de consultas executadas não corresponder exatamente a essa expectativa, o teste falhará:
 
 ```php
     $this->expectsDatabaseQueryCount(5);
 
-    // Test...
+    // Teste...
 ```
