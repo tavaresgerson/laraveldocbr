@@ -1,4 +1,5 @@
 # Laravel 11.x
+
 - ## Prólogo
     - [Notas da Versão](/src/docs/releases.md) ✅
     - [Guia de atualização](/src/docs/upgrade.md) ✅
@@ -86,18 +87,18 @@
     - [Dusk](/src/docs/dusk.md) ✅
     - [Envoy](/src/docs/envoy.md) ✅
     - [Fortify](/src/docs/fortify.md) ✅
-    - [Folio](/src/docs/folio.md) ⚙️
-    - [Homestead](/src/docs/homestead.md)
-    - [Horizon](/src/docs/horizon.md)
+    - [Folio](/src/docs/folio.md) ✅
+    - [Homestead](/src/docs/homestead.md) ✅
+    - [Horizon](/src/docs/horizon.md) ✅
     - [Jetstream](https://jetstream.laravel.com.md)
-    - [Mix](/src/docs/mix.md)
-    - [Octane](/src/docs/octane.md)
-    - [Passport](/src/docs/passport.md)
-    - [Pennant](/src/docs/pennant.md)
-    - [Pint](/src/docs/pint.md)
-    - [Precognition](/src/docs/precognition.md)
-    - [Prompts](/src/docs/prompts.md)
-    - [Pulse](/src/docs/pulse.md)
+    - [Mix](/src/docs/mix.md) ✅
+    - [Octane](/src/docs/octane.md) ✅
+    - [Passport](/src/docs/passport.md) ✅
+    - [Pennant](/src/docs/pennant.md) ✅
+    - [Pint](/src/docs/pint.md) ✅
+    - [Precognition](/src/docs/precognition.md) ✅
+    - [Prompts](/src/docs/prompts.md) ✅
+    - [Pulse](/src/docs/pulse.md) ⚙️
     - [Reverb](/src/docs/reverb.md)
     - [Sail](/src/docs/sail.md)
     - [Sanctum](/src/docs/sanctum.md)

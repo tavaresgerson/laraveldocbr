@@ -126,7 +126,7 @@ Se a solicitação não for bem-sucedida, o usuário será redirecionado de volt
 
 O Fortify recuperará e autenticará automaticamente o usuário com base nas credenciais fornecidas e no guarda de autenticação configurado para seu aplicativo. No entanto, às vezes você pode desejar ter personalização completa sobre como as credenciais de login são autenticadas e os usuários são recuperados. Felizmente, o Fortify permite que você faça isso facilmente usando o método `Fortify::authenticateUsing`.
 
-Este método aceita um fechamento que recebe a solicitação HTTP de entrada. O fechamento é responsável por validar as credenciais de login anexadas à solicitação e retornar a instância do usuário associada. Se as credenciais forem inválidas ou nenhum usuário puder ser encontrado, `null` ou `false` deve ser retornado pelo fechamento. Normalmente, esse método deve ser chamado do método `boot` do seu `FortifyServiceProvider`:
+Este método aceita um *closure* que recebe a solicitação HTTP de entrada. O *closure* é responsável por validar as credenciais de login anexadas à solicitação e retornar a instância do usuário associada. Se as credenciais forem inválidas ou nenhum usuário puder ser encontrado, `null` ou `false` deve ser retornado pelo *closure*. Normalmente, esse método deve ser chamado do método `boot` do seu `FortifyServiceProvider`:
 
 ```php
 use App\Models\User;
@@ -162,7 +162,7 @@ Você pode personalizar o guard de autenticação usado pelo Fortify no arquivo 
 
 O Laravel Fortify autentica solicitações de login por meio de um pipeline de classes invocáveis. Se desejar, você pode definir um pipeline personalizado de classes pelas quais as solicitações de login devem ser canalizadas. Cada classe deve ter um método `__invoke` que recebe a instância `Illuminate\Http\Request` de entrada e, como [middleware](/docs/middleware), uma variável `$next` que é invocada para passar a solicitação para a próxima classe no pipeline.
 
-Para definir seu pipeline personalizado, você pode usar o método `Fortify::authenticateThrough`. Este método aceita um fechamento que deve retornar a matriz de classes para canalizar a solicitação de login. Normalmente, este método deve ser chamado do método `boot` da sua classe `App\Providers\FortifyServiceProvider`.
+Para definir seu pipeline personalizado, você pode usar o método `Fortify::authenticateThrough`. Este método aceita um *closure* que deve retornar a matriz de classes para canalizar a solicitação de login. Normalmente, este método deve ser chamado do método `boot` da sua classe `App\Providers\FortifyServiceProvider`.
 
 O exemplo abaixo contém a definição de pipeline padrão que você pode usar como ponto de partida ao fazer suas próprias modificações:
 

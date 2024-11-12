@@ -103,7 +103,7 @@ O `PADDLE_RETAIN_KEY` é opcional e só deve ser definido se você estiver usand
 <a name="paddle-js"></a>
 ### Paddle JS
 
-O Paddle depende de sua própria biblioteca JavaScript para iniciar o widget de checkout do Paddle. Você pode carregar a biblioteca JavaScript colocando a diretiva Blade `@paddleJS` logo antes da tag `</head>` de fechamento do layout do seu aplicativo:
+O Paddle depende de sua própria biblioteca JavaScript para iniciar o widget de checkout do Paddle. Você pode carregar a biblioteca JavaScript colocando a diretiva Blade `@paddleJS` logo antes da tag `</head>` de *closure* do layout do seu aplicativo:
 
 ```blade
 <head>
