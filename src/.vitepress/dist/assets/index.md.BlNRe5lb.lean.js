@@ -1,0 +1,1 @@
+import{_ as a,c as l,o as e,a4 as i}from"./chunks/framework.nQaBHiNx.js";const p=JSON.parse('{"title":"Laravel 11.x","description":"","frontmatter":{},"headers":[],"relativePath":"index.md","filePath":"index.md"}'),o={name:"index.md"},t=i("",2),s=[t];function r(h,d,c,n,m,f){return e(),l("div",null,s)}const g=a(o,[["render",r]]);export{p as __pageData,g as default};
