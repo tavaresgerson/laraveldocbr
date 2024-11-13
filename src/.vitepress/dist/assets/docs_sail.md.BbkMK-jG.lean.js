@@ -1,0 +1,1 @@
+import{_ as a,c as s,o as e,a4 as i}from"./chunks/framework.nQaBHiNx.js";const m=JSON.parse('{"title":"Laravel Sail","description":"","frontmatter":{},"headers":[],"relativePath":"docs/sail.md","filePath":"docs/sail.md"}'),o={name:"docs/sail.md"},n=i("",187),t=[n];function l(d,p,r,c,h,k){return e(),s("div",null,t)}const g=a(o,[["render",l]]);export{m as __pageData,g as default};

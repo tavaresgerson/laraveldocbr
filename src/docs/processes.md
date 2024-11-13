@@ -1,11 +1,11 @@
 # Processos
 
-<a name=`introduction`></a>
+<a name="introduction"></a>
 ## Introdução
 
 O Laravel fornece uma API expressiva e mínima em torno do componente [Process Symfony](https://symfony.com/doc/7.0/components/process.html), permitindo que você invoque processos externos da sua aplicação Laravel de maneira conveniente. As características de processamento no Laravel se concentram nos casos de uso mais comuns e em uma excelente experiência do usuário para o desenvolvedor.
 
-<a name=`invoking-processes`></a>
+<a name="invoking-processes"></a>
 ## Chamar processos
 
 Para invocar um processo, você pode usar os métodos `run` e `start`, oferecidos pela _facade_ `Process`. O método `run` irá invocar um processo e aguardar a execução desse processo. Por outro lado, o método `start` é usado para a execução assíncrona. Nesta documentação, analisaremos as duas abordagens. Primeiro, vamos ver como invocar um processo básico e síncrono e inspecionar seu resultado:
@@ -30,7 +30,7 @@ $result->output();
 $result->errorOutput();
 ```
 
-<a name=`throwing-exceptions`></a>
+<a name="throwing-exceptions"></a>
 #### Lançar exceções
 
 Se você tiver um resultado do processo e desejar lançar uma instância de `Illuminate\Process\Exceptions\ProcessFailedException` com o código de saída maior que zero (indicando falha), poderá utilizar os métodos `throw` e `throwIf`. Caso o processo não tenha falhado, a instância do resultado do processo será retornada:
@@ -41,12 +41,12 @@ $result = Process::run('ls -la')->throw();
 $result = Process::run('ls -la')->throwIf($condition);
 ```
 
-<a name=`process-options`></a>
+<a name="process-options"></a>
 ### Opções do processo
 
 Claro que você pode precisar personalizar o comportamento de um processo antes de invocá-lo. Felizmente, o Laravel permite ajustar várias características do processo, como o diretório de trabalho, tempo limite e variáveis de ambiente
 
-<a name=`working-directory-path`></a>
+<a name="working-directory-path"></a>
 #### Caminho do diretório de trabalho
 
 Você pode usar o método `path` para especificar o diretório de trabalho do processo. Se este método não for invocado, o processo herdará o diretório de trabalho do script PHP atualmente sendo executado:
@@ -55,7 +55,7 @@ Você pode usar o método `path` para especificar o diretório de trabalho do pr
 $result = Process::path(__DIR__)->run('ls -la');
 ```
 
-<a name=`input`></a>
+<a name="input"></a>
 #### Entrada
 
 Você pode fornecer um input através da `entrada padrão` do processo usando o método `input`:
@@ -64,7 +64,7 @@ Você pode fornecer um input através da `entrada padrão` do processo usando o 
 $result = Process::input('Hello World')->run('cat');
 ```
 
-<a name=`timeouts`></a>
+<a name="timeouts"></a>
 #### Tempo de Inatividade
 
 Por padrão, os processos vão lançar uma instância de `Illuminate\Process\Exceptions\ProcessTimedOutException` após a execução durante mais de 60 segundos. No entanto, você pode personalizar este comportamento através do método `timeout`:
@@ -85,7 +85,7 @@ Ao especificar um limite máximo de tempo (em segundos) para o processo rodar se
 $result = Process::timeout(60)->idleTimeout(30)->run('bash import.sh');
 ```
 
-<a name=`environment-variables`></a>
+<a name="environment-variables"></a>
 #### Variáveis de ambiente
 
 As variáveis de ambiente podem ser fornecidas ao processo através do método `env`. O processo invocado também herdará todas as variáveis de ambiente definidas pelo seu sistema:
@@ -104,7 +104,7 @@ $result = Process::forever()
             ->run('bash import.sh');
 ```
 
-<a name=`tty-mode`></a>
+<a name="tty-mode"></a>
 #### Modo TTY
 
 O método `tty` pode ser utilizado para ativar o modo TTY do seu processo. Esse recurso conecta a entrada e saída do processo à sua programação, permitindo que seja aberto um editor como Vim ou Nano no contexto do seu processo:
@@ -113,7 +113,7 @@ O método `tty` pode ser utilizado para ativar o modo TTY do seu processo. Esse 
 Process::forever()->tty()->run('vim');
 ```
 
-<a name=`process-output`></a>
+<a name="process-output"></a>
 ### Saída do processo
 
 Como discutido anteriormente, é possível ter acesso ao conteúdo de saída utilizando os métodos `output` (stdout) e `errorOutput` (stderr) sobre o resultado do processo:
@@ -143,7 +143,7 @@ if (Process::run('ls -la')->seeInOutput('laravel')) {
 }
 ```
 
-<a name=`disabling-process-output`></a>
+<a name="disabling-process-output"></a>
 #### Desativar a saída do processo
 
 Se o seu processo estiver produzindo uma quantidade significativa de saída que você não está interessado, é possível economizar memória desativando a recuperação de saída total. Para fazer isso, chame o método `quietly` ao criar o processo:
@@ -154,7 +154,7 @@ use Illuminate\Support\Facades\Process;
 $result = Process::quietly()->run('bash import.sh');
 ```
 
-<a name=`process-pipelines`></a>
+<a name="process-pipelines"></a>
 ### Pipelines
 
 Às vezes, pode ser desejável que a saída de um processo seja a entrada de outro processo. Isto é frequentemente designado por `piping` (encaminhamento) da saída de um processo para outro. O método `pipe` disponibilizado pela _facade_ `Process` permite uma execução fácil dos processos encaminhados: o método `pipe` executará os processos encaminhados em modo síncrono e retornará o resultado do último processo na pipeline:
@@ -204,7 +204,7 @@ $result = Process::pipe(function (Pipe $pipe) {
 });
 ```
 
-<a name=`asynchronous-processes`></a>
+<a name="asynchronous-processes"></a>
 ## Processos assíncronos
 
 Enquanto o método `run` invoca processos em modo síncrono, é possível utilizar o método `start` para invocar um processo assíncronas. Isso permite que a sua aplicação continue executando outras tarefas enquanto o processo é executado como processo de fundo. Após o processo ter sido iniciado, você pode utilizar o método `running` para determinar se ele ainda está sendo executado:
@@ -229,7 +229,7 @@ $process = Process::timeout(120)->start('bash import.sh');
 $result = $process->wait();
 ```
 
-<a name=`process-ids-and-signals`></a>
+<a name="process-ids-and-signals"></a>
 ### ID dos processos e sinais
 
 O método `id` pode ser utilizado para recuperar o identificador de processo atribuído pelo sistema operativo do processo em execução.
@@ -246,7 +246,7 @@ return $process->id();
 $process->signal(SIGUSR2);
 ```
 
-<a name=`asynchronous-process-output`></a>
+<a name="asynchronous-process-output"></a>
 ### Saída de processo assíncrona
 
 Enquanto um processo assíncrono estiver em execução, você poderá acessar a todo o resultado atual utilizando os métodos `output` e `errorOutput`. No entanto, poderá utilizar os métodos `latestOutput` e `latestErrorOutput` para acessar o resultado do processo que se verificou desde a última recuperação de resultados:
@@ -272,7 +272,7 @@ $process = Process::start('bash import.sh', function (string $type, string $outp
 $result = $process->wait();
 ```
 
-<a name=`concurrent-processes`></a>
+<a name="concurrent-processes"></a>
 ## Processos concorrentes
 
 O Laravel também facilita o gerenciamento de um pool de processos assíncronos concorrentes, permitindo que você execute muitas tarefas simultaneamente. Para começar, invoque o método `pool`, que aceita um closure que recebe uma instância do `Illuminate\Process\Pool`.
@@ -318,7 +318,7 @@ Ou você pode usar o método `concurrently`, para iniciar um grupo de processos 
 echo $first->output();
 ```
 
-<a name=`naming-pool-processes`></a>
+<a name="naming-pool-processes"></a>
 ### Nomes para pool processos
 
 Acessar os resultados do pool de processos através de uma chave numérica não é muito expressivo; portanto, o Laravel permite que você assigne chaves string a cada processo dentro de um pool por meio do método `as`. Essa chave também será passada para o closure fornecido ao método `start`, permitindo determinar a qual processo o output pertence:
@@ -337,7 +337,7 @@ $results = $pool->wait();
 return $results['first']->output();
 ```
 
-<a name=`pool-process-ids-and-signals`></a>
+<a name="pool-process-ids-and-signals"></a>
 ### Identificação de processos e sinais
 
 Como o método `running` do pool de processos fornece uma coleção de todos os processos invocados dentro do pool, você pode acessar facilmente os IDs de processo do pool subjacente:
@@ -352,12 +352,12 @@ E, por comodidade, você pode invocar o método `signal` em um pool de processos
 $pool->signal(SIGUSR2);
 ```
 
-<a name=`testing`></a>
+<a name="testing"></a>
 ## Teste
 
 Muitos serviços do Laravel fornecem funcionalidades que o ajudam a escrever testes de maneira fácil e expressiva, e o serviço Processo do Laravel não é exceção. O método `fake` da _facade_ Process permite instruir o Laravel a retornar resultados falsos quando os processos são invocados.
 
-<a name=`faking-processes`></a>
+<a name="faking-processes"></a>
 ### Processos falsos
 
 Para explorar a capacidade do Laravel de simular processos, imaginemos uma rota que invoque um processo:
@@ -442,7 +442,7 @@ Process::fake([
 ]);
 ```
 
-<a name=`faking-specific-processes`></a>
+<a name="faking-specific-processes"></a>
 ### Falsificação de processos específicos
 
 Como você pode ter notado em um exemplo anterior, a _facade_ `Process` permite que você especifique resultados falsos diferentes por processo ao passar uma matriz para o método `fake`.
@@ -469,7 +469,7 @@ Process::fake([
 ]);
 ```
 
-<a name=`faking-process-sequences`></a>
+<a name="faking-process-sequences"></a>
 ### Falsificação de sequências de processos
 
 Se o código que você está testando solicitar vários processos com o mesmo comando, poderá ser interessante atribuir um resultado diferente a cada invocação do processo. Você pode fazer isso usando o método `sequence` da _facade_ `Process`:
@@ -482,7 +482,7 @@ Process::fake([
 ]);
 ```
 
-<a name=`faking-asynchronous-process-lifecycles`></a>
+<a name="faking-asynchronous-process-lifecycles"></a>
 ### Simulando ciclos de vida assíncronos
 
 Até agora, abordamos principalmente processos de falsificação invocados de maneira síncrona através do método `run`. No entanto, se você estiver tentando testar códigos que interagem com processos assíncronos invocados via `start`, pode ser necessário um enfoque mais sofisticado para descrever seus falsificadores.
@@ -520,12 +520,12 @@ Process::fake([
 
 Vamos entender melhor o exemplo acima. Usando os métodos `output` e `errorOutput`, podemos especificar várias linhas de saída que serão retornadas em sequência. O método `exitCode` pode ser usado para especificar os códigos de saída final do processo falsificado. Finalmente, o método `iterations` pode ser usado para especificar quantas vezes o método `running` deve retornar como `true`.
 
-<a name=`available-assertions`></a>
+<a name="available-assertions"></a>
 ### Declarações disponíveis
 
 Como [discutido anteriormente](#faking-processes), o Laravel disponibiliza várias declarações de processo para os testes funcionais. A seguir, discutiremos cada uma destas afirmações.
 
-<a name=`assert-process-ran`></a>
+<a name="assert-process-ran"></a>
 ####
 
 Afirmar que um determinado processo foi invocado:
@@ -548,7 +548,7 @@ Process::assertRan(fn ($process, $result) =>
 
 O `$process` enviado para o closure `assertRan` é uma instância do `Illuminate\Process\PendingProcess`, enquanto que o `$result` é uma instância de `Illuminate\Contracts\Process\ProcessResult`.
 
-<a name=`assert-process-didnt-run`></a>
+<a name="assert-process-didnt-run"></a>
 #### assertDidntRun
 
 Afirmar que um determinado processo não foi invocado:
@@ -567,7 +567,7 @@ Process::assertDidntRun(fn (PendingProcess $process, ProcessResult $result) =>
 );
 ```
 
-<a name=`assert-process-ran-times`></a>
+<a name="assert-process-ran-times"></a>
 #### assertRanTimes
 
 Asserta que um determinado processo foi invocado uma determinada quantidade de vezes:
@@ -586,7 +586,7 @@ Process::assertRanTimes(function (PendingProcess $process, ProcessResult $result
 }, times: 3);
 ```
 
-<a name=`preventing-stray-processes`></a>
+<a name="preventing-stray-processes"></a>
 ### Evitar processos em execução paralela
 
 Se você quiser garantir que todos os processos invocados foram falsificados em seu teste individual ou na suite de testes completa, você pode chamar o método `preventStrayProcesses`. Após a chamada deste método, qualquer processo que não tenha um resultado correspondente será falsificado e lançará uma exceção, ao invés de iniciar o processo real:

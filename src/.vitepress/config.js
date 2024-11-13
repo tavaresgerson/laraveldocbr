@@ -16,7 +16,7 @@ export default {
     ],
     [
       'link',
-      { href: 'https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap', rel: 'stylesheet' }
+      { href: 'https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,100..900;1,100..900&display=swap', rel: 'stylesheet' }
     ],
     ['link', { rel: 'icon', href: '/favicon.ico' }]
   ],

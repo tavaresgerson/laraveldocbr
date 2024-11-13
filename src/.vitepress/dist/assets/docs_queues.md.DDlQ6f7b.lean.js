@@ -1,0 +1,1 @@
+import{_ as s,c as a,o as i,a4 as e}from"./chunks/framework.nQaBHiNx.js";const E=JSON.parse('{"title":"Filas","description":"","frontmatter":{},"headers":[],"relativePath":"docs/queues.md","filePath":"docs/queues.md"}'),n={name:"docs/queues.md"},l=e("",580),t=[l];function p(h,k,o,d,r,c){return i(),a("div",null,t)}const u=s(n,[["render",p]]);export{E as __pageData,u as default};

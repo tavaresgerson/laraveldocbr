@@ -1,0 +1,1 @@
+import{_ as s,c as i,o as a,a4 as e}from"./chunks/framework.nQaBHiNx.js";const u=JSON.parse('{"title":"Laravel Pint","description":"","frontmatter":{},"headers":[],"relativePath":"docs/pint.md","filePath":"docs/pint.md"}'),n={name:"docs/pint.md"},t=e("",56),p=[t];function l(o,h,r,d,k,c){return a(),i("div",null,p)}const E=s(n,[["render",l]]);export{u as __pageData,E as default};

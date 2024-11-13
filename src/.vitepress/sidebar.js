@@ -1,170 +1,158 @@
 export default [
     {
-        text: 'Básico',
+        text: 'Prólogo',
         collapsed: false,
         items: [
-            { text: 'Introdução', link: '/docs/getting-started' },
-            { text: 'Core Componentes e Componentes Nativos', link: '/docs/intro-react-native-components' },
-            { text: 'Fundamentos do React', link: '/docs/intro-react.md' },
-            { text: 'Tratamento de entrada de texto', link: '/docs/handling-text-input' },
-            { text: 'Usando um ScrollView', link: '/docs/using-a-scrollview' },
-            { text: 'Usando List Views', link: '/docs/using-a-listview' },
-            { text: 'Solução de problemas', link: '/docs/troubleshooting' },
-            { text: 'Código específico da plataforma', link: 'docs/platform-specific-code' },
-            { text: 'Mais recursos', link: '/docs/more-resources' }
+            { text: 'Notas da Versão', link: '/docs/releases.md' },
+            { text: 'Guia de atualização', link: '/docs/upgrade.md' },
+            { text: 'Guia de Contribuição', link: '/docs/contributions.md' },
         ]
     },
     {
-        text: 'Configuração do ambiente',
-        collapsed: false,
-        items: [
-            { text: 'Configurando o ambiente de desenvolvimento', link: '/docs/environment-setup.md' },
-            { text: 'Integração com aplicativos existentes', link: '/docs/integration-with-existing-apps.md' },
-            { text: 'Integração com um fragmento Android', link: '/docs/integration-with-android-fragment.md' },
-            { text: 'Construindo para TV', link: '/docs/building-for-tv.md' },
-            { text: 'Plataformas fora da árvore', link: '/docs/out-of-tree-platforms.md' }
-        ]
+      text: 'Começando',
+      collapsed: false,
+      items: [
+        { text: 'Instalação', link: '/docs/installation.md' },
+        { text: 'Configuração', link: '/docs/configuration.md' },
+        { text: 'Estrutura de Diretórios', link: '/docs/structure.md' },
+        { text: 'Frontend', link: '/docs/frontend.md' },
+        { text: 'Starter Kits', link: '/docs/starter-kits.md' },
+        { text: 'Deployment', link: '/docs/deployment.md' },
+      ]
     },
     {
-        text: 'Workflow',
-        collapsed: false,
-        items: [
-            { text: 'Executando no dispositivo', link: '/docs/running-on-device' },
-            { text: 'Atualização rápida', link: '/docs/fast-refresh' },
-            { text: 'Metro', link: '/docs/metro' },
-            { text: 'Simbolizando um rastreamento de pilha', link: '/docs/symbolication' },
-            { text: 'Mapas de origem', link: '/docs/sourcemaps' },
-            { text: 'Usando bibliotecas', link: '/docs/libraries' },
-            { text: 'Usando TypeScript', link: '/docs/typescript' },
-            { text: 'Atualizando para novas versões', link: '/docs/upgrading' },
-        ]
+      text: 'Conceitos de Arquitetura',
+      collapsed: false,
+      items: [
+        { text: 'Ciclo de Vida', link: '/docs/lifecycle.md' },
+        { text: 'Containers', link: '/docs/container.md' },
+        { text: 'Provedores de serviços', link: '/docs/providers.md' },
+        { text: 'Facades', link: '/docs/facades.md' },
+      ]
     },
     {
-        text: 'UI & Interação',
-        collapsed: false,
-        items: [
-            { text: 'Estilo', link: '/docs/style' },
-            { text: 'Altura e largura', link: '/docs/height-and-width' },
-            { text: 'Layout com Flexbox', link: '/docs/flexbox' },
-            { text: 'Imagens', link: '/docs/images' },
-            { text: 'Referência de Cores', link: '/docs/colors' },
-            {
-                text: 'Interação',
-                collapsed: true,
-                items: [
-                    { text: 'Lidando com toques', link: '/docs/handling-touches' },
-                    { text: 'Navegando entre telas', link: '/docs/navigation' },
-                    { text: 'Animações', link: '/docs/animations' },
-                    { text: 'Sistema de resposta por gestos', link: '/docs/gesture-responder-system' },
-                ]
-            },
-            {
-                text: 'Conectividade',
-                collapsed: true,
-                items: [
-                    { text: 'Rede', link: '/docs/network' },
-                    { text: 'Segurança', link: '/docs/security' },
-                ]
-            },
-            {
-                text: 'Inclusão',
-                collapsed: true,
-                items: [
-                    { text: 'Acessibilidade', link: '/docs/accessibility' },
-                ]
-            }
-        ]
+      text: 'O básico',
+      collapsed: false,
+      items: [
+        { text: 'Roteamento', link: '/docs/routing.md' },
+        { text: 'Middleware', link: '/docs/middleware.md' },
+        { text: 'CSRF Protection', link: '/docs/csrf.md' },
+        { text: 'Controladores', link: '/docs/controllers.md' },
+        { text: 'Requisições', link: '/docs/requests.md' },
+        { text: 'Respostas', link: '/docs/responses.md' },
+        { text: 'Views (visualizações)', link: '/docs/views.md' },
+        { text: 'Templates Blade', link: '/docs/blade.md' },
+        { text: 'Pacote de ativos', link: '/docs/vite.md' },
+        { text: 'URL Generation', link: '/docs/urls.md' },
+        { text: 'Sessões', link: '/docs/session.md' },
+        { text: 'Validação', link: '/docs/validation.md' },
+        { text: 'Error Handling', link: '/docs/errors.md' },
+        { text: 'Logging', link: '/docs/logging.md' },
+      ]
     },
     {
-        text: 'Debugging',
-        collapsed: false,
-        items: [
-            { text: 'Noções básicas de depuração', link: '/docs/debugging' },
-            { text: 'Ferramentas de desenvolvedor React', link: '/docs/react-devtools' },
-            { text: 'Debug Nativo', link: '/docs/native-debugging' },
-        ]
+      text: 'Indo mais fundo',
+      collapsed: false,
+      items: [
+        { text: 'Artisan Console', link: '/docs/artisan.md' },
+        { text: 'Broadcasting', link: '/docs/broadcasting.md' },
+        { text: 'Cache', link: '/docs/cache.md' },
+        { text: 'Coleções', link: '/docs/collections.md' },
+        { text: 'Contexto', link: '/docs/context.md' },
+        { text: 'Contratos', link: '/docs/contracts.md' },
+        { text: 'Eventos', link: '/docs/events.md' },
+        { text: 'Armazenamento de arquivos', link: '/docs/filesystem.md' },
+        { text: 'Auxiliares', link: '/docs/helpers.md' },
+        { text: 'HTTP Client', link: '/docs/http-client.md' },
+        { text: 'Localização', link: '/docs/localization.md' },
+        { text: 'E-Mail', link: '/docs/mail.md' },
+        { text: 'Notificações', link: '/docs/notifications.md' },
+        { text: 'Desenvolvimento de Pacotes', link: '/docs/packages.md' },
+        { text: 'Processos', link: '/docs/processes.md' },
+        { text: 'Filas', link: '/docs/queues.md' },
+        { text: 'Rate Limiting', link: '/docs/rate-limiting.md' },
+        { text: 'Strings', link: '/docs/strings.md' },
+        { text: 'Agendamento de Tarefas', link: '/docs/scheduling.md' },
+      ]
     },
     {
-        text: 'Testando',
-        collapsed: false,
-        items: [
-            { text: 'Testando', link: '/docs/testing-overview' },
-        ]
+      text: 'Segurança',
+      collapsed: false,
+      items: [
+        { text: 'Autenticação', link: '/docs/authentication.md' },
+        { text: 'Autorização', link: '/docs/authorization.md' },
+        { text: 'Verificação de Email', link: '/docs/verification.md' },
+        { text: 'Encriptação', link: '/docs/encryption.md' },
+        { text: 'Hashing', link: '/docs/hashing.md' },
+        { text: 'Redefinir Senhas', link: '/docs/passwords.md' },
+      ]
     },
     {
-        text: 'Performance',
-        collapsed: false,
-        items: [
-            { text: 'Visão geral do desempenho', link: '/docs/performance' },
-            { text: 'Acelerando sua fase de construção', link: '/docs/build-speed' },
-            { text: 'Acelerando as compilações de CI', link: '/docs/speeding-ci-builds' },
-            { text: 'Otimizando a configuração da Flatlist', link: '/docs/optimizing-flatlist-configuration' },
-            { text: 'Pacotes de RAM e require inline', link: '/docs/ram-bundles-inline-requires' },
-            { text: 'Perfil', link: '/docs/profiling' },
-            { text: 'Perfis com Hermes', link: '/docs/profile-hermes' },
-        ]
+      text: 'Base de dados',
+      collapsed: false,
+      items: [
+        { text: 'Início rápido', link: '/docs/database.md' },
+        { text: 'Query Builder', link: '/docs/queries.md' },
+        { text: 'Paginação', link: '/docs/pagination.md' },
+        { text: 'Migrações', link: '/docs/migrations.md' },
+        { text: 'Semear', link: '/docs/seeding.md' },
+        { text: 'Redis', link: '/docs/redis.md' },
+      ]
     },
     {
-        text: 'JavaScript Runtime',
-        collapsed: false,
-        items: [
-            { text: 'Ambiente JavaScript', link: '/docs/javascript-environment' },
-            { text: 'Timers', link: '/docs/timers' },
-            { text: 'Usando o Hermes', link: '/docs/using-hermes' },
-        ]
+      text: 'Eloquent ORM',
+      collapsed: false,
+      items: [
+        { text: 'Início rápido', link: '/docs/eloquent.md' },
+        { text: 'Relacionamentos', link: '/docs/eloquent-relationships.md' },
+        { text: 'Coleções', link: '/docs/eloquent-collections.md' },
+        { text: 'Mutators/Casts', link: '/docs/eloquent-mutators.md' },
+        { text: 'Recursos da API', link: '/docs/eloquent-resources.md' },
+        { text: 'Serialização', link: '/docs/eloquent-serialization.md' },
+        { text: 'Fábricas', link: '/docs/eloquent-factories.md' },
+      ]
     },
     {
-        text: 'Módulos Nativos',
-        collapsed: false,
-        items: [
-            { text: 'Introdução aos módulos nativos', link: '/docs/native-modules-intro' },
-            { text: 'Módulos nativos do Android', link: '/docs/native-modules-android' },
-            { text: 'Módulos nativos iOS', link: '/docs/native-modules-ios' },
-            { text: 'Configuração do pacote NPM de módulos nativos', link: '/docs/native-modules-setup' },
-        ]
+      text: 'Teste',
+      collapsed: false,
+      items: [
+        { text: 'Getting Started', link: '/docs/testing.md' },
+        { text: 'HTTP Tests', link: '/docs/http-tests.md' },
+        { text: 'Console Tests', link: '/docs/console-tests.md' },
+        { text: 'Browser Tests', link: '/docs/dusk.md' },
+        { text: 'Database', link: '/docs/database-testing.md' },
+        { text: 'Mocking', link: '/docs/mocking.md' },
+      ]
     },
     {
-        text: 'Componentes Nativos',
-        collapsed: false,
-        items: [
-            { text: 'Componentes de IU nativos do Android', link: '/docs/native-components-android' },
-            { text: 'Componentes de UI nativos do iOS', link: '/docs/native-components-ios' },
-            { text: 'Manipulação Direta', link: '/docs/direct-manipulation' },
-        ]
-    },
-    {
-        text: 'Guias Android e iOS',
-        collapsed: false,
-        items: [
-            {
-                text: 'Android',
-                collapsed: true,
-                items: [
-                    { text: 'Headless JS', link: '/docs/headless-js-android' },
-                    { text: 'Publicação na Google Play Store', link: '/docs/signed-apk-android' },
-                    { text: 'Comunicação entre nativo e React Native', link: '/docs/communication-android' },
-                    { text: 'Plug-in React Native Gradle', link: '/docs/react-native-gradle-plugin' },
-                ]
-            },
-            {
-                text: 'iOS',
-                collapsed: true,
-                items: [
-                    { text: 'Vinculando Bibliotecas', link: '/docs/linking-libraries-ios' },
-                    { text: 'Executando no Simulador', link: '/docs/running-on-simulator-ios' },
-                    { text: 'Comunicação entre nativo e React Native', link: '/docs/communication-ios' },
-                    { text: 'Extensões de aplicativos', link: '/docs/app-extensions' },
-                    { text: 'Publicação na Apple App Store', link: '/docs/publishing-to-app-store' },
-                ]
-            }
-
-        ]
-    },
-    {
-        text: 'Experimental',
-        collapsed: false,
-        items: [
-            { text: 'Sobre a Nova Arquitetura', link: '/docs/the-new-architecture/landing-page' },
-        ]
+      text: 'Pacotes',
+      collapsed: false,
+      items: [
+        { text: 'Breeze', link: '/docs/starter-kits#laravel-breeze.md' },
+        { text: 'Cashier (Stripe)', link: '/docs/billing.md' },
+        { text: 'Cashier (Paddle)', link: '/docs/cashier-paddle.md' },
+        { text: 'Dusk', link: '/docs/dusk.md' },
+        { text: 'Envoy', link: '/docs/envoy.md' },
+        { text: 'Fortify', link: '/docs/fortify.md' },
+        { text: 'Folio', link: '/docs/folio.md' },
+        { text: 'Homestead', link: '/docs/homestead.md' },
+        { text: 'Horizon', link: '/docs/horizon.md' },
+        { text: 'Jetstream', link: 'https://jetstream.laravel.com.md' },
+        { text: 'Mix', link: '/docs/mix.md' },
+        { text: 'Octane', link: '/docs/octane.md' },
+        { text: 'Passport', link: '/docs/passport.md' },
+        { text: 'Pennant', link: '/docs/pennant.md' },
+        { text: 'Pint', link: '/docs/pint.md' },
+        { text: 'Precognition', link: '/docs/precognition.md' },
+        { text: 'Prompts', link: '/docs/prompts.md' },
+        { text: 'Pulse', link: '/docs/pulse.md' },
+        { text: 'Reverb', link: '/docs/reverb.md' },
+        { text: 'Sail', link: '/docs/sail.md' },
+        { text: 'Sanctum', link: '/docs/sanctum.md' },
+        { text: 'Scout', link: '/docs/scout.md' },
+        { text: 'Socialite', link: '/docs/socialite.md' },
+        { text: 'Telescope', link: '/docs/telescope.md' },
+        { text: 'Valet', link: '/docs/valet.md' },
+      ]
     }
 ]

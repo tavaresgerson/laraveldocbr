@@ -1001,8 +1001,6 @@ Você pode recuperar o valor de um atributo específico usando o método `get`:
 ### Palavras-chave reservadas
 Por padrão, algumas palavras-chave são reservadas para uso interno do Blade para a renderização de componentes. As seguintes palavras-chave não podem ser definidas como propriedades públicas ou nomes de métodos dentro dos seus componentes:
 
-<div class="content-list" markdown="1">
-
 - `data`
 - `render`
 - `resolveView`

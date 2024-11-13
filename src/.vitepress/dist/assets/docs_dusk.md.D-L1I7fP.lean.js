@@ -1,0 +1,1 @@
+import{_ as s,c as a,o as i,a4 as e}from"./chunks/framework.nQaBHiNx.js";const E=JSON.parse('{"title":"Laravel Dusk","description":"","frontmatter":{},"headers":[],"relativePath":"docs/dusk.md","filePath":"docs/dusk.md"}'),n={name:"docs/dusk.md"},t=e("",761),p=[t];function h(l,k,r,o,d,c){return i(),a("div",null,p)}const u=s(n,[["render",h]]);export{E as __pageData,u as default};
